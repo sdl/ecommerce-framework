@@ -80,7 +80,7 @@ public class TestHybrisClient {
         SearchResult result = client.search("sony", 20, 0, null, facets);
         System.out.println("Products:");
         for ( Product product : result.getProducts() ) {
-            System.out.println(" " + product.getManufacturer() + " " + product.getName());
+            System.out.println(" " + product.getCode() + " " + product.getManufacturer() + " " + product.getName());
         }
         System.out.println("Facets:");
         for ( Facet facet : result.getFacets() ) {
@@ -112,7 +112,7 @@ public class TestHybrisClient {
         System.out.println("Adding product to cart...");
         cart = client.addItemToCart(sessionId, "676442", 1);
         System.out.println("Cart total items: " + cart.getTotalItems() + ", total price: " + cart.getTotalPrice().getFormattedValue());
-        cart = client.addItemToCart(sessionId, "149243", 1);
+        cart = client.addItemToCart(sessionId, "1978440_blue", 1);
         System.out.println("Cart total items: " + cart.getTotalItems() + ", total price: " + cart.getTotalPrice().getFormattedValue());
     }
 

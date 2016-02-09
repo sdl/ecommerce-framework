@@ -20,7 +20,7 @@ public class DeliveryOrderGroup {
 	@JsonProperty("entries")
 	private List<Entry> entries = new ArrayList<Entry>();
 	@JsonProperty("totalPriceWithTax")
-	private TotalPriceWithTax totalPriceWithTax;
+	private Price totalPriceWithTax;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -48,7 +48,7 @@ public class DeliveryOrderGroup {
 	 * @return The totalPriceWithTax
 	 */
 	@JsonProperty("totalPriceWithTax")
-	public TotalPriceWithTax getTotalPriceWithTax() {
+	public Price getTotalPriceWithTax() {
 		return totalPriceWithTax;
 	}
 
@@ -58,7 +58,7 @@ public class DeliveryOrderGroup {
 	 *            The totalPriceWithTax
 	 */
 	@JsonProperty("totalPriceWithTax")
-	public void setTotalPriceWithTax(TotalPriceWithTax totalPriceWithTax) {
+	public void setTotalPriceWithTax(Price totalPriceWithTax) {
 		this.totalPriceWithTax = totalPriceWithTax;
 	}
 

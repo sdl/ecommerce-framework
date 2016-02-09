@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.dxa;
 
 /**
- * ECommerce Reques tAttributes
+ * ECommerce Request Attributes
  *
  * @author nic
  */

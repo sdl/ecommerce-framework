@@ -31,6 +31,10 @@ public class ECommerceModuleInitializer extends AbstractInitializer {
                         .withAttribute("rel", "stylesheet")
                         .withAttribute("href", "/system/assets/css/ecommerce-styles.css").build());
 
+        pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,
+                HtmlBuilders.element("script").withAttribute("src", "/system/assets/scripts/ecommerce-cart.js").build());
+        pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,
+                HtmlBuilders.element("script").withAttribute("src", "/system/assets/scripts/jquery-ui.min.js").build());
     }
 
     @Override

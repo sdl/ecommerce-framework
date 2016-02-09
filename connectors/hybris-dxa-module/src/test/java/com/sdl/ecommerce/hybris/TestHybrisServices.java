@@ -2,6 +2,12 @@ package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.api.model.Breadcrumb;
+import com.sdl.ecommerce.api.model.Cart;
+import com.sdl.ecommerce.api.model.Category;
+import com.sdl.ecommerce.api.model.Facet;
+import com.sdl.ecommerce.api.model.Product;
+import com.sdl.ecommerce.hybris.api.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,6 +38,9 @@ public class TestHybrisServices {
 
     @Autowired
     private ProductDetailService detailService;
+
+    @Autowired
+    private CartFactory cartFactory;
 
     @Test
     public void testGetCategoryById() throws Exception {
@@ -107,6 +116,24 @@ public class TestHybrisServices {
         LOG.info("Attributes: ");
         for ( String attrName : product.getAttributes().keySet() ) {
             LOG.info("Name: " + attrName + " Value: " + product.getAttributes().get(attrName));
+        }
+    }
+
+    @Test
+    public void testCart() throws Exception {
+        LOG.info("Testing cart...");
+        Cart cart = this.cartFactory.createCart();
+
+        System.out.println("Created cart with ID: " + cart.getId());
+        System.out.println("Cart total items: " + cart.count());
+        System.out.println("Adding product to cart...");
+        cart.addProduct("676442");
+        System.out.println("Cart total items: " + cart.count() + ", total price: " + cart.getTotalPrice());
+        cart.addProduct("1978440_blue");
+        System.out.println("Cart total items: " + cart.count() + ", total price: " + cart.getTotalPrice());
+        System.out.println("Cart items: ");
+        for ( CartItem item : cart.getItems() ) {
+            System.out.println(item.getQuantity() + " x " + item.getProduct().getName() + " price: " + item.getProduct().getPrice().getFormattedPrice());
         }
     }
 

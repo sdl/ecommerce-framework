@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.hybris;
 
+import com.sdl.ecommerce.api.CartFactory;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.ProductQueryService;
@@ -27,6 +28,9 @@ public class TestContext {
 
     @Bean
     public ProductDetailService getProductDetailService() { return new HybrisDetailService(); }
+
+    @Bean
+    public CartFactory getCartFactory() { return new HybrisCartFactory(); }
 
     @Bean
     public HybrisClient getHybrisClient() {

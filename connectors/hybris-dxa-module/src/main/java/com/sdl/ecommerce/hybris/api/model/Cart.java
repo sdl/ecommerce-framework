@@ -38,19 +38,19 @@ public class Cart {
   @JsonProperty("appliedVouchers")
   private List<Object> appliedVouchers = new ArrayList<Object>();
   @JsonProperty("productDiscounts")
-  private ProductDiscounts productDiscounts;
+  private Price productDiscounts;
   @JsonProperty("totalDiscounts")
-  private TotalDiscounts totalDiscounts;
+  private Price totalDiscounts;
   @JsonProperty("subTotal")
-  private SubTotal subTotal;
+  private Price subTotal;
   @JsonProperty("orderDiscounts")
-  private OrderDiscounts orderDiscounts;
+  private Price orderDiscounts;
   @JsonProperty("entries")
   private List<Entry> entries = new ArrayList<Entry>();
   @JsonProperty("appliedProductPromotions")
   private List<Object> appliedProductPromotions = new ArrayList<Object>();
   @JsonProperty("totalPrice")
-  private TotalPrice totalPrice;
+  private Price totalPrice;
   @JsonProperty("site")
   private String site;
   @JsonProperty("code")
@@ -64,11 +64,11 @@ public class Cart {
   @JsonProperty("totalItems")
   private Integer totalItems;
   @JsonProperty("totalPriceWithTax")
-  private TotalPriceWithTax totalPriceWithTax;
+  private Price totalPriceWithTax;
   @JsonProperty("deliveryItemsQuantity")
   private Integer deliveryItemsQuantity;
   @JsonProperty("totalTax")
-  private TotalTax totalTax;
+  private Price totalTax;
   @JsonProperty("potentialProductPromotions")
   private List<Object> potentialProductPromotions = new ArrayList<Object>();
   @JsonProperty("potentialOrderPromotions")
@@ -197,7 +197,7 @@ public class Cart {
    * @return The productDiscounts.
    */
   @JsonProperty("productDiscounts")
-  public ProductDiscounts getProductDiscounts() {
+  public Price getProductDiscounts() {
     return productDiscounts;
   }
 
@@ -207,7 +207,7 @@ public class Cart {
    *          The productDiscounts.
    */
   @JsonProperty("productDiscounts")
-  public void setProductDiscounts(ProductDiscounts productDiscounts) {
+  public void setProductDiscounts(Price productDiscounts) {
     this.productDiscounts = productDiscounts;
   }
 
@@ -216,7 +216,7 @@ public class Cart {
    * @return The totalDiscounts.
    */
   @JsonProperty("totalDiscounts")
-  public TotalDiscounts getTotalDiscounts() {
+  public Price getTotalDiscounts() {
     return totalDiscounts;
   }
 
@@ -226,7 +226,7 @@ public class Cart {
    *          The totalDiscounts.
    */
   @JsonProperty("totalDiscounts")
-  public void setTotalDiscounts(TotalDiscounts totalDiscounts) {
+  public void setTotalDiscounts(Price totalDiscounts) {
     this.totalDiscounts = totalDiscounts;
   }
 
@@ -235,7 +235,7 @@ public class Cart {
    * @return The subTotal.
    */
   @JsonProperty("subTotal")
-  public SubTotal getSubTotal() {
+  public Price getSubTotal() {
     return subTotal;
   }
 
@@ -245,7 +245,7 @@ public class Cart {
    *          The subTotal.
    */
   @JsonProperty("subTotal")
-  public void setSubTotal(SubTotal subTotal) {
+  public void setSubTotal(Price subTotal) {
     this.subTotal = subTotal;
   }
 
@@ -254,7 +254,7 @@ public class Cart {
    * @return The orderDiscounts.
    */
   @JsonProperty("orderDiscounts")
-  public OrderDiscounts getOrderDiscounts() {
+  public Price getOrderDiscounts() {
     return orderDiscounts;
   }
 
@@ -264,7 +264,7 @@ public class Cart {
    *          The orderDiscounts.
    */
   @JsonProperty("orderDiscounts")
-  public void setOrderDiscounts(OrderDiscounts orderDiscounts) {
+  public void setOrderDiscounts(Price orderDiscounts) {
     this.orderDiscounts = orderDiscounts;
   }
 
@@ -311,7 +311,7 @@ public class Cart {
    * @return The totalPrice.
    */
   @JsonProperty("totalPrice")
-  public TotalPrice getTotalPrice() {
+  public Price getTotalPrice() {
     return totalPrice;
   }
 
@@ -321,7 +321,7 @@ public class Cart {
    *          The totalPrice.
    */
   @JsonProperty("totalPrice")
-  public void setTotalPrice(TotalPrice totalPrice) {
+  public void setTotalPrice(Price totalPrice) {
     this.totalPrice = totalPrice;
   }
 
@@ -444,7 +444,7 @@ public class Cart {
    * @return The totalPriceWithTax.
    */
   @JsonProperty("totalPriceWithTax")
-  public TotalPriceWithTax getTotalPriceWithTax() {
+  public Price getTotalPriceWithTax() {
     return totalPriceWithTax;
   }
 
@@ -454,7 +454,7 @@ public class Cart {
    *          The totalPriceWithTax.
    */
   @JsonProperty("totalPriceWithTax")
-  public void setTotalPriceWithTax(TotalPriceWithTax totalPriceWithTax) {
+  public void setTotalPriceWithTax(Price totalPriceWithTax) {
     this.totalPriceWithTax = totalPriceWithTax;
   }
 
@@ -482,7 +482,7 @@ public class Cart {
    * @return The totalTax.
    */
   @JsonProperty("totalTax")
-  public TotalTax getTotalTax() {
+  public Price getTotalTax() {
     return totalTax;
   }
 
@@ -492,7 +492,7 @@ public class Cart {
    *          The totalTax.
    */
   @JsonProperty("totalTax")
-  public void setTotalTax(TotalTax totalTax) {
+  public void setTotalTax(Price totalTax) {
     this.totalTax = totalTax;
   }
 

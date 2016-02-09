@@ -8,7 +8,7 @@
 <jsp:useBean id="viewHelper" type="com.sdl.ecommerce.dxa.ECommerceViewHelper" scope="request"/>
 <div>
 
-    <!-- Temporary fix to get the in-context menu enabled. Should be replaced by a separate in-context menu bar in the top of the page -->
+    <%-- Temporary fix to get the in-context menu enabled. Should be replaced by a separate in-context menu bar in the top of the page --%>
     <c:import url="/WEB-INF/Views/ECommerce/Entity/InContextEditMenu.jsp"/>
 
 

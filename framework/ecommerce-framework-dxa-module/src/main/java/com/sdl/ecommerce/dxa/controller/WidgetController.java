@@ -334,7 +334,7 @@ public class WidgetController extends BaseController {
         // TODO: Refactor this one. The Edit Service should return all available edit menues
         //
         Category category = this.getCategory(request);
-        if ( category != null ) {
+        if ( category != null && this.editService != null ) {
             EditMenu editMenu = this.editService.getInContextMenuItems(category, EditService.MenuType.CREATE_NEW, this.webRequestContext.getLocalization());
             request.setAttribute("editMenu", editMenu);
         }
