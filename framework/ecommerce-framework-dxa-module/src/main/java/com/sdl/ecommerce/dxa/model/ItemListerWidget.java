@@ -54,6 +54,10 @@ public class ItemListerWidget extends AbstractEntityModel implements QueryInputC
         return category;
     }
 
+    public int getViewSize() {
+        return viewSize;
+    }
+
     public List<Product> getItems() {
         return items;
     }

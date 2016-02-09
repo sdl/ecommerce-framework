@@ -72,8 +72,19 @@ public class WidgetController extends BaseController {
     public String handleItemLister(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
         ItemListerWidget entity = (ItemListerWidget) this.getEntityFromRequest(request, entityId);
-
-        QueryResult queryResult = this.getQueryResult(request);
+        QueryResult queryResult;
+        if ( entity.getCategory() != null ) {
+            Category category = this.categoryService.getCategoryByPath(entity.getCategory());
+            Query query = this.queryService.newQuery();
+            query.category(category);
+            if ( entity.getViewSize() != 0 ) {
+                query.viewSize(entity.getViewSize());
+            }
+            queryResult = this.queryService.query(query);
+        }
+        else {
+            queryResult = this.getQueryResult(request);
+        }
         entity.setItems(queryResult.getProducts());
         this.processListerNavigationLinks(entity, queryResult, this.getFacets(request));
 
@@ -227,6 +238,10 @@ public class WidgetController extends BaseController {
     }
 
     protected ECommerceResult getResultFromPageTemplate(HttpServletRequest request) {
+
+        // TODO: Use thread local here to optimize the search to avoid duplicate calls...
+        //
+
         String requestPath = webRequestContext.getRequestPath();
         if ( requestPath.startsWith("/categories") ) {
             final Category category = this.getCategoryFromPageTemplate(requestPath);
