@@ -20,8 +20,8 @@ public class PromotionsWidget extends AbstractEntityModel {
     @SemanticProperty("e:category")
     private String category;
 
-    @SemanticProperty("e:pageType")
-    private String pageType;
+    @SemanticProperty("e:viewType")
+    private String viewType;
 
     @SemanticProperty("e:maxPromotions")
     private Integer maxPromotions;
@@ -32,8 +32,8 @@ public class PromotionsWidget extends AbstractEntityModel {
         return category;
     }
 
-    public String getPageType() {
-        return pageType;
+    public String getViewType() {
+        return viewType;
     }
 
     public Integer getMaxPromotions() {

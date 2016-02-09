@@ -6,11 +6,11 @@ import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.*;
 
 import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
-import com.sdl.ecommerce.api.edit.MenuItem;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.dxa.CategoryDataCache;
 import com.sdl.ecommerce.dxa.ECommerceViewHelper;
 import com.sdl.ecommerce.dxa.model.*;
+import com.sdl.webapp.common.api.ThreadLocalManager;
 import com.sdl.webapp.common.api.WebRequestContext;
 import com.sdl.webapp.common.api.content.ContentProviderException;
 import com.sdl.webapp.common.api.model.MvcData;
@@ -41,6 +41,9 @@ public class WidgetController extends BaseController {
     private ProductQueryService queryService;
 
     @Autowired
+    private ProductDetailService detailService;
+
+    @Autowired
     private ECommerceViewHelper viewHelper;
 
     @Autowired
@@ -52,10 +55,17 @@ public class WidgetController extends BaseController {
     @Autowired(required = false)
     private EditService editService;
 
+    /*
+    @Autowired
+    private ThreadLocalManager threadLocalManager;
+    private ThreadLocal
+    */
+
     static class FlyoutData {
         List<FacetGroup> facetGroups;
         List<Promotion> promotions;
     }
+
 
     // TODO: Rename to ProductLister
     @RequestMapping(method = RequestMethod.GET, value = "ItemLister/{entityId}")
@@ -111,21 +121,19 @@ public class WidgetController extends BaseController {
 
         PromotionsWidget entity = (PromotionsWidget) this.getEntityFromRequest(request, entityId);
 
-        /* TODO: Fix functionality to overload categories via widget metadata
-        if ( entity.getCategory() != null && entity.getPageType() == null ) {
-            Page page = this.fredhopperService.queryByCategoryPath(entity.getCategory());
-            fhUniverse =fredhopperService.getUniverse(page);
-        }
-        else if ( entity.getPageType() != null ) {
-            Page page = this.fredhopperService.queryByCategoryPath(entity.getCategory(), ViewType.parse(entity.getPageType()));
-            fhUniverse =fredhopperService.getUniverse(page);
+        ECommerceResult result = null;
+        if ( entity.getCategory() != null ) {
+            Category category = this.categoryService.getCategoryByPath(entity.getCategory());
+            Query query = this.queryService.newQuery();
+            query.category(category);
+            if ( entity.getViewType() != null ) {  //
+                query.viewType(ViewType.valueOf(entity.getViewType()));
+            }
+            result = this.queryService.query(query);
         }
         else {
-            fhUniverse = this.getFredhopperUniverse(request);
+            result = this.getResult(request);
         }
-        */
-
-        ECommerceResult result = this.getResult(request);
         entity.setPromotions(result.getPromotions());
 
         request.setAttribute("entity", entity);
@@ -189,7 +197,13 @@ public class WidgetController extends BaseController {
 
         Product product = (Product) request.getAttribute(PRODUCT);
         if ( product == null ) {
-            throw new ContentProviderException("No product found!");
+            ECommerceResult result = this.getResult(request);
+            if ( result instanceof ProductDetailResult ) {
+                product = ((ProductDetailResult) result).getProductDetail();
+            }
+            if ( product == null ) {
+                throw new ContentProviderException("No product found!");
+            }
         }
         entity.setProduct(product);
         request.setAttribute("entity", entity);
@@ -198,22 +212,51 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "DetailBreadcrumb/{entityId}")
-    public String handleDetailBreadcrumb(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
-        // TODO: REMOVE THIS METHOD! IS NOT NEEDED ANYMORE...
-        return this.handleBreadcrumb(request, entityId);
-    }
-
     protected QueryResult getQueryResult(HttpServletRequest request) {
-        return (QueryResult) request.getAttribute(RESULT);
+       return (QueryResult) this.getResult(request);
     }
 
     protected ECommerceResult getResult(HttpServletRequest request) {
-        return (ECommerceResult) request.getAttribute(RESULT);
+        ECommerceResult result = (ECommerceResult) request.getAttribute(RESULT);
+        if ( result == null ) {
+            // Fallback to getting result from the page template (needed when in XPM mode)
+            //
+            result = getResultFromPageTemplate(request);
+        }
+        return result;
+    }
+
+    protected ECommerceResult getResultFromPageTemplate(HttpServletRequest request) {
+        String requestPath = webRequestContext.getRequestPath();
+        if ( requestPath.startsWith("/categories") ) {
+            final Category category = this.getCategoryFromPageTemplate(requestPath);
+            Query query = this.queryService.newQuery();
+            query.category(category);
+            query.facets(this.getFacets(request));
+            return this.queryService.query(query);
+        }
+        else if ( requestPath.startsWith("/products") ) {
+            String productId = requestPath.replaceFirst("\\/products\\/", "").replace(".html", "");
+            return this.detailService.getDetail(productId);
+        }
+        return null;
+    }
+
+    protected Category getCategoryFromPageTemplate(String requestPath) {
+        // Try to get query result based on the page url cat1-cat2-cat3
+        //
+        final String categoryPath = requestPath.replaceFirst("\\/categories\\/", "").replace(".html", "").replace("-", "/");
+        return this.categoryService.getCategoryByPath(categoryPath);
     }
 
     protected Category getCategory(HttpServletRequest request) {
-        return (Category) request.getAttribute(CATEGORY);
+        Category category = (Category) request.getAttribute(CATEGORY);
+        if ( category == null ) {
+            // Fallback to get the category from the page template (needed when in XPM mode)
+            //
+            category = getCategoryFromPageTemplate(webRequestContext.getRequestPath());
+        }
+        return category;
     }
 
     protected String getUrlPrefix(HttpServletRequest request) {
@@ -338,7 +381,6 @@ public class WidgetController extends BaseController {
             EditMenu editMenu = this.editService.getInContextMenuItems(category, EditService.MenuType.CREATE_NEW, this.webRequestContext.getLocalization());
             request.setAttribute("editMenu", editMenu);
         }
-
 
     }
 
