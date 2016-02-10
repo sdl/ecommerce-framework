@@ -27,7 +27,9 @@ import java.util.Enumeration;
 import java.util.zip.GZIPInputStream;
 
 /**
- * OLD AdminProxyController
+ * Admin Proxy Controller
+ *
+ * Proxies requests to Fredhopper Business Manager and filter out unnecessary HTML.
  *
  * @author nic
  */
@@ -225,8 +227,6 @@ public class AdminProxyController {
 
         htmlDoc.body().append("<script src='/system/assets/scripts/fredhopper-edit-popup.js'></script>");
 
-        // TODO: Add a onclick event that triggers events on parent (close popup)
-
         return htmlDoc.html();
     }
 
@@ -249,33 +249,6 @@ public class AdminProxyController {
                 element.attr("style", style);
             }
         }
-    }
-
-    protected Connection getConnection(String url) throws IOException {
-        Connection connection = Jsoup.connect(url);
-        return connection;
-    }
-
-    protected Document getResponse(HttpServletRequest request, Connection connection) throws IOException {
-
-        /*
-        for (Enumeration<String> names = this.request.getParameterNames(); names.hasMoreElements();) {
-            String name = names.nextElement();
-            if ( ! name.startsWith("dw.widget") ) {
-                connection.data(name, this.request.getParameter(name));
-            }
-        }
-        */
-        if ( request.getMethod().equals("GET") ) {
-            return connection.get();
-        }
-        else if ( request.getMethod().equals("POST") ) {
-            return connection.post();
-        }
-        else {
-            throw new IOException("Unsupported HTTP method used in DemandWare widget: " + request.getMethod());
-        }
-
     }
 
 }
