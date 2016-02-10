@@ -19,6 +19,7 @@
     <modules>
         <module>fredhopper-dxa-module</module>
         <module>hybris-dxa-module</module>
+        <module>dummy-dxa-module</module>
     </modules>
 
 </project>
