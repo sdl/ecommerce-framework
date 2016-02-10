@@ -4,11 +4,11 @@ E-Commerce Framework for SDL Web
 This is framework to enable E-Commerce functionality for SDL Web.
 It will contain ECL providers and DXA modules for various E-Commerce systems.
 
-Right now it provided connectors for:
+Right now it provides connectors for:
 
-* Fredhopper
-* Hybris
-* DemandWare
+* Fredhopper (http://www.sdl.com/cxc/digital-experience/ecommerce-optimization/fredhopper.html)
+* SAP Hybris (http://www.hybris.com)
+* DemandWare (http://www.demandware.com)
 
 Concepts
 ---------
