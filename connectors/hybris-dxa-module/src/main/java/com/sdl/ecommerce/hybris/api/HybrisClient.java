@@ -50,7 +50,6 @@ public class HybrisClient {
         this.username = username;
         this.password = password;
         this.activeServiceCatalog = activeServiceCatalog;
-        //SSLUtilities.trustAllHttpsCertificates();   TODO: NEEDED???
     }
 
     @PostConstruct

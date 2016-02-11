@@ -30,4 +30,9 @@ public class HybrisPrice implements ProductPrice {
     public String getFormattedPrice() {
         return this.hybrisPrice.getFormattedValue();
     }
+
+    @Override
+    public String toString() {
+        return this.getFormattedPrice();
+    }
 }

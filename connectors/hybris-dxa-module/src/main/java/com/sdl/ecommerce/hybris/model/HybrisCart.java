@@ -151,7 +151,7 @@ public class HybrisCart implements Cart {
 
         Map<URI,Object> claims = new HashMap<>();
         claims.put(Cart.CART_ITEMS_URI, this.count());
-        claims.put(Cart.CART_TOTAL_PRICE_URI, this.getTotalPrice());
+        claims.put(Cart.CART_TOTAL_PRICE_URI, this.getTotalPrice().getPrice());
         return claims;
     }
 
