@@ -20,7 +20,7 @@ import static com.sdl.webapp.common.api.mapping.config.SemanticVocabulary.SDL_CO
 public class ItemListerWidget extends AbstractEntityModel implements QueryInputContributor {
 
     @SemanticProperty("e:category")
-    private String category;
+    private ECommerceCategory category;
 
     @SemanticProperty("e:viewSize")
     private int viewSize = 0;
@@ -50,7 +50,7 @@ public class ItemListerWidget extends AbstractEntityModel implements QueryInputC
         } */
     }
 
-    public String getCategory() {
+    public ECommerceCategory getCategory() {
         return category;
     }
 

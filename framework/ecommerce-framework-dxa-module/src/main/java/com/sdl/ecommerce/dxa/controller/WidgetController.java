@@ -74,12 +74,24 @@ public class WidgetController extends BaseController {
         ItemListerWidget entity = (ItemListerWidget) this.getEntityFromRequest(request, entityId);
         QueryResult queryResult;
         if ( entity.getCategory() != null ) {
-            Category category = this.categoryService.getCategoryByPath(entity.getCategory());
+
+            ECommerceCategory ecomCategory = entity.getCategory();
+            Category category;
+            if ( ecomCategory.getCategoryPath() != null ) {
+                category = this.categoryService.getCategoryByPath(ecomCategory.getCategoryPath());
+            }
+            else if ( ecomCategory.getCategoryRef() != null ) {
+                category = this.categoryService.getCategoryById(ecomCategory.getCategoryRef().getExternalId());
+            }
+            else {
+                throw new ContentProviderException("Invalid E-Commerce category set for item lister: " + entityId);
+            }
             Query query = this.queryService.newQuery();
             query.category(category);
             if ( entity.getViewSize() != 0 ) {
                 query.viewSize(entity.getViewSize());
             }
+            query.startIndex(this.getStartIndex(request));
             queryResult = this.queryService.query(query);
         }
         else {
@@ -293,6 +305,14 @@ public class WidgetController extends BaseController {
     protected List<FacetParameter> getFacets(HttpServletRequest request) {
         List<FacetParameter> facets = (List<FacetParameter>) request.getAttribute(FACETS);
         return facets;
+    }
+
+    protected int getStartIndex(HttpServletRequest request) {
+        String startIndex = request.getParameter("startIndex");
+        if ( startIndex != null ) {
+            return Integer.parseInt(startIndex);
+        }
+        return 0;
     }
 
     protected String getSessionPreviewToken(HttpServletRequest request) {
