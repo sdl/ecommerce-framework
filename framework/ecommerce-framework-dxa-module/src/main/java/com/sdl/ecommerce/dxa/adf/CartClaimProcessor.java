@@ -4,6 +4,7 @@ import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.model.Cart;
 import com.tridion.ambientdata.AmbientDataException;
 import com.tridion.ambientdata.claimstore.ClaimStore;
+import com.tridion.ambientdata.processing.AbstractClaimProcessor;
 import com.tridion.ambientdata.processing.ClaimProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +17,13 @@ import java.util.Map;
  *
  * @author nic
  */
-public class CartClaimProcessor implements ClaimProcessor {
+public class CartClaimProcessor extends AbstractClaimProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(CartClaimProcessor.class);
 
     static final URI SESSION_ATTRIBUTES_URI = URI.create("taf:session:attributes");
 
+    public CartClaimProcessor() {}
 
     @Override
     public void onRequestStart(ClaimStore claimStore) throws AmbientDataException {
@@ -51,14 +53,4 @@ public class CartClaimProcessor implements ClaimProcessor {
 
     }
 
-
-    @Override
-    public void onRequestEnd(ClaimStore claimStore) throws AmbientDataException {
-
-    }
-
-    @Override
-    public void onSessionStart(ClaimStore claimStore) throws AmbientDataException {
-
-    }
 }

@@ -1,12 +1,12 @@
-<CartridgeDefinition Version="7.0" Uri="tcd:cartridge:webmodulo"
-                     Description="ADF Delegate Claim Processor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<CartridgeDefinition Version="7.0" Uri="tcd:cartridge:ecommerce"
+                     Description="E-Commerce Claim Processor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xsi:noNamespaceSchemaLocation="schemas/cd_ambient_cartridge_conf.xsd">
     <ClaimDefinitions>
-        <Claim Uri="taf:claim:ecommerce:cart:object"/>
-        <Claim Uri="taf:claim:ecommerce:cart:items"/>
-        <Claim Uri="taf:claim:ecommerce:cart:totalPrice"/>
-        <Claim Uri="taf:claim:ecommerce:product:id"/>
-        <Claim Uri="taf:claim:ecommerce:category:id"/>
+        <ClaimDefinition Uri="taf:claim:ecommerce:cart:object" Scope="SESSION" Description=""/>
+        <ClaimDefinition Uri="taf:claim:ecommerce:cart:items" Scope="REQUEST" Description=""/>
+        <ClaimDefinition Uri="taf:claim:ecommerce:cart:totalPrice" Scope="REQUEST" Description=""/>
+        <ClaimDefinition Uri="taf:claim:ecommerce:product:id" Scope="REQUEST" Description=""/>
+        <ClaimDefinition Uri="taf:claim:ecommerce:category:id" Scope="REQUEST" Description=""/>
     </ClaimDefinitions>
     <ClaimProcessorDefinitions>
         <ClaimProcessorDefinition Uri="tcd:claimprocessor:ecommerce:cart"
