@@ -6,4 +6,10 @@
 .settings/
 target/
 cd_licenses.xml
-env.properties
+obj
+bin
+*.user
+*.suo
+packages/
+_references
+TestResults
