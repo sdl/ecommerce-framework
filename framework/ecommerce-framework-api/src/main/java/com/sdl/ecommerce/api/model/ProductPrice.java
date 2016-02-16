@@ -8,6 +8,6 @@ package com.sdl.ecommerce.api.model;
 public interface ProductPrice {
 
     float getPrice();
-    String getCurrency();
+    String getCurrency(); // TODO: Have some kind of ISO code here???
     String getFormattedPrice();
 }

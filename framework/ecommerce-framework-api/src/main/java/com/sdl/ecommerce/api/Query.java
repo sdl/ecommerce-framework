@@ -14,6 +14,9 @@ import java.util.List;
 public abstract class Query implements Cloneable {
 
     // TODO: Add the possiblity to attach filters that can exclude for example all products that do not have a thumbnail etc
+    // Have this as abstract instead??
+    // And then allow to hook in extensions here somehow?? Or is that query filter???? where entities and customizations can add specific stuff there (which is up to the implementation to handle or not...)
+
 
     private Category category;
     private String searchPhrase;

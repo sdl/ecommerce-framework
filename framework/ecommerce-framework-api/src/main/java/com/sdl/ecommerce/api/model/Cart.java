@@ -40,5 +40,7 @@ public interface Cart {
 
     ProductPrice getTotalPrice() throws ECommerceException;
 
+    // TODO: Add other costs etc as a attribute list which can be displayed in the cart detail page
+
     Map<URI,Object> getDataToExposeToClaimStore() throws ECommerceException;
 }

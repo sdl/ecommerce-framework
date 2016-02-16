@@ -13,7 +13,7 @@ public interface FacetGroup {
 
     String getTitle();
 
-    String getType();   // TODO: Have a standardised enum type here for the facet type
+    String getType();   // TODO: Have a standardised enum type here for the facet type (is not used right now anyway)
 
     List<Facet> getFacets();
 

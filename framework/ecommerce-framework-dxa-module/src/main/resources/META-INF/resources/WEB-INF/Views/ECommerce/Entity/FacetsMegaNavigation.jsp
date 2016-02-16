@@ -6,7 +6,7 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.FacetsWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
-<c:if test="${entity.category != null }">
+<c:if test="${entity.category != null && not empty entity.facetGroups}">
 <%
 
     int cols = entity.getFacetGroups().size()+entity.getRelatedPromotions().size();
