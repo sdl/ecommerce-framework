@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fredhopper-dxa-module</artifactId>
+    <artifactId>hybris-dxa-ecommerce-connector</artifactId>
 
     <parent>
         <artifactId>ecommerce-connectors</artifactId>
@@ -31,27 +31,6 @@
             <groupId>com.sdl</groupId>
             <artifactId>ecommerce-framework-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!--
-        <dependency>
-            <groupId>com.sdl</groupId>
-            <artifactId>toolbox-module</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
-
-        <!-- Fredhopper API -->
-        <dependency>
-            <groupId>com.fredhopper</groupId>
-            <artifactId>ws-client</artifactId>
-            <version>7.5.2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fredhopper</groupId>
-            <artifactId>query-lang</artifactId>
-            <version>7.5.2.7</version>
         </dependency>
 
         <!-- Servlet API -->

@@ -63,6 +63,7 @@ public class CategoryPageController extends AbstractECommercePageController {
             request.setAttribute(FACETS, facets);
             request.setAttribute(URL_PREFIX, "/c");
 
+            // TODO: Fix show store link option
             //if ( Boolean.TRUE.equals(queryConfiguration.isShowStoreLink()) ) {
             //    request.setAttribute(ROOT_CATEGORY_TITLE, STORE_TITLE);
             //}

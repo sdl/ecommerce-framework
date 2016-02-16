@@ -19,10 +19,10 @@
     <!-- TODO: Have profiles for each E-Com provider -->
 
     <modules>
-        <module>fredhopper-dxa-module</module>
-        <module>hybris-dxa-module</module>
-	<module>demandware-dxa-module</module>
-        <module>dummy-dxa-module</module>
+        <module>fredhopper-dxa-ecommerce-connector</module>
+        <module>hybris-dxa-ecommerce-connector</module>
+	    <module>demandware-dxa-ecommerce-connector</module>
+        <module>dummy-dxa-ecommerce-connector</module>
     </modules>
 
 </project>
