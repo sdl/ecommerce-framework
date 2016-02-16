@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.demandware;
 
+import com.sdl.ecommerce.api.CartFactory;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.ProductQueryService;
@@ -28,6 +29,9 @@ public class TestContext {
 
     @Bean
     public ProductDetailService getDetailService() { return new DemandwareDetailService(); }
+
+    @Bean
+    public CartFactory getCartFactory() { return new DemandwareCartFactory(); }
 
     @Bean
     public PropertyPlaceholderConfigurer propertyConfig() {

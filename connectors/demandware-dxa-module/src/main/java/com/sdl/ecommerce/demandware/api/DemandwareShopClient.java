@@ -1,42 +1,34 @@
 package com.sdl.ecommerce.demandware.api;
 
+import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.demandware.api.model.*;
 import com.sun.jersey.api.client.*;
-import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import com.tridion.util.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import javax.net.ssl.*;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-import java.util.HashMap;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Demandware Shop Client v.14.8
+ * Demandware Shop Client v.16.1
  *
  * @author nic
  */
 @Component
-//@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // TODO: Is it needed to have the scope to REQUEST here???
 public class DemandwareShopClient {
 
     static private Log log = LogFactory.getLog(DemandwareShopClient.class);
 
-    static final String BASE_URL_PATH = "/dw/shop/v14_8";
+    static final String BASE_URL_PATH = "/dw/shop/v16_1";
 
     @Value("${demandware.shopUrl}")
     private String shopUrl;
@@ -44,12 +36,54 @@ public class DemandwareShopClient {
     @Value("${demandware.clientId}")
     private String clientId;
 
+    @Value("${demandware.overriddenOrigin}")
+    private String overriddenOrigin = null;
+
+    @Value("${demandware.trustAllSSLCerts}")
+    private boolean trustAllSSLCerts = false;
+
     private String shopBaseUrl;
     private Client client;
+    private WebResource authorizationResource;
     private WebResource basketResource;
     private WebResource productResource;
     private WebResource productSearchResource;
     private WebResource categoryResource;
+
+    class Builder {
+
+        WebResource.Builder requestBuilder;
+
+        Builder(WebResource.Builder requestBuilder) {
+            this.requestBuilder = requestBuilder;
+        }
+
+        WebResource.Builder getRequestBuilder() {
+            return this.requestBuilder;
+        }
+
+        Builder jsonHeaders() {
+            this.requestBuilder = requestBuilder.
+                    accept(MediaType.APPLICATION_JSON).
+                    type(MediaType.APPLICATION_JSON);
+            return this;
+        }
+
+        Builder originHeader() {
+            if ( overriddenOrigin != null && overriddenOrigin.length() > 0 ) {
+                this.requestBuilder = requestBuilder.header("Origin", overriddenOrigin);
+            }
+            return this;
+        }
+
+        Builder basketHeaders(Basket basket) {
+            this.requestBuilder = requestBuilder.
+                    header("Authorization", basket.getAuthorizationToken()).
+                    header("If-Match", basket.getEtag());
+            return this;
+        }
+    }
+
 
     public DemandwareShopClient() {}
 
@@ -69,52 +103,155 @@ public class DemandwareShopClient {
         clientConfig.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
 
         this.client = ApacheHttpClient.create(clientConfig);
-
-        this.basketResource = this.client.resource(this.shopBaseUrl + "/basket/this").queryParam("client_id", this.clientId);
+        this.authorizationResource = this.client.resource(this.shopBaseUrl.replace("http", "https") + "/customers/auth").queryParam("client_id", this.clientId);
+        this.basketResource = this.client.resource(this.shopBaseUrl.replace("http", "https") + "/baskets").queryParam("client_id", this.clientId);
         this.productResource = this.client.resource(this.shopBaseUrl + "/products").queryParam("client_id", this.clientId);
         this.productSearchResource = this.client.resource(this.shopBaseUrl + "/product_search").queryParam("client_id", this.clientId);
         this.categoryResource = this.client.resource(this.shopBaseUrl + "/categories").queryParam("client_id", this.clientId);
+
+        if ( this.trustAllSSLCerts ) {
+            // SSL configuration
+            clientConfig.getProperties().put(com.sun.jersey.client.urlconnection.HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new com.sun.jersey.client.urlconnection.HTTPSProperties(getHostnameVerifier(), getNonValidatingSecurityContext()));
+        }
     }
 
-    // TODO: Migrate to Spring REST templates instead to align to the solution made for the Hybris connector???
-    /* Example:
-        RestTemplate restTemplate = this.createRestTemplate();
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("clientId", this.clientId);
+    // do NOT use in Production
+    private static SSLContext getNonValidatingSecurityContext() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[0];
+            }
 
-        Basket basket = restTemplate.getForObject(this.shopBaseUrl + "/basket/this?client_id={clientId}", Basket.class, vars);
-     */
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                // We don't check anything :P
+            }
 
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+                // We don't check anything :P
+            }
+        }};
 
-    public Basket getBasket() {
-        ClientResponse response = this.basketResource.
-                accept(MediaType.APPLICATION_JSON).
-                get(ClientResponse.class);
-        Basket basket = response.getEntity(Basket.class);
-        basket.setEtag(response.getHeaders().getFirst("ETag"));
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            return sc;
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return null;
+    }
 
+    // do NOT use in Production
+    private static HostnameVerifier getHostnameVerifier() {
+        return new HostnameVerifier() {
+            public boolean verify(String string, SSLSession ssls) {
+                return true;
+            }
+        };
+    }
+
+    private String authorizeAsGuest() {
+        ClientResponse response =
+                new Builder(this.authorizationResource.getRequestBuilder()).
+                jsonHeaders().
+                originHeader().getRequestBuilder().
+                post(ClientResponse.class, new AuthenticationRequest(AuthenticationRequest.GUEST));
+        return response.getHeaders().getFirst("Authorization");
+    }
+
+    private void throwException(Fault fault) throws ECommerceException  {
+        throw new ECommerceException(fault.getType() + ": " + fault.getMessage());
+    }
+
+    private Basket getBasket(ClientResponse clientResponse, String authToken) throws ECommerceException {
+
+        Basket basket = clientResponse.getEntity(Basket.class);
+        if ( basket.getFault() != null ) {
+            this.throwException(basket.getFault());
+        }
+        basket.setAuthorizationToken(authToken);
+        basket.setEtag(clientResponse.getHeaders().getFirst("ETag"));
         return basket;
     }
 
-    public Basket addProductToBasket(String productId) {
-        ProductItem product = new ProductItem();
-        product.setProduct_id(productId);
-        product.setQuantity(1.0f);
-        return this.addProductToBasket(product);
+
+    public Basket createBasket() throws ECommerceException {
+        // TODO: Support other authorization patterns here as well
+        //
+        String authToken = this.authorizeAsGuest();
+        ClientResponse response =
+                new Builder(this.basketResource.getRequestBuilder()).
+                jsonHeaders().
+                originHeader().getRequestBuilder().
+                header("Authorization", authToken).
+                post(ClientResponse.class, new Basket());
+        return getBasket(response, authToken);
     }
 
-    public Basket addProductToBasket(ProductItem product) {
-        return this.basketResource.path("/add").
-                accept(MediaType.APPLICATION_JSON).
-                type(MediaType.APPLICATION_JSON).
-                post(Basket.class, product);
+    public Basket addProductToBasket(Basket basket, String productId, int quantity) throws ECommerceException {
+
+        // Check if the product is already added to the cart -> if so modify the cart item
+        //
+        if ( basket.getProduct_items() != null ) {
+            for (ProductItem productItem : basket.getProduct_items()) {
+                if ( productItem.getProduct_id().equals(productId) ) {
+                    productItem.setQuantity(productItem.getQuantity()+quantity);
+                    return this.modifyProductItemInBasket(basket, productItem);
+                }
+            }
+        }
+
+        // Create a new cart item
+        //
+        ProductItem productItem = new ProductItem();
+        productItem.setProduct_id(productId);
+        productItem.setQuantity(quantity);
+
+        return this.addProductItemToBasket(basket, productItem);
+    }
+
+    public Basket addProductItemToBasket(Basket basket, ProductItem productItem) throws ECommerceException {
+        ClientResponse response =
+                new Builder(this.basketResource.path(basket.getBasket_id() + "/items").getRequestBuilder()).
+                jsonHeaders().
+                originHeader().
+                basketHeaders(basket).getRequestBuilder().
+                post(ClientResponse.class, productItem);
+        return this.getBasket(response, basket.getAuthorizationToken());
+    }
+
+    public Basket modifyProductItemInBasket(Basket basket, ProductItem productItem) throws ECommerceException {
+        ClientResponse response =
+                new Builder(this.basketResource.path(basket.getBasket_id() + "/items/" + productItem.getItem_id()).getRequestBuilder()).
+                jsonHeaders().
+                originHeader().
+                basketHeaders(basket).getRequestBuilder().
+                method("PATCH", ClientResponse.class, productItem);
+        return this.getBasket(response, basket.getAuthorizationToken());
+    }
+
+    public Basket removeProductItemFromBasket(Basket basket, ProductItem productItem) throws ECommerceException {
+        ClientResponse response =
+                new Builder(this.basketResource.path(basket.getBasket_id() + "/items/" + productItem.getItem_id()).getRequestBuilder()).
+                jsonHeaders().
+                originHeader().
+                basketHeaders(basket).getRequestBuilder().
+                delete(ClientResponse.class);
+        return this.getBasket(response, basket.getAuthorizationToken());
     }
 
     public Product getProduct(String productId) {
-        return this.productResource.path("/" + productId).
+        Product product =
+                this.productResource.path("/" + productId).
                 queryParam("expand", "availability,links,options,images,prices,variations").
                 accept(MediaType.APPLICATION_JSON).
                 get(Product.class);
+        if ( product.getFault() != null ) {
+            this.throwException(product.getFault());
+        }
+        return product;
     }
 
     public Category getCategory(String categoryId) {

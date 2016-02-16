@@ -33,6 +33,9 @@ public class TestDemandwareServices {
     @Autowired
     private ProductDetailService detailService;
 
+    @Autowired
+    private CartFactory cartFactory;
+
 
     // TODO: Do generic JUnit base class that has all generic test cases
 
@@ -108,6 +111,21 @@ public class TestDemandwareServices {
         this.printBreadcrumbs(result.getBreadcrumbs("/products", "Products"));
     }
 
+    @Test
+    public void testCart() throws Exception {
+        LOG.info("Test cart...");
+
+        Cart cart = this.cartFactory.createCart();
+
+        LOG.info("Adding product to cart...");
+        cart.addProduct("sanyo-dp50747");
+        this.printCartItems(cart);
+
+        LOG.info("Adding the same product to the cart...");
+        cart.addProduct("sanyo-dp50747");
+        this.printCartItems(cart);
+    }
+
     /******** SUPPORT PRINTOUT FUNCTIONS ***********/
 
     private void printCategories(List<Category> categories) {
@@ -133,7 +151,7 @@ public class TestDemandwareServices {
     private void printProducts(List<Product> products) {
         LOG.info("------ Products: --------");
         for ( Product product : products ) {
-            LOG.info("Product ID: " + product.getId() + " Name: " + product.getName() + " Thumbnail: " + product.getThumbnailUrl());
+            LOG.info("Product ID: " + product.getId() + " Name: " + product.getName() + " Thumbnail: " + product.getThumbnailUrl() + " Detail link: " + product.getDetailPageUrl());
         }
     }
 
@@ -143,5 +161,14 @@ public class TestDemandwareServices {
         for ( Breadcrumb breadcrumb : breadcrumbs ) {
             LOG.info("\"" + breadcrumb.getTitle() + "\"" + " URL: " + breadcrumb.getUrl() + " category: " + breadcrumb.isCategory());
         }
+    }
+
+    private void printCartItems(Cart cart) {
+        LOG.info("Cart items:");
+        for ( CartItem cartItem : cart.getItems() ) {
+            LOG.info("Product: " + cartItem.getProduct().getName() + " Price: " + cartItem.getPrice().getFormattedPrice() + " Quantity: " + cartItem.getQuantity());
+        }
+        LOG.info("Total items: " + cart.count());
+        LOG.info("Total price: " + cart.getTotalPrice().getFormattedPrice());
     }
 }

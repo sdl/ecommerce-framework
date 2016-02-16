@@ -1,5 +1,7 @@
 package com.sdl.ecommerce.demandware.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  *
  * @author nic
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductSearchRefinementValue {
 
     private String description;

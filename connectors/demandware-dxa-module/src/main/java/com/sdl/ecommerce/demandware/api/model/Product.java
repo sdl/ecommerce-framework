@@ -10,7 +10,7 @@ import java.util.List;
  * @author nic
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Product {
+public class Product extends StandardBody {
 
     private String id;
     private String name;

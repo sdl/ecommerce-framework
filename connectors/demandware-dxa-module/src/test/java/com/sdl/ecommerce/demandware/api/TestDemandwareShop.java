@@ -29,30 +29,15 @@ public class TestDemandwareShop {
     @Autowired
     private DemandwareShopClient shopClient;
 
-
-    @Test
-    public void testGetCart()  throws Exception {
-        log.info("Getting current cart...");
-        Basket basket = this.shopClient.getBasket();
-        this.printBasket(basket);
-    }
-
     @Test
     public void testAddToCart() throws Exception {
+
+        Basket basket = this.shopClient.createBasket();
+
         log.info("Adding product to cart...");
 
-        ProductItem product = new ProductItem();
-        product.setProduct_id("sanyo-dp50747");
-        product.setQuantity(1.0f);
-        Basket basket = this.shopClient.addProductToBasket(product);
+        basket = this.shopClient.addProductToBasket(basket, "sanyo-dp50747", 1);
         this.printBasket(basket);
-
-        //log.info("Cookies: " + this.shopClient.getCookies());
-
-        log.info("Getting current cart...");
-        basket = this.shopClient.getBasket();
-        this.printBasket(basket);
-
     }
 
     @Test
@@ -140,7 +125,17 @@ public class TestDemandwareShop {
 
     }
 
+    @Test
+    public void testSearch() throws Exception {
+
+        ProductSearchResult result = this.shopClient.search("sony", null, 0, 20, null);
+        for ( ProductSearchHit hit : result.getHits() ) {
+            log.info("Product: " + hit.getProduct_id());
+        }
+    }
+
     private void printBasket(Basket basket) {
+        log.info("Basket ID: " + basket.getBasket_id());
         log.info("Basket currency:" + basket.getCurrency() + " product total: " + basket.getProduct_total() + " subtotal: " + basket.getProduct_sub_total());
         log.info("ETag: " + basket.getEtag());
         if ( basket.getProduct_items() != null ) {

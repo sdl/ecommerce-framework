@@ -55,8 +55,10 @@ public class DemandwareQueryResult implements QueryResult {
     @Override
     public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
-        for ( ProductSearchHit searchHit : this.searchResult.getHits() ) {
-            products.add(new DemandwareProduct(searchHit));
+        if ( this.searchResult.getHits() != null ) {
+            for (ProductSearchHit searchHit : this.searchResult.getHits()) {
+                products.add(new DemandwareProduct(searchHit));
+            }
         }
         return products;
     }

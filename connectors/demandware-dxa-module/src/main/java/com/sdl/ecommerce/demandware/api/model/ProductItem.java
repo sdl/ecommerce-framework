@@ -10,11 +10,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductItem {
 
+    private String item_id;
     private String product_id;
     private String product_name;
     private float quantity;
     private float price;
     private String item_text;
+
+    public String getItem_id() {
+        return item_id;
+    }
+
+    public void setItem_id(String item_id) {
+        this.item_id = item_id;
+    }
 
     public String getProduct_id() {
         return product_id;

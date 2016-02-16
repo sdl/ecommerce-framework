@@ -1,6 +1,8 @@
 package com.sdl.ecommerce.demandware.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
@@ -10,8 +12,10 @@ import java.util.List;
  * @author nic
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Basket {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Basket extends StandardBody {
 
+    private String basket_id;
     private String currency;
     private Float product_sub_total;
     private Float product_total;
@@ -19,7 +23,21 @@ public class Basket {
     private Float tax_total;
     private Float order_total;
     private List<ProductItem> product_items;
+
+    @JsonIgnore
     private String etag;
+
+    @JsonIgnore
+    private String authorizationToken;
+
+
+    public String getBasket_id() {
+        return basket_id;
+    }
+
+    public void setBasket_id(String basket_id) {
+        this.basket_id = basket_id;
+    }
 
     public Float getOrder_total() {
         return order_total;
@@ -77,15 +95,19 @@ public class Basket {
         this.product_items = product_items;
     }
 
-    public int getNoOfProducts() {
-        return this.product_items == null ? 0 : this.product_items.size();
-    }
-
     public String getEtag() {
         return etag;
     }
 
     public void setEtag(String etag) {
         this.etag = etag;
+    }
+
+    public String getAuthorizationToken() {
+        return authorizationToken;
+    }
+
+    public void setAuthorizationToken(String authorizationToken) {
+        this.authorizationToken = authorizationToken;
     }
 }

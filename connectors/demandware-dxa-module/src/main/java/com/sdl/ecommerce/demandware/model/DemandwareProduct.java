@@ -48,8 +48,10 @@ public class DemandwareProduct implements Product {
         this.id = productSearchHit.getProduct_id();
         this.name = productSearchHit.getProduct_name();
         this.price = new DemandwarePrice(productSearchHit.getPrice(), productSearchHit.getCurrency());
-        this.thumbnailUrl = productSearchHit.getImage().getLink();
-        this.primaryImageUrl = productSearchHit.getImage().getLink();
+        if ( productSearchHit.getImage() != null ) {
+            this.thumbnailUrl = productSearchHit.getImage().getLink();
+            this.primaryImageUrl = productSearchHit.getImage().getLink();
+        }
     }
 
     @Override
@@ -100,7 +102,13 @@ public class DemandwareProduct implements Product {
     public String getDetailPageUrl() {
         // TODO: Have a standardized way of calculating the product URL. There an more characters that needs to be ignored as well....
 
-        String seoName = this.name.toLowerCase().replace(" ", "-").replace("'", "").replace("--", "").replace("/", "-").replace("®", "");
+        String seoName = this.name.toLowerCase().
+                replace(" ", "-").
+                replace("'", "").
+                replace("--", "").
+                replace("/", "-").
+                replace("®", "").
+                replace("\"", "");
         return "/p/" + seoName + "/" + this.id;
     }
 

@@ -1,10 +1,13 @@
 package com.sdl.ecommerce.demandware.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Image
  *
  * @author nic
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Image {
 
     private String link;
