@@ -250,7 +250,7 @@ public class HybrisClient {
 
     @SuppressWarnings("rawtypes")
     public Cart addItemToCart(String sessionID, String productId, int amount) throws Exception {
-        Cart c =(Cart) getCart(sessionID);
+        Cart c = getCart(sessionID);
         for(Entry productEntry : c.getEntries())
         {
             if(productEntry.getProduct().getCode().equals(productId))

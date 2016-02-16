@@ -33,10 +33,6 @@ public class HybrisCategoryService implements ProductCategoryService {
 
     private Category rootCategory;
 
-    private Cache<String, Object> categoryData = CacheBuilder.newBuilder()
-            .maximumSize(100)
-            .expireAfterWrite(5, TimeUnit.MINUTES).build();
-
     private long categoryTreeExpiryTime = 0;
 
     @Value("${hybris.categoryExpiryTimeout}")

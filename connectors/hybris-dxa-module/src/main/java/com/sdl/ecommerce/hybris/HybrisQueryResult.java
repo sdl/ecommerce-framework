@@ -9,9 +9,7 @@ import com.sdl.ecommerce.api.model.Facet;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.hybris.api.model.*;
 import com.sdl.ecommerce.hybris.model.*;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -27,7 +25,7 @@ public class HybrisQueryResult implements QueryResult {
     private List<Product> products;
     private ProductQueryService queryService;
     private ProductCategoryService categoryService;
-    private List<String> facetExcludeList;
+    private List<String> facetIncludeList;
 
     public HybrisQueryResult(Query query, com.sdl.ecommerce.hybris.api.model.Category category) {
         this.query = query;
@@ -39,13 +37,13 @@ public class HybrisQueryResult implements QueryResult {
                              SearchResult searchResult,
                              ProductQueryService queryService,
                              ProductCategoryService categoryService,
-                             List<String> facetExcludeList) {
+                             List<String> facetIncludeList) {
         this.query = query;
         this.products = getProducts(searchResult.getProducts());
         this.searchResult = searchResult;
         this.queryService = queryService;
         this.categoryService = categoryService;
-        this.facetExcludeList = facetExcludeList;
+        this.facetIncludeList = facetIncludeList;
     }
 
     @Override
@@ -99,7 +97,7 @@ public class HybrisQueryResult implements QueryResult {
                     }
                     facetGroups.add(facetGroup);
                 }
-                else if ( this.facetExcludeList != null && this.facetExcludeList.contains(hybrisFacet.getId()) ) {
+                else if ( this.facetIncludeList != null && this.facetIncludeList.contains(hybrisFacet.getId()) ) {
                     FacetGroup facetGroup = new HybrisFacetGroup(hybrisFacet.getId(), hybrisFacet.getName(), false);
                     for ( FacetValue facetValue : hybrisFacet.getValues() ) {
                         Facet facet = new HybrisFacet(facetValue.getName(), this.getFacetUrl(facetValue.getQueryFacets(), urlPrefix), facetValue.getCount(), facetValue.isSelected());

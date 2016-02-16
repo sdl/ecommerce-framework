@@ -6,6 +6,7 @@ import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Cart;
 import com.sdl.ecommerce.api.model.CartItem;
 import com.sdl.ecommerce.api.model.ProductPrice;
+import com.sdl.ecommerce.api.model.impl.GenericCartItem;
 import com.sdl.ecommerce.hybris.api.HybrisClient;
 import com.sdl.ecommerce.hybris.api.model.Entry;
 
@@ -87,7 +88,7 @@ public class HybrisCart implements Cart {
         if ( cart.getEntries() != null ) {
             for ( Entry entry : cart.getEntries() ) {
                 ProductDetailResult productDetailResult = this.detailService.getDetail(entry.getProduct().getCode());
-                CartItem item = new HybrisCartItem(productDetailResult.getProductDetail(), entry.getQuantity(), entry.getBasePrice());
+                CartItem item = new GenericCartItem(productDetailResult.getProductDetail(), entry.getQuantity(), new HybrisPrice(entry.getBasePrice()));
                 this.items.add(item);
             }
         }

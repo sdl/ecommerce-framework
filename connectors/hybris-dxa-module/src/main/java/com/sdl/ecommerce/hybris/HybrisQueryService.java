@@ -62,14 +62,12 @@ public class HybrisQueryService implements ProductQueryService {
         }
 
         SearchResult result = this.hybrisClient.search(query.getSearchPhrase(), query.getViewSize(), currentPage, sort, facets);
-        if ( query.getViewType() == ViewType.FLYOUT ) {
-            // Remove all facets that are not configured in the flyout facet list
-            //
-            for ( int i=0; i < result.getFacets().size(); i++ ) {
 
-            }
+        List<String> facetIncludeList = null;
+        if ( query.getViewType() == ViewType.FLYOUT ) {
+           facetIncludeList = this.flyoutFacetList;
         }
-        return new HybrisQueryResult(query, result, this, this.categoryService, this.flyoutFacetList);
+        return new HybrisQueryResult(query, result, this, this.categoryService, facetIncludeList);
 
     }
 
