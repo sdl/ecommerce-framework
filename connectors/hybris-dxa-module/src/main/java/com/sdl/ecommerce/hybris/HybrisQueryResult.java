@@ -238,6 +238,11 @@ public class HybrisQueryResult implements QueryResult {
         return products;
     }
 
+    @Override
+    public Query getQuery() {
+        return this.query;
+    }
+
     private static List<Product> getProducts(List<com.sdl.ecommerce.hybris.api.model.Product> hybrisProducts) {
         List<Product> products = new ArrayList<>();
         for (com.sdl.ecommerce.hybris.api.model.Product hybrisProduct : hybrisProducts ) {

@@ -127,4 +127,9 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
         }
         return null;
     }
+
+    @Override
+    public Query getQuery() {
+        return this.query;
+    }
 }

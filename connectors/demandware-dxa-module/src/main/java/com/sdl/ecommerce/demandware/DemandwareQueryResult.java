@@ -2,6 +2,7 @@ package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.ProductCategoryService;
+import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.QueryResult;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
@@ -25,25 +26,24 @@ import java.util.StringTokenizer;
  */
 public class DemandwareQueryResult implements QueryResult {
 
+    private Query query;
     private Category category;
     private ProductSearchResult searchResult;
     private DemandwareShopClient shopClient;
     private ProductCategoryService categoryService;
-    private int viewSize;
     private List<String> facetIncludeList;
 
-    public DemandwareQueryResult(Category category,
+    public DemandwareQueryResult(Query query,
                                  ProductSearchResult searchResult,
                                  DemandwareShopClient shopClient,
                                  ProductCategoryService categoryService,
-                                 int viewSize,
                                  List<String> facetIncludeList) {
 
-        this.category = category;
+        this.query = query;
+        this.category = this.query.getCategory();
         this.searchResult = searchResult;
         this.shopClient = shopClient;
         this.categoryService = categoryService;
-        this.viewSize = viewSize;
         this.facetIncludeList = facetIncludeList;
     }
 
@@ -233,7 +233,7 @@ public class DemandwareQueryResult implements QueryResult {
 
     @Override
     public int getViewSize() {
-        return this.viewSize;
+        return this.query.getViewSize();
     }
 
     @Override
@@ -249,13 +249,17 @@ public class DemandwareQueryResult implements QueryResult {
     @Override
     public QueryResult next() throws ECommerceException {
         ProductSearchResult nextResult = this.shopClient.getNext(this.searchResult);
-        return new DemandwareQueryResult(this.category, nextResult, this.shopClient, this.categoryService, this.viewSize, this.facetIncludeList);
+        Query newQuery = this.query.clone();
+        newQuery.startIndex(nextResult.getStart());
+        return new DemandwareQueryResult(newQuery, nextResult, this.shopClient, this.categoryService, this.facetIncludeList);
     }
 
     @Override
     public QueryResult previous() throws ECommerceException {
         ProductSearchResult previousResult = this.shopClient.getPrevious(this.searchResult);
-        return new DemandwareQueryResult(this.category, previousResult, this.shopClient, this.categoryService, this.viewSize, this.facetIncludeList);
+        Query newQuery = this.query.clone();
+        newQuery.startIndex(previousResult.getStart());
+        return new DemandwareQueryResult(newQuery, previousResult, this.shopClient, this.categoryService, this.facetIncludeList);
     }
 
     @Override
@@ -292,6 +296,11 @@ public class DemandwareQueryResult implements QueryResult {
             }
         }
         return breadcrumbs;
+    }
+
+    @Override
+    public Query getQuery() {
+        return this.query;
     }
 
     private ProductSearchRefinement getRefinementById(String id) {

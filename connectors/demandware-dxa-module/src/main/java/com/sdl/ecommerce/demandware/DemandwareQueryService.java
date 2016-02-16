@@ -69,6 +69,6 @@ public class DemandwareQueryService implements ProductQueryService {
         if ( query.getViewType() == ViewType.FLYOUT ) {
             facetIncludeList = this.flyoutFacetList;
         }
-        return new DemandwareQueryResult(query.getCategory(), searchResult, this.shopClient, this.categoryService, query.getViewSize(), facetIncludeList);
+        return new DemandwareQueryResult(query, searchResult, this.shopClient, this.categoryService, facetIncludeList);
     }
 }

@@ -33,4 +33,6 @@ public interface QueryResult extends ECommerceResult {
 
     String getRedirectUrl();
 
+    Query getQuery();
+
 }
