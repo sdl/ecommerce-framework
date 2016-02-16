@@ -295,14 +295,26 @@ public class FredhopperClient implements FredhopperLinkManager {
     }
 
     public Location getLocation(Category category) {
-        List<String> categoryIds = new ArrayList<>();
-        while ( category != null ) {
-            categoryIds.add(0, category.getId());
-            category = category.getParent();
+        return this.getLocation(category, null);
+    }
+
+    public Location getLocation(Category category, String searchPhrase) {
+        List<String> categoryIds = null;
+        if ( category != null ) {
+            categoryIds = new ArrayList<>();
+            while (category != null) {
+                categoryIds.add(0, category.getId());
+                category = category.getParent();
+            }
         }
         Location location = new Location(DEFAULT_LOCATION);
-        for ( String categoryId: categoryIds ) {
-            location.addCriterion(new CategoryCriterion("categories", categoryId));
+        if ( categoryIds != null ) {
+            for (String categoryId : categoryIds) {
+                location.addCriterion(new CategoryCriterion("categories", categoryId));
+            }
+        }
+        if ( searchPhrase != null ) {
+            location.addCriterion(new SearchCriterion(searchPhrase));
         }
         return location;
     }

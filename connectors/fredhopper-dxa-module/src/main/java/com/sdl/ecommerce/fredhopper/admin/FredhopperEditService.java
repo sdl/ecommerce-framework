@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.fredhopper.admin;
 
+import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.edit.MenuItem;
@@ -26,22 +27,22 @@ public class FredhopperEditService implements EditService {
     private FredhopperClient fredhopperClient;
 
     @Override
-    public EditMenu getInContextMenuItems(Category category, MenuType menuType, Localization localization) {
+    public EditMenu getInContextMenuItems(Query query) {
 
-        // TODO: Localize the menu items
+        String location = URLEncoder.encode(fredhopperClient.getLocation(query.getCategory(), query.getSearchPhrase()).toString());
 
-        if ( menuType == MenuType.CREATE_NEW ) {
-
-            String location = URLEncoder.encode(fredhopperClient.getLocation(category).toString());
-
-            List<MenuItem> menuItems = new ArrayList<>();
-            menuItems.add(new MenuItem("Promotion", "/fh-edit/campaigns.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-            menuItems.add(new MenuItem("Facet", "/fh-edit/facets.fh?id=_new&fh_location=" + location+ "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-            menuItems.add(new MenuItem("Modification", "/fh-edit/modified_results.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-            menuItems.add(new MenuItem("Ranking", "/fh-edit/rankings.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-            return new EditMenu("Create New...", menuItems);
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("Promotion", "/fh-edit/campaigns.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        menuItems.add(new MenuItem("Facet", "/fh-edit/facets.fh?id=_new&fh_location=" + location+ "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        menuItems.add(new MenuItem("Modification", "/fh-edit/modified_results.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        menuItems.add(new MenuItem("Ranking", "/fh-edit/rankings.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        if ( query.getSearchPhrase() != null ) {
+            menuItems.add(new MenuItem("Synonyms", "/fh-edit/search_synonyms.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
         }
-        return null;
+        menuItems.add(new MenuItem("Redirect", "/fh-edit/search_redirects.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        return new EditMenu("Create New...", menuItems);
+
+
     }
 }
 
