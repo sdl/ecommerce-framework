@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.api;
 
 /**
- * ProductDetailService
+ * Product  DetailService
  *
  * @author nic
  */

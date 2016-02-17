@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.api.edit;
 
 /**
- * MenuItem
+ * In-Context Menu Item
  *
  * @author nic
  */

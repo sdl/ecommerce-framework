@@ -24,8 +24,6 @@ public class FredhopperConnectorIT extends GenericTestSuite {
 
     private static final Logger LOG = LoggerFactory.getLogger(FredhopperConnectorIT.class);
 
-    // TODO: Add asserts here!!
-
     @Test
     public void testGetCategory() throws Exception {
         this.testGetCategoryByPath("/women");

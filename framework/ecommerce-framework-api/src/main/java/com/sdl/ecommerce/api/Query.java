@@ -9,6 +9,8 @@ import java.util.List;
 /**
  * Query
  *
+ * Abstract base class for query implementations.
+ *
  * @author nic
  */
 public abstract class Query implements Cloneable {
@@ -71,9 +73,6 @@ public abstract class Query implements Cloneable {
         this.viewType = viewType;
         return this;
     }
-
-    // Page type??? Or this a part of the query configuration???
-
 
     public Category getCategory() {
         return category;

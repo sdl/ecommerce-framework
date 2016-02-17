@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * QueryFilter
+ * QueryF ilter
  *
  * @author nic
  */

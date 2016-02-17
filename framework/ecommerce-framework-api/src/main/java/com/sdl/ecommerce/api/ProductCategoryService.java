@@ -3,7 +3,8 @@ package com.sdl.ecommerce.api;
 import com.sdl.ecommerce.api.model.Category;
 
 /**
- * ProductCategoryService
+ * Product Category Service
+ * Is responsible to maintain the category structure.
  *
  * @author nic
  */

@@ -9,5 +9,10 @@ import com.sdl.ecommerce.api.model.Cart;
  */
 public interface CartFactory {
 
+    /**
+     * Create a new cart
+     * @return cart instance
+     * @throws ECommerceException
+     */
     Cart createCart() throws ECommerceException;
 }

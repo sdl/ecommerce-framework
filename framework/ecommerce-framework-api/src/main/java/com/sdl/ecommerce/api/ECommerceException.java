@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.api;
 
 /**
- * ECommerceException
+ * ECommerce Exception
  *
  * @author nic
  */

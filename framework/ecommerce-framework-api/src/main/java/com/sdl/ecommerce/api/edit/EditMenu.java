@@ -3,7 +3,7 @@ package com.sdl.ecommerce.api.edit;
 import java.util.List;
 
 /**
- * EditMenu
+ * In-Context Edit Menu
  *
  * @author nic
  */

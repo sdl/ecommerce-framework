@@ -6,7 +6,8 @@ import com.sdl.ecommerce.api.model.Promotion;
 import java.util.List;
 
 /**
- * ECommerceResult
+ * ECommerce Result
+ * Generic base interface for all types of results (details, queries etc).
  *
  * @author nic
  */
