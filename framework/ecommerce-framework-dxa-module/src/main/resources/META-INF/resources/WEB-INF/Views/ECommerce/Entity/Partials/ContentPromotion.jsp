@@ -13,7 +13,7 @@
             <c:when test="${not empty promotion.imageUrl}">
                 <div class="hero">
                     <img src="${promotion.imageUrl}" />
-                    <c:if test="${promotion.title != null or promotion.text != null}">
+                    <c:if test="${not empty promotion.title or not empty promotion.text}">
                         <div class="overlay overlay-tl ribbon">
                             <c:if test="${promotion.title}">
                                 <h1>${promotion.title}</h1>

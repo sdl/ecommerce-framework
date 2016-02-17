@@ -1,10 +1,10 @@
 package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.model.ECommerceEclItem;
-import com.sdl.webapp.common.impl.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.RegisteredView;
+import com.sdl.webapp.common.api.mapping.views.RegisteredViews;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Demandware Module Initializer
@@ -12,15 +12,12 @@ import javax.annotation.PostConstruct;
  * @author nic
  */
 @Component
+@RegisteredViews({
+        @RegisteredView(viewName = "ExternalContentLibraryStubSchemademandware", clazz = ECommerceEclItem.class)
+})
 public class DemandwareModuleInitializer extends AbstractInitializer {
 
     private static final String AREA_NAME = "Demandware";
-
-    @PostConstruct
-    public void initialize() throws Exception {
-
-        this.registerViewModel("ExternalContentLibraryStubSchemademandware", ECommerceEclItem.class);
-    }
 
     @Override
     protected String getAreaName() {

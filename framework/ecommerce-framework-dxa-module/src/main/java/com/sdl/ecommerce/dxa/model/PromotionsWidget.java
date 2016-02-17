@@ -1,13 +1,13 @@
 package com.sdl.ecommerce.dxa.model;
 
 import com.sdl.ecommerce.api.model.Promotion;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticEntity;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticProperty;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
 
 import java.util.List;
 
-import static com.sdl.webapp.common.api.mapping.config.SemanticVocabulary.SDL_CORE;
+import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
  * Promotions Widget

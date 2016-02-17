@@ -1,6 +1,6 @@
 package com.sdl.ecommerce.fredhopper;
 
-import com.sdl.webapp.common.impl.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
 import com.sdl.webapp.common.markup.PluggableMarkupRegistry;
 import com.sdl.webapp.common.markup.html.builders.HtmlBuilders;
 import org.springframework.beans.factory.annotation.Autowired;

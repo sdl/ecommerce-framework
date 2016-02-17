@@ -5,7 +5,6 @@ import com.sdl.ecommerce.api.model.Cart;
 import com.tridion.ambientdata.AmbientDataException;
 import com.tridion.ambientdata.claimstore.ClaimStore;
 import com.tridion.ambientdata.processing.AbstractClaimProcessor;
-import com.tridion.ambientdata.processing.ClaimProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

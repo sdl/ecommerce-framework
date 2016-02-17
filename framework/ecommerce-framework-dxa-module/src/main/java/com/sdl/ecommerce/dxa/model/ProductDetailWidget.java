@@ -1,13 +1,13 @@
 package com.sdl.ecommerce.dxa.model;
 
 import com.sdl.ecommerce.api.model.Product;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticEntity;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticProperty;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.RichText;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
 import com.sdl.webapp.common.api.model.entity.Image;
 
-import static com.sdl.webapp.common.api.mapping.config.SemanticVocabulary.SDL_CORE;
+import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
  * ProductDetailWidget

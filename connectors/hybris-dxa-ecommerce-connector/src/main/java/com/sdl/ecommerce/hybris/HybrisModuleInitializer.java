@@ -1,8 +1,10 @@
 package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.model.ECommerceEclItem;
+import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.RegisteredView;
+import com.sdl.webapp.common.api.mapping.views.RegisteredViews;
 import com.sdl.webapp.common.api.model.entity.EclItem;
-import com.sdl.webapp.common.impl.AbstractInitializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,15 +15,12 @@ import javax.annotation.PostConstruct;
  * @author nic
  */
 @Component
+@RegisteredViews({
+        @RegisteredView(viewName = "ExternalContentLibraryStubSchemahybris", clazz = ECommerceEclItem.class)
+})
 public class HybrisModuleInitializer extends AbstractInitializer {
 
     private static final String AREA_NAME = "Hybris";
-
-    @PostConstruct
-    public void initialize() throws Exception {
-
-        this.registerViewModel("ExternalContentLibraryStubSchemahybris", ECommerceEclItem.class);
-    }
 
     @Override
     protected String getAreaName() {

@@ -3,13 +3,13 @@ package com.sdl.ecommerce.dxa.model;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.QueryInputContributor;
 import com.sdl.ecommerce.api.model.Breadcrumb;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticEntity;
-import com.sdl.webapp.common.api.mapping.annotations.SemanticProperty;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
+import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
 
 import java.util.List;
 
-import static com.sdl.webapp.common.api.mapping.config.SemanticVocabulary.SDL_CORE;
+import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
  * Facets Widget
@@ -47,4 +47,5 @@ public class BreadcrumbWidget extends AbstractEntityModel implements QueryInputC
     public void setTotalItems(int totalItems) {
         this.totalItems = totalItems;
     }
+
 }

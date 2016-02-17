@@ -1,7 +1,6 @@
 package com.sdl.ecommerce.dxa;
 
-import com.sdl.webapp.common.api.model.region.RegionModelImpl;
-import com.sdl.webapp.common.impl.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
 import com.sdl.webapp.common.markup.PluggableMarkupRegistry;
 import com.sdl.webapp.common.markup.html.builders.HtmlBuilders;
 import org.springframework.beans.factory.annotation.Autowired;

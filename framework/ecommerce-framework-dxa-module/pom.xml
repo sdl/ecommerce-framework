@@ -28,16 +28,19 @@
             <artifactId>dxa-common-api</artifactId>
         </dependency>
 
-        <!-- TODO: TO BE REMOVED -->
         <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-impl</artifactId>
+            <groupId>com.tridion</groupId>
+            <artifactId>cd_ambient</artifactId>
         </dependency>
 
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
         </dependency>
 
     </dependencies>

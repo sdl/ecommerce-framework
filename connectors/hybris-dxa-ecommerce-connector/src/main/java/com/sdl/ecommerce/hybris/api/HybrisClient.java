@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.hybris.api;
 
 import com.sdl.ecommerce.hybris.api.model.*;
-import com.tridion.util.Base64;
+//import com.tridion.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -71,7 +71,7 @@ public class HybrisClient {
 
                     //Basic Authentication for Police API
                     String authorisation = username + ":" + password;
-                    byte[] encodedAuthorisation = Base64.encode(authorisation.getBytes());
+                    byte[] encodedAuthorisation = Base64.getEncoder().encode(authorisation.getBytes());
                     connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuthorisation));
                 }
             };
