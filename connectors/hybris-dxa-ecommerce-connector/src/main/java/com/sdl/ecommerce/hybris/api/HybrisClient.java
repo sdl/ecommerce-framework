@@ -17,6 +17,9 @@ import java.util.*;
 /**
  * Hybris Client
  *
+ * Implements the OCC v1 REST interface.
+ * https://wiki.hybris.com/display/release5/v1
+ *
  * @author nic
  */
 @Component

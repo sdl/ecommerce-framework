@@ -31,8 +31,8 @@ public class DemandwareCategoryService implements ProductCategoryService {
 
     private Category rootCategory = new DemandwareCategory(null, "root", null);
 
-    @Value("${demandware.categoryExpiryTimeout}")
-    private long categoryExpiryTimeout = 60*1000*1000; // categories refreshed each 1 hour
+    @Value("${demandware.categoryExpiryTimeout:3600000}")
+    private long categoryExpiryTimeout;
 
     @PostConstruct
     public void initialize() {

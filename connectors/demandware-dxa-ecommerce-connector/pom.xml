@@ -21,12 +21,6 @@
             <artifactId>dxa-common-api</artifactId>
         </dependency>
 
-        <!-- TODO: TO BE REMOVED -->
-        <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-impl</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.sdl</groupId>
             <artifactId>ecommerce-framework-api</artifactId>
@@ -78,29 +72,57 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.19</version>
         </dependency>
 
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
-            <version>1.19</version>
         </dependency>
-
 
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-apache-client</artifactId>
-            <version>1.19</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.4.3</version>
         </dependency>
 
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>

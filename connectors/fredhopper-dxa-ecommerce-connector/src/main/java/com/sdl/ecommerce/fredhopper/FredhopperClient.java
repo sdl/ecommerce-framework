@@ -5,7 +5,6 @@ import com.fredhopper.lang.query.ViewType;
 import com.fredhopper.lang.query.location.Location;
 import com.fredhopper.lang.query.location.criteria.*;
 import com.fredhopper.webservice.client.*;
-//import com.sdl.dxa.toolbox.authentication.BasicAuthenticationService;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
@@ -15,7 +14,6 @@ import com.sdl.ecommerce.fredhopper.model.FredhopperCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.View;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.BindingProvider;

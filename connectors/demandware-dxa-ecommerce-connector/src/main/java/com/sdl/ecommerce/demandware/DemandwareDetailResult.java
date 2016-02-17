@@ -49,6 +49,6 @@ public class DemandwareDetailResult implements ProductDetailResult {
     @Override
     public List<Promotion> getPromotions() {
         // TODO: TO BE IMPLEMENTED !!!
-        return null;
+        return new ArrayList<>();
     }
 }

@@ -13,3 +13,4 @@ bin
 packages/
 _references
 TestResults
+application-test.properties

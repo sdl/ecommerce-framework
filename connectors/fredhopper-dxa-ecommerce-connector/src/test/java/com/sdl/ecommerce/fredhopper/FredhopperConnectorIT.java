@@ -1,0 +1,89 @@
+package com.sdl.ecommerce.fredhopper;
+
+import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.api.test.GenericTestSuite;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+/**
+ * Test Fredhopper Services
+ *
+ * The tests are based on the standard demo data set in Fredhopper.
+ *
+ * @author nic
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestContext.class, loader = AnnotationConfigContextLoader.class)
+public class FredhopperConnectorIT extends GenericTestSuite {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FredhopperConnectorIT.class);
+
+    // TODO: Add asserts here!!
+
+    @Test
+    public void testGetCategory() throws Exception {
+        this.testGetCategoryByPath("/women");
+    }
+
+    @Test
+    public void testNavigateCategoryTree() throws Exception {
+        this.testNavigateCategoryTree("/women");
+    }
+
+    @Test
+    public void testPromotions() throws Exception {
+        this.testPromotions("/women");
+    }
+
+    @Test
+    public void testFacets() throws Exception {
+        this.testFacets("/women");
+    }
+
+    @Test
+    public void testBreadcrumbs() throws Exception {
+        this.testBreadcrumbs("/women/accessories/watches");
+    }
+
+    @Test
+    public void testSearch() throws Exception {
+        this.testSearch("women watch");
+    }
+
+    @Test
+    public void testQueryFlyout() throws Exception {
+        this.testQueryFlyout("/women");
+    }
+
+    @Test
+    public void testGetProductDetail() throws Exception {
+        this.testGetProductDetail("008010231960");
+    }
+
+    @Test
+    public void testQueryWithRedirect() throws Exception {
+        LOG.info("Querying a category & facet that only gives one product item...");
+        Category category = this.categoryService.getCategoryByPath("/women/accessories");
+        QueryResult result = this.queryService.query(
+                this.queryService.newQuery().
+                        category(category).
+                        viewSize(10).
+                        facet(new FacetParameter("brand", "adidas")).
+                        facet(new FacetParameter("spotlight", "this20week27s20brochure")));
+        LOG.info("Redirect URL: " + result.getRedirectUrl());
+    }
+
+    @Test
+    public void testSearchRedirect() throws Exception {
+        LOG.info("Testing redirects that are triggered by specific search keywords...");
+        QueryResult result = this.queryService.query(this.queryService.newQuery().searchPhrase("contact").viewSize(100));
+        LOG.info("Redirect URL: " + result.getRedirectUrl());
+    }
+
+}

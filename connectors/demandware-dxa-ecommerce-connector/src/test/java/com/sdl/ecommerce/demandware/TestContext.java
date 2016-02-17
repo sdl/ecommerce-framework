@@ -37,6 +37,7 @@ public class TestContext {
     public PropertyPlaceholderConfigurer propertyConfig() {
         PropertyPlaceholderConfigurer placeholderConfigurer = new PropertyPlaceholderConfigurer();
         placeholderConfigurer.setLocation(new ClassPathResource("application-test.properties"));
+        placeholderConfigurer.setIgnoreResourceNotFound(true);
         return placeholderConfigurer;
     }
 }

@@ -22,9 +22,9 @@ import java.util.Map;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestContext.class, loader = AnnotationConfigContextLoader.class)
-public class TestDemandwareShop {
+public class DemandwareShopApiIT {
 
-    static private Log log = LogFactory.getLog(TestDemandwareShop.class);
+    static private Log log = LogFactory.getLog(DemandwareShopApiIT.class);
 
     @Autowired
     private DemandwareShopClient shopClient;

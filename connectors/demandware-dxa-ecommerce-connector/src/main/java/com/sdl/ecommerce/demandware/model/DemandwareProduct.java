@@ -8,6 +8,7 @@ import com.sdl.ecommerce.demandware.api.model.ImageGroup;
 import com.sdl.ecommerce.demandware.api.model.ProductSearchHit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,11 +124,11 @@ public class DemandwareProduct implements Product {
 
     @Override
     public List<FacetParameter> getFacets() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return new HashMap<>();
     }
 }

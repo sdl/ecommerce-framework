@@ -13,6 +13,10 @@
 	<relativePath>../pom.xml</relativePath>
     </parent>
 
+    <properties>
+        <fredhopper-api-version>7.5.2.7</fredhopper-api-version>
+    </properties>
+
     <dependencies>
 
         <!-- SDL Digital Experience Accelerator -->
@@ -21,37 +25,23 @@
             <artifactId>dxa-common-api</artifactId>
         </dependency>
 
-        <!-- TODO: TO BE REMOVED -->
-        <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-impl</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.sdl</groupId>
             <artifactId>ecommerce-framework-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>com.sdl</groupId>
-            <artifactId>toolbox-module</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
-
         <!-- Fredhopper API -->
         <dependency>
             <groupId>com.fredhopper</groupId>
             <artifactId>ws-client</artifactId>
-            <version>7.5.2.7</version>
+            <version>${fredhopper-api-version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fredhopper</groupId>
             <artifactId>query-lang</artifactId>
-            <version>7.5.2.7</version>
+            <version>${fredhopper-api-version}</version>
         </dependency>
 
         <!-- Servlet API -->
@@ -63,12 +53,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-        </dependency>
-
-        <!-- Commons Logging -->
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
         </dependency>
 
         <dependency>
@@ -108,5 +92,38 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

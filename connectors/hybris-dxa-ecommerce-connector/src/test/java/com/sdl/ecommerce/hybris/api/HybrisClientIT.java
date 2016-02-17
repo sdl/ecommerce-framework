@@ -16,17 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TestHybrisClient
+ * Test Hybris Client
  *
  * @author nic
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestContext.class, loader = AnnotationConfigContextLoader.class)
-public class TestHybrisClient {
+public class HybrisClientIT {
 
     @Autowired
     private HybrisClient client;
-
 
     @Test
     public void testGetAllCategories() throws Exception {

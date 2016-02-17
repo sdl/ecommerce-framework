@@ -48,6 +48,6 @@ public class HybrisDetailResult implements ProductDetailResult {
 
     @Override
     public List<Promotion> getPromotions() {
-        return null;
+        return new ArrayList<>();
     }
 }
