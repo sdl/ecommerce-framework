@@ -32,7 +32,7 @@
                     <div class="row">
                         <c:forEach var="facetGroup" items="${entity.facetGroups}">
                             <div class="col-sm-${colWidth}">
-                                <h5><i class="fa fa-cog"></i> ${facetGroup.title}  <%-- <a class="xpm-button popup-iframe" style="margin: 0px 8px;" href="${facetGroup.editUrl}"><i class="fa fa-pencil-square"></i></a> --%> </h5>
+                                <h5><i class="fa fa-cog"></i> ${facetGroup.title} <a class="xpm-button popup-iframe" style="margin: 0px 8px;" href="${facetGroup.editUrl}"><i class="fa fa-pencil-square"></i></a></h5>
                                 <ul class="list-unstyled">
                                     <c:forEach var="facet" items="${facetGroup.facets}">
                                         <li>
