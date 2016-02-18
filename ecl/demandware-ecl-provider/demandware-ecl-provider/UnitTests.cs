@@ -10,15 +10,20 @@ using System.Threading.Tasks;
 
 namespace SDL.DemandWare.Ecl
 {
+    /// <summary>
+    /// The tests are using the standard Demandware Genesis demo shop.
+    /// Sample test properties are given in 'eclprovider-sample.runsettings'. 
+    /// </summary>
     [TestClass]
     public class UnitTests
     {
-        // TODO: Externalize the environment settings. Can not be included in the released version
-        //
+        public TestContext TestContext { get; set; }
 
         private ProductCatalog CreateProductCatalog()
         {
-            return new DemandWareProductCatalog("http://fredhopper01-tech-prtnr-eu01-dw.demandware.net/s/SiteGenesis", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            string shopUrl = TestContext.Properties["demandwareShopUrl"].ToString();
+            string clientId = TestContext.Properties["demandwareClientId"].ToString();
+            return new DemandWareProductCatalog(shopUrl, clientId);
         }
 
         [TestMethod]

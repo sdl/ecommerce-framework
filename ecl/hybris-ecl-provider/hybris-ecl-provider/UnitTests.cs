@@ -10,28 +10,36 @@ using System.Security;
 
 namespace SDL.Hybris.Ecl
 {
+    /// <summary>
+    /// The tests are using the standard Hybris Electronics demo shop.
+    /// Sample test properties are given in 'eclprovider-sample.runsettings'.
+    /// </summary>
     [TestClass]
     public class UnitTests
     {
-        // TODO: Externalize the below environment settings.
-        //
-
-        //const string HYBRIS_URL = "http://184.72.105.227:9001/rest/v1/electronics";
-        const string HYBRIS_URL = "http://10.211.55.2:9001/rest/v1/electronics";
-        //const string HYBRIS_URL = "http://powertools.sdl-instance.demo.hybris.com/rest/v1/powertools";
-        const string HYBRIS_LOGIN = "admin";
-        const string HYBRIS_PWD = "nimda";
-        //const string ACTIVE_CATALOG_VERSION = "catalogs/powertoolsProductCatalog/Online";
-        const string ACTIVE_CATALOG_VERSION = "/catalogs/electronicsProductCatalog/Online";
-        const string HYBRIS_MEDIA_URL = "http://10.211.55.2:9001";
-        //const string HYBRIS_MEDIA_URL = "http://powertools.sdl-instance.demo.hybris.com";
+   
+        public TestContext TestContext { get; set; }
 
         private ProductCatalog CreateProductCatalog()
         {
-            return new HybrisProductCatalog(HYBRIS_URL, HYBRIS_LOGIN, HYBRIS_PWD, ACTIVE_CATALOG_VERSION, HYBRIS_MEDIA_URL);
+            string baseUrl = TestContext.Properties["hybrisBaseUrl"].ToString();
+            string username = TestContext.Properties["hybrisUsername"].ToString();
+            string password = TestContext.Properties["hybrisPassword"].ToString();
+            string activeCatalogVersion = TestContext.Properties["hybrisActiveCatalogVersion"].ToString();
+            string mediaUrl = TestContext.Properties["hybrisMediaUrl"].ToString();
+            return new HybrisProductCatalog(baseUrl, username, password, activeCatalogVersion, mediaUrl);
         }
 
-        [TestMethod]
+        private HybrisClient CreateHybrisClient()
+        {
+            string baseUrl = TestContext.Properties["hybrisBaseUrl"].ToString();
+            string username = TestContext.Properties["hybrisUsername"].ToString();
+            string password = TestContext.Properties["hybrisPassword"].ToString();
+            string activeCatalogVersion = TestContext.Properties["hybrisActiveCatalogVersion"].ToString();
+            return new HybrisClient(baseUrl, username, password, activeCatalogVersion);
+        }
+
+        [TestMethod]    
         public void TestGetCategories()
         {
             var productCatalog = CreateProductCatalog();
@@ -104,7 +112,7 @@ namespace SDL.Hybris.Ecl
         [TestMethod]
         public void TestGetCategoryViaClient()
         {
-            var hybrisClient = new HybrisClient(HYBRIS_URL, HYBRIS_LOGIN, HYBRIS_PWD, ACTIVE_CATALOG_VERSION);
+            var hybrisClient = CreateHybrisClient();
             var category = hybrisClient.GetCategory("576");
             foreach (var product in category.products)
             {
@@ -120,7 +128,7 @@ namespace SDL.Hybris.Ecl
         [TestMethod]
         public void TestSearchCategoryProductsViaClient()
         {
-            var hybrisClient = new HybrisClient(HYBRIS_URL, HYBRIS_LOGIN, HYBRIS_PWD, ACTIVE_CATALOG_VERSION);
+            var hybrisClient = CreateHybrisClient();
             var facets = new List<FacetPair>();
             facets.Add(new FacetPair("category", "576"));
             var result = hybrisClient.Search(null, 10, 0, null);
