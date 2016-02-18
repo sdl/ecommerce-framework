@@ -13,4 +13,5 @@ bin
 packages/
 _references
 TestResults
+eclprovider.runsettings
 application-test.properties
