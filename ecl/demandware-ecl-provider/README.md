@@ -14,12 +14,13 @@
         <StubFolder id="[STUB FOLDER TCM-URI]" />
       </StubFolders>
       <PrivilegedUserName>[TRIDION ADMIN USER]]</PrivilegedUserName>
-      <ShopUrl xmlns="http://sdl.com/ecl/ecommerce">[Demandware shop URL, e.g. http://yourside.demandware.net/s/SiteGenesis</ShopUrl>
+      <ShopUrl xmlns="http://sdl.com/ecl/ecommerce">[Demandware shop URL, e.g. http://yourside.demandware.net/s/SiteGenesis]</ShopUrl>
       <ClientId xmlns="http://sdl.com/ecl/ecommerce">[Demandware client ID]</ClientId>  
   </MountPoint>
 ``` 
 
-* Make sure that the id of the mountpoint is named 'demandware', otherwise the ECL mappings on the DXA side willnot work.
+* The Demandware client ID can be generated on https://account.demandware.com. For more information, see [Adding a client ID for the Open Commerce API](https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.htm).
+* Make sure that the id of the mountpoint is named 'demandware', otherwise the ECL mappings on the DXA side will not work.
 * Restart SDL Tridion services and verify that you can browse the Hybris product catalog through SDL Tridion
 
   
