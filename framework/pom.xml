@@ -19,6 +19,7 @@
     <modules>
         <module>ecommerce-framework-api</module>
         <module>ecommerce-framework-dxa-module</module>
+        <module>navigation-dxa-module</module>
     </modules>
 
 </project>
