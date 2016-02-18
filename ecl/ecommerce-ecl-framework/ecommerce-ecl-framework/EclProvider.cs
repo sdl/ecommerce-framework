@@ -1,30 +1,30 @@
-﻿using SDL.ECommerce.Ecl;
-using System;
-using System.AddIn;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
-    /*
-     * Each concrete implementation need to specify the following attribute:
-     * [AddIn("<ECL PROVIDER NAME>", Version = "<VERSION>")]
-     */
+    /// <summary>
+    /// Base class for E-Commerce ECL providers.
+    /// Each concrete implementation need to specify the following attribute:
+    /// [AddIn("<ECL PROVIDER NAME>", Version = "<VERSION>")]
+    /// </summary>
     public abstract class EclProvider : IContentLibrary
     {
-        public static readonly XNamespace EcommerceEclNs = "http://sdl.com/ecl/ecommerce"; // TODO: Have each concrete implementation as a suffix to the generic NS
+        public static readonly XNamespace EcommerceEclNs = "http://sdl.com/ecl/ecommerce"; 
         private static readonly string IconBasePath = Path.Combine(AddInFolder, "Themes");
 
         internal static string MountPointId { get; private set; }
         public static IHostServices HostServices { get; private set; }
         public static ProductCatalog ProductCatalog { get; private set; }
         private static Category rootCategory = null;
+
+        /// <summary>
+        /// Get root category
+        /// </summary>
         internal static Category RootCategory {
             get
             {
@@ -53,11 +53,20 @@ namespace SDL.ECommerce.Ecl
             }
         }
 
+        /// <summary>
+        /// Get a specific category by its identity
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         internal static Category GetCategory(string categoryId)
         {
             return FindCategoryById(RootCategory, categoryId);
         }
 
+        /// <summary>
+        /// Get all available catagories in a flat list
+        /// </summary>
+        /// <returns></returns>
         internal static List<Category> GetAllCategories()
         {
             var allCategories = new List<Category>();
@@ -118,6 +127,12 @@ namespace SDL.ECommerce.Ecl
             return HostServices.GetIcon(IconBasePath, "_Default", iconIdentifier, iconSize, out actualSize);
         }
 
+        /// <summary>
+        /// Initialize the ECL provider
+        /// </summary>
+        /// <param name="mountPointId"></param>
+        /// <param name="configurationXmlElement"></param>
+        /// <param name="hostServices"></param>
         public void Initialize(string mountPointId, string configurationXmlElement, IHostServices hostServices)
         {
             MountPointId = mountPointId;
@@ -126,15 +141,16 @@ namespace SDL.ECommerce.Ecl
             // read ExtenalContentLibrary.xml for this mountpoint
             XElement config = XElement.Parse(configurationXmlElement);
 
-            // TODO: This needs to be done in the implementation instead!!!
-            // Should the root category always be fetched or...???
-
-            // TODO: We can not do this stuff here. Because that will break the whole ECL init chain. 
-
+            // Initialize the product catalog with config
+            //
             ProductCatalog = this.CreateProductCatalog(config);
-            // TODO: Refresh this or cache it ...???
         }
 
+        /// <summary>
+        /// Create a new instance of the product catalog. Needs to be implemented by concrete subclass.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         protected abstract ProductCatalog CreateProductCatalog(XElement configuration);
 
         public abstract IContentLibraryContext CreateContext(IEclSession tridionUser);

@@ -1,18 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
+    /// <summary>
+    /// Base class for product ECL items.
+    /// </summary>
     public abstract class ProductItem : SelectableItem
     {
         protected readonly IEclUri id;
         protected Category category;
         protected Product product;
 
+        /// <summary>
+        /// Construct a new product item
+        /// </summary>
+        /// <param name="publicationId"></param>
+        /// <param name="category"></param>
+        /// <param name="product"></param>
         public ProductItem(int publicationId, Category category, Product product) : base(publicationId, product.Id, product.Name)
         {
             this.category = category;
@@ -31,6 +38,11 @@ namespace SDL.ECommerce.Ecl
             get { return true; } // return this.product.Thumbnail != null; }
         }
 
+        /// <summary>
+        /// Get ECL content. By default this means the product thumbnail.
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
         public override IContentResult GetContent(IList<ITemplateAttribute> attributes)
         {
             if ( this.product.Thumbnail != null)
@@ -59,6 +71,12 @@ namespace SDL.ECommerce.Ecl
             return null;           
         }
 
+        /// <summary>
+        /// Direct link to the E-Commerce entity is normally not possible. So the best match is to use
+        /// the URL of the product thumbnail.
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
         public override string GetDirectLinkToPublished(IList<ITemplateAttribute> attributes)
         {
             if ( this.product.Thumbnail != null )
@@ -68,6 +86,9 @@ namespace SDL.ECommerce.Ecl
             return null;
         }
 
+        /// <summary>
+        /// Get MIME type. Default is to return the MIME type of the product thumbnail.
+        /// </summary>
         public override string MimeType
         {
             get 
@@ -80,6 +101,9 @@ namespace SDL.ECommerce.Ecl
             }
         }
 
+        /// <summary>
+        /// Parent ID property
+        /// </summary>
         public override IEclUri ParentId
         {
             get

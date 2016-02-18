@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
+    /// <summary>
+    /// Top ECL item, e.g. 'Categories', 'Products' etc
+    /// </summary>
     class TypeItem : IContentLibraryListItem, IContentLibraryItem
     {
         private readonly IEclUri id;

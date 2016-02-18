@@ -1,14 +1,13 @@
 ﻿using SDL.Demandware.Ecl;
 using SDL.ECommerce.Ecl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SDL.DemandWare.Ecl
 {
+    /// <summary>
+    /// Demandware Product Catalog. 
+    /// </summary>
     public class DemandWareProductCatalog : ProductCatalog
     {
         private ShopClient shopClient;
@@ -32,11 +31,6 @@ namespace SDL.DemandWare.Ecl
         public Category GetCategory(string id)
         {
             return (Category) this.shopClient.GetCategory(id);
-        }
-
-        public IList<string> GetProductIds(string categoryId)
-        {
-             return this.shopClient.GetProductIds(categoryId, 100);
         }
 
         public IList<Product> GetProducts(string categoryId, int publicationId = 0)

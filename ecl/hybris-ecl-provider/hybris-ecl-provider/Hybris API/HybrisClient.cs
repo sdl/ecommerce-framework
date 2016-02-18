@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.Ecommerce.Hybris.API
 {
+    /// <summary>
+    /// Client to Hybris OCC v1 REST interface
+    /// </summary>
     internal class HybrisClient
     {
 

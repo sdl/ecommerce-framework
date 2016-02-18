@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
+    /// <summary>
+    /// Mountpoint base class
+    /// </summary>
     abstract public class Mountpoint : IContentLibraryContext
     {
         public bool CanGetUploadMultimediaItemsUrl(int publicationId)
@@ -105,6 +104,13 @@ namespace SDL.ECommerce.Ecl
          
         }
 
+        /// <summary>
+        /// Create new product ECL item. Needs to be implemented by concrete subclass.
+        /// </summary>
+        /// <param name="publicationId"></param>
+        /// <param name="parentCategory"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         protected abstract ProductItem CreateProductItem(int publicationId, Category parentCategory, Product product);
 
         public IContentLibraryItem GetItem(IEclUri eclUri)

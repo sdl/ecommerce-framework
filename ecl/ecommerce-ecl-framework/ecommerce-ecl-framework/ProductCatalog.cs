@@ -1,26 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SDL.ECommerce.Ecl
 {
+    /// <summary>
+    /// Product catalog interface.
+    /// </summary>
     public interface ProductCatalog
     {
+        /// <summary>
+        /// Get all available catagories in the E-Commerce system.
+        /// TODO: Improve with pagination here + possibility to use publication ID
+        /// </summary>
+        /// <returns></returns>
         Category GetAllCategories();
 
+        /// <summary>
+        /// Get category with specific identity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Category GetCategory(string id);
 
-        // TODO: REMOVE THIS ONE. IS NOT NEEDED
-        IList<string> GetProductIds(string categoryId);
-
+        /// <summary>
+        /// Get products belonging to specific catagory.
+        /// Publication ID can be used to get a localized version of the products (specific language/country)
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="publicationId"></param>
+        /// <returns></returns>
         IList<Product> GetProducts(string categoryId, int publicationId = 0);
 
-        // TODO: Have it optional for the concrete implementation to select what method to implement? I.e. GetProductIds() or GetProducts()??
-
+        /// <summary>
+        /// Get product with specified product identity/SKU.
+        /// Publication ID can be used to get a localized version of the product.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="publicationId"></param>
+        /// <returns></returns>
         Product GetProduct(string id, int publicationId = 0);
 
-        // TODO: Pass publication ID as well to be able to get a localized version of the entry????
     }
 }

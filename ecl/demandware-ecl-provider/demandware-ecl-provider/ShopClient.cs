@@ -4,10 +4,7 @@ using SDL.ECommerce.Ecl;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.Demandware.Ecl
 {
@@ -17,9 +14,12 @@ namespace SDL.Demandware.Ecl
         public DemandWareException(String message, Exception cause) : base(message, cause) { }
     }
 
+    /// <summary>
+    /// Client to the Demandware Shop v16.1 REST interface.
+    /// </summary>
     class ShopClient
     {
-        const string BASE_URL_PATH = "/dw/shop/v14_8";
+        const string BASE_URL_PATH = "/dw/shop/v16_1";
         const string CLIENT_ID_PARAM = "?client_id=";
 
         private String shopUrl;

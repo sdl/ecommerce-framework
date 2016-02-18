@@ -13,7 +13,9 @@ namespace SDL.DemandWare.Ecl
     [TestClass]
     public class UnitTests
     {
-  
+        // TODO: Externalize the environment settings. Can not be included in the released version
+        //
+
         private ProductCatalog CreateProductCatalog()
         {
             return new DemandWareProductCatalog("http://fredhopper01-tech-prtnr-eu01-dw.demandware.net/s/SiteGenesis", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");

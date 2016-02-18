@@ -1,11 +1,7 @@
 ﻿namespace SDL.ECommerce.Hybris.API.Model
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "auto generated class needs to map to json file")]
     public class SearchResult

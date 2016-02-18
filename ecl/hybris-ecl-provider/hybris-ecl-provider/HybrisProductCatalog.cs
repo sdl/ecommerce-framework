@@ -1,14 +1,13 @@
 ﻿using SDL.Ecommerce.Hybris.API;
 using SDL.ECommerce.Ecl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SDL.Hybris.Ecl
 {
+    /// <summary>
+    /// Hybris Product Catalog
+    /// </summary>
     public class HybrisProductCatalog : ProductCatalog
     {
         private HybrisClient hybrisClient;
@@ -39,19 +38,6 @@ namespace SDL.Hybris.Ecl
         {
             var hybrisCategory = this.hybrisClient.GetCategory(categoryId);
             return new HybrisCategory(hybrisCategory);
-        }
-
-
-        // TODO: NEEDED? Can we remove this one????
-        public IList<string> GetProductIds(string categoryId)
-        {
-            var hybrisCategory = this.hybrisClient.GetCategory(categoryId);
-            var productIds = new List<string>();
-            foreach ( var product in hybrisCategory.products )
-            {
-                productIds.Add(product.code);
-            }
-            return productIds;
         }
 
         public IList<Product> GetProducts(string categoryId, int publicationId)

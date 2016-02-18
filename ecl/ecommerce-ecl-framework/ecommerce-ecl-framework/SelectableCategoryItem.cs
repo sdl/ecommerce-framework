@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
+    /// <summary>
+    /// Selectable category ECL item.
+    /// </summary>
     public class SelectableCategoryItem : SelectableItem
     {
    

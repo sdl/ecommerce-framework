@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Text;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
 {
-
+    /// <summary>
+    /// Base class for all selectable items
+    /// </summary>
     public abstract class SelectableItem : IContentLibraryMultimediaItem 
     {
         protected readonly IEclUri id;
@@ -117,12 +117,19 @@ namespace SDL.ECommerce.Ecl
             get { return null; }
         }
 
-        // Should be overriden by sub class when for example outputting a product image
+        /// <summary>
+        /// Get content of the ECL item.  Should be overriden by subclass when for example outputting a product image.
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
         public virtual IContentResult GetContent(IList<ITemplateAttribute> attributes)
         {
             return null;
         }
 
+        /// <summary>
+        /// Metadata XML property
+        /// </summary>
         public string MetadataXml
         {
             get
@@ -146,8 +153,15 @@ namespace SDL.ECommerce.Ecl
             set { throw new NotSupportedException(); }
         }
 
+        /// <summary>
+        /// Get implementation specific metadata
+        /// </summary>
+        /// <param name="metadata"></param>
         protected abstract void GetMetadata(Dictionary<string, object> metadata);
 
+        /// <summary>
+        /// Metadata XML Schema property
+        /// </summary>
         public ISchemaDefinition MetadataXmlSchema
         {
             get
@@ -160,6 +174,10 @@ namespace SDL.ECommerce.Ecl
             }
         }
 
+        /// <summary>
+        /// Append to metadata XML schema with implementation specific metadata definitions
+        /// </summary>
+        /// <param name="schema"></param>
         protected abstract void BuildMetadataXmlSchema(ISchemaDefinition schema);
 
         public virtual string ModifiedBy
