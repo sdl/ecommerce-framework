@@ -4,10 +4,39 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.sdl.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
     <groupId>com.sdl</groupId>
     <artifactId>ecommerce-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>nic</id>
+            <name>Niclas Cedermalm</name>
+            <email>rcedermalm@sdl.com</email>
+            <timezone>UTC+1</timezone>
+            <organization>SDL Group</organization>
+            <organizationUrl>http://www.sdl.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>SDL Group</name>
+        <url>http://www.sdl.com</url>
+    </organization>
 
     <modules>
         <module>framework</module>
@@ -30,6 +59,9 @@
         <servlet-api-version>3.1.0</servlet-api-version>
         <jsp-api-version>2.3.1</jsp-api-version>
         <jstl-version>1.2</jstl-version>
+
+        <!-- Jersey -->
+        <jersey-version>1.18</jersey-version>
 
         <!-- Jackson and related libraries -->
         <jackson-version>2.4.3</jackson-version>
@@ -116,19 +148,19 @@
             <dependency>
                 <groupId>com.sun.jersey</groupId>
                 <artifactId>jersey-client</artifactId>
-                <version>1.19</version>
+                <version>${jersey-version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.sun.jersey</groupId>
                 <artifactId>jersey-json</artifactId>
-                <version>1.19</version>
+                <version>${jersey-version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.sun.jersey.contribs</groupId>
                 <artifactId>jersey-apache-client</artifactId>
-                <version>1.19</version>
+                <version>${jersey-version}</version>
             </dependency>
 
             <!-- Jackson and related libraries -->

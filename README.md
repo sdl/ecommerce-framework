@@ -63,14 +63,27 @@ In addition the ECL provider gives the possibility to drag & drop categories & p
 
 Getting started
 -----------------
-T.B.D
+
+To get started with the E-Commerce framework you need to do the following steps:
+
+[TODO: Extend this description]
+
+1. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
+2. Compile all code and install it into your local Maven repository: `mvn install` (TODO: Add info about different profiles)
+3. Following instructions given in respective README for each connector (under /connectors) to compile and set it up
+4. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
+5. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
+6. Install the CMS package by doing the following: [TO BE DEFINED]
+7. As optional step you can install the example pages & config for each connector (see README for the connector)
+8. Publish out the settings page, HTML design + the header include page. 
+9. Publish out pages under 'Categories' and 'Products'. And the 'Cart' page.
+10. Define the application properties needed for selected connectors in your webapps' Spring config or properties file
+11. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
 
 
+In addition (optional) you can also install one of the ECL providers (Hybris or Demandware). Follow the instructions given in the respective README for those providers.
 
-Documentation
----------------
-T.B.D.
-
+(TODO: Add reference to a community.sdl.com blog post here)
 
 Not implemented
 -----------------
