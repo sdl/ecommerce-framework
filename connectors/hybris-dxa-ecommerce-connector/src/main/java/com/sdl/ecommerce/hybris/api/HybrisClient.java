@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
@@ -74,8 +75,10 @@ public class HybrisClient {
 
                     //Basic Authentication for Police API
                     String authorisation = username + ":" + password;
-                    byte[] encodedAuthorisation = Base64.getEncoder().encode(authorisation.getBytes());
-                    connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuthorisation));
+                    // This is only available in JDK8
+                    //byte[] encodedAuthorisation = Base64.getEncoder().encode(authorisation.getBytes());
+                    String encodedAuthorisation = DatatypeConverter.printBase64Binary(authorisation.getBytes());
+                    connection.setRequestProperty("Authorization", "Basic " + encodedAuthorisation);
                 }
             };
             restTemplate = new RestTemplate(requestFactory);
