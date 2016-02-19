@@ -8,7 +8,7 @@ Right now it provides connectors for:
 
 * Fredhopper (http://www.sdl.com/cxc/digital-experience/ecommerce-optimization/fredhopper.html)
 * SAP Hybris (http://www.hybris.com)
-* DemandWare (http://www.demandware.com)
+* Demandware (http://www.demandware.com)
 
 Concepts
 ---------
@@ -17,6 +17,7 @@ The E-Commerce framework consists of:
 
 * Generic E-Commerce APIs for product categories, product queries, product details, cart and in-context edit controls
 * Generic DXA module consuming above E-Commerce APIs
+* Generic navigation DXA module for hybrid navigation support (right now only provides mega navigation)
 * A number of connectors implementing the E-Commerce APIs (Fredhopper, Hybris, Demandware)
 * Generic E-Commerce framework for ECL providers
 * A number of ECL providers for retrieving categories and products (Hybris, Demandware)
