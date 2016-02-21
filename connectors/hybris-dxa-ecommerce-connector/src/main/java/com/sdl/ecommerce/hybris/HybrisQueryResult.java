@@ -97,7 +97,7 @@ public class HybrisQueryResult implements QueryResult {
                     }
                     facetGroups.add(facetGroup);
                 }
-                else if ( this.facetIncludeList != null && this.facetIncludeList.contains(hybrisFacet.getId()) ) {
+                else if ( this.facetIncludeList == null || (this.facetIncludeList != null && this.facetIncludeList.contains(hybrisFacet.getId())) ) {
                     FacetGroup facetGroup = new HybrisFacetGroup(hybrisFacet.getId(), hybrisFacet.getName(), false);
                     for ( FacetValue facetValue : hybrisFacet.getValues() ) {
                         Facet facet = new HybrisFacet(facetValue.getName(), this.getFacetUrl(facetValue.getQueryFacets(), urlPrefix), facetValue.getCount(), facetValue.isSelected());

@@ -1,15 +1,18 @@
 package com.sdl.ecommerce.fredhopper.admin;
 
+import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.edit.MenuItem;
-import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.fredhopper.FredhopperClient;
-import com.sdl.webapp.common.api.localization.Localization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +25,24 @@ import java.util.List;
 @Component
 public class FredhopperEditService implements EditService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FredhopperEditService.class);
 
     @Autowired
     private FredhopperClient fredhopperClient;
 
+    @Autowired
+    private LocalizationService localizationService;
+
     @Override
     public EditMenu getInContextMenuItems(Query query) {
 
-        String location = URLEncoder.encode(fredhopperClient.getLocation(query.getCategory(), query.getSearchPhrase()).toString());
+        String location = fredhopperClient.getLocation(query.getCategory(), query.getSearchPhrase(), getUniverse(localizationService), getLocale(localizationService)).toString();
+        try {
+            location = URLEncoder.encode(location, "UTF-8");
+        }
+        catch ( UnsupportedEncodingException e ) {
+            LOG.error("Could not URL encode Fredhopper location: " + location, e);
+        }
 
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem("Promotion", "/fh-edit/campaigns.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));

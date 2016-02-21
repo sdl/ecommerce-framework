@@ -1,10 +1,8 @@
 package com.sdl.ecommerce.hybris;
 
-import com.sdl.ecommerce.api.CartFactory;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.ProductDetailService;
-import com.sdl.ecommerce.api.ProductQueryService;
-import com.sdl.ecommerce.hybris.api.HybrisClient;
+import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
+import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,9 +31,12 @@ public class TestContext {
     public CartFactory getCartFactory() { return new HybrisCartFactory(); }
 
     @Bean
-    public HybrisClient getHybrisClient() {
-        return new HybrisClient();
+    public HybrisClientManager getHybrisClientManager() {
+        return new HybrisClientManager();
     }
+
+    @Bean
+    public LocalizationService getLocalizationService() { return new TestLocalizationService(); }
 
     @Bean
     public PropertyPlaceholderConfigurer propertyConfig() {

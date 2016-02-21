@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.fredhopper;
 
+import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.ProductQueryService;
@@ -35,6 +36,9 @@ public class TestContext {
     public FredhopperClient getFredhopperClient() {
         return new FredhopperClient();
     }
+
+    @Bean
+    public LocalizationService getLocalizationService() { return new TestLocalizationService(); }
 
     @Bean
     public PropertyPlaceholderConfigurer propertyConfig() {

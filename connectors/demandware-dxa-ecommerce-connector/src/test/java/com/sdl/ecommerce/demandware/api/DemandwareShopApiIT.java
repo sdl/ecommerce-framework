@@ -27,16 +27,16 @@ public class DemandwareShopApiIT {
     static private Log log = LogFactory.getLog(DemandwareShopApiIT.class);
 
     @Autowired
-    private DemandwareShopClient shopClient;
-
+    private DemandwareShopClientManager shopClientManager;
+    
     @Test
     public void testAddToCart() throws Exception {
 
-        Basket basket = this.shopClient.createBasket();
+        Basket basket = this.shopClientManager.getInstance().createBasket();
 
         log.info("Adding product to cart...");
 
-        basket = this.shopClient.addProductToBasket(basket, "sanyo-dp50747", 1);
+        basket = this.shopClientManager.getInstance().addProductToBasket(basket, "sanyo-dp50747", 1);
         this.printBasket(basket);
     }
 
@@ -44,7 +44,7 @@ public class DemandwareShopApiIT {
     public void testGetTopCategories() throws Exception {
         log.info("Getting top level categories...");
 
-        List<Category> allCategories = this.shopClient.getTopLevelCategories(2);
+        List<Category> allCategories = this.shopClientManager.getInstance().getTopLevelCategories(2);
         printCategories(allCategories, "-");
     }
 
@@ -52,7 +52,7 @@ public class DemandwareShopApiIT {
     public void testGetProduct() throws Exception {
         log.info("Test getting product...");
 
-        Product product = this.shopClient.getProduct("sanyo-dp50747");
+        Product product = this.shopClientManager.getInstance().getProduct("sanyo-dp50747");
         log.info("Product ID: " + product.getId() + " name: " + product.getName());
         log.info("Short description: " + product.getShort_description());
         for ( ImageGroup imageGroup : product.getImage_groups() ) {
@@ -68,11 +68,11 @@ public class DemandwareShopApiIT {
     public void testGetProductsByCategory() throws Exception {
 
         log.info("Getting category info...");
-        Category category = this.shopClient.getCategory("electronics-televisions");//"electronics-televisions"); // "electronics-digital-cameras"
+        Category category = this.shopClientManager.getInstance().getCategory("electronics-televisions");//"electronics-televisions"); // "electronics-digital-cameras"
         log.info("Category name: " + category.getName());
         log.info("Getting products by category...");
 
-        ProductSearchResult searchResult = this.shopClient.searchProductsByCategory(category.getId(), 16);
+        ProductSearchResult searchResult = this.shopClientManager.getInstance().searchProductsByCategory(category.getId(), 16);
         log.info("Number of products: " + searchResult.getTotal());
 
         log.info("Available Refinements:");
@@ -85,7 +85,7 @@ public class DemandwareShopApiIT {
                 log.info("  Product ID: " + hit.getProduct_id());
             }
             log.info("Getting next products...");
-            searchResult = this.shopClient.getNext(searchResult);
+            searchResult = this.shopClientManager.getInstance().getNext(searchResult);
         }
 
     }
@@ -94,13 +94,13 @@ public class DemandwareShopApiIT {
     public void testGetProductsByRefinements() throws Exception {
 
         log.info("Getting getting products by refinements...");
-        Category category = this.shopClient.getCategory("electronics-televisions");
+        Category category = this.shopClientManager.getInstance().getCategory("electronics-televisions");
         log.info("Category name: " + category.getName());
         log.info("Getting products by category...");
 
         Map<String,String> refinements = new HashMap<>();
         refinements.put("brand", "Sony");
-        ProductSearchResult searchResult = this.shopClient.searchProductsByCategory(category.getId(), 16, refinements);
+        ProductSearchResult searchResult = this.shopClientManager.getInstance().searchProductsByCategory(category.getId(), 16, refinements);
 
         log.info("Number of products: " + searchResult.getTotal());
 
@@ -114,7 +114,7 @@ public class DemandwareShopApiIT {
         refinements2.put("price", "(500..1000)");
         log.info("Updated refinements: " + refinements2);
 
-        searchResult = this.shopClient.searchProductsByCategory(category.getId(), 16, refinements2);
+        searchResult = this.shopClientManager.getInstance().searchProductsByCategory(category.getId(), 16, refinements2);
 
         log.info("Number of products: " + searchResult.getTotal());
 
@@ -128,7 +128,7 @@ public class DemandwareShopApiIT {
     @Test
     public void testSearch() throws Exception {
 
-        ProductSearchResult result = this.shopClient.search("sony", null, 0, 20, null);
+        ProductSearchResult result = this.shopClientManager.getInstance().search("sony", null, 0, 20, null);
         for ( ProductSearchHit hit : result.getHits() ) {
             log.info("Product: " + hit.getProduct_id());
         }

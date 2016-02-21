@@ -3,6 +3,7 @@ package com.sdl.ecommerce.fredhopper;
 import com.sdl.ecommerce.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
 /**
  * FredhopperQueryService
@@ -12,14 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class FredhopperQueryService implements ProductQueryService {
 
-    // TODO: Use Spring qualifier here to specify what combo I would like to use???
-
-
     @Autowired
     private ProductCategoryService categoryService;
 
     @Autowired
     private FredhopperClient fredhopperClient;
+
+    @Autowired
+    private LocalizationService localizationService;
 
     @Override
     public Query newQuery() {
@@ -28,7 +29,7 @@ public class FredhopperQueryService implements ProductQueryService {
 
     @Override
     public QueryResult query(Query query) throws ECommerceException {
-        QueryResult result = this.fredhopperClient.query(query);
+        QueryResult result = this.fredhopperClient.query(query, getUniverse(localizationService), getLocale(localizationService));
         this.injectServices(result);
         return result;
     }

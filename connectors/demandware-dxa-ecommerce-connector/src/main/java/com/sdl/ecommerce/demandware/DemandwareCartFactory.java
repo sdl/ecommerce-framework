@@ -4,7 +4,8 @@ import com.sdl.ecommerce.api.CartFactory;
 import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Cart;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClient;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import com.sdl.ecommerce.demandware.model.DemandwareCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,10 +22,10 @@ public class DemandwareCartFactory implements CartFactory {
     private ProductDetailService detailService;
 
     @Autowired
-    private DemandwareShopClient shopClient;
+    private DemandwareShopClientManager shopClientManager;
 
     @Override
     public Cart createCart() throws ECommerceException {
-        return new DemandwareCart(shopClient, detailService);
+        return new DemandwareCart(shopClientManager.getInstance(), detailService);
     }
 }

@@ -1,10 +1,8 @@
 package com.sdl.ecommerce.demandware;
 
-import com.sdl.ecommerce.api.CartFactory;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.ProductDetailService;
-import com.sdl.ecommerce.api.ProductQueryService;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClient;
+import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 public class TestContext {
 
     @Bean
-    public DemandwareShopClient getShopClient() { return new DemandwareShopClient(); }
+    public DemandwareShopClientManager getShopClientManager() { return new DemandwareShopClientManager(); }
 
     @Bean
     public ProductCategoryService getCategoryService() { return new DemandwareCategoryService(); }
@@ -32,6 +30,9 @@ public class TestContext {
 
     @Bean
     public CartFactory getCartFactory() { return new DemandwareCartFactory(); }
+
+    @Bean
+    public LocalizationService getLocalizationService() { return new TestLocalizationService(); }
 
     @Bean
     public PropertyPlaceholderConfigurer propertyConfig() {

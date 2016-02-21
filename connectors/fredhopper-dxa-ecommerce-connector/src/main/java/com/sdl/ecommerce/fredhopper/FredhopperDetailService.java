@@ -3,6 +3,7 @@ package com.sdl.ecommerce.fredhopper;
 import com.sdl.ecommerce.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
 /**
  * FredhopperDetailService
@@ -18,9 +19,12 @@ public class FredhopperDetailService implements ProductDetailService {
     @Autowired
     private FredhopperClient fredhopperClient;
 
+    @Autowired
+    LocalizationService localizationService;
+
     @Override
     public ProductDetailResult getDetail(String productId) throws ECommerceException {
-        ProductDetailResult result = this.fredhopperClient.getDetail(productId);
+        ProductDetailResult result = this.fredhopperClient.getDetail(productId, getUniverse(localizationService), getLocale(localizationService));
         this.injectServices(result);
         return result;
     }

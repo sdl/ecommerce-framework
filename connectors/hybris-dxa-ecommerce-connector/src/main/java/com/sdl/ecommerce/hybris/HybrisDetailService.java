@@ -6,7 +6,8 @@ import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.hybris.api.HybrisClient;
+import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
+import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import com.sdl.ecommerce.hybris.model.HybrisProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,12 @@ public class HybrisDetailService implements ProductDetailService {
     private ProductCategoryService categoryService;
 
     @Autowired
-    private HybrisClient hybrisClient;
+    private HybrisClientManager hybrisClientManager;
 
     @Override
     public ProductDetailResult getDetail(String productId) throws ECommerceException {
 
-        com.sdl.ecommerce.hybris.api.model.Product hybrisProduct = this.hybrisClient.getProduct(productId);
+        com.sdl.ecommerce.hybris.api.model.Product hybrisProduct = this.hybrisClientManager.getInstance().getProduct(productId);
         Product product = this.getProductDetail(hybrisProduct);
         return new HybrisDetailResult(product);
     }

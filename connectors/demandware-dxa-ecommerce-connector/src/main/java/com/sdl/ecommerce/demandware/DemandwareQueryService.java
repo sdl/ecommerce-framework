@@ -2,7 +2,8 @@ package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClient;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import com.sdl.ecommerce.demandware.api.model.ProductSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
- * DemandwareQueryService
+ * Demandware Query Service
  *
  * @author nic
  */
@@ -23,19 +24,10 @@ public class DemandwareQueryService implements ProductQueryService {
     private ProductCategoryService categoryService;
 
     @Autowired
-    private DemandwareShopClient shopClient;
+    private DemandwareShopClientManager shopClientManager;
 
-    @Value("${demandware.flyoutFacets}")
-    private String flyoutFacets = "";
-    private List<String> flyoutFacetList = new ArrayList<>();
-
-    @PostConstruct
-    public void initialize() {
-        StringTokenizer tokenizer = new StringTokenizer(flyoutFacets, ", ");
-        while ( tokenizer.hasMoreTokens() ) {
-            this.flyoutFacetList.add(tokenizer.nextToken());
-        }
-    }
+    @Autowired
+    private LocalizationService localizationService;
 
     @Override
     public Query newQuery() {
@@ -64,11 +56,24 @@ public class DemandwareQueryService implements ProductQueryService {
                 refinements.put(facet.getName(), refinementValue.toString());
             }
         }
-        ProductSearchResult searchResult = this.shopClient.search(query.getSearchPhrase(), categoryId, query.getStartIndex(), query.getViewSize(), refinements);
+        ProductSearchResult searchResult = this.shopClientManager.getInstance().search(query.getSearchPhrase(), categoryId, query.getStartIndex(), query.getViewSize(), refinements);
         List<String> facetIncludeList = null;
         if ( query.getViewType() == ViewType.FLYOUT ) {
-            facetIncludeList = this.flyoutFacetList;
+            facetIncludeList = this.getFlyoutFacets();
         }
-        return new DemandwareQueryResult(query, searchResult, this.shopClient, this.categoryService, facetIncludeList);
+        return new DemandwareQueryResult(query, searchResult, this.shopClientManager.getInstance(), this.categoryService, facetIncludeList);
+    }
+
+    private List<String> getFlyoutFacets() {
+        String flyoutFacetsString = this.localizationService.getLocalizedConfigProperty("demandware-flyoutFacets");
+        if ( flyoutFacetsString != null && !flyoutFacetsString.isEmpty() ) {
+            List<String> flyoutFacets = new ArrayList<>();
+            StringTokenizer tokenizer = new StringTokenizer(flyoutFacetsString, ", ");
+            while ( tokenizer.hasMoreTokens() ) {
+                flyoutFacets.add(tokenizer.nextToken());
+            }
+            return flyoutFacets;
+        }
+        return null;
     }
 }

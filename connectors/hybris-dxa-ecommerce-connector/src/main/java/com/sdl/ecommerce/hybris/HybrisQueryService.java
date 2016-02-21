@@ -2,8 +2,8 @@ package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.hybris.api.HybrisClient;
-import com.sdl.ecommerce.hybris.api.model.Category;
+import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
+import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import com.sdl.ecommerce.hybris.api.model.FacetPair;
 import com.sdl.ecommerce.hybris.api.model.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
- * HybrisQueryService
+ * Hybris Query Service
  *
  * @author nic
  */
@@ -22,22 +22,13 @@ import java.util.*;
 public class HybrisQueryService implements ProductQueryService {
 
     @Autowired
-    private HybrisClient hybrisClient;
+    private HybrisClientManager hybrisClientManager;
+
+    @Autowired
+    private LocalizationService localizationService;
 
     @Autowired
     private ProductCategoryService categoryService;
-
-    @Value("${hybris.flyoutFacets}")
-    private String flyoutFacets = "";
-    private List<String> flyoutFacetList = new ArrayList<>();
-
-    @PostConstruct
-    public void initialize() {
-        StringTokenizer tokenizer = new StringTokenizer(flyoutFacets, ", ");
-        while ( tokenizer.hasMoreTokens() ) {
-            this.flyoutFacetList.add(tokenizer.nextToken());
-        }
-    }
 
     @Override
     public Query newQuery() {
@@ -61,16 +52,27 @@ public class HybrisQueryService implements ProductQueryService {
             }
         }
 
-        SearchResult result = this.hybrisClient.search(query.getSearchPhrase(), query.getViewSize(), currentPage, sort, facets);
+        SearchResult result = this.hybrisClientManager.getInstance().search(query.getSearchPhrase(), query.getViewSize(), currentPage, sort, facets);
 
         List<String> facetIncludeList = null;
         if ( query.getViewType() == ViewType.FLYOUT ) {
-           facetIncludeList = this.flyoutFacetList;
+           facetIncludeList = this.getFlyoutFacets();
         }
         return new HybrisQueryResult(query, result, this, this.categoryService, facetIncludeList);
 
     }
 
-
+    private List<String> getFlyoutFacets() {
+        String flyoutFacetsString = this.localizationService.getLocalizedConfigProperty("hybris-flyoutFacets");
+        if ( flyoutFacetsString != null && !flyoutFacetsString.isEmpty() ) {
+            List<String> flyoutFacets = new ArrayList<>();
+            StringTokenizer tokenizer = new StringTokenizer(flyoutFacetsString, ", ");
+            while ( tokenizer.hasMoreTokens() ) {
+                flyoutFacets.add(tokenizer.nextToken());
+            }
+            return flyoutFacets;
+        }
+        return null;
+    }
 
 }

@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Test Hybris Client
@@ -25,11 +23,11 @@ import java.util.Map;
 public class HybrisClientIT {
 
     @Autowired
-    private HybrisClient client;
+    private HybrisClientManager clientManager;
 
     @Test
     public void testGetAllCategories() throws Exception {
-        List<Category> allCategories = client.getAllCategories();
+        List<Category> allCategories= clientManager.getInstance().getAllCategories();
         printCategories(allCategories,0);
 
     }
@@ -47,7 +45,7 @@ public class HybrisClientIT {
     @Test
     public void testGetCategory() throws Exception {
 
-        Category category = client.getCategory("576");
+        Category category= clientManager.getInstance().getCategory("576");
         System.out.println("Category " + category.getId() + ", " + category.getName());
         System.out.println("Products:");
         for ( Product product : category.getProducts() ) {
@@ -57,7 +55,7 @@ public class HybrisClientIT {
 
     @Test
     public void testSearch() throws Exception {
-        SearchResult result = client.search("sony", 20, 0);
+        SearchResult result= clientManager.getInstance().search("sony", 20, 0);
         System.out.println("Products:");
         for ( Product product : result.getProducts() ) {
             System.out.println(" " + product.getManufacturer() + " " + product.getName());
@@ -76,7 +74,7 @@ public class HybrisClientIT {
 
         List<FacetPair> facets = new ArrayList<>();
         facets.add(new FacetPair("price", "$500-$999.99"));
-        SearchResult result = client.search("sony", 20, 0, null, facets);
+        SearchResult result= clientManager.getInstance().search("sony", 20, 0, null, facets);
         System.out.println("Products:");
         for ( Product product : result.getProducts() ) {
             System.out.println(" " + product.getCode() + " " + product.getManufacturer() + " " + product.getName());
@@ -93,10 +91,10 @@ public class HybrisClientIT {
     @Test
     public void testGetProduct() throws Exception {
 
-        Product product = client.getProduct("676442");
+        Product product= clientManager.getInstance().getProduct("676442");
         System.out.println("Product " + product.getName() + ", " + product.getManufacturer());
 
-        product = client.getProduct("816324");
+        product= clientManager.getInstance().getProduct("816324");
         System.out.println("Product " + product.getName() + ", " + product.getManufacturer());
         System.out.println("Stock level: " + product.getStock().getStockLevel());
     }
@@ -104,14 +102,14 @@ public class HybrisClientIT {
     @Test
     public void testCart() throws Exception {
 
-        String sessionId = client.createCart();
+        String sessionId= clientManager.getInstance().createCart();
         System.out.println("Created cart with session ID: " + sessionId);
-        Cart cart = client.getCart(sessionId);
+        Cart cart= clientManager.getInstance().getCart(sessionId);
         System.out.println("Cart total items: " + cart.getTotalItems());
         System.out.println("Adding product to cart...");
-        cart = client.addItemToCart(sessionId, "676442", 1);
+        cart= clientManager.getInstance().addItemToCart(sessionId, "676442", 1);
         System.out.println("Cart total items: " + cart.getTotalItems() + ", total price: " + cart.getTotalPrice().getFormattedValue());
-        cart = client.addItemToCart(sessionId, "1978440_blue", 1);
+        cart= clientManager.getInstance().addItemToCart(sessionId, "1978440_blue", 1);
         System.out.println("Cart total items: " + cart.getTotalItems() + ", total price: " + cart.getTotalPrice().getFormattedValue());
     }
 

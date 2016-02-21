@@ -6,7 +6,6 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,6 +39,8 @@ public class AdminProxyController {
     // TODO: Migrate to Http Client 4.5.
     // There is an issue with some AJAX post requests that does not work with 4.5, therefore we use 3.1 for this controller
     //
+
+    // TODO: NEED TO SUPPORT DIFFERENT VERSION OF FH THAT HAS DIFFERENT LOOK&FEEL ETC
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminProxyController.class);
 
@@ -85,6 +86,7 @@ public class AdminProxyController {
         GetMethod method = new GetMethod(fredhopperAdminUrl + "/login.fh?username=" + this.username + "&password=" + this.password);
         int statusCode = client.executeMethod(method);
         LOG.debug("Fredhopper admin login status: " + statusCode);
+        // TODO: Raise error here when status code is NOT 200!!!
         method.releaseConnection();
 
     }

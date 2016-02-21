@@ -66,64 +66,64 @@ public class DemandwareQueryResult implements QueryResult {
     @Override
     public List<FacetGroup> getFacetGroups(String urlPrefix) {
         List<FacetGroup> facetGroups = new ArrayList<>();
-        for ( ProductSearchRefinement refinement : this.searchResult.getRefinements() ) {
-            boolean isCategory = refinement.getAttribute_id().equals("cgid");
-            if ( refinement.getValues() == null ||
-                    ( !isCategory && this.facetIncludeList != null && !this.facetIncludeList.contains(refinement.getAttribute_id()) ) ) {
-                continue;
-            }
-            FacetGroup facetGroup = new GenericFacetGroup(refinement.getAttribute_id(), refinement.getLabel(), isCategory);
-            if ( isCategory ) {
-                List<ProductSearchRefinementValue> categoryRefinementValues;
-                if ( this.category != null ) {
-                    ProductSearchRefinementValue categoryValue = this.findCurrentCategoryRefinement(refinement.getValues(), category.getId());
-                    categoryRefinementValues = categoryValue.getValues();
+        if ( this.searchResult.getRefinements() != null ) {
+            for (ProductSearchRefinement refinement : this.searchResult.getRefinements()) {
+                boolean isCategory = refinement.getAttribute_id().equals("cgid");
+                if (refinement.getValues() == null ||
+                        (!isCategory && this.facetIncludeList != null && !this.facetIncludeList.contains(refinement.getAttribute_id()))) {
+                    continue;
                 }
-                else {
-                    categoryRefinementValues = refinement.getValues();
-                }
-                if ( categoryRefinementValues != null ) {
-                    for (ProductSearchRefinementValue refinementValue : categoryRefinementValues) {
+                FacetGroup facetGroup = new GenericFacetGroup(refinement.getAttribute_id(), refinement.getLabel(), isCategory);
+                if (isCategory) {
+                    List<ProductSearchRefinementValue> categoryRefinementValues;
+                    if (this.category != null) {
+                        ProductSearchRefinementValue categoryValue = this.findCurrentCategoryRefinement(refinement.getValues(), category.getId());
+                        categoryRefinementValues = categoryValue.getValues();
+                    } else {
+                        categoryRefinementValues = refinement.getValues();
+                    }
+                    if (categoryRefinementValues != null) {
+                        for (ProductSearchRefinementValue refinementValue : categoryRefinementValues) {
+                            if (refinementValue.getHit_count() == 0) {
+                                // Skip all category facet values with no hits
+                                //
+                                continue;
+                            }
+                            Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), false);
+                            facetGroup.getFacets().add(facet);
+                        }
+                    }
+                } else {
+                    // If facet
+                    //
+                    for (ProductSearchRefinementValue refinementValue : refinement.getValues()) {
                         if (refinementValue.getHit_count() == 0) {
-                            // Skip all category facet values with no hits
+                            // Skip all facet values with no hits
                             //
                             continue;
                         }
-                        Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), false);
+                        /*
+                        else if ( isCategory && this.category != null && refinementValue.getValue().equals(this.category.getId()) ) {
+                            // TODO: Use all sub facets for the category!!!
+                            continue;
+                        }
+                        */
+                        if (isCategory && this.category != null && refinementValue.getValue().equals(this.category.getId())) {
+                            // Iterate
+                        }
+
+                        boolean isSelected = false;
+                        if (this.searchResult.getSelected_refinements() != null) {
+                            String selectedValues = this.searchResult.getSelected_refinements().get(refinement.getAttribute_id());
+                            isSelected = selectedValues != null && selectedValues.contains(refinementValue.getValue());
+                        }
+                        Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), isSelected);
                         facetGroup.getFacets().add(facet);
                     }
                 }
-            }
-            else {
-                // If facet
-                //
-                for (ProductSearchRefinementValue refinementValue : refinement.getValues()) {
-                    if (refinementValue.getHit_count() == 0) {
-                        // Skip all facet values with no hits
-                        //
-                        continue;
-                    }
-                    /*
-                    else if ( isCategory && this.category != null && refinementValue.getValue().equals(this.category.getId()) ) {
-                        // TODO: Use all sub facets for the category!!!
-                        continue;
-                    }
-                    */
-                    if (isCategory && this.category != null && refinementValue.getValue().equals(this.category.getId())) {
-                        // Iterate
-                    }
-
-                    boolean isSelected = false;
-                    if (this.searchResult.getSelected_refinements() != null) {
-                        String selectedValues = this.searchResult.getSelected_refinements().get(refinement.getAttribute_id());
-                        isSelected = selectedValues != null && selectedValues.contains(refinementValue.getValue());
-                    }
-                    Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), isSelected);
-                    facetGroup.getFacets().add(facet);
+                if (facetGroup.getFacets().size() > 0) {
+                    facetGroups.add(facetGroup);
                 }
-            }
-            if ( facetGroup.getFacets().size() > 0 ) {
-                facetGroups.add(facetGroup);
             }
         }
         return facetGroups;

@@ -6,7 +6,8 @@ import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClient;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import com.sdl.ecommerce.demandware.model.DemandwareProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,12 @@ public class DemandwareDetailService implements ProductDetailService {
     private ProductCategoryService categoryService;
 
     @Autowired
-    private DemandwareShopClient shopClient;
+    private DemandwareShopClientManager shopClientManager;
 
     @Override
     public ProductDetailResult getDetail(String productId) throws ECommerceException {
 
-        com.sdl.ecommerce.demandware.api.model.Product dwreProduct = this.shopClient.getProduct(productId);
+        com.sdl.ecommerce.demandware.api.model.Product dwreProduct = this.shopClientManager.getInstance().getProduct(productId);
         Category primaryCategory = this.categoryService.getCategoryById(dwreProduct.getPrimary_category_id());
         Product product = new DemandwareProduct(primaryCategory, dwreProduct);
         return new DemandwareDetailResult(product);

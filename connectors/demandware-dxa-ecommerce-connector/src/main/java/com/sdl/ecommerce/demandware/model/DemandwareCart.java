@@ -9,6 +9,7 @@ import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.api.model.impl.GenericCartItem;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClient;
+import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
 import com.sdl.ecommerce.demandware.api.model.Basket;
 import com.sdl.ecommerce.demandware.api.model.ProductItem;
 

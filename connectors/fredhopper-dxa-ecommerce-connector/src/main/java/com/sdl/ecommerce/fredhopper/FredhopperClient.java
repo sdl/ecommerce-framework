@@ -25,7 +25,8 @@ import java.net.URLDecoder;
 import java.util.*;
 
 /**
- * Fredhopper Service
+ * Fredhopper Client.
+ * Supports FAS v7.5.x
  *
  * @author nic
  */
@@ -51,8 +52,6 @@ public class FredhopperClient implements FredhopperLinkManager {
     private Map<String,String> imageUrlMappings = new HashMap<>();
 
     private FASWebService fasService;
-
-    static final Location DEFAULT_LOCATION =  new Location("catalog01", "en_GB");
 
     @PostConstruct
     public void initialize() throws Exception {
@@ -82,8 +81,8 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
-    public ProductDetailResult getDetail(String productId) {
-        Query query = this.buildQuery();
+    public ProductDetailResult getDetail(String productId, String universe, String locale) {
+        Query query = this.buildQuery(universe, locale);
         query.addSecondId(productId);
         query.setView(ViewType.DETAIL);
         return new FredhopperDetailResult(this.doQuery(query), this);
@@ -107,9 +106,9 @@ public class FredhopperClient implements FredhopperLinkManager {
     */
 
 
-    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery) {
+    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale) {
 
-        Query query = this.buildQuery();
+        Query query = this.buildQuery(universe, locale);
         if ( eCommerceQuery.getViewType() != null ) {
             query.setView(this.convertViewType(eCommerceQuery.getViewType()));
         }
@@ -128,11 +127,11 @@ public class FredhopperClient implements FredhopperLinkManager {
     }
 
     // TODO: Do a chain interface here instead
-    // TODO: Have possibility to provide localization here to select catalog & locale
 
-    public Query buildQuery() {
+    public Query buildQuery(String universe, String locale) {
         Query query = new Query();
-        Location location = new Location(DEFAULT_LOCATION);
+        //Location location = new Location(DEFAULT_LOCATION);
+        Location location = new Location(universe, locale);
         query.setLocation(location);
         return query;
     }
@@ -292,11 +291,7 @@ public class FredhopperClient implements FredhopperLinkManager {
         return categories;
     }
 
-    public Location getLocation(Category category) {
-        return this.getLocation(category, null);
-    }
-
-    public Location getLocation(Category category, String searchPhrase) {
+    public Location getLocation(Category category, String searchPhrase, String universe, String locale) {
         List<String> categoryIds = null;
         if ( category != null ) {
             categoryIds = new ArrayList<>();
@@ -305,7 +300,7 @@ public class FredhopperClient implements FredhopperLinkManager {
                 category = category.getParent();
             }
         }
-        Location location = new Location(DEFAULT_LOCATION);
+        Location location = new Location(universe, locale);
         if ( categoryIds != null ) {
             for (String categoryId : categoryIds) {
                 location.addCriterion(new CategoryCriterion("categories", categoryId));
@@ -316,6 +311,7 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
         return location;
     }
+
 
     public Universe getUniverse(Page page) {
         for (Universe u : page.getUniverses().getUniverse()) {
