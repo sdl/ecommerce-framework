@@ -10,7 +10,7 @@
         <div class="form-group search-box">
             <!-- TODO: Get placeholder text from the search box widget -->
             <i class="fa fa-search"/>
-            <input name="q" type="text" class="form-control" autocomplete="off" placeholder="Search..." value="${eComSearchPhrase}">
+            <input name="q" type="text" class="form-control" autocomplete="off" placeholder="<dxa:resource key="e-commerce.searchPlaceholderText"/>" value="${eComSearchPhrase}">
         </div>
     </form>
 </div>

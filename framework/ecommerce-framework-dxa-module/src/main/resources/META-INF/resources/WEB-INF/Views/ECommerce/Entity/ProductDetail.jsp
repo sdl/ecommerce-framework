@@ -55,7 +55,7 @@
                     </h3>
                 </div>
                 <div class="product-add-to-cart">
-                    <a class="btn btn-primary add-to-cart-button" data-product-id="${entity.product.id}">Add to Cart <i
+                    <a class="btn btn-primary add-to-cart-button" data-product-id="${entity.product.id}"><dxa:resource key="e-commerce.addToCartLabel"/> <i
                             class="fa fa-cart-plus"></i></a>
                 </div>
             </div>

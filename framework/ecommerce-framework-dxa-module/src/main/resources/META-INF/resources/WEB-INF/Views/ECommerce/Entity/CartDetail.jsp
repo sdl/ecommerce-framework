@@ -9,10 +9,10 @@
 <!-- TODO: Add resource labels for below texts!!! -->
 
 <div class="content">
-    <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> Shopping Cart</h3>
+    <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> <dxa:resource key="e-commerce.shoppingCartTitle"/></h3>
     <c:choose>
         <c:when test="${entity.cartCount == 0}">
-            <div>Cart is empty</div>
+            <div><dxa:resource key="e-commerce.shoppingCartEmptyText"/></div>
         </c:when>
         <c:otherwise>
             <div class="row">
@@ -22,9 +22,9 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2"></div>
-                                <div class="col-md-5">Product</div>
-                                <div class="col-md-2">Quantity</div>
-                                <div class="col-md-2">Price</div>
+                                <div class="col-md-5"><dxa:resource key="e-commerce.productLabel"/></div>
+                                <div class="col-md-2"><dxa:resource key="e-commerce.quantityLabel"/></div>
+                                <div class="col-md-2"><dxa:resource key="e-commerce.priceLabel"/></div>
                             </div>
                         </div>
                         <c:forEach var="item" items="${entity.cart.items}">
@@ -54,7 +54,7 @@
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2"></div>
                                 <div class="col-md-5"></div>
-                                <div class="col-md-2"><strong>Total</strong></div>
+                                <div class="col-md-2"><strong><dxa:resource key="e-commerce.cartTotalLabel"/></strong></div>
                                 <div class="col-md-2">${entity.cart.totalPrice.formattedPrice}</div>
                             </div>
                         </div>
