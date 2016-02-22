@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * FredhopperProduct
+ * Fredhopper Product
  *
  * @author nic
  */
@@ -23,14 +23,13 @@ public class FredhopperProduct implements Product {
     private Map<String,Object> attributes = new HashMap<>();
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
+    private Map<String,String> modelMappings;
 
 
-    // TODO: Read model mappings from somewhere
-    // TODO: Should we do this as this way????
-
-    public FredhopperProduct(String id, FredhopperLinkManager linkManager) {
+    public FredhopperProduct(String id, FredhopperLinkManager linkManager, Map<String,String> modelMappings) {
         this.id = id;
         this.linkManager = linkManager;
+        this.modelMappings = modelMappings;
     }
 
     @Override
@@ -40,22 +39,22 @@ public class FredhopperProduct implements Product {
 
     @Override
     public String getName() {
-        return (String) this.attributes.get("name");
+        return this.getModelAttribute("name");
     }
 
     @Override
     public String getDescription() {
-        return (String) this.attributes.get("description");
+        return this.getModelAttribute("description");
     }
 
     @Override
     public ProductPrice getPrice() {
-        return new FredhopperProductPrice((String) this.attributes.get("price"));
+        return new FredhopperProductPrice(this.getModelAttribute("price"));
     }
 
     @Override
     public String getThumbnailUrl() {
-        String thumbnailUrl = (String) this.attributes.get("_thumburl");
+        String thumbnailUrl = this.getModelAttribute("thumbnailUrl");
         if ( thumbnailUrl == null ) {
             return this.getPrimaryImageUrl();
         }
@@ -64,7 +63,7 @@ public class FredhopperProduct implements Product {
 
     @Override
     public String getPrimaryImageUrl() {
-        String imageUrl = (String) this.attributes.get("_imageurl");
+        String imageUrl = this.getModelAttribute("primaryImageUrl");
         return this.linkManager.processImageUrl(imageUrl);
     }
 
@@ -102,5 +101,14 @@ public class FredhopperProduct implements Product {
 
     public Object getAttribute(String name) {
         return this.attributes.get(name);
+    }
+
+    private String getModelAttribute(String name) {
+        String fredhopperAttribute = this.modelMappings.get(name);
+        String fredhopperValue = null;
+        if ( fredhopperAttribute != null ) {
+              fredhopperValue = (String) this.attributes.get(fredhopperAttribute);
+        }
+        return fredhopperValue;
     }
 }

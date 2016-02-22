@@ -81,11 +81,11 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
-    public ProductDetailResult getDetail(String productId, String universe, String locale) {
+    public ProductDetailResult getDetail(String productId, String universe, String locale, Map<String,String> productModelMappings) {
         Query query = this.buildQuery(universe, locale);
         query.addSecondId(productId);
         query.setView(ViewType.DETAIL);
-        return new FredhopperDetailResult(this.doQuery(query), this);
+        return new FredhopperDetailResult(this.doQuery(query), this, productModelMappings);
     }
 
 
@@ -106,7 +106,7 @@ public class FredhopperClient implements FredhopperLinkManager {
     */
 
 
-    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale) {
+    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale, Map<String,String> productModelMappings) {
 
         Query query = this.buildQuery(universe, locale);
         if ( eCommerceQuery.getViewType() != null ) {
@@ -123,7 +123,7 @@ public class FredhopperClient implements FredhopperLinkManager {
             query.setListStartIndex(eCommerceQuery.getStartIndex());
         }
         this.applyQueryConfiguration(query, (FredhopperQuery) eCommerceQuery);
-        return new FredhopperQueryResult(this.doQuery(query), eCommerceQuery, this);
+        return new FredhopperQueryResult(this.doQuery(query), eCommerceQuery, this, productModelMappings);
     }
 
     // TODO: Do a chain interface here instead

@@ -24,7 +24,7 @@ public class FredhopperDetailService implements ProductDetailService {
 
     @Override
     public ProductDetailResult getDetail(String productId) throws ECommerceException {
-        ProductDetailResult result = this.fredhopperClient.getDetail(productId, getUniverse(localizationService), getLocale(localizationService));
+        ProductDetailResult result = this.fredhopperClient.getDetail(productId, getUniverse(localizationService), getLocale(localizationService), getProductModelMappings(localizationService));
         this.injectServices(result);
         return result;
     }

@@ -9,10 +9,7 @@ import com.sdl.ecommerce.fredhopper.model.*;
 import com.sdl.ecommerce.fredhopper.model.promotion.FredhopperPromotion;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Fredhopper Result Set
@@ -24,8 +21,8 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
     private Query query;
     private Category category;
 
-    public FredhopperQueryResult(Page fredhopperPage, Query query, FredhopperLinkManager linkManager) {
-        super(fredhopperPage, linkManager);
+    public FredhopperQueryResult(Page fredhopperPage, Query query, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
+        super(fredhopperPage, linkManager, productModelMappings);
         this.query = query;
         this.category = query.getCategory();
     }

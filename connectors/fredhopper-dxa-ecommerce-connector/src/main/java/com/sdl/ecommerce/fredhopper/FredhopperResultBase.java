@@ -8,10 +8,7 @@ import com.sdl.ecommerce.fredhopper.model.*;
 import com.sdl.ecommerce.fredhopper.model.promotion.FredhopperPromotion;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * FredhopperResultBase
@@ -25,11 +22,13 @@ public abstract class FredhopperResultBase {
     protected FredhopperLinkManager linkManager;
     protected ProductCategoryService categoryService;
     protected ProductQueryService queryService;
+    protected Map<String,String> productModelMappings;
 
-    protected FredhopperResultBase(Page fredhopperPage, FredhopperLinkManager linkManager) {
+    protected FredhopperResultBase(Page fredhopperPage, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
         this.fredhopperPage = fredhopperPage;
         this.universe = this.getUniverse(fredhopperPage);
         this.linkManager = linkManager;
+        this.productModelMappings = productModelMappings;
     }
 
     /****** Setters to inject the different services needed for getting additional data from the result set *****/
@@ -58,7 +57,7 @@ public abstract class FredhopperResultBase {
     protected List<Product> getProducts(List<com.fredhopper.webservice.client.Item> items) {
         List<Product> products = new ArrayList<>();
         for ( com.fredhopper.webservice.client.Item item : items ) {
-            FredhopperProduct fhItem = new FredhopperProduct(item.getId(), this.linkManager);
+            FredhopperProduct fhItem = new FredhopperProduct(item.getId(), this.linkManager, this.productModelMappings);
             products.add(fhItem);
             for (Attribute attribute : item.getAttribute()) {
                 String name = attribute.getName();

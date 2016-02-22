@@ -10,6 +10,7 @@ import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fredhopper Detail Result
@@ -20,8 +21,8 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
 
     private Product productDetail = null;
 
-    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager) {
-        super(fredhopperPage, linkManager);
+    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
+        super(fredhopperPage, linkManager, productModelMappings);
     }
 
     @Override
