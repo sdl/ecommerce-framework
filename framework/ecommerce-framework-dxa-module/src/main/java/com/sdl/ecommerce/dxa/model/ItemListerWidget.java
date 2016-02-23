@@ -20,10 +20,13 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
 public class ItemListerWidget extends AbstractEntityModel implements QueryInputContributor {
 
     @SemanticProperty("e:category")
-    private ECommerceCategory category;
+    private ECommerceCategoryReference categoryReference;
 
     @SemanticProperty("e:viewSize")
     private int viewSize = 0;
+
+    @SemanticProperty("e:viewType")
+    private String viewType;
 
     // TODO: Add a semantic property
     private Boolean disableRedirect = null;
@@ -50,12 +53,16 @@ public class ItemListerWidget extends AbstractEntityModel implements QueryInputC
         } */
     }
 
-    public ECommerceCategory getCategory() {
-        return category;
+    public ECommerceCategoryReference getCategoryReference() {
+        return categoryReference;
     }
 
     public int getViewSize() {
         return viewSize;
+    }
+
+    public String getViewType() {
+        return viewType;
     }
 
     public List<Product> getItems() {

@@ -10,17 +10,20 @@ import com.sdl.webapp.common.api.model.entity.Image;
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
- * ProductDetailWidget
+ * Product Detail Widget
  *
  * @author nic
  */
 @SemanticEntity(entityName = "ProductDetailWidget", vocabulary = SDL_CORE, prefix = "e", public_ = false)
 public class ProductDetailWidget extends AbstractEntityModel {
 
+    @SemanticProperty("e:product")
+    private ECommerceProductReference productReference;
+
     private Product product;
 
-    // Overwriteable properties
-
+    // Properties that can overwrite the information read from the E-Commerce system
+    //
     @SemanticProperty("e:title")
     private String title;
 
@@ -29,6 +32,10 @@ public class ProductDetailWidget extends AbstractEntityModel {
 
     @SemanticProperty("e:image")
     private Image image;
+
+    public ECommerceProductReference getProductReference() {
+        return productReference;
+    }
 
     public Product getProduct() {
         return product;

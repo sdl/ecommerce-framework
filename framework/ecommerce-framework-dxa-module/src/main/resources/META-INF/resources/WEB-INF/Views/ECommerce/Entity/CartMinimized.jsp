@@ -5,13 +5,6 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.CartWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 
-<style type="text/css">
-    .cart-text {
-        font-size: 22px;
-    }
-</style>
-
-<!-- utility-nav = z-index: 2; position: absolute; right: 0; top: 0; -->
 <div class="utility-nav cart-nav" style="margin-right: 15px;margin-top: 4px;">
     <a href="${entity.cartPageLink}" class="btn btn-default cart-btn">
         <div class="cart-text">

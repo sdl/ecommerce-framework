@@ -19,6 +19,12 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
 @SemanticEntity(entityName = "BreadcrumbWidget", vocabulary = SDL_CORE, prefix = "e", public_ = false)
 public class BreadcrumbWidget extends AbstractEntityModel implements QueryInputContributor {
 
+    @SemanticProperty("e:category")
+    private ECommerceCategoryReference categoryReference;
+
+    @SemanticProperty("e:product")
+    private ECommerceProductReference productReference;
+
     @SemanticProperty("e:includeStoreLink")
     private boolean includeStoreLink = false;
 
@@ -30,6 +36,14 @@ public class BreadcrumbWidget extends AbstractEntityModel implements QueryInputC
 
         // TODO: How to handle this???
         //queryConfiguration.setShowStoreLink(includeStoreLink);
+    }
+
+    public ECommerceCategoryReference getCategoryReference() {
+        return categoryReference;
+    }
+
+    public ECommerceProductReference getProductReference() {
+        return productReference;
     }
 
     public List<Breadcrumb> getBreadcrumbs() {

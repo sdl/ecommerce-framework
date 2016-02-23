@@ -5,9 +5,6 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.CartWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 
-
-<!-- TODO: Add resource labels for below texts!!! -->
-
 <div class="content">
     <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> <dxa:resource key="e-commerce.shoppingCartTitle"/></h3>
     <c:choose>

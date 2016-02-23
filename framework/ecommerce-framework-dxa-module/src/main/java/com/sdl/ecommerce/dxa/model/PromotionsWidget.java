@@ -18,7 +18,10 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
 public class PromotionsWidget extends AbstractEntityModel {
 
     @SemanticProperty("e:category")
-    private String category;
+    private ECommerceCategoryReference categoryReference;
+
+    @SemanticProperty("e:product")
+    private ECommerceProductReference productReference;
 
     @SemanticProperty("e:viewType")
     private String viewType;
@@ -28,8 +31,12 @@ public class PromotionsWidget extends AbstractEntityModel {
 
     private List<Promotion> promotions;
 
-    public String getCategory() {
-        return category;
+    public ECommerceCategoryReference getCategoryReference() {
+        return categoryReference;
+    }
+
+    public ECommerceProductReference getProductReference() {
+        return productReference;
     }
 
     public String getViewType() {

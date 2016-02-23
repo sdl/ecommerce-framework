@@ -1,6 +1,5 @@
 package com.sdl.ecommerce.dxa.model;
 
-import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetGroup;
 import com.sdl.ecommerce.api.model.Promotion;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
@@ -21,36 +20,23 @@ public class FacetsWidget extends AbstractEntityModel {
 
     // TODO: Add metadata fields for customizing the experience
 
-    @SemanticProperty("e:categoryPath")
-    private String categoryPath;
+    @SemanticProperty("e:category")
+    private ECommerceCategoryReference categoryReference;
 
-    private Category category;
-
-    private String categoryUrl;
+    @SemanticProperty("e:viewType")
+    private String viewType;
 
     private List<FacetGroup> facetGroups;
 
     // TODO: Is this the best way of doing this???
     private List<Promotion> relatedPromotions;
 
-    public String getCategoryPath() {
-        return categoryPath;
+    public ECommerceCategoryReference getCategoryReference() {
+        return categoryReference;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getCategoryUrl() {
-        return categoryUrl;
-    }
-
-    public void setCategoryUrl(String categoryUrl) {
-        this.categoryUrl = categoryUrl;
+    public String getViewType() {
+        return viewType;
     }
 
     public List<FacetGroup> getFacetGroups() {

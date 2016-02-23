@@ -6,7 +6,7 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.FacetsWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
-<c:if test="${entity.category != null && not empty entity.facetGroups}">
+<c:if test="${entity.categoryReference.category != null && not empty entity.facetGroups}">
 <%
 
     int cols = entity.getFacetGroups().size()+entity.getRelatedPromotions().size();
@@ -24,7 +24,7 @@
 
 %>
 <li class="mega-nav-link">
-    <a href="${entity.categoryUrl}">${entity.category.name}</a>
+    <a href="${entity.categoryReference.categoryUrl}">${entity.categoryReference.category.name}</a>
     <div class="mega-nav" style="width: ${navWidth}px;">
         <div class="row">
             <div class="col-sm-12">

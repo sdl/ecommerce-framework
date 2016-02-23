@@ -121,7 +121,6 @@ public class AbstractECommercePageController extends BaseController {
         }
     }
 
-
     /**
      * Handles a {@code NotFoundException}.
      *

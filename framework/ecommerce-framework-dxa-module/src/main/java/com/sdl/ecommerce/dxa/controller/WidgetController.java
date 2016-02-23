@@ -10,11 +10,14 @@ import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.dxa.CategoryDataCache;
 import com.sdl.ecommerce.dxa.ECommerceViewHelper;
 import com.sdl.ecommerce.dxa.model.*;
-import com.sdl.webapp.common.api.ThreadLocalManager;
 import com.sdl.webapp.common.api.WebRequestContext;
 import com.sdl.webapp.common.api.content.ContentProviderException;
+import com.sdl.webapp.common.api.model.EntityModel;
 import com.sdl.webapp.common.api.model.MvcData;
+import com.sdl.webapp.common.api.model.PageModel;
+import com.sdl.webapp.common.api.model.RegionModel;
 import com.sdl.webapp.common.controller.BaseController;
+import static com.sdl.webapp.common.controller.RequestAttributeNames.PAGE_MODEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,23 +76,18 @@ public class WidgetController extends BaseController {
 
         ItemListerWidget entity = (ItemListerWidget) this.getEntityFromRequest(request, entityId);
         QueryResult queryResult;
-        if ( entity.getCategory() != null ) {
-
-            ECommerceCategory ecomCategory = entity.getCategory();
-            Category category;
-            if ( ecomCategory.getCategoryPath() != null ) {
-                category = this.categoryService.getCategoryByPath(ecomCategory.getCategoryPath());
-            }
-            else if ( ecomCategory.getCategoryRef() != null ) {
-                category = this.categoryService.getCategoryById(ecomCategory.getCategoryRef().getExternalId());
-            }
-            else {
+        if ( entity.getCategoryReference() != null ) {
+            Category category = this.resolveCategoryModel(entity.getCategoryReference());
+            if ( category == null ) {
                 throw new ContentProviderException("Invalid E-Commerce category set for item lister: " + entityId);
             }
             Query query = this.queryService.newQuery();
             query.category(category);
             if ( entity.getViewSize() != 0 ) {
                 query.viewSize(entity.getViewSize());
+            }
+            if ( entity.getViewType() != null ) {
+                query.viewType(ViewType.valueOf(entity.getViewType().toUpperCase()));
             }
             query.startIndex(this.getStartIndex(request));
             queryResult = this.queryService.query(query);
@@ -111,7 +109,23 @@ public class WidgetController extends BaseController {
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
 
-        QueryResult queryResult = this.getQueryResult(request);
+        QueryResult queryResult;
+        if ( entity.getCategoryReference() != null ) {
+            Category category = this.resolveCategoryModel(entity.getCategoryReference());
+            if ( category == null ) {
+                throw new ContentProviderException("Invalid E-Commerce category set for facet: " + entityId);
+            }
+            Query query = this.queryService.newQuery();
+            query.category(category);
+            if ( entity.getViewType() != null ) {
+                query.viewType(ViewType.valueOf(entity.getViewType().toUpperCase()));
+            }
+            queryResult = this.queryService.query(query);
+        }
+        else {
+            queryResult = this.getQueryResult(request);
+        }
+
         entity.setFacetGroups(queryResult.getFacetGroups(this.getUrlPrefix(request)));
 
         request.setAttribute("entity", entity);
@@ -126,8 +140,22 @@ public class WidgetController extends BaseController {
     public String handleBreadcrumb(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
         BreadcrumbWidget entity = (BreadcrumbWidget) this.getEntityFromRequest(request, entityId);
-
-        ECommerceResult result = this.getResult(request);
+        ECommerceResult result;
+        if ( entity.getCategoryReference() != null ) {
+            Category category = this.resolveCategoryModel(entity.getCategoryReference());
+            if ( category == null ) {
+                throw new ContentProviderException("Invalid E-Commerce category set for breadcrumb: " + entityId);
+            }
+            Query query = this.queryService.newQuery();
+            query.category(category);
+            result = this.queryService.query(query);
+        }
+        else if ( entity.getProductReference() != null ) {
+            result = this.resolveProductDetail(entity.getProductReference());
+        }
+        else {
+            result = this.getResult(request);
+        }
         entity.setBreadcrumbs(result.getBreadcrumbs(this.getUrlPrefix(request), this.getRootCategoryTitle(request)));
         if ( result instanceof QueryResult ) {
             entity.setTotalItems(((QueryResult) result).getTotalCount());
@@ -144,20 +172,25 @@ public class WidgetController extends BaseController {
 
         PromotionsWidget entity = (PromotionsWidget) this.getEntityFromRequest(request, entityId);
 
-        ECommerceResult result = null;
-        if ( entity.getCategory() != null ) {
-            Category category = this.categoryService.getCategoryByPath(entity.getCategory());
+        ECommerceResult result;
+        if ( entity.getCategoryReference() != null ) {
+            Category category = this.resolveCategoryModel(entity.getCategoryReference());
             Query query = this.queryService.newQuery();
             query.category(category);
-            if ( entity.getViewType() != null ) {  //
-                query.viewType(ViewType.valueOf(entity.getViewType()));
+            if ( entity.getViewType() != null ) {
+                query.viewType(ViewType.valueOf(entity.getViewType().toUpperCase()));
             }
             result = this.queryService.query(query);
+        }
+        else if ( entity.getProductReference() != null ) {
+            result = this.resolveProductDetail(entity.getProductReference());
         }
         else {
             result = this.getResult(request);
         }
-        entity.setPromotions(result.getPromotions());
+        if ( result != null ) {
+            entity.setPromotions(result.getPromotions());
+        }
 
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
@@ -171,30 +204,31 @@ public class WidgetController extends BaseController {
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
 
-        Category topCategory = this.categoryService.getCategoryByPath(entity.getCategoryPath());
-        if ( topCategory != null ) {
-            entity.setCategory(topCategory);
-            entity.setCategoryUrl(topCategory.getCategoryLink("/c")); // For flyout is the URL's always based on the category url pattern
+        if ( entity.getCategoryReference() != null ) {
+            Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());
+            if (topCategory != null) {
+                entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink("/c")); // For flyout is the URL's always based on the category url pattern
 
-            boolean useCache = this.getSessionPreviewToken(request) == null;
+                boolean useCache = this.getSessionPreviewToken(request) == null;
 
-            FlyoutData flyoutData = null;
-            if (useCache) {
-                flyoutData = (FlyoutData) this.categoryDataCache.getCategoryData(topCategory, "flyout");
+                FlyoutData flyoutData = null;
+                if (useCache) {
+                    flyoutData = (FlyoutData) this.categoryDataCache.getCategoryData(topCategory, "flyout");
+                }
+                if (flyoutData == null) {
+                    QueryResult flyoutResult = this.queryService.query(
+                            this.queryService.newQuery().
+                                    category(topCategory).
+                                    viewType(ViewType.FLYOUT));
+                    flyoutData = new FlyoutData();
+                    flyoutData.facetGroups = flyoutResult.getFacetGroups("/c");
+                    flyoutData.promotions = flyoutResult.getPromotions();
+                    this.categoryDataCache.setCategoryData(topCategory, "flyout", flyoutData);
+                }
+
+                entity.setFacetGroups(flyoutData.facetGroups);
+                entity.setRelatedPromotions(flyoutData.promotions);
             }
-            if (flyoutData == null) {
-                QueryResult flyoutResult = this.queryService.query(
-                        this.queryService.newQuery().
-                                category(topCategory).
-                                viewType(ViewType.FLYOUT));
-                flyoutData = new FlyoutData();
-                flyoutData.facetGroups = flyoutResult.getFacetGroups("/c");
-                flyoutData.promotions = flyoutResult.getPromotions();
-                this.categoryDataCache.setCategoryData(topCategory, "flyout", flyoutData);
-            }
-
-            entity.setFacetGroups(flyoutData.facetGroups);
-            entity.setRelatedPromotions(flyoutData.promotions);
         }
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
@@ -218,15 +252,21 @@ public class WidgetController extends BaseController {
     public String handleProductDetail(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
         ProductDetailWidget entity = (ProductDetailWidget) this.getEntityFromRequest(request, entityId);
 
-        Product product = (Product) request.getAttribute(PRODUCT);
-        if ( product == null ) {
-            ECommerceResult result = this.getResult(request);
-            if ( result instanceof ProductDetailResult ) {
-                product = ((ProductDetailResult) result).getProductDetail();
+        Product product;
+        if ( entity.getProductReference() != null ) {
+            product = this.resolveProductDetail(entity.getProductReference()).getProductDetail();
+        }
+        else {
+            product = (Product) request.getAttribute(PRODUCT);
+            if (product == null) {
+                ECommerceResult result = this.getResult(request);
+                if (result instanceof ProductDetailResult) {
+                    product = ((ProductDetailResult) result).getProductDetail();
+                }
             }
-            if ( product == null ) {
-                throw new ContentProviderException("No product found!");
-            }
+        }
+        if (product == null) {
+            throw new ContentProviderException("No product found!");
         }
         entity.setProduct(product);
         request.setAttribute("entity", entity);
@@ -249,6 +289,35 @@ public class WidgetController extends BaseController {
         return result;
     }
 
+    protected Category resolveCategoryModel(ECommerceCategoryReference categoryReference) {
+        Category category = null;
+        if ( categoryReference.getCategoryPath() != null ) {
+            category = this.categoryService.getCategoryByPath(categoryReference.getCategoryPath());
+        }
+        else if ( categoryReference.getCategoryRef() != null ) {
+            category = this.categoryService.getCategoryById(categoryReference.getCategoryRef().getExternalId());
+        }
+        if ( category != null ) {
+            categoryReference.setCategory(category);
+        }
+        return category;
+    }
+
+    protected ProductDetailResult resolveProductDetail(ECommerceProductReference productReference) throws ContentProviderException {
+        String productId;
+        if ( productReference.getProductRef() != null ) {
+            productId = productReference.getProductRef().getExternalId();
+        }
+        else if ( productReference.getProductId() != null ) {
+            productId = productReference.getProductId();
+        }
+        else {
+            throw new ContentProviderException("Invalid E-Commerce Product Reference!");
+        }
+        ProductDetailResult result = this.detailService.getDetail(productId);
+        return result;
+    }
+
     protected ECommerceResult getResultFromPageTemplate(HttpServletRequest request) {
 
         // TODO: Use thread local here to optimize the search to avoid duplicate calls...
@@ -260,6 +329,8 @@ public class WidgetController extends BaseController {
             Query query = this.queryService.newQuery();
             query.category(category);
             query.facets(this.getFacets(request));
+            this.getQueryContributions(request, query);
+
             return this.queryService.query(query);
         }
         else if ( requestPath.startsWith("/products") ) {
@@ -267,6 +338,18 @@ public class WidgetController extends BaseController {
             return this.detailService.getDetail(productId);
         }
         return null;
+    }
+
+    protected void getQueryContributions(HttpServletRequest request, Query query) {
+
+        PageModel templatePage = (PageModel) request.getAttribute(PAGE_MODEL);
+        for ( RegionModel region : templatePage.getRegions() ) {
+            for (EntityModel entity : region.getEntities() ) {
+                if ( entity instanceof QueryInputContributor) {
+                    ((QueryInputContributor) entity).contributeToQuery(query);
+                }
+            }
+        }
     }
 
     protected Category getCategoryFromPageTemplate(String requestPath) {
