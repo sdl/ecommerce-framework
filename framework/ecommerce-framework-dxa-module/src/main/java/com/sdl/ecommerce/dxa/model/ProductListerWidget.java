@@ -12,12 +12,12 @@ import java.util.List;
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
- * Item Lister Widget
+ * Product Lister Widget
  *
  * @author nic
  */
-@SemanticEntity(entityName = "ItemListerWidget", vocabulary = SDL_CORE, prefix = "e", public_ = false)
-public class ItemListerWidget extends AbstractEntityModel implements QueryInputContributor {
+@SemanticEntity(entityName = "ProductListerWidget", vocabulary = SDL_CORE, prefix = "e", public_ = false)
+public class ProductListerWidget extends AbstractEntityModel implements QueryInputContributor {
 
     @SemanticProperty("e:category")
     private ECommerceCategoryReference categoryReference;

@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="dxa" uri="http://www.sdl.com/tridion-dxa" %>
 <%@ taglib prefix="xpm" uri="http://www.sdl.com/tridion-xpm" %>
-<jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.ItemListerWidget" scope="request"/>
+<jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.ProductListerWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
 <div>
@@ -56,7 +56,6 @@
         </ul>
         --%>
 
-        <%-- Alternative navigation with links to first & last page --%>
         <ul class="pagination lister-navigation">
             <c:if test="${entity.previousUrl != null}">
                 <li><a href="${entity.previousUrl}"><i class="fa fa-angle-left"></i></a></li>

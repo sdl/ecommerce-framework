@@ -70,11 +70,10 @@ public class WidgetController extends BaseController {
     }
 
 
-    // TODO: Rename to ProductLister
-    @RequestMapping(method = RequestMethod.GET, value = "ItemLister/{entityId}")
-    public String handleItemLister(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+    @RequestMapping(method = RequestMethod.GET, value = "ProductLister/{entityId}")
+    public String handleProductLister(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
-        ItemListerWidget entity = (ItemListerWidget) this.getEntityFromRequest(request, entityId);
+        ProductListerWidget entity = (ProductListerWidget) this.getEntityFromRequest(request, entityId);
         QueryResult queryResult;
         if ( entity.getCategoryReference() != null ) {
             Category category = this.resolveCategoryModel(entity.getCategoryReference());
@@ -419,7 +418,7 @@ public class WidgetController extends BaseController {
         }
     }
 
-    protected void processListerNavigationLinks(ItemListerWidget lister, QueryResult result, List<FacetParameter> facets) {
+    protected void processListerNavigationLinks(ProductListerWidget lister, QueryResult result, List<FacetParameter> facets) {
 
         int totalCount = result.getTotalCount();
         int viewSize = result.getViewSize();
