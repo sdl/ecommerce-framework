@@ -68,23 +68,20 @@ Getting started
 
 To get started with the E-Commerce framework you need to do the following steps:
 
-[TODO: Extend this description]
-
 1. If you have not DXA v1.3 in your repo you need to clone that first: `git clone https://github.com/sdl/dxa-web-application-java`. Then you do 'mvn install' and all DXA and needed non-public 3PPs are installed into your local Maven repository
 2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
 3. Compile all code and install it into your local Maven repository: `mvn install` (TODO: Add info about different profiles)
 4. Following instructions given in respective README for each connector (under /connectors) to compile and set it up
 5. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
 6. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
-7. Install the CMS package by doing the following: [TO BE DEFINED]
-8. As optional step you can install the example pages & config for each connector (see README for the connector)
-9. Publish out the settings page, HTML design + the header include page. 
-10. Publish out pages under 'Categories' and 'Products'. And the 'Cart' page.
-11. Define the application properties needed for selected connectors in your webapps' Spring config or properties file
-12. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
-
-
-In addition (optional) you can also install one of the ECL providers (Hybris or Demandware). Follow the instructions given in the respective README for those providers.
+7. Install the CMS package by following instructions given in: [Install CMS packages](./cms/README.md) 
+8. Publish out the settings page, HTML design + the header include page. 
+9. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
+10. Define the application properties needed for selected connectors in your webapps' Spring config or properties file
+11. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
+12. In addition (optional) you can also install one of the ECL providers (Hybris or Demandware). See instructions given in:
+    * [Hybris ECL](./ecl/hybris-ecl-provider/README.md)
+    * [Demandware ECL](./ecl/demandware-ecl-provider/README.md) 
 
 (TODO: Add reference to a community.sdl.com blog post here)
 
