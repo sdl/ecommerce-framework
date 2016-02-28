@@ -4,6 +4,8 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import java.util.Enumeration;
 @RequestMapping({ "/heatmap", "/preview" })
 public class SimpleProxyController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleProxyController.class);
+
     @Value("${fredhopper.adminserver.url}")
     private String fredhopperBaseUrl = "http://localhost:8180";
     @Value("${fredhopper.access.username}")
@@ -34,7 +38,6 @@ public class SimpleProxyController {
     private String accessPassword = null;
 
     private HttpClient client;
-
 
     @PostConstruct
     public void initialize() throws IOException {
@@ -48,37 +51,42 @@ public class SimpleProxyController {
         }
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         final String requestPath = request.getRequestURI();
+        LOG.info("Proxy asset: " + requestPath);
         final boolean isAjax = request.getHeader("X-Requested-With") != null;
         String fredhopperUrl = this.fredhopperBaseUrl + requestPath.replace(".fhjsp", ".jsp") + this.getQueryString(request);
         GetMethod method = new GetMethod(fredhopperUrl);
-        if ( isAjax ) {
-            Enumeration<String> headerNames = request.getHeaderNames();
-            while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
-                if (headerName.startsWith("wicket") || headerName.startsWith("x-") /*|| headerName.startsWith("accept")*/ || headerName.startsWith("user-agent")) {
-                    method.setRequestHeader(headerName, request.getHeader(headerName));
+
+        try {
+            if (isAjax) {
+                Enumeration<String> headerNames = request.getHeaderNames();
+                while (headerNames.hasMoreElements()) {
+                    String headerName = headerNames.nextElement();
+                    if (headerName.startsWith("wicket") || headerName.startsWith("x-") /*|| headerName.startsWith("accept")*/ || headerName.startsWith("user-agent")) {
+                        method.setRequestHeader(headerName, request.getHeader(headerName));
+                    }
                 }
             }
-        }
-        int statusCode = client.executeMethod(method);
 
-        if ( statusCode == HttpStatus.SC_OK ) {
-            // TODO: Fix encoding - because it impacts some of the special characters
-            //
-            //Header contentType = method.getResponseHeader("Content-Type");
-            //response.setContentType(contentType.getValue());
-            IOUtils.copy(method.getResponseBodyAsStream(), response.getOutputStream());
-            response.flushBuffer();
+            int statusCode = client.executeMethod(method);
+
+            if (statusCode == HttpStatus.SC_OK) {
+                // TODO: Fix encoding - because it impacts some of the special characters
+                //
+                //Header contentType = method.getResponseHeader("Content-Type");
+                //response.setContentType(contentType.getValue());
+                IOUtils.copy(method.getResponseBodyAsStream(), response.getOutputStream());
+                response.flushBuffer();
+            } else {
+                response.sendError(statusCode);
+            }
         }
-        else {
-            response.sendError(statusCode);
+        finally {
+            method.releaseConnection();
         }
-        method.releaseConnection();
     }
 
     protected String getQueryString(HttpServletRequest request) {
