@@ -16,3 +16,4 @@ TestResults
 eclprovider.runsettings
 application-test.properties
 ImportExport/
+Tridion.ExternalContentLibrary*.dll
