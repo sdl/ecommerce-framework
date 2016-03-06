@@ -14,7 +14,7 @@
     </parent>
 
     <properties>
-        <fredhopper-api-version>7.5.2.7</fredhopper-api-version>
+        <fredhopper-api-version>7.5.2.9</fredhopper-api-version>
     </properties>
 
     <dependencies>

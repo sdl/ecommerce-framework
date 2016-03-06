@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+
 import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
 import java.io.UnsupportedEncodingException;
@@ -45,17 +48,19 @@ public class FredhopperEditService implements EditService {
         }
 
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Promotion", "/fh-edit/campaigns.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-        menuItems.add(new MenuItem("Facet", "/fh-edit/facets.fh?id=_new&fh_location=" + location+ "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-        menuItems.add(new MenuItem("Modification", "/fh-edit/modified_results.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
-        menuItems.add(new MenuItem("Ranking", "/fh-edit/rankings.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        menuItems.add(new MenuItem("Promotion", buildFredhopperEditUrl("campaigns.fh", location)));
+        menuItems.add(new MenuItem("Facet", buildFredhopperEditUrl("facets.fh", location)));
+        menuItems.add(new MenuItem("Modification", buildFredhopperEditUrl("modified_results.fh", location)));
+        menuItems.add(new MenuItem("Ranking", buildFredhopperEditUrl("rankings.fh", location)));
         if ( query.getSearchPhrase() != null ) {
-            menuItems.add(new MenuItem("Synonyms", "/fh-edit/search_synonyms.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+            menuItems.add(new MenuItem("Synonyms", buildFredhopperEditUrl("search_synonyms.fh", location)));
         }
-        menuItems.add(new MenuItem("Redirect", "/fh-edit/search_redirects.fh?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories"));
+        menuItems.add(new MenuItem("Redirect", buildFredhopperEditUrl("search_redirects.fh", location)));
         return new EditMenu("Create New...", menuItems);
+    }
 
-
+    private String buildFredhopperEditUrl(String editPage, String location) {
+        return "/fh-edit/" + editPage + "?id=_new&fh_location=" + location + "&fh_location_selection_mode=exact_path&fh_reffacet=categories";
     }
 }
 

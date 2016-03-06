@@ -4,6 +4,7 @@ package com.sdl.ecommerce.fredhopper.admin;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -25,8 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
@@ -44,10 +44,8 @@ import java.util.zip.GZIPInputStream;
 public class AdminProxyController {
 
     // TODO: Migrate to Http Client 4.5.
-    // There is an issue with some AJAX post requests that does not work with 4.5, therefore we use 3.1 for this controller
+    // - There is an issue with some AJAX post requests that does not work with 4.5, therefore we use 3.1 for this controller
     //
-
-    // TODO: NEED TO SUPPORT DIFFERENT VERSION OF FH THAT HAS DIFFERENT LOOK&FEEL ETC
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminProxyController.class);
 
@@ -95,23 +93,36 @@ public class AdminProxyController {
 
     protected void login() throws IOException {
         GetMethod method = new GetMethod(fredhopperAdminUrl + "/login.fh?username=" + this.username + "&password=" + this.password);
-        int statusCode = client.executeMethod(method);
-        LOG.debug("Fredhopper admin login status: " + statusCode);
-        // TODO: Raise error here when status code is NOT 200!!!
-        method.releaseConnection();
-
+        try {
+            int statusCode = client.executeMethod(method);
+            LOG.debug("Fredhopper admin login status: " + statusCode);
+            if (statusCode != HttpStatus.SC_OK) {
+                throw new IOException("Could not login into Fredhopper. Status Code: " + statusCode);
+            }
+        }
+        finally {
+            method.releaseConnection();
+        }
     }
 
-    protected void checkSession() throws IOException {
+    protected void checkSession(HttpServletRequest request) throws IOException {
+        //if ( !isInXPMSessionPreview(request) ) {
+        //    throw new IOException("No active XPM session found!");
+        //}
         if ( this.lastAccessTime + this.sessionTimeout < System.currentTimeMillis() ) {
             login();
         }
     }
 
+    protected boolean isInXPMSessionPreview(HttpServletRequest request) {
+        Boolean accessedViaXPM = (Boolean) request.getSession().getAttribute("__InvokedViaXPM");
+        return Boolean.TRUE.equals(accessedViaXPM);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        this.checkSession();
+        this.checkSession(request);
 
         LOG.debug("Proxy request: " + request.getRequestURI());
 
@@ -157,7 +168,7 @@ public class AdminProxyController {
 
                     // Process HTML
                     //
-                    htmlBody = this.processHtml(htmlBody);
+                    htmlBody = this.processHtml(htmlBody, request);
                     response.setContentType("text/html");
                     response.getWriter().write(htmlBody);
 
@@ -202,7 +213,7 @@ public class AdminProxyController {
     @RequestMapping(method = RequestMethod.POST, value = "/**", produces = {MediaType.ALL_VALUE})
     public void postHtml(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        this.checkSession();
+        this.checkSession(request);
 
         LOG.debug("Proxy POST request: " + request.getRequestURI());
 
@@ -247,7 +258,9 @@ public class AdminProxyController {
     }
 
 
-    protected String processHtml(final String html) {
+    protected String processHtml(final String html, final HttpServletRequest request) {
+
+        boolean listView = request.getParameter("list") != null;
 
         // First do some global find-replace
         //
@@ -259,7 +272,9 @@ public class AdminProxyController {
         Document htmlDoc = Jsoup.parse(processedHtml);
         this.removeElementsWithId(htmlDoc, "header");
         this.removeElementsWithId(htmlDoc, "lhsLeftContainer");
-        this.removeElementsWithClass(htmlDoc, "scope-selection-container");
+        if ( !listView ) {
+            this.removeElementsWithClass(htmlDoc, "scope-selection-container");
+        }
         this.removeElementsWithId(htmlDoc, "synonymSaveAndCloseButton");
         this.removeElementsWithId(htmlDoc, "saveAsButton");
         this.removeElementsWithId(htmlDoc, "synonymFlagButton");
