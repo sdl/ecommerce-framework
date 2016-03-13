@@ -17,3 +17,5 @@ eclprovider.runsettings
 application-test.properties
 ImportExport/
 Tridion.ExternalContentLibrary*.dll
+query-lang*.jar
+ws-client-*.jar
