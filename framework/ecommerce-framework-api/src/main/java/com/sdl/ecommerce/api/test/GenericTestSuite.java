@@ -133,6 +133,17 @@ public abstract class GenericTestSuite {
         this.printPromotions(result.getPromotions());
     }
 
+    protected void testQueryWithFilterAttributes(String categoryPath, QueryFilterAttribute filterAttribute) {
+        Category category = this.categoryService.getCategoryByPath(categoryPath);
+        QueryResult result = this.queryService.query(
+                this.queryService.newQuery().
+                        category(category).
+                        viewSize(10).
+                        filterAttribute(filterAttribute));
+        this.printFacets(result.getFacetGroups(null));
+        this.printPromotions(result.getPromotions());
+    }
+
     protected void testGetProductDetail(String productId) throws Exception {
         LOG.info("Getting detail for product...");
         ProductDetailResult result = this.detailService.getDetail(productId);
