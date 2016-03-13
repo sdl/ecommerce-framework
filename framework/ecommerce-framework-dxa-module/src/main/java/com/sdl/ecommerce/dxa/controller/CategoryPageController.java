@@ -42,7 +42,7 @@ public class CategoryPageController extends AbstractECommercePageController {
         final String requestPath = webRequestContext.getRequestPath().replaceFirst("/c", "");
         final Category category = this.categoryService.getCategoryByPath(requestPath);
         final List<FacetParameter> facets = this.getFacetParametersFromRequestMap(request.getParameterMap());
-        final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(requestPath));
+        final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(requestPath, category));
 
         final Query query = this.queryService.newQuery();
         this.getQueryContributions(templatePage, query);
@@ -83,10 +83,15 @@ public class CategoryPageController extends AbstractECommercePageController {
         throw new PageNotFoundException("Category page not found.");
     }
 
-    protected List<String> getSearchPath(String url) {
+    protected List<String> getSearchPath(String url, Category category) {
         List<String> searchPath = new ArrayList<>();
+        String categoryPath = "/categories/"; // TODO: Have this configurable. Should this be placed in System instead?
+        Category currentCategory = category;
+        while ( currentCategory != null ) {
+            searchPath.add(categoryPath + category.getId());
+            currentCategory = currentCategory.getParent();
+        }
         StringTokenizer tokenizer = new StringTokenizer(url, "/");
-        String categoryPath = "/categories/";
         while ( tokenizer.hasMoreTokens() ) {
             categoryPath += tokenizer.nextToken();
             searchPath.add(0, categoryPath);
