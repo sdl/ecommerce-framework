@@ -16,13 +16,38 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- TODO: Have profiles for each E-Com provider -->
 
     <modules>
-        <module>fredhopper-dxa-ecommerce-connector</module>
-        <module>hybris-dxa-ecommerce-connector</module>
-	    <module>demandware-dxa-ecommerce-connector</module>
         <module>dummy-dxa-ecommerce-connector</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>all-connectors</id>
+            <modules>
+                <module>fredhopper-dxa-ecommerce-connector</module>
+                <module>hybris-dxa-ecommerce-connector</module>
+                <module>demandware-dxa-ecommerce-connector</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>fredhopper</id>
+            <modules>
+                <module>fredhopper-dxa-ecommerce-connector</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>hybris</id>
+            <modules>
+                <module>hybris-dxa-ecommerce-connector</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>demandware</id>
+            <modules>
+                <module>demandware-dxa-ecommerce-connector</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
