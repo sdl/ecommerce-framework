@@ -91,6 +91,7 @@ public class SearchPageController extends AbstractECommercePageController {
     protected List<String> getSearchPath(String url) {
         List<String> searchPath = new ArrayList<>();
         searchPath.add("/search-results"); // TODO: Have this configurable
+        // TODO: Add possibility to override search result based on search phrases etc
         return searchPath;
     }
 }
