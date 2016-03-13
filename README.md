@@ -10,6 +10,8 @@ Right now it provides connectors for:
 * SAP Hybris (http://www.hybris.com)
 * Demandware (http://www.demandware.com)
 
+The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.0) using DXA 1.3.
+
 Concepts
 ---------
 
@@ -45,10 +47,11 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
 
 * E-Com driven navigation items (in mega navigation). Can be mixed with content driven navigation items.
 * Widgets for:
-    * Item Listers
+    * Product Listers
     * Facets 
     * Breadcrumbs
     * Promotions
+    * Product details
     * Mega navigation (facets + promotions)
     * Search box (in the header)
     * Search spelling feedback
@@ -62,6 +65,18 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
 
 The ECL providers allows easy access to categories and products which makes it easy to associate references in for example the different E-Commerce widgets (listers, facets etc). 
 In addition the ECL provider gives the possibility to drag & drop categories & products directly on pages as well. This allows the possibility to do both E-Commerce 1:1 (i.e. one Tridion page per category/product) and rule based (through the controllers).
+
+Prerequisites
+----------------
+
+The framework is requiring DXA 1.3 which includes support for SDL Tridion 2013 SP1 and SDL Web 8.
+
+The connectors to the E-Commerce systems has been verified against the following:
+
+* SDL Fredhopper 7.5.x & 8.1.x
+* Demandware OCAPI 16.1 & 16.2
+* Hybris OCC v1 on hybris Commerce Suite 5.x
+
 
 Getting started
 -----------------
@@ -96,7 +111,8 @@ Currently the E-Commerce framework does not implement the following:
 * Hybrid search (content/E-Commerce)
 * Search suggest
 
-This is something to be consider in later version of the framework.
+This is something to be consider in later version of the framework.  We also consider to move the E-Commerce connectors to the
+SDL Web micro service infrastructure instead so it can easily be reused for .NET web applications.
 
 Branching model
 ----------------

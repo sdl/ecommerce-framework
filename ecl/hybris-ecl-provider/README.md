@@ -23,6 +23,7 @@
 ``` 
 
 * Make sure that the id of the mountpoint is named 'hybris', otherwise the ECL mappings on the DXA side will not work.
+* Verify that the multimedia type has been created for ECL with MIME type = 'application/externalcontentlibrary' and extension = 'ecl'
 * Restart SDL Tridion services and verify that you can browse the Hybris product catalog through SDL Tridion
 
   
