@@ -104,6 +104,10 @@ public class DummyCart implements Cart {
 
     @Override
     public Map<URI, Object> getDataToExposeToClaimStore() throws ECommerceException {
-        return new HashMap<>();
+        Map<URI,Object> claims = new HashMap<>();
+        claims.put(Cart.CART_ITEMS_URI, this.count());
+        claims.put(Cart.CART_TOTAL_PRICE_URI, this.getTotalPrice().getPrice());
+        return claims;
     }
+
 }
