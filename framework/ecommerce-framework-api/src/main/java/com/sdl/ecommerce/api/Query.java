@@ -25,7 +25,7 @@ public abstract class Query implements Cloneable {
     private List<FacetParameter> facets;
     private int startIndex;
     private int viewSize;
-    private QueryFilter filter;
+    private List<QueryFilterAttribute> filterAttributes;
     private ViewType viewType;
 
     // TODO: Add Localization here as one important parameter
@@ -64,8 +64,11 @@ public abstract class Query implements Cloneable {
         return this;
     }
 
-    public Query filter(QueryFilter filter) {
-        this.filter = filter;
+    public Query filterAttribute(QueryFilterAttribute filterAttribute) {
+        if ( this.filterAttributes == null ) {
+            this.filterAttributes = new ArrayList<>();
+        }
+        this.filterAttributes.add(filterAttribute);
         return this;
     }
 
@@ -94,8 +97,8 @@ public abstract class Query implements Cloneable {
         return viewSize;
     }
 
-    public QueryFilter getFilter() {
-        return filter;
+    public List<QueryFilterAttribute> getFilterAttributes() {
+        return filterAttributes;
     }
 
     public ViewType getViewType() {

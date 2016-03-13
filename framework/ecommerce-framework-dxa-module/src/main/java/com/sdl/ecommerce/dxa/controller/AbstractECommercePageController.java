@@ -113,9 +113,11 @@ public class AbstractECommercePageController extends BaseController {
     protected void getQueryContributions(PageModel templatePage, Query query) {
 
         for ( RegionModel region : templatePage.getRegions() ) {
-            for (EntityModel entity : region.getEntities() ) {
-                if ( entity instanceof QueryInputContributor) {
-                    ((QueryInputContributor) entity).contributeToQuery(query);
+            if ( !region.getName().equals("Header") && !region.getName().equals("Footer") ) {
+                for (EntityModel entity : region.getEntities()) {
+                    if (entity instanceof QueryInputContributor) {
+                        ((QueryInputContributor) entity).contributeToQuery(query);
+                    }
                 }
             }
         }

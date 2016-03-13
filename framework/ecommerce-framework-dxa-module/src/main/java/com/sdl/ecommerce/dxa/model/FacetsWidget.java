@@ -1,5 +1,7 @@
 package com.sdl.ecommerce.dxa.model;
 
+import com.sdl.ecommerce.api.Query;
+import com.sdl.ecommerce.api.QueryInputContributor;
 import com.sdl.ecommerce.api.model.FacetGroup;
 import com.sdl.ecommerce.api.model.Promotion;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
@@ -16,15 +18,16 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
  * @author nic
  */
 @SemanticEntity(entityName = "FacetsWidget", vocabulary = SDL_CORE, prefix = "e", public_ = false)
-public class FacetsWidget extends AbstractEntityModel {
-
-    // TODO: Add metadata fields for customizing the experience
+public class FacetsWidget extends AbstractEntityModel implements QueryInputContributor {
 
     @SemanticProperty("e:category")
     private ECommerceCategoryReference categoryReference;
 
     @SemanticProperty("e:viewType")
     private String viewType;
+
+    @SemanticProperty("e:filterAttributes")
+    private List<ECommerceFilterAttribute> filterAttributes;
 
     private List<FacetGroup> facetGroups;
 
@@ -37,6 +40,10 @@ public class FacetsWidget extends AbstractEntityModel {
 
     public String getViewType() {
         return viewType;
+    }
+
+    public List<ECommerceFilterAttribute> getFilterAttributes() {
+        return filterAttributes;
     }
 
     public List<FacetGroup> getFacetGroups() {
@@ -59,4 +66,12 @@ public class FacetsWidget extends AbstractEntityModel {
         return promotion.getClass().getInterfaces()[0].getSimpleName();
     }
 
+    @Override
+    public void contributeToQuery(Query query) {
+        if ( filterAttributes != null ) {
+            for ( ECommerceFilterAttribute filterAttribute : filterAttributes ) {
+                query.filterAttribute(filterAttribute.toQueryFilterAttribute());
+            }
+        }
+    }
 }
