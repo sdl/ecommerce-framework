@@ -59,4 +59,9 @@
     </div>
 </li>
 </c:if>
+<c:if test="${entity.categoryReference.category != null && empty entity.facetGroups}">
+    <li class="mega-nav-link">
+        <a href="${entity.categoryReference.categoryUrl}">${entity.categoryReference.category.name}</a>
+    </li>
+</c:if>
 

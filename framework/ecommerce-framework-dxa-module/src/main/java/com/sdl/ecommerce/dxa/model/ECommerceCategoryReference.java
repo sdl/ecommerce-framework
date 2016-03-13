@@ -22,6 +22,9 @@ public class ECommerceCategoryReference extends AbstractEntityModel {
     @SemanticProperty("e:categoryRef")
     private ECommerceEclItem categoryRef;
 
+    @SemanticProperty("e:categoryId")
+    private String categoryId;
+
     // Data set by controllers
     //
     private Category category;
@@ -33,6 +36,10 @@ public class ECommerceCategoryReference extends AbstractEntityModel {
 
     public ECommerceEclItem getCategoryRef() {
         return categoryRef;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
     }
 
     public Category getCategory() {
