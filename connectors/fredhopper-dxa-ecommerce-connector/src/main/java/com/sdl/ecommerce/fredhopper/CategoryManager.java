@@ -8,6 +8,7 @@ import com.sdl.ecommerce.fredhopper.model.FredhopperCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -36,6 +37,12 @@ public class CategoryManager {
         this.readTopLevelCategories();
     }
 
+    /**
+     * Get category by specified ID
+     * @param id
+     * @return category
+     * @throws ECommerceException
+     */
     public Category getCategoryById(String id) throws ECommerceException {
         return this.getCategoryById(id, this.getTopLevelCategories());
     }
@@ -58,6 +65,12 @@ public class CategoryManager {
         return null;
     }
 
+    /**
+     * Get category by specified path
+     * @param path
+     * @return category
+     * @throws ECommerceException
+     */
     public Category getCategoryByPath(String path)  throws ECommerceException {
 
         LOG.debug("Getting category by path: " + path);
@@ -100,6 +113,9 @@ public class CategoryManager {
         return this.rootCategory.getCategories();
     }
 
+    /**
+     * Read top level categories
+     */
     private void readTopLevelCategories() {
 
         Query query = this.fredhopperClient.buildQuery(universe, locale);
@@ -111,6 +127,11 @@ public class CategoryManager {
         }
     }
 
+    /**
+     * Load categories belonging to provided parent category.
+     *
+     * @param parent
+     */
     private void loadCategories(Category parent) {
 
         LOG.debug("Loading sub-categories for category: " + (parent == this.rootCategory ? "ROOT" : parent.getName()));
@@ -122,6 +143,16 @@ public class CategoryManager {
         List<Category> categories = this.fredhopperClient.getCategories(parent, this.fredhopperClient.getUniverse(page));
         List<Category> existingCategories = parent.getCategories();
 
+        // Verify so we did not get the same categories as parent structure.
+        // This happens if the category facet is set to multi-select
+        //
+        for ( Category category : categories ) {
+            if ( category.getId().equals(parent.getId()) ) {
+                categories = new ArrayList<>();
+                break;
+            }
+        }
+        //
         if ( existingCategories != null ) {
             // If a refresh -> rebuild the list and reuse items
             //

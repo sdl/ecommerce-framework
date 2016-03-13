@@ -22,6 +22,7 @@ public class FredhopperFacet implements Facet {
     static private Pattern FH_RANGE_PATTERN = Pattern.compile("([0-9]+[\\.0-9]*)<[A-za-z_0-9]+<([0-9]+[\\.0-9]*)");
     static private Pattern FH_LESS_THAN_PATTERN = Pattern.compile("[A-za-z_0-9]+<([0-9]+[\\.0-9]*)");
     static private Pattern FH_GREATER_THAN_PATTERN = Pattern.compile("[A-za-z_0-9]+>([0-9]+[\\.0-9]*)");
+    static private Pattern FH_BAD_FLOAT_PATTERN = Pattern.compile("[0-9]+\\.[0-9][0-9][0-9]+");
 
     public FredhopperFacet(String title, String url, int count, boolean isSelected) {
         this.title = title;
@@ -130,8 +131,8 @@ public class FredhopperFacet implements Facet {
         Matcher gtMatcher = FH_GREATER_THAN_PATTERN.matcher(facetValue);
 
         if ( rangeMatcher.matches() ) {
-            String min = rangeMatcher.group(1);
-            String max = rangeMatcher.group(2);
+            String min = formatRangeValue(rangeMatcher.group(1));
+            String max = formatRangeValue(rangeMatcher.group(2));
             value = min + "-" + max;
         }
         else if ( ltMatcher.matches() ) {
@@ -145,5 +146,13 @@ public class FredhopperFacet implements Facet {
         }
 
         return name + "=" + value;
+    }
+
+    private static String formatRangeValue(String rangeValue) {
+        if ( FH_BAD_FLOAT_PATTERN.matcher(rangeValue).matches() ) {
+            float floatValue = Float.parseFloat(rangeValue);
+            return String.format(java.util.Locale.US,"%.2f", floatValue);
+        }
+        return rangeValue;
     }
 }

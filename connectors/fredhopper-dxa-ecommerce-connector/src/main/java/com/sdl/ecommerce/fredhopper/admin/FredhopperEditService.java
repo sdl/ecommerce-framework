@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FredhopperEditService
+ * Fredhopper Edit Service
+ * Get links to create new facets, promotions etc.
  *
  * @author nic
  */

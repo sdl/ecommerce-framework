@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * FredhopperCategoryService
+ * Fredhopper Category Service
  *
  * @author nic
  */
@@ -35,7 +35,11 @@ public class FredhopperCategoryService implements ProductCategoryService {
 
     private Map<String, CategoryManager> categoryManagers = new HashMap<>();
 
-
+    /**
+     * Get category manager for current localization. Each localization has its own category structure.
+     *
+     * @return category manager
+     */
     private CategoryManager getCategoryManager() {
 
         String publicationId = this.localizationService.getPublicationId();

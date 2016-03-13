@@ -21,6 +21,7 @@ import java.util.Enumeration;
 
 /**
  * Simple Proxy Controller
+ * Proxy request to resources outside the Fredhopper Business Manager.
  *
  * @author nic
  */
@@ -51,6 +52,13 @@ public class SimpleProxyController {
         }
     }
 
+    /**
+     * Proxy assets
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

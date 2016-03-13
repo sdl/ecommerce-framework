@@ -1,11 +1,14 @@
 package com.sdl.ecommerce.fredhopper;
 
 import com.fredhopper.webservice.client.*;
+import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductQueryService;
+import com.sdl.ecommerce.api.QueryFilterAttribute;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.fredhopper.model.*;
 import com.sdl.ecommerce.fredhopper.model.promotion.FredhopperPromotion;
+import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
 import java.net.URLDecoder;
 import java.util.*;
@@ -22,13 +25,14 @@ public abstract class FredhopperResultBase {
     protected FredhopperLinkManager linkManager;
     protected ProductCategoryService categoryService;
     protected ProductQueryService queryService;
+    protected LocalizationService localizationService;
     protected Map<String,String> productModelMappings;
+    protected List<String> hiddenFacetValues;
 
-    protected FredhopperResultBase(Page fredhopperPage, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
+    protected FredhopperResultBase(Page fredhopperPage, FredhopperLinkManager linkManager) {
         this.fredhopperPage = fredhopperPage;
         this.universe = this.getUniverse(fredhopperPage);
         this.linkManager = linkManager;
-        this.productModelMappings = productModelMappings;
     }
 
     /****** Setters to inject the different services needed for getting additional data from the result set *****/
@@ -39,6 +43,13 @@ public abstract class FredhopperResultBase {
 
     void setCategoryService(ProductCategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    public void setLocalizationService(LocalizationService localizationService) {
+        this.localizationService = localizationService;
+        this.productModelMappings = getProductModelMappings(this.localizationService);
+        this.hiddenFacetValues = getHiddenFacetValues(this.localizationService);
+
     }
 
     /****** Helper functions to extract data from the Fredhopper universe *******/
@@ -102,10 +113,10 @@ public abstract class FredhopperResultBase {
     }
 
     protected List<Promotion> getPromotions(Universe universe) {
-        return this.getPromotions(universe, null, null);
+        return this.getPromotions(universe, null);
     }
 
-    protected List<Promotion> getPromotions(Universe universe, String filterField, String filterFieldValue) {
+    protected List<Promotion> getPromotions(Universe universe, List<QueryFilterAttribute> filterAttributes) {
 
         // For now just take the first theme list
         //
@@ -113,11 +124,8 @@ public abstract class FredhopperResultBase {
             List<Theme> themes = universe.getThemes().get(0).getTheme();
             List<Promotion> promotions = new ArrayList<>();
             for ( Theme theme : themes ) {
-                if ( filterField != null ) {
-                    String fieldValue = getCustomFieldValue(theme, filterField);
-                    if ( !filterFieldValue.equals(fieldValue) ) {
-                        continue;
-                    }
+                if ( !include(theme.getCustomFields(), filterAttributes) ) {
+                    continue;
                 }
                 String editUrl = "/fh-edit/campaigns.fh?" + URLDecoder.decode(universe.getLink().getUrlParams()) + "&id=" + theme.getId();
                 List<Product> products = null;
@@ -154,13 +162,38 @@ public abstract class FredhopperResultBase {
             //
             else if ( fhCrumb.getName().getAttributeType() != null ) {
 
-                if ( fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() == 2 ) {
+                if ( fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() == 2 && fhCrumb.getRange().getValueSet().get(0).getAggregation() == AggregationType.AND ) {
                     com.fredhopper.webservice.client.Value minValue = fhCrumb.getRange().getValueSet().get(0).getEntry().get(0).getValue();
                     com.fredhopper.webservice.client.Value maxValue = fhCrumb.getRange().getValueSet().get(1).getEntry().get(0).getValue();
                     String facetTitle = minValue.getValue() + " - " + maxValue.getValue();
                     String facetValue = minValue.getNonMl() + "-" + maxValue.getNonMl();
                     String path = FredhopperFacet.getRemoveFacetLink(fhCrumb.getName().getAttributeType(), facetValue, currentFacets);
                     Breadcrumb breadcrumb = new FredhopperBreadcrumb(facetTitle, path, false);
+                    breadcrumbs.add(breadcrumb);
+                }
+                // Aggregated facet values
+                //
+                else if ( fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() > 0 && fhCrumb.getRange().getValueSet().get(0).getAggregation() == AggregationType.OR ) {
+                    StringBuilder aggregatedValue = new StringBuilder();
+                    List<Entry> entries = fhCrumb.getRange().getValueSet().get(0).getEntry();
+                    for ( int i=0; i < entries.size(); i++ ) {
+                        aggregatedValue.append(entries.get(i).getValue().getNonMl());
+                        if ( i < entries.size()-1 ) {
+                            aggregatedValue.append(";");
+                        }
+                    }
+                    String title;
+                    Filtersection section = this.getSelectedFilterSectionWithValue(universe, aggregatedValue.toString());
+                    if ( section != null ) {
+                        title = section.getLink().getName();
+                    }
+                    else {
+                        // If no aggregated title is found -> fall back on the first entry value
+                        //
+                        title = entries.get(0).getValue().getValue();
+                    }
+                    String path = FredhopperFacet.getRemoveFacetLink(fhCrumb.getName().getAttributeType(), aggregatedValue.toString(), currentFacets);
+                    Breadcrumb breadcrumb = new FredhopperBreadcrumb(title, path, false);
                     breadcrumbs.add(breadcrumb);
                 }
                 else {
@@ -179,11 +212,23 @@ public abstract class FredhopperResultBase {
         return breadcrumbs;
     }
 
-    protected List<FacetGroup> getFacetGroups(Universe universe, List<FacetParameter> currentFacets, String urlPrefix) {
-        return this.getFacetGroups(universe, currentFacets, urlPrefix, null, null, null);
+    protected Filtersection getSelectedFilterSectionWithValue(Universe universe, String value) {
+        List<Filter> filters = this.getFacetFilters(universe);
+        for ( Filter filter : filters ) {
+            for ( Filtersection section : filter.getFiltersection() ) {
+                if ( section.isSelected() != null && section.isSelected() && value.equals(section.getValue().getValue()) ) {
+                    return section;
+                }
+            }
+        }
+        return null;
     }
 
-    protected List<FacetGroup> getFacetGroups(Universe universe, List<FacetParameter> currentFacets, String urlPrefix, String categoryUrlPrefix, String filterField, String filterFieldValue) {
+    protected List<FacetGroup> getFacetGroups(Universe universe, List<FacetParameter> currentFacets, String urlPrefix) {
+        return this.getFacetGroups(universe, currentFacets, urlPrefix, null, null);
+    }
+
+    protected List<FacetGroup> getFacetGroups(Universe universe, List<FacetParameter> currentFacets, String urlPrefix, String categoryUrlPrefix, List<QueryFilterAttribute> queryFilterAttributes) {
         List<Filter> filters = this.getFacetFilters(universe);
         List<FacetGroup> facetGroups = new ArrayList<>();
         String facetPrefix = "";
@@ -191,11 +236,8 @@ public abstract class FredhopperResultBase {
             facetPrefix = categoryUrlPrefix;
         }
         for ( Filter filter : filters ) {
-            if ( filterField != null ) {
-                String fieldValue = getCustomFieldValue(filter, filterField);
-                if ( !filterFieldValue.equals(fieldValue) ) {
-                    continue;
-                }
+            if ( !include(filter.getCustomFields(), queryFilterAttributes) ) {
+                continue;
             }
             String editUrl = "/fh-edit/facets.fh?" +  URLDecoder.decode(universe.getLink().getUrlParams() + "&id=" + filter.getFacetid());
             FacetGroup facetGroup = new FredhopperFacetGroup(filter, editUrl);
@@ -214,13 +256,21 @@ public abstract class FredhopperResultBase {
                     }
                 }
                 else { // facet
-                    if ( isSelected ) {
-                        // TODO: Will this work for range values??
-                        link = facetPrefix + FredhopperFacet.getRemoveFacetLink(filter.getOn(), section.getValue().getValue(), currentFacets);
+
+                    // If a hidden facet value -> ignore to add it to the facet group
+                    //
+                    if ( this.hiddenFacetValues != null && this.hiddenFacetValues.contains(section.getLink().getName()) ) {
+                        continue;
                     }
-                    else {
-                        link = facetPrefix + FredhopperFacet.getAddFacetLink(filter.getOn(), section.getValue().getValue(), filter.getBasetype().value(), currentFacets);
+
+                    String facetValue = section.getValue().getValue();
+
+                    if (isSelected) {
+                        link = facetPrefix + FredhopperFacet.getRemoveFacetLink(filter.getOn(), facetValue, currentFacets);
+                    } else {
+                        link = facetPrefix + FredhopperFacet.getAddFacetLink(filter.getOn(), facetValue, filter.getBasetype().value(), currentFacets);
                     }
+
                 }
                 Facet facet = new FredhopperFacet(section.getLink().getName(), link, section.getNr(), isSelected);
 
@@ -241,20 +291,23 @@ public abstract class FredhopperResultBase {
         return filters;
     }
 
-    protected String getCustomFieldValue(Filter filter, String name) {
-        if ( filter.getCustomFields() != null ) {
-            for (CustomField field : filter.getCustomFields().getCustomField()) {
-                if (field.getName().equals(name)) {
-                    return field.getValue();
+    protected boolean include(CustomFields customFields, List<QueryFilterAttribute> filterAttributes) {
+        if ( filterAttributes != null ) {
+            for (QueryFilterAttribute filterAttribute : filterAttributes) {
+                String customFieldValue = this.getCustomFieldValue(customFields, filterAttribute.getName());
+                if (!filterAttribute.getValue().equals(customFieldValue) && filterAttribute.getMode() == QueryFilterAttribute.FilterMode.INCLUDE) {
+                    return false;
+                } else if (filterAttribute.getValue().equals(customFieldValue) && filterAttribute.getMode() == QueryFilterAttribute.FilterMode.EXCLUDE) {
+                    return false;
                 }
             }
         }
-        return null;
+        return true;
     }
 
-    protected String getCustomFieldValue(Theme theme, String name) {
-        if ( theme.getCustomFields() != null ) {
-            for (CustomField field : theme.getCustomFields().getCustomField()) {
+    protected String getCustomFieldValue(CustomFields customFields, String name) {
+        if ( customFields != null ) {
+            for (CustomField field : customFields.getCustomField()) {
                 if (field.getName().equals(name)) {
                     return field.getValue();
                 }

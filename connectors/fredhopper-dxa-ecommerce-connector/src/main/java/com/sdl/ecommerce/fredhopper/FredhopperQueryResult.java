@@ -21,10 +21,17 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
     private Query query;
     private Category category;
 
-    public FredhopperQueryResult(Page fredhopperPage, Query query, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
-        super(fredhopperPage, linkManager, productModelMappings);
+    public FredhopperQueryResult(Page fredhopperPage, Query query, FredhopperLinkManager linkManager) {
+        super(fredhopperPage, linkManager);
         this.query = query;
         this.category = query.getCategory();
+
+        if ( query.getViewType() == ViewType.FLYOUT && query.getFilterAttributes() == null ) {
+            // Add default query filter attribute for flyouts
+            //
+            query.filterAttribute(new QueryFilterAttribute("flyout", "yes"));
+        }
+
     }
 
     @Override
@@ -40,22 +47,20 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public List<Promotion> getPromotions() {
-        if ( query.getViewType() == ViewType.FLYOUT ) {
-            return this.getPromotions(this.universe, "flyout", "yes");
-        }
-        else {
-            return this.getPromotions(this.universe);
-        }
+        return this.getPromotions(this.universe, this.query.getFilterAttributes());
     }
 
     @Override
     public List<FacetGroup> getFacetGroups(String urlPrefix) {
+
         if ( urlPrefix == null ) { urlPrefix = ""; }
         if ( query.getViewType() == ViewType.FLYOUT ) {
-            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix, this.category.getCategoryLink(urlPrefix), "flyout", "yes");
+            // For flyout we need to have absolute category links
+            //
+            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix, this.category.getCategoryLink(urlPrefix), this.query.getFilterAttributes());
         }
         else {
-            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix);
+            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix, null, this.query.getFilterAttributes());
         }
     }
 

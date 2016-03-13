@@ -91,6 +91,11 @@ public class AdminProxyController {
         this.lastAccessTime = System.currentTimeMillis();
     }
 
+    /**
+     * Login into Fredhopper Business Manager.
+     *
+     * @throws IOException
+     */
     protected void login() throws IOException {
         GetMethod method = new GetMethod(fredhopperAdminUrl + "/login.fh?username=" + this.username + "&password=" + this.password);
         try {
@@ -105,20 +110,31 @@ public class AdminProxyController {
         }
     }
 
+    /**
+     * Check session if it is
+     * @param request
+     * @throws IOException
+     */
     protected void checkSession(HttpServletRequest request) throws IOException {
-        //if ( !isInXPMSessionPreview(request) ) {
-        //    throw new IOException("No active XPM session found!");
-        //}
+        if ( !isInXPMSessionPreview(request) ) {
+            throw new IOException("No active XPM session found!");
+        }
         if ( this.lastAccessTime + this.sessionTimeout < System.currentTimeMillis() ) {
             login();
         }
     }
 
     protected boolean isInXPMSessionPreview(HttpServletRequest request) {
-        Boolean accessedViaXPM = (Boolean) request.getSession().getAttribute("__InvokedViaXPM");
+        Boolean accessedViaXPM = (Boolean) request.getSession().getAttribute("__InXPMSession");
         return Boolean.TRUE.equals(accessedViaXPM);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -209,6 +225,12 @@ public class AdminProxyController {
 
     }
 
+    /**
+     * Proxy POST requests (primarly AJAX requests) from the inline edit popup
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     // TODO: Merge this method with the GET method
     @RequestMapping(method = RequestMethod.POST, value = "/**", produces = {MediaType.ALL_VALUE})
     public void postHtml(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -258,8 +280,18 @@ public class AdminProxyController {
     }
 
 
+    /**
+     * Process the HTML received from Fredhopper GUI. Top and left navigation is removed and as well some
+     * buttons that does not make sense in context of the inline edit popup.
+     *
+     * @param html
+     * @param request
+     * @return processed HTML
+     */
     protected String processHtml(final String html, final HttpServletRequest request) {
 
+        // TODO: List view will be improved in later version to fully support AJAX reload when selection scope etc
+        //
         boolean listView = request.getParameter("list") != null;
 
         // First do some global find-replace
@@ -314,6 +346,14 @@ public class AdminProxyController {
         }
     }
 
+    /**
+     * Read cached Fredhopper resource (CSS,JS,images etc) to optimize the experience of
+     * the inline edit popup.
+     *
+     * @param fredhopperUrl
+     * @param response
+     * @return
+     */
     protected boolean readCachedResource(String fredhopperUrl, HttpServletResponse response) {
         try {
             File cachedAsset = this.getLocalFilename(fredhopperUrl);
@@ -328,6 +368,12 @@ public class AdminProxyController {
         return false;
     }
 
+    /**
+     * Store a Fredhopper GUI resource (CSS,JS,images etc) on file system to optimize
+     * the experience in the inlined edit popup.
+     * @param fredhopperUrl
+     * @param data
+     */
     protected void storeCachedResources(String fredhopperUrl, byte[] data) {
         try {
             File cachedAsset = this.getLocalFilename(fredhopperUrl);
@@ -344,6 +390,11 @@ public class AdminProxyController {
         }
     }
 
+    /**
+     * Get local filename for a cached resource
+     * @param fredhopperUrl
+     * @return
+     */
     protected File getLocalFilename(String fredhopperUrl) {
 
         String filename = fredhopperUrl.replace("http://", "").replace("https://", "").replace("/", "_");

@@ -60,6 +60,11 @@ public class FredhopperConnectorIT extends GenericTestSuite {
     }
 
     @Test
+    public void testQueryWithFilterAttributes() throws Exception {
+        this.testQueryWithFilterAttributes("/women", new QueryFilterAttribute("flyout", "yes", QueryFilterAttribute.FilterMode.INCLUDE));
+    }
+
+    @Test
     public void testGetProductDetail() throws Exception {
         this.testGetProductDetail("008010231960");
     }

@@ -29,7 +29,7 @@ public class FredhopperQueryService implements ProductQueryService {
 
     @Override
     public QueryResult query(Query query) throws ECommerceException {
-        QueryResult result = this.fredhopperClient.query(query, getUniverse(localizationService), getLocale(localizationService), getProductModelMappings(localizationService));
+        QueryResult result = this.fredhopperClient.query(query, getUniverse(localizationService), getLocale(localizationService));
         this.injectServices(result);
         return result;
     }
@@ -38,5 +38,6 @@ public class FredhopperQueryService implements ProductQueryService {
         FredhopperQueryResult fredhopperResult = (FredhopperQueryResult) result;
         fredhopperResult.setQueryService(this);
         fredhopperResult.setCategoryService(this.categoryService);
+        fredhopperResult.setLocalizationService(this.localizationService);
     }
 }

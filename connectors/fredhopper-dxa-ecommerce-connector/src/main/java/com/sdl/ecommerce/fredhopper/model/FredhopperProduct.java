@@ -25,7 +25,13 @@ public class FredhopperProduct implements Product {
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
 
-
+    /**
+     * Create a Fredhopper product representation. The provided model mappings are used to map Fredhopper product attributes
+     * to the standard E-Commerce Framework model
+     * @param id
+     * @param linkManager
+     * @param modelMappings
+     */
     public FredhopperProduct(String id, FredhopperLinkManager linkManager, Map<String,String> modelMappings) {
         this.id = id;
         this.linkManager = linkManager;
@@ -69,8 +75,14 @@ public class FredhopperProduct implements Product {
 
     @Override
     public String getDetailPageUrl() {
-        String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");
-        return "/p/" + seoName + "/" + this.id;
+        String name = this.getName();
+        if ( name != null ) {
+            // Generate a SEO friendly URL
+            //
+            String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");
+            return "/p/" + seoName + "/" + this.id;
+        }
+        return "/p/" + this.id;
     }
 
     @Override
@@ -105,10 +117,20 @@ public class FredhopperProduct implements Product {
 
     private String getModelAttribute(String name) {
         String fredhopperAttribute = this.modelMappings.get(name);
-        String fredhopperValue = null;
+        Object fredhopperValue = null;
+        String fredhopperStringValue = null;
         if ( fredhopperAttribute != null ) {
-              fredhopperValue = (String) this.attributes.get(fredhopperAttribute);
+            fredhopperValue = this.attributes.get(fredhopperAttribute);
+            if ( fredhopperValue instanceof String ) {
+                fredhopperStringValue = (String) fredhopperValue;
+            }
+            else if ( fredhopperValue instanceof List ) {
+                List<String> list = (List<String>) fredhopperValue;
+                if ( list.size() > 0 ) {
+                    fredhopperStringValue = list.get(0); // TODO: What to select if there is multiple values here?
+                }
+            }
         }
-        return fredhopperValue;
+        return fredhopperStringValue;
     }
 }

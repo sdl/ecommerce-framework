@@ -21,8 +21,8 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
 
     private Product productDetail = null;
 
-    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager, Map<String,String> productModelMappings) {
-        super(fredhopperPage, linkManager, productModelMappings);
+    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager) {
+        super(fredhopperPage, linkManager);
     }
 
     @Override

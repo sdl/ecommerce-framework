@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  * Fredhopper Client.
- * Supports FAS v7.5.x
+ * Supports FAS v7.5.x & FAS v8.1.x
  *
  * @author nic
  */
@@ -81,11 +81,19 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
-    public ProductDetailResult getDetail(String productId, String universe, String locale, Map<String,String> productModelMappings) {
+    /**
+     * Get product detail.
+     *
+     * @param productId
+     * @param universe
+     * @param locale
+     * @return
+     */
+    public ProductDetailResult getDetail(String productId, String universe, String locale) {
         Query query = this.buildQuery(universe, locale);
         query.addSecondId(productId);
         query.setView(ViewType.DETAIL);
-        return new FredhopperDetailResult(this.doQuery(query), this, productModelMappings);
+        return new FredhopperDetailResult(this.doQuery(query), this);
     }
 
 
@@ -94,19 +102,15 @@ public class FredhopperClient implements FredhopperLinkManager {
     }
 
 
-    /*
-    public Page queryByCategory(Category category, ViewType pageType) {
-        if ( pageType != null ) {
-            QueryConfiguration queryConfig = new QueryConfiguration();
-            queryConfig.setPageType(pageType);
-            return this.queryByCategory(category, null, 0, queryConfig);
-        }
-        return this.queryByCategory(category);
-    }
-    */
-
-
-    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale, Map<String,String> productModelMappings) {
+    /**
+     * Send a query request to Fredhopper.
+     *
+     * @param eCommerceQuery
+     * @param universe
+     * @param locale
+     * @return query result
+     */
+    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale) {
 
         Query query = this.buildQuery(universe, locale);
         if ( eCommerceQuery.getViewType() != null ) {
@@ -123,7 +127,7 @@ public class FredhopperClient implements FredhopperLinkManager {
             query.setListStartIndex(eCommerceQuery.getStartIndex());
         }
         this.applyQueryConfiguration(query, (FredhopperQuery) eCommerceQuery);
-        return new FredhopperQueryResult(this.doQuery(query), eCommerceQuery, this, productModelMappings);
+        return new FredhopperQueryResult(this.doQuery(query), eCommerceQuery, this);
     }
 
     // TODO: Do a chain interface here instead
@@ -155,6 +159,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
+    /**
+     * Convert a customer facing facet parameter (part of the URL) to a Fredhopper criterion.
+     *
+     * @param facet
+     * @return Fredhopper criterion
+     */
     public Criterion toCriterion(FacetParameter facet) {
         Criterion criterion = null;
         if (facet.getType() ==ParameterType.MULTISELECT) {
@@ -179,6 +189,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         return criterion;
     }
 
+    /**
+     * Convert an Fredhopper criterion to a customer facing facet parameter (part of the URL).
+     *
+     * @param criterion
+     * @return facet parameter
+     */
     public FacetParameter fromCriterion(Criterion criterion) {
         String name = criterion.getAttributeName();
         String value = null;
@@ -217,6 +233,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         return new FacetParameter(name, value);
     }
 
+    /**
+     * Convert from E-Commerce view type to Fredhopper view type.
+     *
+     * @param genericViewType
+     * @return view type
+     */
     private ViewType convertViewType(com.sdl.ecommerce.api.ViewType genericViewType) {
         ViewType viewType;
         switch (genericViewType) {
@@ -246,6 +268,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         return viewType;
     }
 
+    /**
+     * Apply query configuration (normally set by various widgets)
+     *
+     * @param query
+     * @param queryConfiguration
+     */
     private void applyQueryConfiguration(Query query, FredhopperQuery queryConfiguration) {
         if ( queryConfiguration != null ) {
             if ( queryConfiguration.getViewSize() > 0 ) {
@@ -268,6 +296,13 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
+    /**
+     * Query using a specific category.
+     *
+     * @param baseQuery
+     * @param category
+     * @return Fredhopper page
+     */
     public Page queryCategory(Query baseQuery, FredhopperCategory category) {
         Location location = new Location(baseQuery.getLocation());
         location.addCriterion(new CategoryCriterion("categories", category.getId()));
@@ -276,6 +311,13 @@ public class FredhopperClient implements FredhopperLinkManager {
         return this.doQuery(query);
     }
 
+    /**
+     * Get all categories belonging to specified parent category.
+     *
+     * @param parent
+     * @param universe
+     * @return list of categories
+     */
     public List<Category> getCategories(Category parent, Universe universe) {
         List<Category> categories = new ArrayList<>();
         List facetmapArray = universe.getFacetmap();
@@ -291,6 +333,16 @@ public class FredhopperClient implements FredhopperLinkManager {
         return categories;
     }
 
+    /**
+     * Get Fredhopper location based on a specific category, search phrase, universe and locale.
+     * The location are used for example in the in context edit popups.
+     *
+     * @param category
+     * @param searchPhrase
+     * @param universe
+     * @param locale
+     * @return location
+     */
     public Location getLocation(Category category, String searchPhrase, String universe, String locale) {
         List<String> categoryIds = null;
         if ( category != null ) {
@@ -312,7 +364,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         return location;
     }
 
-
+    /**
+     * Get current universe from a Fredhopper page.
+     *
+     * @param page
+     * @return universe
+     */
     public Universe getUniverse(Page page) {
         for (Universe u : page.getUniverses().getUniverse()) {
             if (UniverseType.SELECTED.equals(u.getType())) {
