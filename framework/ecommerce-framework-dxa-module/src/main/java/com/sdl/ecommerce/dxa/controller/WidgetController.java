@@ -8,6 +8,7 @@ import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.dxa.CategoryDataCache;
+import com.sdl.ecommerce.dxa.ECommerceSessionAttributes;
 import com.sdl.ecommerce.dxa.ECommerceViewHelper;
 import com.sdl.ecommerce.dxa.model.*;
 import com.sdl.webapp.common.api.WebRequestContext;
@@ -58,7 +59,7 @@ public class WidgetController extends BaseController {
     @Autowired(required = false)
     private EditService editService;
 
-    /*
+    /* TODO: Use thread local to optimize number of category/product lookups
     @Autowired
     private ThreadLocalManager threadLocalManager;
     private ThreadLocal
@@ -208,7 +209,7 @@ public class WidgetController extends BaseController {
             if (topCategory != null) {
                 entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink("/c")); // For flyout is the URL's always based on the category url pattern
 
-                boolean useCache = this.getSessionPreviewToken(request) == null;
+                boolean useCache = this.isSessionPreview(request) == false;
 
                 FlyoutData flyoutData = null;
                 if (useCache) {
@@ -295,6 +296,9 @@ public class WidgetController extends BaseController {
         }
         else if ( categoryReference.getCategoryRef() != null ) {
             category = this.categoryService.getCategoryById(categoryReference.getCategoryRef().getExternalId());
+        }
+        else if ( categoryReference.getCategoryId() != null ) {
+            category = this.categoryService.getCategoryById(categoryReference.getCategoryId());
         }
         if ( category != null ) {
             categoryReference.setCategory(category);
@@ -397,25 +401,15 @@ public class WidgetController extends BaseController {
         return 0;
     }
 
-    protected String getSessionPreviewToken(HttpServletRequest request) {
-        if(request == null) {
-            return null;
-        }
-        else {
-            Cookie[] cookies = request.getCookies();
-            if(cookies != null) {
-                Cookie[] var2 = cookies;
-                int var3 = cookies.length;
+    protected boolean isSessionPreview(HttpServletRequest request) {
 
-                for(int var4 = 0; var4 < var3; ++var4) {
-                    Cookie cookie = var2[var4];
-                    if("preview-session-token".equals(cookie.getName())) {
-                        return cookie.getValue();
-                    }
-                }
+        if ( request != null ) {
+            Boolean inXpmSession = (Boolean) request.getSession().getAttribute(ECommerceSessionAttributes.IN_XPM_SESSION);
+            if ( inXpmSession != null ) {
+                return inXpmSession;
             }
-            return null;
         }
+        return false;
     }
 
     protected void processListerNavigationLinks(ProductListerWidget lister, QueryResult result, List<FacetParameter> facets) {
