@@ -12,7 +12,9 @@ import java.net.URI;
 import java.util.Map;
 
 /**
- * CartClaimProcessor
+ * Cart Claim Processor
+ * This ADF claim processor is designed to work in the same process space as the DXA web application.
+ * If using SDL Web 8 it is not possible to use this within the micro service layer.
  *
  * @author nic
  */
