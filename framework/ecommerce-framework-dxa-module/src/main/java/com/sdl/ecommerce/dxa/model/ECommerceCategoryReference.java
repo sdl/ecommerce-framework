@@ -10,6 +10,7 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
 
 /**
  * ECommerce Category Reference
+ * Represents a category reference managed by the CMS.
  *
  * @author nic
  */

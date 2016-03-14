@@ -20,6 +20,9 @@ import java.util.List;
 
 /**
  * Product Page Controller
+ * Manage product detail pages. It provides E-Commerce data for current product (extracted from the URL) which the different
+ * widgets can consume.
+ * Provides the following SEO friendly URL format: /p/[product name]/[product ID/SKU]. Example: /p/denim-blue-skirt/49392823
  *
  * @author nic
  */
@@ -30,6 +33,13 @@ public class ProductPageController extends AbstractECommercePageController {
     @Autowired
     private ProductDetailService detailService;
 
+    /**
+     * Handle product detail page.
+     * @param request
+     * @param response
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleProductDetailPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException {
 
@@ -71,6 +81,12 @@ public class ProductPageController extends AbstractECommercePageController {
         throw new PageNotFoundException("Product detail page not found.");
     }
 
+    /**
+     * Get search path for finding appropriate template page.
+     * @param productSeoId
+     * @param productId
+     * @return search path
+     */
     protected List<String> getSearchPath(String productSeoId, String productId) {
 
         // TODO: Can we extract the categories from the product???

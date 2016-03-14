@@ -44,6 +44,9 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
     private WebResource productSearchResource;
     private WebResource categoryResource;
 
+    /**
+     * REST request builder
+     */
     class Builder {
 
         WebResource.Builder requestBuilder;
@@ -78,7 +81,15 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         }
     }
 
-
+    /**
+     * Createa new Demandware shop client.
+     * @param shopUrl
+     * @param clientId
+     * @param locale
+     * @param currency
+     * @param overriddenOrigin
+     * @param trustAllSSLCerts
+     */
     public DemandwareShopClientImpl(String shopUrl,
                                     String clientId,
                                     String locale,
@@ -94,6 +105,9 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         setup();
     }
 
+    /**
+     * Setup the client and needed SSL configuration
+     */
     @PostConstruct
     public void setup() {
         this.shopBaseUrl = shopUrl + BASE_URL_PATH;
@@ -115,6 +129,12 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         }
     }
 
+    /**
+     * Add standard query parameters that normally are included in requests towards Demandware
+     *
+     * @param webResource
+     * @return resource
+     */
     private WebResource addStandardQueryParameters(WebResource webResource) {
         webResource = webResource.queryParam("client_id", this.clientId);
         if ( this.locale != null && !this.locale.isEmpty() ) {
@@ -126,7 +146,10 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return webResource;
     }
 
-    // do NOT use in Production
+    /**
+     * Get a non validating SSL security context. Should not be used in production.
+     * @return SSL context
+     */
     private static SSLContext getNonValidatingSecurityContext() {
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
@@ -150,7 +173,10 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return null;
     }
 
-    // do NOT use in Production
+    /**
+     * Get hostname verifier for an unsecure SSL setup (used in test environments)
+     * @return verifier
+     */
     private static HostnameVerifier getHostnameVerifier() {
         return new HostnameVerifier() {
             public boolean verify(String string, SSLSession ssls) {
@@ -159,6 +185,10 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         };
     }
 
+    /**
+     * Authorize as guest
+     * @return authorization header
+     */
     private String authorizeAsGuest() {
         ClientResponse response =
                 new Builder(this.authorizationResource.getRequestBuilder()).
@@ -168,10 +198,22 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return response.getHeaders().getFirst("Authorization");
     }
 
+    /**
+     * Throw exception based on fault message.
+     * @param fault
+     * @throws ECommerceException
+     */
     private void throwException(Fault fault) throws ECommerceException  {
         throw new ECommerceException(fault.getType() + ": " + fault.getMessage());
     }
 
+    /**
+     * Get basket
+     * @param clientResponse
+     * @param authToken
+     * @return
+     * @throws ECommerceException
+     */
     private Basket getBasket(ClientResponse clientResponse, String authToken) throws ECommerceException {
 
         Basket basket = clientResponse.getEntity(Basket.class);
@@ -183,6 +225,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return basket;
     }
 
+    /**
+     * Create new basket
+     * @return basket
+     * @throws ECommerceException
+     */
     public Basket createBasket() throws ECommerceException {
         // TODO: Support other authorization patterns here as well
         //
@@ -196,6 +243,14 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return getBasket(response, authToken);
     }
 
+    /**
+     * Add a product to the basket
+     * @param basket
+     * @param productId
+     * @param quantity
+     * @return basket
+     * @throws ECommerceException
+     */
     public Basket addProductToBasket(Basket basket, String productId, int quantity) throws ECommerceException {
 
         // Check if the product is already added to the cart -> if so modify the cart item
@@ -218,6 +273,13 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return this.addProductItemToBasket(basket, productItem);
     }
 
+    /**
+     * Add item to the basket.
+     * @param basket
+     * @param productItem
+     * @return basket
+     * @throws ECommerceException
+     */
     public Basket addProductItemToBasket(Basket basket, ProductItem productItem) throws ECommerceException {
         ClientResponse response =
                 new Builder(this.basketResource.path(basket.getBasket_id() + "/items").getRequestBuilder()).
@@ -228,6 +290,13 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return this.getBasket(response, basket.getAuthorizationToken());
     }
 
+    /**
+     * Modify item in basket.
+     * @param basket
+     * @param productItem
+     * @return basket
+     * @throws ECommerceException
+     */
     public Basket modifyProductItemInBasket(Basket basket, ProductItem productItem) throws ECommerceException {
         ClientResponse response =
                 new Builder(this.basketResource.path(basket.getBasket_id() + "/items/" + productItem.getItem_id()).getRequestBuilder()).
@@ -238,6 +307,13 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return this.getBasket(response, basket.getAuthorizationToken());
     }
 
+    /**
+     * Remove item from basket
+     * @param basket
+     * @param productItem
+     * @return basket
+     * @throws ECommerceException
+     */
     public Basket removeProductItemFromBasket(Basket basket, ProductItem productItem) throws ECommerceException {
         ClientResponse response =
                 new Builder(this.basketResource.path(basket.getBasket_id() + "/items/" + productItem.getItem_id()).getRequestBuilder()).
@@ -248,6 +324,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return this.getBasket(response, basket.getAuthorizationToken());
     }
 
+    /**
+     * Get product by ID.
+     * @param productId
+     * @return product
+     */
     public Product getProduct(String productId) {
         Product product =
                 this.productResource.path("/" + productId).
@@ -260,6 +341,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return product;
     }
 
+    /**
+     * Get category by ID.
+     * @param categoryId
+     * @return category
+     */
     public Category getCategory(String categoryId) {
         return this.categoryResource.path("/" + categoryId).
                 queryParam("levels", "0").
@@ -267,10 +353,21 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
                 get(Category.class);
     }
 
+    /**
+     * Get top level categories with defined level of child categories
+     * @param levels
+     * @return categories
+     */
     public List<Category> getTopLevelCategories(int levels) {
         return this.getCategories("root", levels);
     }
 
+    /**
+     * Get categories belonging to specified category parent.
+     * @param categoryId
+     * @param levels can be 0-2
+     * @return
+     */
     public List<Category> getCategories(String categoryId, int levels) {
         Category category = this.categoryResource.path(categoryId).
                 queryParam("levels", Integer.toString(levels)).
@@ -279,6 +376,10 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return category.getCategories();
     }
 
+    /**
+     * Get whole category tree
+     * @param categories
+     */
     public void getCategoryTree(List<Category> categories) {
         for ( Category category : categories ) {
             if ( category.getCategories() == null ) {
@@ -290,6 +391,12 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         }
     }
 
+    /**
+     * Search products by category
+     * @param categoryId
+     * @param count
+     * @return search result
+     */
     public ProductSearchResult searchProductsByCategory(String categoryId, int count) {
         return this.productSearchResource.
                 queryParam("refine_1", "cgid=" +categoryId).
@@ -299,6 +406,13 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
 
     }
 
+    /**
+     * Search products by category and refinements (facets)
+     * @param categoryId
+     * @param count
+     * @param refinements
+     * @return search result
+     */
     public ProductSearchResult searchProductsByCategory(String categoryId, int count, Map<String,String> refinements ) {
         WebResource searchResource = this.productSearchResource.
                 queryParam("refine_1", "cgid=" +categoryId);
@@ -316,6 +430,15 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
 
     }
 
+    /**
+     * Search products using specified category ID and/or search phrase.
+     * @param searchPhrase
+     * @param categoryId
+     * @param start
+     * @param count
+     * @param refinements
+     * @return search result
+     */
     public ProductSearchResult search(String searchPhrase, String categoryId, int start, int count, Map<String,String> refinements) {
         WebResource searchResource = this.productSearchResource;
         if ( searchPhrase != null ) {
@@ -346,6 +469,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
                 get(ProductSearchResult.class);
     }
 
+    /**
+     * Get next result set.
+     * @param searchResult
+     * @return search result
+     */
     public ProductSearchResult getNext(ProductSearchResult searchResult) {
         if ( searchResult.getNext() != null ) {
             return this.client.resource(searchResult.getNext()).
@@ -355,6 +483,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         return null;
     }
 
+    /**
+     * Get previous result set.
+     * @param searchResult
+     * @return search result
+     */
     public ProductSearchResult getPrevious(ProductSearchResult searchResult) {
         if (searchResult.getPrevious() != null) {
             return this.client.resource(searchResult.getPrevious()).

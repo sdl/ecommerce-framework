@@ -3,7 +3,7 @@ package com.sdl.ecommerce.hybris.model;
 import com.sdl.ecommerce.api.model.Facet;
 
 /**
- * HybrisFacet
+ * Hybris Facet
  *
  * @author nic
  */

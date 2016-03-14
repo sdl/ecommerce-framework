@@ -8,7 +8,8 @@ import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
- * ECommerce Product Refererence
+ * ECommerce Product Reference
+ * Represents a reference on a product managed by the CMS.
  *
  * @author nic
  */

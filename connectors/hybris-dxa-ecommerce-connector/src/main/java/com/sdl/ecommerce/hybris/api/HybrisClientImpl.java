@@ -36,7 +36,18 @@ public class HybrisClientImpl implements HybrisClient {
     private String currency;
     private List<String> excludeFacetList = new ArrayList<>();
 
-
+    /**
+     * Create new Hybris API client.
+     *
+     * @param hybrisRestUrl
+     * @param username
+     * @param password
+     * @param activeServiceCatalog
+     * @param language
+     * @param currency
+     * @param mediaUrlPrefix
+     * @param excludeFacetList
+     */
     public HybrisClientImpl(String hybrisRestUrl,
                             String username,
                             String password,
@@ -80,6 +91,11 @@ public class HybrisClientImpl implements HybrisClient {
         return restTemplate;
     }
 
+    /**
+     * Get URL fragment with locale specific options
+     * @param prefix
+     * @return
+     */
     private String getLocaleSpecificOptions(String prefix) {
         StringBuilder options = new StringBuilder();
         if ( this.language != null && !this.language.isEmpty() ) {

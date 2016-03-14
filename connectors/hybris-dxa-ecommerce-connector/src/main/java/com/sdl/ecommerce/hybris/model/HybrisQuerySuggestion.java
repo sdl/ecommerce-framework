@@ -7,7 +7,7 @@ import com.sdl.ecommerce.hybris.api.model.SpellingSuggestion;
 import java.util.StringTokenizer;
 
 /**
- * HybrisQuerySuggestion
+ * Hybris Query Suggestion
  *
  * @author nic
  */

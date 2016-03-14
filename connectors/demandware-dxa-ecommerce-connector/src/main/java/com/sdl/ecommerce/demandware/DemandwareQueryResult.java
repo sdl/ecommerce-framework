@@ -33,6 +33,14 @@ public class DemandwareQueryResult implements QueryResult {
     private ProductCategoryService categoryService;
     private List<String> facetIncludeList;
 
+    /**
+     * Create new Demandware query result.
+     * @param query
+     * @param searchResult
+     * @param shopClient
+     * @param categoryService
+     * @param facetIncludeList
+     */
     public DemandwareQueryResult(Query query,
                                  ProductSearchResult searchResult,
                                  DemandwareShopClient shopClient,
@@ -129,6 +137,12 @@ public class DemandwareQueryResult implements QueryResult {
         return facetGroups;
     }
 
+    /**
+     * Find a specific category refinement (facet).
+     * @param values
+     * @param categoryId
+     * @return refinement
+     */
     protected ProductSearchRefinementValue findCurrentCategoryRefinement(List<ProductSearchRefinementValue> values, String categoryId) {
         for ( ProductSearchRefinementValue value : values ) {
             if ( value.getValue().equals(categoryId) ) {
@@ -144,6 +158,13 @@ public class DemandwareQueryResult implements QueryResult {
         return null;
     }
 
+    /**
+     * Gets the facet URL based on Demandware refinement ID and value.
+     * @param refinementId
+     * @param refinementValue
+     * @param urlPrefix
+     * @return url
+     */
     protected String getFacetUrl(String refinementId, String refinementValue, String urlPrefix) {
         String facetUrlPrefix = "";
         String facetUrl = "?";
@@ -182,6 +203,12 @@ public class DemandwareQueryResult implements QueryResult {
         return facetUrlPrefix + facetUrl;
     }
 
+    /**
+     * Get URL to remove facet.
+     * @param refinementId
+     * @param refinementValue
+     * @return url
+     */
     protected String getRemoveFacetUrl(String refinementId, String refinementValue) {
         String facetUrlPrefix = "";
         String facetUrl = "?";
@@ -303,6 +330,11 @@ public class DemandwareQueryResult implements QueryResult {
         return this.query;
     }
 
+    /**
+     * Get Demandware refinement (facet) by ID
+     * @param id
+     * @return refinement
+     */
     private ProductSearchRefinement getRefinementById(String id) {
         for ( ProductSearchRefinement refinement : this.searchResult.getRefinements() ) {
             if ( refinement.getAttribute_id().equals(id) ) {
@@ -312,6 +344,12 @@ public class DemandwareQueryResult implements QueryResult {
         return null;
     }
 
+    /**
+     * Get Demandware refinement (facet) value
+     * @param refinement
+     * @param value
+     * @return refinement value
+     */
     private ProductSearchRefinementValue getRefinementValue(ProductSearchRefinement refinement, String value) {
         for ( ProductSearchRefinementValue refinementValue : refinement.getValues() ) {
             if ( refinementValue.getValue().equals(value) ) {

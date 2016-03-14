@@ -5,7 +5,7 @@ import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductPrice;
 
 /**
- * DummyCartItem
+ * Dummy Cart Item
  *
  * @author nic
  */

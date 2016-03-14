@@ -15,11 +15,6 @@ import java.util.List;
  */
 public abstract class Query implements Cloneable {
 
-    // TODO: Add the possiblity to attach filters that can exclude for example all products that do not have a thumbnail etc
-    // Have this as abstract instead??
-    // And then allow to hook in extensions here somehow?? Or is that query filter???? where entities and customizations can add specific stuff there (which is up to the implementation to handle or not...)
-
-
     private Category category;
     private String searchPhrase;
     private List<FacetParameter> facets;
@@ -28,24 +23,43 @@ public abstract class Query implements Cloneable {
     private List<QueryFilterAttribute> filterAttributes;
     private ViewType viewType;
 
-    // TODO: Add Localization here as one important parameter
     // TODO: Add support for sorting
 
+    /**
+     * Set category
+     * @param category
+     * @return this
+     */
     public Query category(Category category) {
         this.category = category;
         return this;
     }
 
+    /**
+     * Set search phrase
+     * @param searchPhrase
+     * @return this
+     */
     public Query searchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
         return this;
     }
 
+    /**
+     * Set facets
+     * @param facets
+     * @return this
+     */
     public Query facets(List<FacetParameter> facets) {
         this.facets = facets;
         return this;
     }
 
+    /**
+     * Add a facet
+     * @param facet
+     * @return this
+     */
     public Query facet(FacetParameter facet) {
         if ( this.facets == null ) {
             this.facets = new ArrayList<>();
@@ -54,16 +68,31 @@ public abstract class Query implements Cloneable {
         return this;
     }
 
+    /**
+     * Set start index for the result (used for pagination)
+     * @param startIndex
+     * @return this
+     */
     public Query startIndex(int startIndex) {
         this.startIndex = startIndex;
         return this;
     }
 
+    /**
+     * Set view size for the result (used for pagination)
+     * @param viewSize
+     * @return this
+     */
     public Query viewSize(int viewSize) {
         this.viewSize = viewSize;
         return this;
     }
 
+    /**
+     * Add a filter attribute to control what information that should be included or excluded.
+     * @param filterAttribute
+     * @return  this
+     */
     public Query filterAttribute(QueryFilterAttribute filterAttribute) {
         if ( this.filterAttributes == null ) {
             this.filterAttributes = new ArrayList<>();
@@ -72,39 +101,69 @@ public abstract class Query implements Cloneable {
         return this;
     }
 
+    /**
+     * Set view type
+     * @param viewType
+     * @return this
+     */
     public Query viewType(ViewType viewType) {
         this.viewType = viewType;
         return this;
     }
 
+    /**
+     * @return category
+     */
     public Category getCategory() {
         return category;
     }
 
+    /**
+     * @return list of facets
+     */
     public List<FacetParameter> getFacets() {
         return facets;
     }
 
+    /**
+     * @return search phrase
+     */
     public String getSearchPhrase() {
         return searchPhrase;
     }
 
+    /**
+     * @return start index
+     */
     public int getStartIndex() {
         return startIndex;
     }
 
+    /**
+     * @return view size
+     */
     public int getViewSize() {
         return viewSize;
     }
 
+    /**
+     * @return list of filter attributes
+     */
     public List<QueryFilterAttribute> getFilterAttributes() {
         return filterAttributes;
     }
 
+    /**
+     * @return view type
+     */
     public ViewType getViewType() {
         return viewType;
     }
 
+    /**
+     * Clone the query
+     * @return new cloned instance
+     */
     public Query clone() {
         try {
             return (Query) super.clone();

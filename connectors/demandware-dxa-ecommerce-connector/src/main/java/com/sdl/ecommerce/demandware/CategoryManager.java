@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * CategoryManager
+ * Category Manager
+ * Manage the category tree for a specific localisation.
  *
  * @author nic
  */
@@ -30,6 +31,12 @@ public class CategoryManager {
         this.readTopLevelCategories();
     }
 
+    /**
+     * Get category by ID.
+     * @param id
+     * @return category
+     * @throws ECommerceException
+     */
     public Category getCategoryById(String id) throws ECommerceException {
         return this.getCategoryById(id, this.getTopLevelCategories());
     }
@@ -52,6 +59,12 @@ public class CategoryManager {
         return null;
     }
 
+    /**
+     * Get category by path.
+     * @param path
+     * @return category
+     * @throws ECommerceException
+     */
     public Category getCategoryByPath(String path)  throws ECommerceException {
 
         LOG.debug("Getting category by path: " + path);
@@ -87,6 +100,10 @@ public class CategoryManager {
         return null;
     }
 
+    /**
+     * Get top level categories
+     * @return categories
+     */
     private List<Category> getTopLevelCategories() {
         if ( ((DemandwareCategory)this.rootCategory).needsRefresh() ) {
             loadCategories(this.rootCategory);
@@ -113,6 +130,10 @@ public class CategoryManager {
         ((DemandwareCategory) this.rootCategory).setCategories(categories, System.currentTimeMillis() + categoryExpiryTimeout);
     }
 
+    /**
+     * Load/refresh categories for specified category parent.
+     * @param parent
+     */
     private void loadCategories(Category parent) {
 
         LOG.debug("Loading sub-categories for category: " + (parent == this.rootCategory ? "ROOT" : parent.getName()));
@@ -144,6 +165,13 @@ public class CategoryManager {
         ((DemandwareCategory) parent).setCategories(categories, System.currentTimeMillis() + this.categoryExpiryTimeout);
     }
 
+    /**
+     * Convert between Demandware API category list to E-Commerce API category list.
+     *
+     * @param parent
+     * @param dwreCategories
+     * @return category list
+     */
     private List<Category> toCategoryList(Category parent, List<com.sdl.ecommerce.demandware.api.model.Category> dwreCategories) {
         List<Category> categories = new ArrayList<>();
         for (com.sdl.ecommerce.demandware.api.model.Category dwreCategory : dwreCategories ) {

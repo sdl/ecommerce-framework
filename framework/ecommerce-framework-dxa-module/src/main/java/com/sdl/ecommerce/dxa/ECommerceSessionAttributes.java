@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.dxa;
 
 /**
- * ECommerceSessionAttributes
+ * ECommerce Session Attributes
  *
  * @author nic
  */

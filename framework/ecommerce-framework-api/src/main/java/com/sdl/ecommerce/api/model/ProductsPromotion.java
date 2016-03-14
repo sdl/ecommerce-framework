@@ -12,5 +12,9 @@ import java.util.List;
  */
 public interface ProductsPromotion extends Promotion {
 
+    /**
+     * Get list of products enumerated in this promotion
+     * @return products
+     */
     List<Product> getProducts();
 }

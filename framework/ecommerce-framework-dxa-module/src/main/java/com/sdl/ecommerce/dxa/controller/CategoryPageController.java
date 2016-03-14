@@ -24,6 +24,8 @@ import java.util.StringTokenizer;
 
 /**
  * Category Page Controller
+ * Manage all category pages. All data comes from the E-Commerce system, while the actual look&feel is maintained by a set of overridable template pages.
+ * Provides the following SEO friendly URL format for categories: /c/[category1]/[sub-category2/?[facet]&[facet2]
  *
  * @author nic
  */
@@ -35,6 +37,13 @@ public class CategoryPageController extends AbstractECommercePageController {
 
     static final String STORE_TITLE = "Store"; // TODO: Fetch this from the breadcrumb info instead!!!
 
+    /**
+     * Handle category page.
+     * @param request
+     * @param response
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleCategoryPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException {
 
@@ -83,6 +92,12 @@ public class CategoryPageController extends AbstractECommercePageController {
         throw new PageNotFoundException("Category page not found.");
     }
 
+    /**
+     * Get search path to find an appropriate CMS template page for current category.
+     * @param url
+     * @param category
+     * @return search path
+     */
     protected List<String> getSearchPath(String url, Category category) {
         List<String> searchPath = new ArrayList<>();
         String categoryPath = "/categories/"; // TODO: Have this configurable. Should this be placed in System instead?

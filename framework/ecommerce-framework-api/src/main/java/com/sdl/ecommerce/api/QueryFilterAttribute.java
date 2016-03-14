@@ -1,7 +1,8 @@
 package com.sdl.ecommerce.api;
 
 /**
- * Query Filter Attribute
+ * Query Filter Attribute.
+ * Used for include/exclude information in E-Commerce queries.
  *
  * @author nic
  */

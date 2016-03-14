@@ -27,8 +27,11 @@ public class DemandwareProduct implements Product {
     private String thumbnailUrl;
     private String primaryImageUrl;
 
-
-
+    /**
+     * Create new E-Commerce API Product based on a Demandware API product
+     * @param primaryCategory
+     * @param dwreProduct
+     */
     public DemandwareProduct(Category primaryCategory, com.sdl.ecommerce.demandware.api.model.Product dwreProduct) {
         this.primaryCategory = primaryCategory;
         this.id = dwreProduct.getId();
@@ -45,6 +48,10 @@ public class DemandwareProduct implements Product {
 
     }
 
+    /**
+     * Create a new E-Commerce API Product based on a Demandware search result hit
+     * @param productSearchHit
+     */
     public DemandwareProduct(ProductSearchHit productSearchHit) {
         this.id = productSearchHit.getProduct_id();
         this.name = productSearchHit.getProduct_name();
@@ -85,6 +92,12 @@ public class DemandwareProduct implements Product {
         return this.primaryImageUrl;
     }
 
+    /**
+     * Get image for specified view type
+     * @param dwreProduct
+     * @param viewType
+     * @return image
+     */
     private String getImageUrl(com.sdl.ecommerce.demandware.api.model.Product dwreProduct, String viewType) {
         for (ImageGroup imageGroup : dwreProduct.getImage_groups() ) {
             if ( imageGroup.getView_type().equals(viewType) ) {

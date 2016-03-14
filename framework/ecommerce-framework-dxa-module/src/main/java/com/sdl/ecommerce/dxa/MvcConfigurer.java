@@ -5,7 +5,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * MvcConfigurer
+ * MVC Configurer.
+ * Sets up additional configuration such as interceptors etc.
  *
  * @author nic
  */

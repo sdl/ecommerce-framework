@@ -3,7 +3,7 @@ package com.sdl.ecommerce.api.model.impl;
 import com.sdl.ecommerce.api.model.Facet;
 
 /**
- * GenericFacet
+ * Generic Facet
  *
  * @author nic
  */

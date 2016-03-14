@@ -24,6 +24,8 @@ public class ECommerceModuleInitializer extends AbstractInitializer {
     @PostConstruct
     public void initialize() {
 
+        // Register additional CSS/JS to be used on pages
+        //
         pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.CSS,
                 HtmlBuilders.element("link")
                         .withAttribute("type", "text/css")

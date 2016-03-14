@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DemandwareDetailResult
+ * Demandware Detail Result
  *
  * @author nic
  */
@@ -30,7 +30,7 @@ public class DemandwareDetailResult implements ProductDetailResult {
 
     @Override
     public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
-        // TODO: This code is identical with the one in the Fredhopper version
+        // TODO: This code is identical with the one in the Fredhopper version.
         // -> Do a common base class using default implementation of the interfaces
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         if ( this.productDetail.getCategories() != null && this.productDetail.getCategories().size() > 0 ) {

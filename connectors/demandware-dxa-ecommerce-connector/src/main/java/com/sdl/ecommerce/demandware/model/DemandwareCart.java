@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DemandwareCart
+ * Demandware Cart
  *
  * @author nic
  */

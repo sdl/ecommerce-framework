@@ -8,7 +8,7 @@ import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
 /**
- * ECommerceFilterAttribute
+ * ECommerce Filter Attribute
  *
  * @author nic
  */
@@ -36,6 +36,10 @@ public class ECommerceFilterAttribute extends AbstractEntityModel {
         return mode;
     }
 
+    /**
+     * Convert to filter attribute to be used in E-Commerce queries.
+     * @return filter attribute
+     */
     public QueryFilterAttribute toQueryFilterAttribute() {
         QueryFilterAttribute.FilterMode filterMode;
         if ( mode != null && mode.equals("exclude") ) {

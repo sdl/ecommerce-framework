@@ -30,7 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * Widget Controller
+ * Widget Controller.
+ * Manage all E-Commerce widgets for facets, promotions, product details etc.
  *
  * @author nic
  */
@@ -65,12 +66,21 @@ public class WidgetController extends BaseController {
     private ThreadLocal
     */
 
+    /**
+     * Holder class for flyout data that are cached
+     */
     static class FlyoutData {
         List<FacetGroup> facetGroups;
         List<Promotion> promotions;
     }
 
-
+    /**
+     * Handle product lister.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "ProductLister/{entityId}")
     public String handleProductLister(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -104,6 +114,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle facets.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "Facets/{entityId}")
     public String handleFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -136,6 +153,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle breadcrumb.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "Breadcrumb/{entityId}")
     public String handleBreadcrumb(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -167,6 +191,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle promotions.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "Promotions/{entityId}")
     public String handlePromotions(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -199,6 +230,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle flyout facets and associated promotions.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "FlyoutFacets/{entityId}")
     public String handleFlyoutFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -237,6 +275,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle search feedback.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "SearchFeedback/{entityId}")
     public String handleSearchFeedback(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
@@ -248,6 +293,13 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Handle product detail.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "ProductDetail/{entityId}")
     public String handleProductDetail(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
         ProductDetailWidget entity = (ProductDetailWidget) this.getEntityFromRequest(request, entityId);
@@ -275,10 +327,20 @@ public class WidgetController extends BaseController {
         return resolveView(mvcData, "Entity", request);
     }
 
+    /**
+     * Get current query result from the HTTP request.
+     * @param request
+     * @return result
+     */
     protected QueryResult getQueryResult(HttpServletRequest request) {
        return (QueryResult) this.getResult(request);
     }
 
+    /**
+     * Get current E-Commerce result from the HTTP request.
+     * @param request
+     * @return result
+     */
     protected ECommerceResult getResult(HttpServletRequest request) {
         ECommerceResult result = (ECommerceResult) request.getAttribute(RESULT);
         if ( result == null ) {
@@ -289,6 +351,11 @@ public class WidgetController extends BaseController {
         return result;
     }
 
+    /**
+     * Resolve category model from a CMS category reference.
+     * @param categoryReference
+     * @return category
+     */
     protected Category resolveCategoryModel(ECommerceCategoryReference categoryReference) {
         Category category = null;
         if ( categoryReference.getCategoryPath() != null ) {
@@ -306,6 +373,12 @@ public class WidgetController extends BaseController {
         return category;
     }
 
+    /**
+     * Resolve product detail model from a CMS product reference.
+     * @param productReference
+     * @return product detail
+     * @throws ContentProviderException
+     */
     protected ProductDetailResult resolveProductDetail(ECommerceProductReference productReference) throws ContentProviderException {
         String productId;
         if ( productReference.getProductRef() != null ) {
@@ -321,6 +394,11 @@ public class WidgetController extends BaseController {
         return result;
     }
 
+    /**
+     * Get E-Commerce result from a page template (is used when doing inline editing of E-Commerce driven pages).
+     * @param request
+     * @return result
+     */
     protected ECommerceResult getResultFromPageTemplate(HttpServletRequest request) {
 
         // TODO: Use thread local here to optimize the search to avoid duplicate calls...
@@ -343,6 +421,11 @@ public class WidgetController extends BaseController {
         return null;
     }
 
+    /**
+     * Get query contributions from the different E-Commerce widgets on the page.
+     * @param request
+     * @param query
+     */
     protected void getQueryContributions(HttpServletRequest request, Query query) {
 
         PageModel templatePage = (PageModel) request.getAttribute(PAGE_MODEL);
@@ -355,13 +438,29 @@ public class WidgetController extends BaseController {
         }
     }
 
+    /**
+     * Extracts the category from the page template path.
+     * @param requestPath
+     * @return  category
+     */
     protected Category getCategoryFromPageTemplate(String requestPath) {
         // Try to get query result based on the page url cat1-cat2-cat3
         //
         final String categoryPath = requestPath.replaceFirst("\\/categories\\/", "").replace(".html", "").replace("-", "/");
-        return this.categoryService.getCategoryByPath(categoryPath);
+        Category category = this.categoryService.getCategoryByPath(categoryPath);
+        if ( category == null ) {
+            // Try with category ID
+            //
+            category = this.categoryService.getCategoryById(categoryPath.replaceAll("/", ""));
+        }
+        return category;
     }
 
+    /**
+     * Get category stored on the HTTP request.
+     * @param request
+     * @return category
+     */
     protected Category getCategory(HttpServletRequest request) {
         Category category = (Category) request.getAttribute(CATEGORY);
         if ( category == null ) {
@@ -372,6 +471,11 @@ public class WidgetController extends BaseController {
         return category;
     }
 
+    /**
+     * Get current URL prefix (category or search result page).
+     * @param request
+     * @return prefix
+     */
     protected String getUrlPrefix(HttpServletRequest request) {
         String urlPrefix = (String) request.getAttribute(URL_PREFIX);
         if ( urlPrefix == null ) {
@@ -380,6 +484,11 @@ public class WidgetController extends BaseController {
         return urlPrefix;
     }
 
+    /**
+     * Get root category title (used in breadcrumbs etc).
+     * @param request
+     * @return title
+     */
     protected String getRootCategoryTitle(HttpServletRequest request) {
         String rootCategoryTitle= (String) request.getAttribute(ROOT_CATEGORY_TITLE);
         /*if ( rootCategoryTitle == null ) {
@@ -388,11 +497,21 @@ public class WidgetController extends BaseController {
         return rootCategoryTitle;
     }
 
+    /**
+     * Get facets from the HTTP request.
+     * @param request
+     * @return facets
+     */
     protected List<FacetParameter> getFacets(HttpServletRequest request) {
         List<FacetParameter> facets = (List<FacetParameter>) request.getAttribute(FACETS);
         return facets;
     }
 
+    /**
+     * Get start index from the HTTP request.
+     * @param request
+     * @return index
+     */
     protected int getStartIndex(HttpServletRequest request) {
         String startIndex = request.getParameter("startIndex");
         if ( startIndex != null ) {
@@ -401,6 +520,11 @@ public class WidgetController extends BaseController {
         return 0;
     }
 
+    /**
+     * Check if current user is in a XPM session.
+     * @param request
+     * @return true if in session preview, otherwise false
+     */
     protected boolean isSessionPreview(HttpServletRequest request) {
 
         if ( request != null ) {
@@ -412,6 +536,12 @@ public class WidgetController extends BaseController {
         return false;
     }
 
+    /**
+     * Process navigation links in product listers (next, previous etc).
+     * @param lister
+     * @param result
+     * @param facets
+     */
     protected void processListerNavigationLinks(ProductListerWidget lister, QueryResult result, List<FacetParameter> facets) {
 
         int totalCount = result.getTotalCount();
@@ -465,6 +595,11 @@ public class WidgetController extends BaseController {
 
     }
 
+    /**
+     * Get facet link based on the provided set of facet parameters.
+     * @param facets
+     * @return link
+     */
     protected String getFacetLink(List<FacetParameter> facets) {
 
         if ( facets == null || facets.size() == 0 ) { return ""; }
@@ -483,6 +618,10 @@ public class WidgetController extends BaseController {
         return sb.toString();
     }
 
+    /**
+     * Build in-context edit controls.
+     * @param request
+     */
     protected void buildInContextControls(HttpServletRequest request) {
 
         QueryResult queryResult = this.getQueryResult(request);

@@ -28,7 +28,7 @@ import static com.sdl.webapp.common.controller.RequestAttributeNames.CONTEXTENGI
 import static com.sdl.webapp.common.controller.RequestAttributeNames.MARKUP;
 
 /**
- * AbstractECommercePageController
+ * Abstract ECommerce Page Controller
  *
  * @author nic
  */
@@ -78,6 +78,11 @@ public class AbstractECommercePageController extends BaseController {
         return templatePage;
     }
 
+    /**
+     * Extract all facet parameters from the request
+     * @param requestParameters
+     * @return list of facets
+     */
     protected List<FacetParameter> getFacetParametersFromRequestMap(Map<String, String[]> requestParameters) {
 
         List<FacetParameter> facetParameters = new ArrayList<>();
@@ -90,6 +95,12 @@ public class AbstractECommercePageController extends BaseController {
         return facetParameters;
     }
 
+    /**
+     * Enrich the HTTP request with additional data to be consumed by the different E-Commerce widgets.
+     * @param request
+     * @param templatePage
+     * @param localization
+     */
     protected void enrichRequest(HttpServletRequest request, PageModel templatePage, Localization localization) {
         request.setAttribute(PAGE_ID, templatePage.getId());
         request.setAttribute(PAGE_MODEL, templatePage);
@@ -101,6 +112,11 @@ public class AbstractECommercePageController extends BaseController {
         request.setAttribute(CONTEXTENGINE, webRequestContext.getContextEngine());
     }
 
+    /**
+     * Extract start index from the HTTP request.
+     * @param request
+     * @return start index
+     */
     protected int getStartIndex(HttpServletRequest request) {
         int startIndex = 0;
         String startIndexStr = request.getParameter("startIndex");
@@ -110,6 +126,12 @@ public class AbstractECommercePageController extends BaseController {
         return startIndex;
     }
 
+    /**
+     * Go through all entities on the page (excluding header & footer) and check for contributions to the E-Commerce query (such as view size, filter attributes etc).
+     *
+     * @param templatePage
+     * @param query
+     */
     protected void getQueryContributions(PageModel templatePage, Query query) {
 
         for ( RegionModel region : templatePage.getRegions() ) {

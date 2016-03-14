@@ -3,7 +3,7 @@ package com.sdl.ecommerce.dummy.model;
 import com.sdl.ecommerce.api.model.ProductPrice;
 
 /**
- * DummyPrice
+ * Dummy Price
  *
  * @author nic
  */

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * CategoryDataCache
+ * Category Data Cache
+ * Is used to cache category data (such as facet groups and promotions in flyouts).
  *
  * @author nic
  */
@@ -17,7 +18,7 @@ public class CategoryDataCache {
 
     private Cache<String, Object> categoryData = CacheBuilder.newBuilder()
             .maximumSize(100)
-            .expireAfterWrite(5, TimeUnit.MINUTES).build();
+            .expireAfterWrite(5, TimeUnit.MINUTES).build();  // TODO: Have this cache time configurable
 
     public Object getCategoryData(Category category, String key) {
         return this.categoryData.getIfPresent(category.getId() + ":" + key);

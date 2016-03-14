@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * HybrisDetailService
+ * Hybris Detail Service
  *
  * @author nic
  */
@@ -34,6 +34,12 @@ public class HybrisDetailService implements ProductDetailService {
         return new HybrisDetailResult(product);
     }
 
+    /**
+     * Get an E-Commerce API product representation based on a Hybris API product.
+     *
+     * @param hybrisProduct
+     * @return  product
+     */
     private Product getProductDetail(com.sdl.ecommerce.hybris.api.model.Product hybrisProduct) {
 
         Product product = new HybrisProduct(hybrisProduct);

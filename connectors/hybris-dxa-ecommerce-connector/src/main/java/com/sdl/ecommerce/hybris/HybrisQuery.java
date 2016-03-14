@@ -3,7 +3,7 @@ package com.sdl.ecommerce.hybris;
 import com.sdl.ecommerce.api.Query;
 
 /**
- * HybrisQuery
+ * Hybris Query
  *
  * @author nic
  */

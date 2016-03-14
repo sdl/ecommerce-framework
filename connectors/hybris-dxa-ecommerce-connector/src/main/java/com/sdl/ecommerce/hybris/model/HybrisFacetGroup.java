@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HybrisFacetGroup
+ * Hybris Facet Group
  *
  * @author nic
  */

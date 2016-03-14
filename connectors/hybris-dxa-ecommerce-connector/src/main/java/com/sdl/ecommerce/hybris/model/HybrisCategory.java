@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HybrisCategory
+ * Hybris Category
  *
  * @author nic
  */

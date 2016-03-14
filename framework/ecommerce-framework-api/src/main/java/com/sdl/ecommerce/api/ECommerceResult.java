@@ -13,7 +13,17 @@ import java.util.List;
  */
 public interface ECommerceResult {
 
+    /**
+     * Get current breadcrumbs
+     * @param urlPrefix
+     * @param rootTitle
+     * @return breadcrumbs
+     */
     List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle);
 
+    /**
+     * Get promotions active for current result.
+     * @return promotions
+     */
     List<Promotion> getPromotions();
 }

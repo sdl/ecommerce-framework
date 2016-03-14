@@ -75,7 +75,7 @@ The connectors to the E-Commerce systems has been verified against the following
 
 * SDL Fredhopper 7.5.x & 8.1.x
 * Demandware OCAPI 16.1 & 16.2
-* Hybris OCC v1 on hybris Commerce Suite 5.x
+* Hybris (Omni Commerce Connect) OCC v1 on hybris Commerce Suite 5.x
 
 
 Getting started

@@ -3,7 +3,7 @@ package com.sdl.ecommerce.demandware;
 import com.sdl.ecommerce.api.Query;
 
 /**
- * DemandwareQuery
+ * Demandware Query
  *
  * @author nic
  */

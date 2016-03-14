@@ -40,6 +40,10 @@ public class HybrisCategoryService implements ProductCategoryService {
 
     private Map<String, CategoryManager> categoryManagers = new HashMap<>();
 
+    /**
+     * Get category manager for current localizaton (site).
+     * @return manager
+     */
     private CategoryManager getCategoryManager() {
 
         String publicationId = localizationService.getPublicationId();

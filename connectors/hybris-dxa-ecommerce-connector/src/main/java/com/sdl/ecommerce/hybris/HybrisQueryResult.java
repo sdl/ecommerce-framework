@@ -27,12 +27,25 @@ public class HybrisQueryResult implements QueryResult {
     private ProductCategoryService categoryService;
     private List<String> facetIncludeList;
 
+    /**
+     * Create new Hybris query result (used for next/previous)
+     * @param query
+     * @param category
+     */
     public HybrisQueryResult(Query query, com.sdl.ecommerce.hybris.api.model.Category category) {
         this.query = query;
         this.category = category;
         this.products = getProducts(this.category, this.query);
     }
 
+    /**
+     * Create new Hybris query result based on search results from Hybris API calls
+     * @param query
+     * @param searchResult
+     * @param queryService
+     * @param categoryService
+     * @param facetIncludeList
+     */
     public HybrisQueryResult(Query query,
                              SearchResult searchResult,
                              ProductQueryService queryService,
@@ -127,6 +140,12 @@ public class HybrisQueryResult implements QueryResult {
         return facetGroups;
     }
 
+    /**
+     * Get facet URL based on Hybris facets.
+     * @param facets
+     * @param urlPrefix
+     * @return url
+     */
     protected String getFacetUrl(List<FacetPair> facets, String urlPrefix) {
         String facetUrlPrefix = "";
         String facetUrl = "?";

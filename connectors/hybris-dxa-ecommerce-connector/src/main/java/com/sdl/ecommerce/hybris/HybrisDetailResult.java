@@ -27,7 +27,7 @@ public class HybrisDetailResult implements ProductDetailResult {
     @Override
     public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
 
-        // TODO: This code is identical with the one in the Fredhopper version
+        // TODO: This code is identical with the one in the Fredhopper version.
         // -> Do a common base class using default implementation of the interfaces
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         if ( this.productDetail.getCategories() != null ) {

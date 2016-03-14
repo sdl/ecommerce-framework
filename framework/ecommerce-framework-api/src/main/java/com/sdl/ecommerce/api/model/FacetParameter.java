@@ -7,7 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * FacetParameter
+ * Facet Parameter.
+ * Is used for representing a user facing facet.
  *
  * @author nic
  */
@@ -15,6 +16,9 @@ public class FacetParameter {
 
     // TODO: Optimize the implementation to minimize the parsing of the facet values
 
+    /**
+     * Parameter type
+     */
     public enum ParameterType {
         SINGLEVALUE,
         MULTISELECT,
@@ -31,10 +35,19 @@ public class FacetParameter {
     private List<String> values = new ArrayList<>();
     private ParameterType type;
 
+    /**
+     * Create new facet parameter
+     * @param name
+     */
     public FacetParameter(String name) {
         this.name = name;
     }
 
+    /**
+     * Create a new facet. The value is parsed to extract current type and values.
+     * @param name
+     * @param strValue
+     */
     public FacetParameter(String name, String strValue) {
         this.name = name;
 
@@ -74,14 +87,28 @@ public class FacetParameter {
         }
     }
 
+    /**
+     * Name of the facet parameter. Is shown in the facet URL.
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get all facet values.
+     * @return facet values
+     */
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * Check if specific value is included in this facet parameter (when having multi select facets).
+     *
+     * @param facetValue
+     * @return contains value
+     */
     public boolean containsValue(String facetValue) {
         if ( this.type == ParameterType.RANGE ) {
             Matcher rangeMatcher = RANGE_PATTERN.matcher(facetValue);
@@ -97,14 +124,28 @@ public class FacetParameter {
         }
     }
 
+    /**
+     * Get parameter type.
+     * @return type
+     */
     public ParameterType getType() {
         return type;
     }
 
+    /**
+     * Convert the facet parameter to URL format.
+     * @return url fragment
+     */
     public String toUrl() {
         return this.addValueToUrl(null);
     }
 
+    /**
+     * Convert the facet parameter to URL format.
+     *
+     * @param additionalValue
+     * @return url fragment
+     */
     public String addValueToUrl(String additionalValue) {
         StringBuilder sb = new StringBuilder();
         sb.append(this.name);
@@ -138,6 +179,11 @@ public class FacetParameter {
         return sb.toString();
     }
 
+    /**
+     * Remove a value from a facet URL fragment (used for breadcrumbs and de-selecting multi-value facets).
+     * @param removedValue
+     * @return url fragment
+     */
     public String removeValueToUrl(String removedValue) {
         if ( ( this.values.size() == 1 && this.values.get(0).equals(removedValue) ) ||
                 ( type == ParameterType.RANGE && this.values.size() == 2 ) ) {
@@ -177,6 +223,5 @@ public class FacetParameter {
         }
         return sb.toString();
     }
-
 
 }

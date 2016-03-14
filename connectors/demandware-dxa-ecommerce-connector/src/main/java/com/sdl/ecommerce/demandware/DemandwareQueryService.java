@@ -64,6 +64,10 @@ public class DemandwareQueryService implements ProductQueryService {
         return new DemandwareQueryResult(query, searchResult, this.shopClientManager.getInstance(), this.categoryService, facetIncludeList);
     }
 
+    /**
+     * Get list of all facets that should be included in the flyout menu.
+     * @return list of facet names
+     */
     private List<String> getFlyoutFacets() {
         String flyoutFacetsString = this.localizationService.getLocalizedConfigProperty("demandware-flyoutFacets");
         if ( flyoutFacetsString != null && !flyoutFacetsString.isEmpty() ) {

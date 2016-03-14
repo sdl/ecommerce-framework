@@ -37,6 +37,11 @@ public class DemandwareCategoryService implements ProductCategoryService {
 
     private Map<String, CategoryManager> categoryManagers = new HashMap<>();
 
+    /**
+     * Get category manager for current localisation (site).
+     *
+     * @return category manager
+     */
     private CategoryManager getCategoryManager() {
 
         String publicationId = localizationService.getPublicationId();

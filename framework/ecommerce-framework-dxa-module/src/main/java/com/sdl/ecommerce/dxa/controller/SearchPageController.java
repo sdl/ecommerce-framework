@@ -25,6 +25,8 @@ import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.*;
 
 /**
  * Search Page Controller
+ * Handles product search. Is an variation of the product category controller.
+ * Provides the following SEO friendly URL format: /search/[category 1]/[sub category 2]/?[facet1]&[facet2]
  *
  * @author nic
  */
@@ -41,6 +43,14 @@ public class SearchPageController extends AbstractECommercePageController {
         return "redirect:/search/" + searchPhrases;
     }
 
+    /**
+     * Handle search category page (search result with browse-able categories and facets).
+     * @param request
+     * @param response
+     * @return view
+     * @throws ContentProviderException
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleSearchCategoryPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException, IOException {
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * CategoryManager
+ * Category Manager
  *
  * @author nic
  */
@@ -27,6 +27,12 @@ public class CategoryManager {
 
     // TODO: Make a generic category manager base class
 
+    /**
+     * Create new category manager for a specific localization.
+     * @param hybrisClient
+     * @param categoryExpiryTimeout
+     * @param catalogBranch
+     */
     public CategoryManager(HybrisClient hybrisClient, long categoryExpiryTimeout, String catalogBranch) {
         this.hybrisClient = hybrisClient;
         this.categoryExpiryTimeout = categoryExpiryTimeout;
@@ -87,13 +93,15 @@ public class CategoryManager {
         return null;
     }
 
-
     private void checkCategoryExpiryTime() {
         if ( this.categoryTreeExpiryTime < System.currentTimeMillis() ) {
             loadAllCategories();
         }
     }
 
+    /**
+     * Load all categories from Hybris
+     */
     private synchronized void loadAllCategories() {
         Category topCategory = new HybrisCategory(this.hybrisClient.getAllCategories());
         if ( this.catalogBranch != null ) {

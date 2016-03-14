@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * DemandwareShopClientManager
+ * DemandwareShop Client Manager
+ * Manage Demandware API clients for specific localization/sites.
  *
  * @author nic
  */
@@ -33,6 +34,10 @@ public class DemandwareShopClientManager {
 
     private Map<String, DemandwareShopClient> shopClients = new HashMap<>();
 
+    /**
+     * Get instance for current localization.
+     * @return instance
+     */
     public DemandwareShopClient getInstance() {
 
         DemandwareShopClient shopClient = this.shopClients.get(this.localizationService.getPublicationId());
@@ -42,6 +47,10 @@ public class DemandwareShopClientManager {
         return shopClient;
     }
 
+    /**
+     * Create new shop client for current localization
+     * @return client
+     */
     private synchronized DemandwareShopClient createShopClient() {
         String shopUrl = this.url + this.getSiteId();
         DemandwareShopClient shopClient = new DemandwareShopClientImpl(shopUrl, clientId, this.getLocale(), this.getCurrency(), overriddenOrigin, trustAllSSLCerts);

@@ -4,7 +4,7 @@ import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.hybris.api.model.Price;
 
 /**
- * HybrisPrice
+ * Hybris Price
  *
  * @author nic
  */

@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Dummy Cart Factory
+ * Dummy Cart Factory.
+ * Creates a dummy cart which is handy in test & demo situations.
  *
  * @author nic
  */

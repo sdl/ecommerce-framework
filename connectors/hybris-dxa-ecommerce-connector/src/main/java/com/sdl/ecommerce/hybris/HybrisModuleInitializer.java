@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * HybrisModuleInitializer
+ * Hybris Module Initializer
  *
  * @author nic
  */

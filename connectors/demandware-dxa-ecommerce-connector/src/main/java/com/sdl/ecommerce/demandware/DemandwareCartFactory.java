@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * DemandwareCartFactory
+ * Demandware Cart Factory
+ * Creates a new cart on the session.
  *
  * @author nic
  */

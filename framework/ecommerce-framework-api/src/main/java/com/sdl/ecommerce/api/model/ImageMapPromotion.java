@@ -5,12 +5,15 @@ import com.sdl.ecommerce.api.model.ContentPromotion;
 import java.util.List;
 
 /**
- * ImageMapPromotion
+ * Image Map Promotion
  *
  * @author nic
  */
 public interface ImageMapPromotion extends ContentPromotion {
 
+    /**
+     * Class representing a clickable content area within the image.
+     */
     class ContentArea {
         private int x1;
         private int y1;
@@ -47,5 +50,9 @@ public interface ImageMapPromotion extends ContentPromotion {
         }
     }
 
-    public List<ContentArea> getContentAreas();
+    /**
+     * Get all defined content areas.
+     * @return list of areas
+     */
+    List<ContentArea> getContentAreas();
 }

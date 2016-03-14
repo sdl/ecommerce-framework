@@ -46,7 +46,7 @@ public class ProductListerWidget extends AbstractEntityModel implements QueryInp
         if ( viewSize > 0 ) {
             query.viewSize(viewSize);
         }
-        // TODO: HOW TO HANDLE FH SPECIFIC CONTRIBUTIONS?????
+        // TODO: How to handle E-Commerce system specific contributions???
         /*
         if ( disableRedirect != null ) {
             queryConfiguration.setDisableRedirect(disableRedirect);

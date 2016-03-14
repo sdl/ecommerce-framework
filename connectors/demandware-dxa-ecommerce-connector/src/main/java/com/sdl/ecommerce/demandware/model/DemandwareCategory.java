@@ -5,13 +5,14 @@ import com.sdl.ecommerce.api.model.Category;
 import java.util.List;
 
 /**
- * DemandwareCategory
+ * Demandware Category
  *
  * @author nic
  */
 public class DemandwareCategory implements Category {
 
-    // TODO: This class is identical with the Fredhopper one!!! Make a generic one!!!!
+    // TODO: This class is identical with the Fredhopper one. Refactor into a generic one.
+
     private Category parent;
     private String id;
     private String name;
