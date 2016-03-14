@@ -94,10 +94,10 @@ To get started with the E-Commerce framework you need to do the following steps:
 5. If you get these type of error: "[WARNING] The POM for com.tridion:cd_ambient:jar:7.1.0 is missing, no dependency information available"
     * Go into your local Maven repository and modify the following file: ($HOME/.m2/repository/com/tridion/cd_ambient/7.1.0/_remote.repositories and make sure that it contains the following:
     
-```
-cd_ambient-7.1.0.pom>=
-cd_ambient-7.1.0.jar>=
-```
+        ```
+        cd_ambient-7.1.0.pom>=
+        cd_ambient-7.1.0.jar>=
+        ```
                                   
 6. Following instructions given in respective README for each connector to set it up:
     * [Fredhopper](./connectors/fredhopper-dxa-ecommerce-connector/README.md)
