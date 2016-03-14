@@ -3,13 +3,14 @@ Fredhopper Connector
 
 The Fredhopper connector implements the following capabilities of the E-Commerce Framework:
    
+* Product Search
 * Product Categories
 * Facets
 * Product Lister
 * Breadcrumb
 * Promotions (product, image maps and content promotions)
 * Product Detail
-* Search spell feedback
+* Search Spell Feedback
 * XPM In-Context Edit controls for facets and promotions
 * XPM controls on category pages to create new facets, promotions, modifications, rankings, redirects and search synonyms
 

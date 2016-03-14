@@ -3,6 +3,7 @@ Demandware Connector
 
 The Demandware connector implements the following E-Commerce Framework capabilities:
 
+* Product Search
 * Product Categories
 * Facets
 * Product Lister

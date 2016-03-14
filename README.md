@@ -91,18 +91,21 @@ To get started with the E-Commerce framework you need to do the following steps:
     * `mvn install -Pfredhopper` - compile the framework and the Fredhopper connector (make sure to install the Fredhopper client libraries first, see [Installing Fredhopper libraries](./connectors/fredhopper-dxa-ecommerce-connector/lib/README.md)
     * `mvn install -Phybris` - compile the framework and the Hybris connector
     * `mvn install -Pdemandware` - compile the framework and the Demandware connector 
-5. If you get these type of error: [WARNING] The POM for com.tridion:cd_ambient:jar:7.1.0 is missing, no dependency information available
-    * Go into your local Maven repository and modify the following file: ($HOME/.m2/repository/com/tridion/cd_ambient/7.1.0/_remote.epositories and make sure that it contains the following:   `
+5. If you get these type of error: "[WARNING] The POM for com.tridion:cd_ambient:jar:7.1.0 is missing, no dependency information available"
+    * Go into your local Maven repository and modify the following file: ($HOME/.m2/repository/com/tridion/cd_ambient/7.1.0/_remote.epositories and make sure that it contains the following:
     
        ```
-       cd_ambient-7.1.0.pom>
-       cd_ambient-7.1.0.jar>
+       cd_ambient-7.1.0.pom>=
+       cd_ambient-7.1.0.jar>=
        ```
                                   
-6. Following instructions given in respective README for each connector (under /connectors) to compile and set it up
+6. Following instructions given in respective README for each connector to set it up:
+    * [Fredhopper](./connectors/fredhopper-dxa-ecommerce-connector/README.md)
+    * [Hybris](./connectors/hybris-dxa-ecommerce-connector/README.md)
+    * [Demandware](./connectors/demandware-dxa-ecommerce-connector/README.md)
 7. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
 8. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
-9. Install the CMS package by following instructions given in: [Install CMS packages](./cms/README.md) 
+9. Install the CMS packages by following instructions given in: [Install CMS packages](./cms/README.md) 
 10. Publish out the settings page, HTML design + the header include page. 
 11. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
 12. Define the application properties needed for selected connectors in your web application. Refer to the README file for each connector.

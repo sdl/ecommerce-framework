@@ -3,11 +3,12 @@ Hybris Connector
 
 The Hybris connector implements the following E-Commerce Framework capabilities:
 
+* Product Search
 * Product Categories
 * Facets
 * Product Lister
 * Breadcrumb
-* Search spell feedback
+* Search Spell Feedback
 * Product Detail
 * Cart
 
