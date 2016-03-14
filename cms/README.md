@@ -13,6 +13,8 @@ The following packages are provided:
 Instructions
 -------------
 
+Before running the import script the needed DLLs needs to be copied. See [Import/Export DLLs](./ImportExport/README.md) for further information.
+
 The CMS import script is generic and is used for all packages. The syntax for calling the script:
 
 ```.\cms-import.ps1  -cmsUrl [CMS url] -moduleZip [Module ZIP filename]
