@@ -106,7 +106,13 @@ public class DummyCart implements Cart {
     public Map<URI, Object> getDataToExposeToClaimStore() throws ECommerceException {
         Map<URI,Object> claims = new HashMap<>();
         claims.put(Cart.CART_ITEMS_URI, this.count());
-        claims.put(Cart.CART_TOTAL_PRICE_URI, this.getTotalPrice().getPrice());
+        ProductPrice totalPrice = this.getTotalPrice();
+        if ( totalPrice != null ) {
+            claims.put(Cart.CART_TOTAL_PRICE_URI, this.getTotalPrice().getPrice());
+        }
+        else {
+            claims.put(Cart.CART_TOTAL_PRICE_URI, 0.0f);
+        }
         return claims;
     }
 
