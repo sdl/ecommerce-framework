@@ -132,7 +132,7 @@ public abstract class FredhopperResultBase {
                 if ( theme.getItems() != null ) {
                     products = this.getProducts(theme.getItems().getItem());
                 }
-                promotions.add(FredhopperPromotion.build(theme, this.linkManager, products, editUrl));
+                promotions.add(FredhopperPromotion.build(theme, this.linkManager, products, editUrl, this.categoryService));
             }
             return promotions;
         }

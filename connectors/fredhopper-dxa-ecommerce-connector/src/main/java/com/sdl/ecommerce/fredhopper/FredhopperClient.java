@@ -5,12 +5,14 @@ import com.fredhopper.lang.query.ViewType;
 import com.fredhopper.lang.query.location.Location;
 import com.fredhopper.lang.query.location.criteria.*;
 import com.fredhopper.webservice.client.*;
+import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.FacetParameter.ParameterType;
 import com.sdl.ecommerce.api.QueryResult;
 import com.sdl.ecommerce.fredhopper.model.FredhopperCategory;
+import com.sdl.ecommerce.fredhopper.model.FredhopperFacet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -134,7 +136,6 @@ public class FredhopperClient implements FredhopperLinkManager {
 
     public Query buildQuery(String universe, String locale) {
         Query query = new Query();
-        //Location location = new Location(DEFAULT_LOCATION);
         Location location = new Location(universe, locale);
         query.setLocation(location);
         return query;
@@ -382,17 +383,17 @@ public class FredhopperClient implements FredhopperLinkManager {
     /************ LINK MANAGER INTERFACE ***********************************/
 
     @Override
-    public String convertToSEOLink(String location) {
+    public String convertToSEOLink(String location, ProductCategoryService categoryService) {
         if ( location.contains("%") ) { // URL encoded location string
             try {
                 location = URLDecoder.decode(location, "utf8");
             } catch ( UnsupportedEncodingException e  ) {}
         }
-        return this.convertToSEOLink(new Location(location));
+        return this.convertToSEOLink(new Location(location), categoryService);
     }
 
     @Override
-    public String convertToSEOLink(Location location) {
+    public String convertToSEOLink(Location location, ProductCategoryService categoryService) {
 
         StringBuilder seoLink = new StringBuilder();
 
@@ -415,16 +416,14 @@ public class FredhopperClient implements FredhopperLinkManager {
             }
         }
 
-        // TODO: FIX THIS CODE BELOW !!!! THIS IS NEEDED FOR PROMOTIONS !!!!!!!
-        /*
         if ( leafCategoryId != null ) {
-            Category category = this.categoryManager.getCategoryById(leafCategoryId);
+            Category category = categoryService.getCategoryById(leafCategoryId);
             seoLink.append(category.getCategoryLink("/c"));  // TODO: Totally encapsylate the '/c'
         }
         if ( facets != null ) {
-            seoLink.append(Facet.getFacetLink(facets));
+            seoLink.append(FredhopperFacet.getFacetLink(facets));
         }
-        */
+
 
         return seoLink.toString();
 
