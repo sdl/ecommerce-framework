@@ -22,6 +22,6 @@
 * The Demandware client ID can be generated on https://account.demandware.com. For more information, see [Adding a client ID for the Open Commerce API](https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.htm).
 * Make sure that the id of the mountpoint is named 'demandware', otherwise the ECL mappings on the DXA side will not work.
 * Verify that the multimedia type has been created for ECL with MIME type = 'application/externalcontentlibrary' and extension = 'ecl'
-* Restart SDL Tridion services and verify that you can browse the Hybris product catalog through SDL Tridion
+* Restart SDL Tridion services and verify that you can browse the Demandware product catalog through SDL Tridion
 
   
