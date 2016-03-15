@@ -42,7 +42,10 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
     @Override
     public List<Product> getProducts() {
         ItemsSection itemsSection = universe.getItemsSection();
-        return this.getProducts(itemsSection.getItems().getItem());
+        if ( itemsSection != null ) {
+            return this.getProducts(itemsSection.getItems().getItem());
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -72,22 +75,42 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getTotalCount() {
-        return this.universe.getItemsSection().getResults().getTotalItems();
+        if ( this.universe.getItemsSection() != null ) {
+            return this.universe.getItemsSection().getResults().getTotalItems();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
     public int getCurrentSet() {
-        return this.universe.getItemsSection().getResults().getCurrentSet();
+        if ( this.universe.getItemsSection() != null ) {
+            return this.universe.getItemsSection().getResults().getCurrentSet();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
     public int getStartIndex() {
-        return this.universe.getItemsSection().getResults().getStartIndex();
+        if ( this.universe.getItemsSection() != null ) {
+            return this.universe.getItemsSection().getResults().getStartIndex();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
     public int getViewSize() {
-        return this.universe.getItemsSection().getResults().getViewSize();
+        if ( this.universe.getItemsSection() != null ) {
+            return this.universe.getItemsSection().getResults().getViewSize();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override

@@ -283,9 +283,11 @@ public abstract class FredhopperResultBase {
     protected List<Filter> getFacetFilters(Universe universe) {
         List<Facetmap> facetmapArray = universe.getFacetmap();
         List<Filter> filters = new ArrayList<>();
-        for ( Facetmap facetmap : facetmapArray ) {
-            if ( facetmap.getFilter() != null && !facetmap.getUniverse().equals("search") ) {
-                filters.addAll(facetmap.getFilter());
+        if ( facetmapArray != null ) {
+            for (Facetmap facetmap : facetmapArray) {
+                if (facetmap.getFilter() != null && !facetmap.getUniverse().equals("search")) {
+                    filters.addAll(facetmap.getFilter());
+                }
             }
         }
         return filters;
