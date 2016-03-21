@@ -173,6 +173,7 @@ public abstract class FredhopperResultBase {
                 }
                 // Aggregated facet values
                 //
+                /* TODO: Fix aggregagated facet values. Functionality disabled for now as it collides with multi-value facets
                 else if ( fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() > 0 && fhCrumb.getRange().getValueSet().get(0).getAggregation() == AggregationType.OR ) {
                     StringBuilder aggregatedValue = new StringBuilder();
                     List<Entry> entries = fhCrumb.getRange().getValueSet().get(0).getEntry();
@@ -196,6 +197,7 @@ public abstract class FredhopperResultBase {
                     Breadcrumb breadcrumb = new FredhopperBreadcrumb(title, path, false);
                     breadcrumbs.add(breadcrumb);
                 }
+                */
                 else {
                     StringTokenizer valueTokenizer = new StringTokenizer(fhCrumb.getName().getNonMlValue(), "{};");
                     StringTokenizer titleTokenizer = new StringTokenizer(fhCrumb.getName().getValue(), ";");
