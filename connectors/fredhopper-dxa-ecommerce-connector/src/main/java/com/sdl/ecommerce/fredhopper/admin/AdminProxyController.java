@@ -397,7 +397,7 @@ public class AdminProxyController {
      */
     protected File getLocalFilename(String fredhopperUrl) {
 
-        String filename = fredhopperUrl.replace("http://", "").replace("https://", "").replace("/", "_");
+        String filename = fredhopperUrl.replace(fredhopperBaseUrl, "").replace("/fredhopper/admin/wicket/resource", "").replace("/", "_");
         return new File(StringUtils.join(new String[]{
                 webApplicationContext.getServletContext().getRealPath("/"), "BinaryData", "fredhopper", "assets", filename
         }, File.separator));
