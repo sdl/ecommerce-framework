@@ -1,8 +1,8 @@
 E-Commerce Framework for SDL Web
 ====================================
 
-This is framework to enable E-Commerce functionality for SDL Web.
-It will contain ECL providers and DXA modules for various E-Commerce systems.
+This is a framework to enable E-Commerce functionality for SDL Web.
+It contains ECL providers and DXA modules for various E-Commerce systems.
 
 Right now it provides connectors for:
 
