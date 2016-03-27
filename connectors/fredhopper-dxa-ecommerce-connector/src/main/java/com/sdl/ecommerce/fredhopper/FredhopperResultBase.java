@@ -68,7 +68,7 @@ public abstract class FredhopperResultBase {
     protected List<Product> getProducts(List<com.fredhopper.webservice.client.Item> items) {
         List<Product> products = new ArrayList<>();
         for ( com.fredhopper.webservice.client.Item item : items ) {
-            FredhopperProduct fhItem = new FredhopperProduct(item.getId(), this.linkManager, this.productModelMappings);
+            FredhopperProduct fhItem = new FredhopperProduct(item.getId(), this.linkManager, this.productModelMappings, this.localizationService);
             products.add(fhItem);
             for (Attribute attribute : item.getAttribute()) {
                 String name = attribute.getName();

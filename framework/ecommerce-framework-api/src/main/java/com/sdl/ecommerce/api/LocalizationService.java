@@ -26,4 +26,6 @@ public interface LocalizationService {
      * @return config value
      */
     String getLocalizedConfigProperty(String name);
+
+    String localizePath(String url);
 }

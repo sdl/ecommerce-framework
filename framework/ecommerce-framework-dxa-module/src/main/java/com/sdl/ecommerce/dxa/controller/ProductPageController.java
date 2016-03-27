@@ -5,6 +5,7 @@ import com.sdl.ecommerce.api.ProductDetailService;
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.*;
 import com.sdl.webapp.common.api.content.ContentProviderException;
 import com.sdl.webapp.common.api.content.PageNotFoundException;
+import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,9 @@ public class ProductPageController extends AbstractECommercePageController {
         // TODO: How to handle variants ??
 
         // Path pattern for product detail pages: /p/[SEO name]/[second id]
-        final String requestPath = webRequestContext.getRequestPath().replaceFirst("/p", "");
+        //final String requestPath = webRequestContext.getRequestPath().replaceFirst("/p", "");
+        final String requestPath = request.getRequestURI().replaceFirst("/p", "");
+        final Localization localization = webRequestContext.getLocalization();
         final String[] pathTokens = requestPath.split("/");
         final String productSeoId;
         final String productId;
@@ -71,8 +74,8 @@ public class ProductPageController extends AbstractECommercePageController {
             request.setAttribute(PRODUCT_ID, productId);
             request.setAttribute(PRODUCT, detailResult.getProductDetail());
             request.setAttribute(RESULT, detailResult);
-            request.setAttribute(URL_PREFIX, "/c");
-            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(productSeoId, productId));
+            request.setAttribute(URL_PREFIX, localization.localizePath("/c"));
+            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(localization, productSeoId, productId));
             templatePage.setTitle(detailResult.getProductDetail().getName());
 
             final MvcData mvcData = templatePage.getMvcData();
@@ -83,23 +86,25 @@ public class ProductPageController extends AbstractECommercePageController {
 
     /**
      * Get search path for finding appropriate template page.
+     * @param localization
      * @param productSeoId
      * @param productId
      * @return search path
      */
-    protected List<String> getSearchPath(String productSeoId, String productId) {
+    protected List<String> getSearchPath(Localization localization, String productSeoId, String productId) {
 
         // TODO: Can we extract the categories from the product???
 
         // Should we allow some alternative lookup mechanism here as well? Such as search for
 
         List<String> searchPath = new ArrayList<>();
+        String basePath = localization.localizePath("/products/");
         if ( productSeoId != null ) {
-            searchPath.add("/products/" + productSeoId);
+            searchPath.add(basePath + productSeoId);
 
         }
-        searchPath.add("/products/" + productId);
-        searchPath.add("/products/generic");
+        searchPath.add(basePath + productId);
+        searchPath.add(basePath + "generic");
         return searchPath;
     }
 }

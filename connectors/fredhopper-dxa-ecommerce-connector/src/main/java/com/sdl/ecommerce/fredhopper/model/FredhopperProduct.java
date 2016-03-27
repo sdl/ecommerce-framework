@@ -1,10 +1,12 @@
 package com.sdl.ecommerce.fredhopper.model;
 
+import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
+import com.sdl.webapp.common.api.localization.Localization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ public class FredhopperProduct implements Product {
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
+    private LocalizationService localizationService;
 
     /**
      * Create a Fredhopper product representation. The provided model mappings are used to map Fredhopper product attributes
@@ -31,11 +34,16 @@ public class FredhopperProduct implements Product {
      * @param id
      * @param linkManager
      * @param modelMappings
+     * @param localizationService
      */
-    public FredhopperProduct(String id, FredhopperLinkManager linkManager, Map<String,String> modelMappings) {
+    public FredhopperProduct(String id,
+                             FredhopperLinkManager linkManager,
+                             Map<String,String> modelMappings,
+                             LocalizationService localizationService) {
         this.id = id;
         this.linkManager = linkManager;
         this.modelMappings = modelMappings;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -80,9 +88,9 @@ public class FredhopperProduct implements Product {
             // Generate a SEO friendly URL
             //
             String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");
-            return "/p/" + seoName + "/" + this.id;
+            return this.localizationService.localizePath("/p/") + seoName + "/" + this.id;
         }
-        return "/p/" + this.id;
+        return this.localizationService.localizePath("/p/") + this.id;
     }
 
     @Override

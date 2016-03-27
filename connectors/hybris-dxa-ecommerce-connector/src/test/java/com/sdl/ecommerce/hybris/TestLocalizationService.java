@@ -69,4 +69,9 @@ public class TestLocalizationService implements LocalizationService {
             return null;
         }
     }
+
+    @Override
+    public String localizePath(String url) {
+        return url;
+    }
 }

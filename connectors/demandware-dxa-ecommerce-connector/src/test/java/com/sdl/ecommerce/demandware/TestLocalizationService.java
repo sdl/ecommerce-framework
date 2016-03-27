@@ -44,4 +44,9 @@ public class TestLocalizationService implements LocalizationService {
     public String getPublicationId() {
         return "1";
     }
+
+    @Override
+    public String localizePath(String url) {
+        return url;
+    }
 }

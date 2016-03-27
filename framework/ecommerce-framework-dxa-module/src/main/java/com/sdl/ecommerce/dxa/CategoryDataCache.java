@@ -21,11 +21,11 @@ public class CategoryDataCache {
             .expireAfterWrite(5, TimeUnit.MINUTES).build();  // TODO: Have this cache time configurable
 
     public Object getCategoryData(Category category, String key) {
-        return this.categoryData.getIfPresent(category.getId() + ":" + key);
+        return this.categoryData.getIfPresent(category.hashCode() + ":" + key);
     }
 
     public void setCategoryData(Category category, String key, Object categoryData) {
-        this.categoryData.put(category.getId() + ":" + key, categoryData);
+        this.categoryData.put(category.hashCode() + ":" + key, categoryData);
     }
 
 }

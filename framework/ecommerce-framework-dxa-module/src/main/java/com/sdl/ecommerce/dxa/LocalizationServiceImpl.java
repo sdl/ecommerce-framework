@@ -31,4 +31,9 @@ public class LocalizationServiceImpl implements LocalizationService {
     public String getLocalizedConfigProperty(String name) {
         return this.webRequestContext.getLocalization().getConfiguration("e-commerce." + name);
     }
+
+    @Override
+    public String localizePath(String url) {
+        return webRequestContext.getLocalization().localizePath(url);
+    }
 }

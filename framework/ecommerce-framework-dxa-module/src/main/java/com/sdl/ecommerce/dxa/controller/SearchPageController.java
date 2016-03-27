@@ -6,6 +6,7 @@ import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.webapp.common.api.content.ContentProviderException;
 import com.sdl.webapp.common.api.content.PageNotFoundException;
+import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ public class SearchPageController extends AbstractECommercePageController {
     public String handleSearch(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException {
 
         final String searchPhrases = request.getParameter("q");
-        return "redirect:/search/" + searchPhrases;
+        final Localization localization = this.webRequestContext.getLocalization();
+        return "redirect:" + localization.localizePath("/search/") + searchPhrases;
     }
 
     /**
@@ -54,7 +56,10 @@ public class SearchPageController extends AbstractECommercePageController {
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleSearchCategoryPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException, IOException {
 
-        String requestPath = webRequestContext.getRequestPath().replaceFirst("/search", "");
+        //String requestPath = webRequestContext.getRequestPath().replaceFirst("/search", "");
+        final String requestPath = request.getRequestURI().replaceFirst("/search", "");
+        final Localization localization = this.webRequestContext.getLocalization();
+
         String[] pathTokens = requestPath.split("/");
         if ( pathTokens.length < 2 ) {
             throw new PageNotFoundException("Invalid search!");
@@ -67,7 +72,7 @@ public class SearchPageController extends AbstractECommercePageController {
 
         final Category category = this.categoryService.getCategoryByPath(categoryPath);
         final List<FacetParameter> facets = this.getFacetParametersFromRequestMap(request.getParameterMap());
-        final PageModel templatePage = resolveTemplatePage(request, getSearchPath(requestPath));
+        final PageModel templatePage = resolveTemplatePage(request, getSearchPath(localization, requestPath));
 
         final Query query = this.queryService.newQuery();
         this.getQueryContributions(templatePage, query);
@@ -87,7 +92,7 @@ public class SearchPageController extends AbstractECommercePageController {
             request.setAttribute(RESULT, result);
             request.setAttribute(FACETS, facets);
             request.setAttribute(SEARCH_PHRASE, searchPhrase);
-            request.setAttribute(URL_PREFIX, "/search/" + searchPhrase);
+            request.setAttribute(URL_PREFIX, localization.localizePath("/search/") + searchPhrase);
             request.setAttribute(ROOT_CATEGORY_TITLE, "Search Results");
 
             final MvcData mvcData = templatePage.getMvcData();
@@ -98,9 +103,9 @@ public class SearchPageController extends AbstractECommercePageController {
         throw new PageNotFoundException("Search category page not found.");
     }
 
-    protected List<String> getSearchPath(String url) {
+    protected List<String> getSearchPath(Localization localization, String url) {
         List<String> searchPath = new ArrayList<>();
-        searchPath.add("/search-results"); // TODO: Have this configurable
+        searchPath.add(localization.localizePath("/search-results")); // TODO: Have this configurable
         // TODO: Add possibility to override search result based on search phrases etc
         return searchPath;
     }

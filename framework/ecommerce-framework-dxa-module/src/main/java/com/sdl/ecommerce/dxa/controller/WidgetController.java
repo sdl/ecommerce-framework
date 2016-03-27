@@ -13,6 +13,7 @@ import com.sdl.ecommerce.dxa.ECommerceViewHelper;
 import com.sdl.ecommerce.dxa.model.*;
 import com.sdl.webapp.common.api.WebRequestContext;
 import com.sdl.webapp.common.api.content.ContentProviderException;
+import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.EntityModel;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
@@ -241,11 +242,13 @@ public class WidgetController extends BaseController {
     public String handleFlyoutFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
+        Localization localization = this.webRequestContext.getLocalization();
+        String navigationBasePath = localization.localizePath("/c");
 
         if ( entity.getCategoryReference() != null ) {
             Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());
             if (topCategory != null) {
-                entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink("/c")); // For flyout is the URL's always based on the category url pattern
+                entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink(navigationBasePath)); // For flyout is the URL's always based on the category url pattern
 
                 boolean useCache = this.isSessionPreview(request) == false;
 
@@ -259,7 +262,7 @@ public class WidgetController extends BaseController {
                                     category(topCategory).
                                     viewType(ViewType.FLYOUT));
                     flyoutData = new FlyoutData();
-                    flyoutData.facetGroups = flyoutResult.getFacetGroups("/c");
+                    flyoutData.facetGroups = flyoutResult.getFacetGroups(navigationBasePath);
                     flyoutData.promotions = flyoutResult.getPromotions();
                     this.categoryDataCache.setCategoryData(topCategory, "flyout", flyoutData);
                 }
@@ -403,6 +406,8 @@ public class WidgetController extends BaseController {
 
         // TODO: Use thread local here to optimize the search to avoid duplicate calls...
         //
+
+        // TODO: Take localization in consideration here
 
         String requestPath = webRequestContext.getRequestPath();
         if ( requestPath.startsWith("/categories") ) {
