@@ -202,7 +202,9 @@ public class AdminProxyController {
                             IOUtils.copy(new GZIPInputStream(method.getResponseBodyAsStream()), byteArrayOutputStream);
                             byte[] responseData = byteArrayOutputStream.toByteArray();
                             this.storeCachedResources(fredhopperUrl, responseData);
+                            // TODO: Force the browser to cache the CSS/JS/image resources
                             response.getOutputStream().write(responseData);
+
                         }
                     } else {
                         IOUtils.copy(method.getResponseBodyAsStream(), response.getOutputStream());
