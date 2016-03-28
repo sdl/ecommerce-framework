@@ -3,6 +3,10 @@ package com.sdl.ecommerce.fredhopper;
 import com.sdl.ecommerce.api.LocalizationService;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * TestLocalizationService
  *
@@ -37,6 +41,9 @@ public class TestLocalizationService implements LocalizationService {
         else if ( name.equals("fredhopper-productModelMappings") ) {
             return "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl";
         }
+        else if ( name.equals("fredhopper-triggerMappings") ) {
+            return "taf:claim:segment=fh_keyword";
+        }
         else {
             return null;
         }
@@ -45,5 +52,12 @@ public class TestLocalizationService implements LocalizationService {
     @Override
     public String localizePath(String url) {
         return url;
+    }
+
+    @Override
+    public Map<URI, Object> getAllClaims() {
+        Map<URI,Object> claims = new HashMap<>();
+        claims.put(URI.create("taf:claim:segment"), "TestSegment");
+        return claims;
     }
 }
