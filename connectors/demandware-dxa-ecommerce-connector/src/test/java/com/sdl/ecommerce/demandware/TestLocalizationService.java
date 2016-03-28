@@ -3,6 +3,9 @@ package com.sdl.ecommerce.demandware;
 import com.sdl.ecommerce.api.LocalizationService;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.net.URI;
+import java.util.Map;
+
 /**
  * TestLocalizationService
  *
@@ -48,5 +51,10 @@ public class TestLocalizationService implements LocalizationService {
     @Override
     public String localizePath(String url) {
         return url;
+    }
+
+    @Override
+    public Map<URI, Object> getAllClaims() {
+        return null;
     }
 }

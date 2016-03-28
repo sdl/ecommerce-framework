@@ -2,8 +2,12 @@ package com.sdl.ecommerce.dxa;
 
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.webapp.common.api.WebRequestContext;
+import com.tridion.ambientdata.AmbientDataContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.net.URI;
+import java.util.Map;
 
 /**
  * Localization Service Implementation.
@@ -35,5 +39,10 @@ public class LocalizationServiceImpl implements LocalizationService {
     @Override
     public String localizePath(String url) {
         return webRequestContext.getLocalization().localizePath(url);
+    }
+
+    @Override
+    public Map<URI, Object> getAllClaims() {
+        return AmbientDataContext.getCurrentClaimStore().getAll();
     }
 }

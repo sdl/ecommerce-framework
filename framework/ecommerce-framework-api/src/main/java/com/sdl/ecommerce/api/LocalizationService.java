@@ -1,5 +1,8 @@
 package com.sdl.ecommerce.api;
 
+import java.net.URI;
+import java.util.Map;
+
 /**
  * Localization Service.
  * Gives access to localization specific parameters.
@@ -8,6 +11,8 @@ package com.sdl.ecommerce.api;
  * @author nic
  */
 public interface LocalizationService {
+
+    // TODO: Rename this interface to ContextService instead???
 
     /**
      * @return publication ID
@@ -27,5 +32,16 @@ public interface LocalizationService {
      */
     String getLocalizedConfigProperty(String name);
 
+    /**
+     * Localize the path based on the current localization context
+     * @param url
+     * @return localization path
+     */
     String localizePath(String url);
+
+    /**
+     * Get all available claims from the context broker.
+     * @return claims
+     */
+    Map<URI, Object> getAllClaims();
 }
