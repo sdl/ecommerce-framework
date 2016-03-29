@@ -41,6 +41,10 @@ public abstract class FredhopperHelper {
         return getConfigList(localizationService, "fredhopper-hiddenFacetValues");
     }
 
+    static public List<String> getAggregatedFacets(LocalizationService localizationService) {
+        return getConfigList(localizationService, "fredhopper-aggregatedFacets");
+    }
+
     // Not used right now.
     static public List<String> getFlyoutFacets(LocalizationService localizationService) {
         return getConfigList(localizationService, "fredhopper-flyoutFacets");

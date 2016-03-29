@@ -28,6 +28,7 @@ public abstract class FredhopperResultBase {
     protected LocalizationService localizationService;
     protected Map<String,String> productModelMappings;
     protected List<String> hiddenFacetValues;
+    protected List<String> aggregatedFacets;
 
     protected FredhopperResultBase(Page fredhopperPage, FredhopperLinkManager linkManager) {
         this.fredhopperPage = fredhopperPage;
@@ -49,6 +50,7 @@ public abstract class FredhopperResultBase {
         this.localizationService = localizationService;
         this.productModelMappings = getProductModelMappings(this.localizationService);
         this.hiddenFacetValues = getHiddenFacetValues(this.localizationService);
+        this.aggregatedFacets =  getAggregatedFacets(this.localizationService);
 
     }
 
@@ -173,22 +175,22 @@ public abstract class FredhopperResultBase {
                 }
                 // Aggregated facet values
                 //
-                /* TODO: Fix aggregagated facet values. Functionality disabled for now as it collides with multi-value facets
-                else if ( fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() > 0 && fhCrumb.getRange().getValueSet().get(0).getAggregation() == AggregationType.OR ) {
+                // Temporary work-around to get most aggregated facets to work. Needs to be improved.
+                //
+                else if ( this.aggregatedFacets != null && this.aggregatedFacets.contains(fhCrumb.getName().getAttributeType()) && fhCrumb.getRange() != null && fhCrumb.getRange().getValueSet().size() > 0 && fhCrumb.getRange().getValueSet().get(0).getAggregation() == AggregationType.OR ) {
                     StringBuilder aggregatedValue = new StringBuilder();
                     List<Entry> entries = fhCrumb.getRange().getValueSet().get(0).getEntry();
-                    for ( int i=0; i < entries.size(); i++ ) {
+                    for (int i = 0; i < entries.size(); i++) {
                         aggregatedValue.append(entries.get(i).getValue().getNonMl());
-                        if ( i < entries.size()-1 ) {
+                        if (i < entries.size() - 1) {
                             aggregatedValue.append(";");
                         }
                     }
                     String title;
                     Filtersection section = this.getSelectedFilterSectionWithValue(universe, aggregatedValue.toString());
-                    if ( section != null ) {
+                    if (section != null) {
                         title = section.getLink().getName();
-                    }
-                    else {
+                    } else {
                         // If no aggregated title is found -> fall back on the first entry value
                         //
                         title = entries.get(0).getValue().getValue();
@@ -197,7 +199,6 @@ public abstract class FredhopperResultBase {
                     Breadcrumb breadcrumb = new FredhopperBreadcrumb(title, path, false);
                     breadcrumbs.add(breadcrumb);
                 }
-                */
                 else {
                     StringTokenizer valueTokenizer = new StringTokenizer(fhCrumb.getName().getNonMlValue(), "{};");
                     StringTokenizer titleTokenizer = new StringTokenizer(fhCrumb.getName().getValue(), ";");
