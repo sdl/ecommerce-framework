@@ -23,4 +23,19 @@ namespace SDL.ECommerce.Ecl
         string Mime { get; }
     }
 
+    public class StandardProductImage : ProductImage
+    {
+        private string url;
+        private string mime;
+
+        public StandardProductImage(string url, string mime)
+        {
+            this.url = url;
+            this.mime = mime;
+        }
+
+        public string Url { get { return this.url; } }
+        public string Mime { get { return this.mime; } }
+    }
+
 }

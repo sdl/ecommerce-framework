@@ -26,11 +26,14 @@ namespace SDL.ECommerce.Ecl
                 Category currentCategory = this.category;
                 while ( currentCategory != null )
                 {
-                    if ( categoryPath.Length > 0 )
+                    if (currentCategory.Title != null)
                     {
-                        categoryPath = "->" + categoryPath;
+                        if (categoryPath.Length > 0l)
+                        {
+                            categoryPath = "->" + categoryPath;
+                        }
+                        categoryPath = currentCategory.Title + categoryPath;
                     }
-                    categoryPath = currentCategory.Title + categoryPath;
                     currentCategory = currentCategory.Parent;
                 }
                 return categoryPath;

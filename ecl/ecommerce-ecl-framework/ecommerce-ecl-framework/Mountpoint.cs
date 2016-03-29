@@ -60,6 +60,11 @@ namespace SDL.ECommerce.Ecl
                             items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, categoryId));
                         }
                          * */
+
+                        // TODO: Can we somehow build up a structure here instead???
+                        // TODO: Have a hook for providers to hook in their variant on the listing here???
+         
+
                         var allCategories = EclProvider.GetAllCategories();
                         foreach ( var category in allCategories )
                         {
