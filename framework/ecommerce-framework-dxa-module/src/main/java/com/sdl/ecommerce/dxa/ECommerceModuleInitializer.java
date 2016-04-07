@@ -24,14 +24,8 @@ public class ECommerceModuleInitializer extends AbstractInitializer {
     @PostConstruct
     public void initialize() {
 
-        // Register additional CSS/JS to be used on pages
+        // Register additional JS to be used on pages
         //
-        pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.CSS,
-                HtmlBuilders.element("link")
-                        .withAttribute("type", "text/css")
-                        .withAttribute("rel", "stylesheet")
-                        .withAttribute("href", "/system/assets/css/ecommerce-styles.css").build());
-
         pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,
                 HtmlBuilders.element("script").withAttribute("src", "/system/assets/scripts/ecommerce-cart.js").build());
         pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,

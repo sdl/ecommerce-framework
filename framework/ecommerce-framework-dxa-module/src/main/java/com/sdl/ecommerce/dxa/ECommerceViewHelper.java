@@ -25,8 +25,16 @@ public class ECommerceViewHelper {
      * @return true if edit controls can be shown, otherwise false
      */
     public boolean showEditControls(Object ecommerceItem) {
-        Boolean hasBeenInvokedViaXpm = (Boolean) request.getSession().getAttribute(ECommerceSessionAttributes.IN_XPM_SESSION);
-        return Boolean.TRUE.equals(hasBeenInvokedViaXpm) &&
+        return hasBeenInvokedViaXpm() &&
                ecommerceItem instanceof Editable;
+    }
+
+    /**
+     * Determine if an XPM session is active or not
+     * @return true if XPM session is active, otherwise false
+     */
+    public boolean hasBeenInvokedViaXpm() {
+        Boolean hasBeenInvokedViaXpm = (Boolean) request.getSession().getAttribute(ECommerceSessionAttributes.IN_XPM_SESSION);
+        return Boolean.TRUE.equals(hasBeenInvokedViaXpm);
     }
 }

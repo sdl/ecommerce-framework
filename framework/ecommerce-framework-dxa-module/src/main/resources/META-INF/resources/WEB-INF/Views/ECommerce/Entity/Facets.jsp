@@ -9,7 +9,9 @@
 <div>
 
     <%-- Temporary fix to get the in-context menu enabled. Should be replaced by a separate in-context menu bar in the top of the page --%>
-    <c:import url="/WEB-INF/Views/ECommerce/Entity/InContextEditMenu.jsp"/>
+    <c:if test="${viewHelper.hasBeenInvokedViaXpm()}">
+        <c:import url="/WEB-INF/Views/ECommerce/Entity/InContextEditMenu.jsp"/>
+    </c:if>
 
 
     <c:forEach var="facetGroup" items="${entity.facetGroups}">

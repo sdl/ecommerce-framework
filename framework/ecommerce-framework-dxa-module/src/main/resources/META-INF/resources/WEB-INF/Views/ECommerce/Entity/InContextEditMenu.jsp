@@ -8,19 +8,6 @@
 <c:if test="${editMenu != null && editMenu.menuItems.size() gt 0}">
     <div>
 
-        <style type="text/css">
-
-            .xpm-create-new-menu .bootstrap-select {
-                opacity: 0.5;
-            }
-
-            .xpm-create-new-menu .bootstrap-select:hover {
-                opacity: 1.0;
-            }
-
-        </style>
-
-
         <!-- TODO: Should this also include message bar where modifications etc can be highlighted????  -->
 
         <div class="xpm-button xpm-create-new-menu">
@@ -42,5 +29,13 @@
                 </div>
             </div>
         </div>
+        <dxa:definePluggableMarkup label="bottom-js">
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#page-header .page-border").css("position", "relative");
+                    $(".xpm-create-new-menu").detach().appendTo("#page-header .page-border");
+                });
+            </script>
+        </dxa:definePluggableMarkup>
     </div>
 </c:if>
