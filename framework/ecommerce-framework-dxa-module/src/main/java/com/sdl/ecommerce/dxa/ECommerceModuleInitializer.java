@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.dxa;
 
 import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
+import com.sdl.webapp.common.api.mapping.views.ModuleInfo;
 import com.sdl.webapp.common.markup.PluggableMarkupRegistry;
 import com.sdl.webapp.common.markup.html.builders.HtmlBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
  * @author nic
  */
 @Component
+@ModuleInfo(name = "E-Commerce module", areaName = "ECommerce", description = "Module for the E-Commerce framework")
 public class ECommerceModuleInitializer extends AbstractInitializer {
 
     private static final String AREA_NAME = "ECommerce";
