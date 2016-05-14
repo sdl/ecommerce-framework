@@ -2,6 +2,8 @@ package com.sdl.ecommerce.api;
 
 import com.sdl.ecommerce.api.model.Category;
 
+import java.util.List;
+
 /**
  * Product Category Service
  * Is responsible to maintain the category structure.
@@ -26,5 +28,12 @@ public interface ProductCategoryService {
      * @throws ECommerceException
      */
     Category getCategoryByPath(String path) throws ECommerceException;
+
+    /**
+     * Get top level categories.
+     * @return categories
+     * @throws ECommerceException
+     */
+    List<Category> getTopLevelCategories() throws ECommerceException;
 
 }

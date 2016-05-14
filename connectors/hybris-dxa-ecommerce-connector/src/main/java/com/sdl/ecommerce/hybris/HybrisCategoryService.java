@@ -71,4 +71,8 @@ public class HybrisCategoryService implements ProductCategoryService {
         return this.getCategoryManager().getCategoryByPath(path);
     }
 
+    @Override
+    public List<Category> getTopLevelCategories() throws ECommerceException {
+        return this.getCategoryManager().getTopLevelCategories();
+    }
 }

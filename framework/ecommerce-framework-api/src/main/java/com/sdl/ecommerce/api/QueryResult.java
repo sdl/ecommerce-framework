@@ -26,6 +26,7 @@ public interface QueryResult extends ECommerceResult {
      * @param urlPrefix
      * @return list of facet groups
      */
+    // TODO: Factor away the URL prefix here!! Can link strategy be used here??
     List<FacetGroup> getFacetGroups(String urlPrefix);
 
     /**
