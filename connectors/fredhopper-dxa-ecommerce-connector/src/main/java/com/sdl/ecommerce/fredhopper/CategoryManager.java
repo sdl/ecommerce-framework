@@ -106,7 +106,7 @@ public class CategoryManager {
         return null;
     }
 
-    private List<Category> getTopLevelCategories() {
+    public List<Category> getTopLevelCategories() {
         if ( ((FredhopperCategory)this.rootCategory).needsRefresh() ) {
             loadCategories(this.rootCategory);
         }

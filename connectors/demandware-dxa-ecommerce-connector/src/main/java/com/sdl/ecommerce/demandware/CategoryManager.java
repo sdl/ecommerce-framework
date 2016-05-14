@@ -104,7 +104,7 @@ public class CategoryManager {
      * Get top level categories
      * @return categories
      */
-    private List<Category> getTopLevelCategories() {
+    public List<Category> getTopLevelCategories() {
         if ( ((DemandwareCategory)this.rootCategory).needsRefresh() ) {
             loadCategories(this.rootCategory);
         }

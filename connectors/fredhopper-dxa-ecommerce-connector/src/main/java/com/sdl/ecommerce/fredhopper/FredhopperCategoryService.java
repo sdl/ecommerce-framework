@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,4 +67,8 @@ public class FredhopperCategoryService implements ProductCategoryService {
         return this.getCategoryManager().getCategoryByPath(path);
     }
 
+    @Override
+    public List<Category> getTopLevelCategories() throws ECommerceException {
+        return this.getCategoryManager().getTopLevelCategories();
+    }
 }
