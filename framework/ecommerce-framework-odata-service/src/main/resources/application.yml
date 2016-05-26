@@ -1,0 +1,31 @@
+# Fredhopper Application Configuration
+#
+
+# Temporary configuration. Each connector will use it's own configuration
+
+# System Properties
+#
+fredhopper:
+  queryserver:
+    url: http://localhost:8180
+  adminserver:
+    url: http://localhost:8180
+  access:
+    username:
+    password:
+  admin:
+    username: admin
+    password: admin
+  imageurl:
+    mappings: http://demo.fredhopper.com/images=/fredhopper-images
+
+localization:
+  defaultLocale: en-GB
+  locales:
+    "en-GB":
+      fredhopper-universe: catalog01
+      fredhopper-locale: en-GB # Needed??? Yes if DXA locale is not the same as E-Com locale, e.g en-US ~ en-GB
+      fredhopper-productModelMappings: "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl"
+      fredhopper-triggerMappings: "taf:claim:segment=fh_keyword"
+
+

@@ -106,6 +106,9 @@
         <!-- Jackson and related libraries -->
         <jackson-version>2.4.3</jackson-version>
 
+        <!-- SDL OData -->
+        <odata.version>2.0.5</odata.version>
+
     </properties>
 
     <!-- Dependency management -->
@@ -231,6 +234,49 @@
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
                 <version>${jackson-version}</version>
+            </dependency>
+
+            <!-- SDL OData -->
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_api</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_client</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_client_api</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_edm</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_common</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_service</artifactId>
+                <version>${odata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl</groupId>
+                <artifactId>odata_test</artifactId>
+                <version>${odata.version}</version>
             </dependency>
 
         </dependencies>
