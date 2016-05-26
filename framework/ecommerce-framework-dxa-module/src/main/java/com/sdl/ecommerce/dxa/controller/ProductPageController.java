@@ -3,6 +3,8 @@ package com.sdl.ecommerce.dxa.controller;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.ProductDetailService;
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.*;
+
+import com.sdl.ecommerce.api.model.Category;
 import com.sdl.webapp.common.api.content.ContentProviderException;
 import com.sdl.webapp.common.api.content.PageNotFoundException;
 import com.sdl.webapp.common.api.localization.Localization;
@@ -65,17 +67,15 @@ public class ProductPageController extends AbstractECommercePageController {
             throw new PageNotFoundException("Invalid product detail URL.");
         }
 
-        //final Category category = fredhopperService.getCategoryByPath(requestPath);
         //final List<FacetParameter> facets = fredhopperService.getFacetParametersFromRequestMap(request.getParameterMap());
         ProductDetailResult detailResult = this.detailService.getDetail(productId);
-
         if ( detailResult != null && detailResult.getProductDetail() != null ) {
 
             request.setAttribute(PRODUCT_ID, productId);
             request.setAttribute(PRODUCT, detailResult.getProductDetail());
             request.setAttribute(RESULT, detailResult);
             request.setAttribute(URL_PREFIX, localization.localizePath("/c"));
-            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(localization, productSeoId, productId));
+            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(localization, productSeoId, productId, detailResult.getProductDetail().getCategories()));
             templatePage.setTitle(detailResult.getProductDetail().getName());
 
             final MvcData mvcData = templatePage.getMvcData();
@@ -91,7 +91,7 @@ public class ProductPageController extends AbstractECommercePageController {
      * @param productId
      * @return search path
      */
-    protected List<String> getSearchPath(Localization localization, String productSeoId, String productId) {
+    protected List<String> getSearchPath(Localization localization, String productSeoId, String productId, List<Category> categories) {
 
         // TODO: Can we extract the categories from the product???
 
@@ -104,6 +104,11 @@ public class ProductPageController extends AbstractECommercePageController {
 
         }
         searchPath.add(basePath + productId);
+        if ( categories != null ) {
+            for ( Category category : categories ) {
+                searchPath.add(basePath + category.getId());
+            }
+        }
         searchPath.add(basePath + "generic");
         return searchPath;
     }

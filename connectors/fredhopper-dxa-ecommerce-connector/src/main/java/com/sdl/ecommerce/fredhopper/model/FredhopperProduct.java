@@ -78,13 +78,19 @@ public class FredhopperProduct implements Product {
     @Override
     public String getPrimaryImageUrl() {
         String imageUrl = this.getModelAttribute("primaryImageUrl");
-        return this.linkManager.processImageUrl(imageUrl);
+        if ( imageUrl != null ) {
+            imageUrl = this.linkManager.processImageUrl(imageUrl);
+        }
+        return imageUrl;
     }
 
     @Override
     public String getDetailPageUrl() {
         String name = this.getName();
         if ( name != null ) {
+
+            // TODO: Let this be done by a product link strategy instead!!!!!!!
+
             // Generate a SEO friendly URL
             //
             String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");

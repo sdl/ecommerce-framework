@@ -30,7 +30,7 @@ public class LocalizationRedirectInterceptor extends HandlerInterceptorAdapter {
         Localization localization = webRequestContext.getLocalization();
         String requestUri = request.getRequestURI();
         String pathPrefix = localization.getPath();
-        if ( !localization.isDefault() && requestUri.startsWith(pathPrefix) ) {
+        if ( requestUri.startsWith(pathPrefix) ) {
             requestUri = requestUri.replaceFirst(pathPrefix, "");
             if ( requestUri.startsWith("/c") || requestUri.startsWith("/p") || requestUri.startsWith("/search") ) {
                 // Forward request to custom E-Commerce page controllers
