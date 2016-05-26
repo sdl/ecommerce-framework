@@ -26,7 +26,7 @@ namespace SDL.Hybris.Ecl
 
         public Category Parent
         {
-            get { return new HybrisCategory(this.hybrisCategory.Parent); }
+            get { return this.hybrisCategory.Parent != null ?  new HybrisCategory(this.hybrisCategory.Parent) : null; }
         }
 
         public IList<Category> Categories
