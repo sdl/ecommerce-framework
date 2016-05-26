@@ -410,7 +410,7 @@ public class WidgetController extends BaseController {
         // TODO: Take localization in consideration here
 
         String requestPath = webRequestContext.getRequestPath();
-        if ( requestPath.startsWith("/categories") ) {
+        if ( requestPath.startsWith(webRequestContext.getLocalization().localizePath("/categories")) ) {
             final Category category = this.getCategoryFromPageTemplate(requestPath);
             Query query = this.queryService.newQuery();
             query.category(category);
@@ -419,8 +419,8 @@ public class WidgetController extends BaseController {
 
             return this.queryService.query(query);
         }
-        else if ( requestPath.startsWith("/products") ) {
-            String productId = requestPath.replaceFirst("\\/products\\/", "").replace(".html", "");
+        else if ( requestPath.startsWith(webRequestContext.getLocalization().localizePath("/products")) ) {
+            String productId = requestPath.replaceFirst(webRequestContext.getLocalization().localizePath("/products/"), "").replace(".html", "");
             return this.detailService.getDetail(productId);
         }
         return null;
@@ -451,7 +451,7 @@ public class WidgetController extends BaseController {
     protected Category getCategoryFromPageTemplate(String requestPath) {
         // Try to get query result based on the page url cat1-cat2-cat3
         //
-        final String categoryPath = requestPath.replaceFirst("\\/categories\\/", "").replace(".html", "").replace("-", "/");
+        final String categoryPath = requestPath.replaceFirst(webRequestContext.getLocalization().localizePath("/categories/"), "").replace(".html", "").replace("-", "/");
         Category category = this.categoryService.getCategoryByPath(categoryPath);
         if ( category == null ) {
             // Try with category ID

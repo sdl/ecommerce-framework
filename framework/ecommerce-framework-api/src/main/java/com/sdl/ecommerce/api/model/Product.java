@@ -52,6 +52,7 @@ public interface Product {
      * Get URL to product detail page.
      * @return url
      */
+    // TODO: REMOVE!! USE LINK STRATEGY HERE INSTEAD!!!
     String getDetailPageUrl();
 
     /**
@@ -64,11 +65,15 @@ public interface Product {
      * Get product facets.
      * @return list of product facets
      */
+    // TODO: Convert this to an interface instead???
     List<FacetParameter> getFacets();
 
     /**
      * Get all additional attributes of the product. Can for example be used in compare views etc.
      * @return list of attributes
      */
+
+    // TODO: Use Map<String,List<String>> here instead?? To make it easier to map over OData???
+
     Map<String,Object> getAttributes();
 }

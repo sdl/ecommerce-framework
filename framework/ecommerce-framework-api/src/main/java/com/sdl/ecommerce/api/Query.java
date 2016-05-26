@@ -24,6 +24,7 @@ public abstract class Query implements Cloneable {
     private ViewType viewType;
 
     // TODO: Add support for sorting
+    // TODO: Should this also be an interface???
 
     /**
      * Set category

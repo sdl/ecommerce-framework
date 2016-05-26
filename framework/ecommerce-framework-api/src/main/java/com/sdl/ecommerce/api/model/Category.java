@@ -38,6 +38,7 @@ public interface Category {
      * @param urlPrefix
      * @return link
      */
+    // TODO: USE LINK STRATEGY HERE INSTEAD !!!
     String getCategoryLink(String urlPrefix);
 
     /**

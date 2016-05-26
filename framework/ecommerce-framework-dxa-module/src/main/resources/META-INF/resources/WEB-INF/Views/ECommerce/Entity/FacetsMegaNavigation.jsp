@@ -6,6 +6,11 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.FacetsWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
+<c:if test="${entity.categoryReference.categoryPath == 'EMPTY'}">
+    <li class="mega-nav-link">
+       <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
+    </li>
+</c:if>
 <c:if test="${entity.categoryReference.category != null && not empty entity.facetGroups}">
 <%
 
