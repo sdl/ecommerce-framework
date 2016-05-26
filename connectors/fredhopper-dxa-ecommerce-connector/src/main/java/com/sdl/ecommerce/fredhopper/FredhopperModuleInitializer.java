@@ -1,9 +1,7 @@
 package com.sdl.ecommerce.fredhopper;
 
 import com.sdl.ecommerce.api.model.ECommerceEclItem;
-import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
-import com.sdl.webapp.common.api.mapping.views.RegisteredView;
-import com.sdl.webapp.common.api.mapping.views.RegisteredViews;
+import com.sdl.webapp.common.api.mapping.views.*;
 import com.sdl.webapp.common.markup.PluggableMarkupRegistry;
 import com.sdl.webapp.common.markup.html.builders.HtmlBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,8 @@ import javax.annotation.PostConstruct;
  * @author nic
  */
 @Component
-@RegisteredViews({
-        @RegisteredView(viewName = "ExternalContentLibraryStubSchemafredhopper", clazz = ECommerceEclItem.class)
+@RegisteredViewModels({
+@RegisteredViewModel(viewName = "ExternalContentLibraryStubSchemafredhopper", modelClass = FredhopperEclItem.class)
 })
 public class FredhopperModuleInitializer extends AbstractInitializer {
 
