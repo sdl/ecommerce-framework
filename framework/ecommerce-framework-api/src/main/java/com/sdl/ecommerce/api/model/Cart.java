@@ -25,7 +25,9 @@ public interface Cart {
      */
     String getId();
 
-    // TODO: Should this be refactored to add cart items instead????
+    // TODO: Should this be refactored to add cart items instead???? Where there can be different sub classes to cart item
+    // such as product cart item, promo code etc
+    //
 
     /**
      * Add product (quantity=1) to the cart
