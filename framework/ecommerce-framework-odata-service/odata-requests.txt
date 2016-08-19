@@ -1,0 +1,29 @@
+
+
+E-Commerce OData Links:
+
+http://localhost:8080/ecommerce.svc/Categories('catalog01_18661_17627')
+
+http://localhost:8080/ecommerce.svc/Categories('catalog01_18661_17627')/parent
+
+http://localhost:8080/ecommerce.svc/Categories('catalog01_18661')
+
+http://localhost:8080/ecommerce.svc/Categories('catalog01_18661')/categories
+
+http://localhost:8080/ecommerce.svc/Products('008010111647')
+
+
+Localizations:
+
+There a number of properties that are under localization control from CMS
+
+Properties per locale:
+    universe
+
+http://localhost:8080/ecommerce.svc/Locale('en-GB')/Products('008010111647')
+
+        OR
+
+http://localhost:8080/ecommerce.svc/en-GB/Products('008010111647')
+
+http://localhost:8080/ecommerce.svc/Categories('catalog01_18661')?$filter=locale eq 'en-GB'
