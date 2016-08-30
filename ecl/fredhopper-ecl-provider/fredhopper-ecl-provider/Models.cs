@@ -1,6 +1,8 @@
 ﻿using SDL.ECommerce.Ecl;
 using System.Collections.Generic;
-using System.Linq;
+using System.Web;
+using SDL.Fredhopper.Ecl.FredhopperWS;
+using java.util;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -24,46 +26,166 @@ namespace SDL.Fredhopper.Ecl
     }
     
 
+    // TODO: Use model mappings to expose configured values to CME
   
-    /*
     public class FredhopperProduct : Product
     {
-       
+        private item fhItem;
+        private IDictionary<string, object> attributes = new Dictionary<string,object>();
+        private IDictionary<string, object> additionalAttributes = null;
+        private IDictionary<string, string> modelMappings;
+        private ProductImage productThumbnail = null;
+        private IList<string> categories = null;
 
-      
+        public FredhopperProduct(item fhItem, IDictionary<string,string> modelMappings)
+        {
+            this.fhItem = fhItem;
+            this.modelMappings = modelMappings;
+            foreach ( var attribute in this.fhItem.attribute )
+            {
+                if ( attribute.value.Length == 0 )
+                {
+                    continue;
+                }
+                var name = attribute.name;
+                object value;
+                if ( attribute.basetype == attributeTypeFormat.set || attribute.basetype == attributeTypeFormat.list )
+                {
+                    List<string> valueList = new List<string>();
+                    foreach ( var attrValue in attribute.value )
+                    {
+                        valueList.Add(attrValue.Value);
+                    }
+                    value = valueList;
+                }
+                else if ( attribute.basetype == attributeTypeFormat.cat )
+                {
+                    name = "categoryId";
+                    List<string> valueList = new List<string>();
+                    foreach (var attrValue in attribute.value)
+                    {
+                        valueList.Add(attrValue.nonml);
+                    }
+                    value = valueList;
+                    this.categories = valueList;
+                }
+                else
+                {
+                    value = attribute.value[0].Value;
+                }
+                attributes.Add(name, value);
 
+                var imageUrl = GetModelAttributeValue("thumbnailUrl");
+                if (imageUrl == null)
+                {
+                    // Fallback on primary image Url
+                    //
+                    imageUrl = GetModelAttributeValue("primaryImageUrl");
+                }
+                if (imageUrl != null)
+                {
+                    this.productThumbnail = new StandardProductImage(imageUrl);
+                }
+            }  
+        }
+
+        public string Id
+        {
+            get
+            {
+                return this.fhItem.id;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return GetModelAttributeValue("name");
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return GetModelAttributeValue("description");
+            }
+        }
+
+        public string Price
+        {
+            get
+            {
+                return GetModelAttributeValue("price");
+            }
+        }
 
         public ProductImage Thumbnail
         {
             get
-            {                
-               
+            {
+                return this.productThumbnail;
             }
         }
 
-        private ProductImage productThumbnail = null;
-
-    }
-    */
-
-        /*
-    public class FredhopperProductImage : ProductImage
-    {
-        private string mediaUrl;
-        private string mime;
-
-       
-
-        public string Url
+        public IDictionary<string,object> AdditionalAttributes
         {
-            get { return this.mediaUrl + productImage.url; }
+            get
+            {
+                if ( this.additionalAttributes == null )
+                {
+                    this.additionalAttributes = new Dictionary<string, object>();
+                    foreach (var attribute in this.attributes)
+                    {
+                        if (!this.modelMappings.Values.Contains(attribute.Key))
+                        {
+                            this.additionalAttributes.Add(attribute);
+                        }
+                    }
+                }             
+                return this.additionalAttributes;
+            }
         }
 
-        public string Mime
+        public IList<string> Categories
         {
-            get { return mime; }
+            get
+            {
+                return this.categories;
+            }
         }
-    }
-    */
 
+        private string GetModelAttributeValue(string name)
+        {
+            string fhAttribute;
+            this.modelMappings.TryGetValue(name, out fhAttribute);
+            string fhStringValue = null;
+            if ( fhAttribute != null )
+            {
+                object fhValue;
+                this.attributes.TryGetValue(fhAttribute, out fhValue);
+                if ( fhValue != null )
+                {
+                    if (fhValue.GetType() == typeof(string))
+                    {
+                        fhStringValue = (string)fhValue;
+                    }
+                    else if (fhValue.GetType() == typeof(List<string>))
+                    {
+                        List<string> list = (List<string>)fhValue;
+                        if (list.Count > 0)
+                        {
+                            // Pick the first value
+                            fhStringValue = list[0];
+                        }
+                    }
+                }           
+            }
+            return fhStringValue;
+        }
+
+    }
+   
+  
 }
