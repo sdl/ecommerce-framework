@@ -28,7 +28,7 @@ namespace SDL.ECommerce.Ecl
                 {
                     if (currentCategory.Title != null)
                     {
-                        if (categoryPath.Length > 0l)
+                        if (categoryPath.Length > 0)
                         {
                             categoryPath = "->" + categoryPath;
                         }

@@ -9,17 +9,19 @@ namespace SDL.ECommerce.Ecl
     {
         /// <summary>
         /// Get all available catagories in the E-Commerce system.
-        /// TODO: Improve with pagination here + possibility to use publication ID
+        /// TODO: Improve with pagination here 
         /// </summary>
+        /// <param name="publicationId"></param>
         /// <returns></returns>
-        Category GetAllCategories();
+        Category GetAllCategories(int publicationId = 0);
 
         /// <summary>
         /// Get category with specific identity.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="publicationId"></param>
         /// <returns></returns>
-        Category GetCategory(string id);
+        Category GetCategory(string id, int publicationId = 0);
 
         /// <summary>
         /// Get products belonging to specific catagory.
@@ -27,8 +29,19 @@ namespace SDL.ECommerce.Ecl
         /// </summary>
         /// <param name="categoryId"></param>
         /// <param name="publicationId"></param>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
-        IList<Product> GetProducts(string categoryId, int publicationId = 0);
+        QueryResult GetProducts(string categoryId, int publicationId = 0, int pageIndex = 0);
+
+        /// <summary>
+        /// Search products in specified category. If categoryId is NULL a full search is done.
+        /// </summary>
+        /// <param name="searchTerm"></param>
+        /// <param name="categoryId"></param>
+        /// <param name="publicationId"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+       QueryResult Search(string searchTerm, string categoryId, int publicationId = 0, int pageIndex = 0);
 
         /// <summary>
         /// Get product with specified product identity/SKU.
