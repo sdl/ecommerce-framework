@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using SDL.Fredhopper.Ecl.FredhopperWS;
 using java.util;
+using System;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -22,6 +23,19 @@ namespace SDL.Fredhopper.Ecl
         public string Title { get; internal set; }
         public Category Parent { get; internal set; }
         public IList<Category> Categories { get; internal set; }
+
+        public Category RootCategory
+        {
+            get
+            {
+                Category category = this;
+                while (category.Parent != null)
+                {
+                    category = category.Parent;
+                }
+                return category;
+            }
+        }
           
     }
     
@@ -73,7 +87,33 @@ namespace SDL.Fredhopper.Ecl
                 {
                     value = attribute.value[0].Value;
                 }
-                attributes.Add(name, value);
+                if (!attributes.ContainsKey(name))
+                {
+                    attributes.Add(name, value);
+                }
+                else
+                {
+                    // Merge the values into one list
+                    //
+                    var valueList = attributes[name] as List<string>;
+                    if (valueList == null)
+                    {
+                        var singleValue = (string)attributes[name];
+                        valueList = new List<string>();
+                        valueList.Add(singleValue);
+                        attributes.Remove(name);
+                        attributes.Add(name, valueList);
+                    }
+                    if (value.GetType() == typeof(List<string>))
+                    {
+                        valueList.AddRange((List<string>)value);
+                    }
+                    else
+                    {
+                        valueList.Add((string)value);
+                    }
+                }
+               
 
                 var imageUrl = GetModelAttributeValue("thumbnailUrl");
                 if (imageUrl == null)

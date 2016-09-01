@@ -19,7 +19,7 @@ namespace SDL.Fredhopper.Ecl
         private FASWebServiceClient fhClient;
         private IDictionary<int, PublicationConfiguration> publicationConfigurations = new Dictionary<int, PublicationConfiguration>();
 
-        private Category rootCategory = null;
+        private IDictionary<string, Category>  rootCategories = new Dictionary<string, Category>();
         private int maxItems;
         private int categoryMaxDepth;
 
@@ -82,31 +82,12 @@ namespace SDL.Fredhopper.Ecl
 
         public Category GetAllCategories(int publicationId)
         {
-            if ( rootCategory == null )
-            {
-                rootCategory = new FredhopperCategory(null, null, null);
-                this.GetCategoryTree(rootCategory, 0, this.categoryMaxDepth-1, publicationId);
-            }           
-            return rootCategory;
-        }
-
-        private void GetCategoryTree(Category category, int level, int maxLevels, int publicationId)
-        {
-            this.GetCategories(category, publicationId);
-
-            foreach ( var subCategory in category.Categories )
-            {
-                if (level < maxLevels)
-                {
-                    this.GetCategoryTree(subCategory, level + 1, maxLevels, publicationId);
-                }
-            }
-
+           return this.GetRootCategory(publicationId);
         }
 
         public Category GetCategory(string categoryId, int publicationId)
         {
-            return this.GetCategory(categoryId, this.rootCategory);
+            return this.GetCategory(categoryId, this.GetRootCategory(publicationId));
         }
 
         private Category GetCategory(string categoryId, Category category)
@@ -196,11 +177,55 @@ namespace SDL.Fredhopper.Ecl
                 {
                     foreach (var section in filter.filtersection)
                     {
-                        var category = new FredhopperCategory(section.value.Value, section.link.name, parentCategory);
-                        parentCategory.Categories.Add(category);
+                        if (parentCategory == null || !CategoryAlreadyExistInStructure(parentCategory, section.value.Value) )
+                        {
+                            var category = new FredhopperCategory(section.value.Value, section.link.name, parentCategory);
+                            if (parentCategory != null)
+                            {
+                                parentCategory.Categories.Add(category);
+                            }
+                        }                        
                     }
                 }
             }
+        }
+
+        private Category GetRootCategory(int publicationId)
+        {
+            var publicationConfiguration = this.GetPublicationConfiguration(publicationId);
+            String cacheKey = publicationConfiguration.Universe + ":" + publicationConfiguration.Locale;
+            Category rootCategory;
+            this.rootCategories.TryGetValue(cacheKey, out rootCategory);
+            if (rootCategory == null)
+            {
+                rootCategory = new FredhopperCategory(null, null, null);
+                this.rootCategories.Add(cacheKey, rootCategory);
+                this.GetCategoryTree(rootCategory, 0, this.categoryMaxDepth - 1, publicationId);
+            }
+            return rootCategory;
+        }
+
+        private void GetCategoryTree(Category category, int level, int maxLevels, int publicationId)
+        {
+            this.GetCategories(category, publicationId);
+
+            foreach (var subCategory in category.Categories)
+            {
+                if (level < maxLevels)
+                {
+                    this.GetCategoryTree(subCategory, level + 1, maxLevels, publicationId);
+                }
+            }
+
+        }
+
+        private bool CategoryAlreadyExistInStructure(Category parentCategory, string categoryId)
+        {
+            if (parentCategory.CategoryId != null && parentCategory.CategoryId.Equals(categoryId))
+            {
+                return true;
+            }
+            return GetCategory(categoryId, ((FredhopperCategory) parentCategory).RootCategory) != null;
         }
 
         private Location GetLocation(int publicationId)
