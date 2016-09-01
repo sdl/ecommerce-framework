@@ -20,26 +20,25 @@ namespace SDL.ECommerce.Ecl
         internal static string MountPointId { get; private set; }
         public static IHostServices HostServices { get; private set; }
         public static ProductCatalog ProductCatalog { get; private set; }
-        private static Category rootCategory = null;
+        private static IDictionary<int, Category> rootCategoryMap = new Dictionary<int, Category>();
 
         /// <summary>
         /// Get root category
         /// </summary>
-        internal static Category RootCategory {
-            get
+        internal static Category GetRootCategory(int publicationId) {
+
+            Category rootCategory;
+            rootCategoryMap.TryGetValue(publicationId, out rootCategory);
+            if (rootCategory == null )
             {
-                if ( rootCategory == null )
-                {
-                    lock ( EclProvider.EcommerceEclNs )
-                    {
-                        if (rootCategory == null)
-                        { 
-                            rootCategory = ProductCatalog.GetAllCategories();
-                        }
-                    }
-                }
-                return rootCategory;
+                //lock ( EclProvider.EcommerceEclNs ) LOCK IS NOT NEEDED HERE, RIGHT?
+                //{
+                    rootCategory = ProductCatalog.GetAllCategories(publicationId);
+                    rootCategoryMap.Add(publicationId, rootCategory);
+                //}
             }
+            return rootCategory;
+
         }
 
         internal static string AddInFolder
@@ -58,19 +57,19 @@ namespace SDL.ECommerce.Ecl
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        internal static Category GetCategory(string categoryId)
+        internal static Category GetCategory(string categoryId, int publicationId)
         {
-            return FindCategoryById(RootCategory, categoryId);
+            return FindCategoryById(GetRootCategory(publicationId), categoryId);
         }
 
         /// <summary>
         /// Get all available catagories in a flat list
         /// </summary>
         /// <returns></returns>
-        internal static List<Category> GetAllCategories()
+        internal static List<Category> GetAllCategories(int publicationId)
         {
             var allCategories = new List<Category>();
-            GetCategories(RootCategory, allCategories);
+            GetCategories(GetRootCategory(publicationId), allCategories);
             /*
             allCategories.Sort(delegate(Category x, Category y)
             {
@@ -89,10 +88,10 @@ namespace SDL.ECommerce.Ecl
             }
         }
 
-        internal static List<string> GetAllCategoryIds()
+        internal static List<string> GetAllCategoryIds(int publicationId)
         {
             List<string> allCategoryIds = new List<string>();
-            getCategoryIds(RootCategory, allCategoryIds);
+            getCategoryIds(GetRootCategory(publicationId), allCategoryIds);
             allCategoryIds.Sort();
             return allCategoryIds;
         }

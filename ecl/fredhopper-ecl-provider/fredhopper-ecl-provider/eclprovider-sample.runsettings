@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
 
-  <!-- Parameters used by tests at runtime -->
-  <TestRunParameters>
-    <Parameter name="hybrisBaseUrl" value="[Hybris base URL, e.g. http://localhost:9001/rest/v1/electronics]" />
-    <Parameter name="hybrisUsername" value="[Hybris username]" />
-    <Parameter name="hybrisPassword" value="[Hybris password]" />
-    <Parameter name="hybrisActiveCatalogVersion" value="/catalogs/electronicsProductCatalog/Online"/>
-    <Parameter name="hybrisMediaUrl" value="[Hybris media URL, e.g. http://localhost:9001"/>
-  </TestRunParameters>
+<!-- Parameters used by tests at runtime using Fredhopper demo shop-->
+<TestRunParameters>
+  <Parameter name="EndpointAddress" value="[Endpoint address to Fredhopper instance, e.g. http://localhost:8180/fredhopper-ws/services/FASWebService" />
+</TestRunParameters>
 
 </RunSettings>

@@ -11,27 +11,38 @@ namespace SDL.Fredhopper.Ecl
 
         protected override void GetMetadata(Dictionary<string, object> metadata)
         {
-            /*
-            var hybrisProduct = (HybrisProduct) this.product;
-            metadata.Add("Description", SecurityElement.Escape(hybrisProduct.Description));
-            metadata.Add("Manufacturer", SecurityElement.Escape(hybrisProduct.Manufacturer));
-            metadata.Add("Purchasable", hybrisProduct.Purchasable.ToString());
-            metadata.Add("Price", hybrisProduct.Price);
-            metadata.Add("StockLevel", hybrisProduct.StockLevel);
-            metadata.Add("AverageRating", hybrisProduct.AverageRating);
-            */
+            var fhProduct = (FredhopperProduct) this.product;
+            metadata.Add("Description", SecurityElement.Escape(fhProduct.Description));
+            metadata.Add("Price", fhProduct.Price);
+            foreach (var attribute in fhProduct.AdditionalAttributes)
+            {
+                var name = getSchemaAttributeName(attribute.Key);
+                metadata.Add(name, attribute.Value);
+            }
         }
 
         protected override void BuildMetadataXmlSchema(ISchemaDefinition schema)
         {
-            /*
             schema.Fields.Add(EclProvider.HostServices.CreateMultiLineTextFieldDefinition("Description", "Description", 0, 1, 7));
-            schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition("Manufacturer", "Manufacturer", 0, 1));
-            schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition("Purchasable", "Purchasable", 0, 1));
-            schema.Fields.Add(EclProvider.HostServices.CreateNumberFieldDefinition("Price", "Price", 0, 1));
-            schema.Fields.Add(EclProvider.HostServices.CreateNumberFieldDefinition("StockLevel", "StockLevel", 0, 1));
-            schema.Fields.Add(EclProvider.HostServices.CreateNumberFieldDefinition("AverageRating", "AverageRating", 0, 1));
-            */
+            schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition("Price", "Price", 0, 1));
+            var fhProduct = (FredhopperProduct)this.product;
+            foreach ( var attribute in fhProduct.AdditionalAttributes )
+            {
+                var name = getSchemaAttributeName(attribute.Key);
+                if (attribute.Value.GetType() == typeof(string) )
+                {   
+                    schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition(name, name, 0, 1));                      
+                }
+                else if ( attribute.Value.GetType() == typeof(List<string>))
+                {
+                    schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition(name, name, 0, 100));
+                }
+            }
+        }
+
+        private string getSchemaAttributeName(string attributeName)
+        {
+            return attributeName.Substring(0, 1).ToUpper() + attributeName.Substring(1);
         }
     }
 }

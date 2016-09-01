@@ -19,3 +19,5 @@ ImportExport/
 Tridion.ExternalContentLibrary*.dll
 query-lang*.jar
 ws-client-*.jar
+IKVM.*.dll
+query-lang-*.dll

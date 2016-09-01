@@ -15,9 +15,30 @@ namespace SDL.ECommerce.Ecl
             return true;
         }
 
-        public bool CanSearch(int publicationId)
+        public virtual bool CanSearch(int publicationId)
         {
             return false;
+        }
+
+        public IFolderContent Search(IEclUri contextUri, string searchTerm, int pageIndex, int numberOfItems)
+        {
+            string categoryId = null;
+            if ( contextUri.ItemType == EclItemTypes.Folder && !contextUri.ItemId.StartsWith("Type_") )
+            {
+                categoryId = contextUri.ItemId;
+            }
+            List<IContentLibraryListItem> items = new List<IContentLibraryListItem>();
+            // TODO: Override number of items in result
+            // TODO: Add support for pagination here
+            var result = EclProvider.ProductCatalog.Search(searchTerm, categoryId, contextUri.PublicationId, pageIndex);
+            if (result != null)
+            {
+                foreach (var product in result.Products)
+                {
+                    items.Add(this.CreateProductItem(contextUri.PublicationId, null, product));
+                }
+            }
+            return EclProvider.HostServices.CreateFolderContent(contextUri, pageIndex, result.NumberOfPages, items, CanGetUploadMultimediaItemsUrl(contextUri.PublicationId), CanSearch(contextUri.PublicationId));
         }
 
         public IList<IContentLibraryListItem> FindItem(IEclUri eclUri)
@@ -29,6 +50,7 @@ namespace SDL.ECommerce.Ecl
         public IFolderContent GetFolderContent(IEclUri parentFolderUri, int pageIndex, EclItemTypes itemTypes)
         {
             List<IContentLibraryListItem> items = new List<IContentLibraryListItem>();
+            int numberOfPages = 1;
 
             // If root -> list all root categories
             //
@@ -43,7 +65,7 @@ namespace SDL.ECommerce.Ecl
                 {
                     if (parentFolderUri.ItemId.Equals("Type_Products"))
                     {
-                        foreach (var category in EclProvider.RootCategory.Categories)
+                        foreach (var category in EclProvider.GetRootCategory(parentFolderUri.PublicationId).Categories)
                         {
                             if (!String.IsNullOrEmpty(category.CategoryId))
                             {
@@ -59,25 +81,23 @@ namespace SDL.ECommerce.Ecl
                         {
                             items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, categoryId));
                         }
-                         * */
+                        */
 
                         // TODO: Can we somehow build up a structure here instead???
                         // TODO: Have a hook for providers to hook in their variant on the listing here???
          
-
-                        var allCategories = EclProvider.GetAllCategories();
+                        var allCategories = EclProvider.GetAllCategories(parentFolderUri.PublicationId);
                         foreach ( var category in allCategories )
                         {
                             items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, category));
                         }
-
                     }
                 }
                 else
                 {
                     // TODO: Always use the product catalog for retrieving the category???
 
-                    var parentCategory = EclProvider.GetCategory(parentFolderUri.ItemId);
+                    var parentCategory = EclProvider.GetCategory(parentFolderUri.ItemId, parentFolderUri.PublicationId);
                     if (parentCategory != null)
                     {
                         foreach (var category in parentCategory.Categories)
@@ -89,14 +109,11 @@ namespace SDL.ECommerce.Ecl
                             }
                         }
 
-                        var products = EclProvider.ProductCatalog.GetProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId);
-                        if (products != null)
+                        var result = EclProvider.ProductCatalog.GetProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId, pageIndex);
+                        if (result != null)
                         {
-                            // TODO: Have some kind of pagination here???
-
-                            // At a leaf category -> list all products in that category
-                            //
-                            foreach (var product in products)
+                            numberOfPages = result.NumberOfPages;
+                            foreach (var product in result.Products)
                             {
                                items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
                             }
@@ -105,7 +122,7 @@ namespace SDL.ECommerce.Ecl
                 }
             }
             
-            return EclProvider.HostServices.CreateFolderContent(parentFolderUri, items, CanGetUploadMultimediaItemsUrl(parentFolderUri.PublicationId), CanSearch(parentFolderUri.PublicationId));
+            return EclProvider.HostServices.CreateFolderContent(parentFolderUri, pageIndex, numberOfPages, items, CanGetUploadMultimediaItemsUrl(parentFolderUri.PublicationId), CanSearch(parentFolderUri.PublicationId));
          
         }
 
@@ -130,7 +147,7 @@ namespace SDL.ECommerce.Ecl
                 else // selectable category
                 {
                     string categoryId = eclUri.ItemId;
-                    var category = EclProvider.GetCategory(categoryId);
+                    var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
                     return new SelectableCategoryItem(eclUri.PublicationId, category);
                 }
             }
@@ -148,12 +165,12 @@ namespace SDL.ECommerce.Ecl
                     {
                         throw new Exception("Undefined category for ECL URI: " + eclUri);
                     }
-                    var category = EclProvider.GetCategory(categoryId);
+                    var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
                     if ( category == null )
                     {
                         // Use the root category as fallback to avoid errors when browsing in the ECL catalog
                         //
-                        category = EclProvider.RootCategory;
+                        category = EclProvider.GetRootCategory(eclUri.PublicationId);
                     }
 
                     return new CategoryItem(eclUri.PublicationId, category);
@@ -204,11 +221,6 @@ namespace SDL.ECommerce.Ecl
         public virtual string IconIdentifier
         {
             get { return "ecommerce"; }
-        }
-
-        public IFolderContent Search(IEclUri contextUri, string searchTerm, int pageIndex, int numberOfItems)
-        {
-            throw new NotSupportedException();
         }
 
         public string Dispatch(string command, string payloadVersion, string payload, out string responseVersion)

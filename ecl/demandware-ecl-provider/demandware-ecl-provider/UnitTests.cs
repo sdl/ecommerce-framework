@@ -3,10 +3,7 @@ using SDL.ECommerce.Ecl;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.DemandWare.Ecl
 {
@@ -78,8 +75,8 @@ namespace SDL.DemandWare.Ecl
         public void TestGetProducts()
         {
             var productCatalog = CreateProductCatalog();
-            var products = productCatalog.GetProducts("electronics-televisions");
-            foreach ( var product in products )
+            var result = productCatalog.GetProducts("electronics-televisions");
+            foreach ( var product in result.Products )
             {
                 Console.WriteLine("Product: " + product.Id + ", " + product.Name);
             }

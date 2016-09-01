@@ -110,9 +110,10 @@ To get started with the E-Commerce framework you need to do the following steps:
 11. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
 12. Define the application properties needed for selected connectors in your web application. Refer to the README file for each connector.
 13. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
-14. In addition (optional) you can also install one of the ECL providers (Hybris or Demandware). See instructions given in:
+14. In addition (optional) you can also install one of the ECL providers. See instructions given in:
     * [Hybris ECL](./ecl/hybris-ecl-provider/README.md)
     * [Demandware ECL](./ecl/demandware-ecl-provider/README.md) 
+    * [Fredhopper ECL](./ecl/fredhopper-ecl-provider/README.md)
 
 
 Not implemented

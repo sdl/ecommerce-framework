@@ -97,9 +97,9 @@ namespace SDL.Hybris.Ecl
         public void TestGetCategory()
         {
             var productCatalog = CreateProductCatalog();
-            var products = productCatalog.GetProducts("576", 0);
+            var result = productCatalog.GetProducts("576", 0);
             Console.WriteLine("Category products:");
-            foreach (var product in products)
+            foreach (var product in result.Products)
             {
                 Console.WriteLine(" " + product.Name + " (" + product.Id + ")");               
                 if (product.Thumbnail != null)
