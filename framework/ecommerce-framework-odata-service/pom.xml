@@ -32,6 +32,19 @@
 
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>fredhopper-connector</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>fredhopper-dxa-ecommerce-connector</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <dependencies>
 
         <!-- eCommerce Framework API -->
@@ -45,13 +58,6 @@
         <dependency>
             <groupId>com.sdl</groupId>
             <artifactId>ecommerce-framework-odata-model</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Dummy Test -->
-        <dependency>
-            <groupId>com.sdl</groupId>
-            <artifactId>fredhopper-dxa-ecommerce-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -89,7 +95,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
 
     </dependencies>
 
