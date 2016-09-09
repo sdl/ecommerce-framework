@@ -5,6 +5,7 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.BreadcrumbWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="localization" type="com.sdl.webapp.common.api.localization.Localization" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <div>
     <ol class="breadcrumb" ${markup.entity(entity)}>
         <li>
@@ -16,7 +17,7 @@
         <c:forEach var="breadcrumb" items="${entity.breadcrumbs}">
             <c:if test="${breadcrumb.category == true}">
                     <li>
-                        <a href="${breadcrumb.url}">${breadcrumb.title}</a>
+                        <a href="${linkResolver.getBreadcrumbLink(breadcrumb)}">${breadcrumb.title}</a>
                     </li>
             </c:if>
         </c:forEach>

@@ -46,14 +46,8 @@ public interface Product {
      * Get URL to primary image (used on detail pages etc).
      * @return url
      */
+    // TODO: How to handle image links? It should be possible to configure if the image should be proxied by the connector (if the E-Com instance is not available externally)
     String getPrimaryImageUrl();
-
-    /**
-     * Get URL to product detail page.
-     * @return url
-     */
-    // TODO: REMOVE!! USE LINK STRATEGY HERE INSTEAD!!!
-    String getDetailPageUrl();
 
     /**
      * Get categories the product belong to.

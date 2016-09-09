@@ -4,6 +4,7 @@
 <%@ taglib prefix="xpm" uri="http://www.sdl.com/tridion-xpm" %>
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.CartWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 
 <div class="content">
     <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> <dxa:resource key="e-commerce.shoppingCartTitle"/></h3>
@@ -34,7 +35,7 @@
                                         <img src="${item.product.thumbnailUrl}" height="100"/>
                                     </div>
                                     <div class="col-md-5">
-                                        <a href="${item.product.detailPageUrl}"><strong>${item.product.name}</strong></a>
+                                        <a href="${linkResolver.getProductDetailLink(item.product)}"><strong>${item.product.name}</strong></a>
                                     </div>
                                     <div class="col-md-2">
                                         ${item.quantity}

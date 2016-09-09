@@ -16,7 +16,9 @@ public interface Breadcrumb {
     /**
      * URL to a specific category. If breadcrumb is representing a facet then the URL is used to remove the facet itself.
      * @return url
+     * @deprecated
      */
+    // TODO: Remove this one!!
     String getUrl();
 
     /**
@@ -24,4 +26,11 @@ public interface Breadcrumb {
      * @return true if breadcrumb is a category
      */
     boolean isCategory();
+
+    Category getCategory();
+
+    Facet getFacet();
+
+    // For facets its a remove link but for categories is a navigation link
+
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="promotion" type="com.sdl.ecommerce.api.model.ProductsPromotion" scope="request"/>
 <jsp:useBean id="viewHelper" type="com.sdl.ecommerce.dxa.ECommerceViewHelper" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <div>
 
     <!-- TODO: Add info about the name of the promotion when in edit mode -->
@@ -12,7 +13,7 @@
     <div class="row">
         <c:forEach var="product" items="${promotion.products}">
             <div class="col-sm-6 col-md-3 product-promo">
-                <a href="${product.detailPageUrl}" class="product-teaser-link">
+                <a href="${linkResolver.getProductDetailLink(product)}" class="product-teaser-link">
                     <div class="teaser">
                         <img src="${product.thumbnailUrl}" class="teaser-img loader-img"/>
                         <div class="product-promo-ribbon">

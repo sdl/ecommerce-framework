@@ -27,7 +27,7 @@ public class SimpleProductDetailResult implements ProductDetailResult {
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
+    public List<Breadcrumb> getBreadcrumbs() {
         return Collections.emptyList();
     }
 

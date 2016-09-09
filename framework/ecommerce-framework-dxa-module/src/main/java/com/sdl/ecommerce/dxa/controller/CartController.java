@@ -2,6 +2,7 @@ package com.sdl.ecommerce.dxa.controller;
 
 import com.sdl.ecommerce.api.CartFactory;
 import com.sdl.ecommerce.api.ECommerceException;
+import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.model.Cart;
 import com.sdl.ecommerce.dxa.model.CartWidget;
 import com.sdl.webapp.common.api.content.ContentProviderException;
@@ -28,6 +29,9 @@ public class CartController extends BaseController {
 
     @Autowired(required = false)
     private CartFactory cartFactory;
+
+    @Autowired
+    private ECommerceLinkResolver linkResolver;
 
     /**
      * Add product to cart (AJAX request)
@@ -86,6 +90,7 @@ public class CartController extends BaseController {
         CartWidget entity = (CartWidget) this.getEntityFromRequest(request, entityId);
         entity.setCart(this.getCart(request));
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);

@@ -12,13 +12,6 @@ import java.util.Map;
  */
 public interface LocalizationService {
 
-    // TODO: Rename this interface to ContextService instead???
-
-    /**
-     * @return publication ID
-     */
-    String getPublicationId();
-
     /**
      * @return locale
      */
@@ -31,13 +24,6 @@ public interface LocalizationService {
      * @return config value
      */
     String getLocalizedConfigProperty(String name);
-
-    /**
-     * Localize the path based on the current localization context
-     * @param url
-     * @return localization path
-     */
-    String localizePath(String url);
 
     /**
      * Get all available claims from the context broker.

@@ -6,6 +6,7 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.FacetsWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <c:if test="${entity.categoryReference.categoryPath == 'EMPTY'}">
     <li class="mega-nav-link">
        <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
@@ -41,7 +42,7 @@
                                 <ul class="list-unstyled">
                                     <c:forEach var="facet" items="${facetGroup.facets}">
                                         <li>
-                                            <a href="${facet.url}">${facet.title}</a>
+                                            <a href="${linkResolver.getAbsoluteFacetLink(facet, entity.categoryReference.categoryUrl)}">${facet.title}</a>
                                         </li>
                                     </c:forEach>
                                 </ul>

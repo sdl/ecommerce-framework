@@ -32,6 +32,9 @@ public abstract class GenericTestSuite {
     @Autowired(required = false)
     protected CartFactory cartFactory;
 
+    @Autowired(required = false)
+    protected ECommerceLinkResolver linkResolver;
+
     // TODO: Add some generic asserts here
 
     protected void testGetCategoryById(String categoryId) throws Exception {
@@ -57,12 +60,14 @@ public abstract class GenericTestSuite {
                         category(category).
                         viewSize(10));
         this.printProducts(result);
+        /* TODO: NEEDED???
         LOG.info("Next set of products =>");
         result = result.next();
         this.printProducts(result);
         LOG.info("Previous set of products =>");
         result = result.previous();
         this.printProducts(result);
+        */
     }
 
     protected void testNavigateCategoryTree(String categoryPath) throws Exception {
@@ -91,7 +96,7 @@ public abstract class GenericTestSuite {
                 this.queryService.newQuery().
                         category(category).
                         viewSize(10));
-        this.printFacets(result.getFacetGroups(null));
+        this.printFacets(result.getFacetGroups());
     }
 
     protected void testBreadcrumbs(String categoryPath) throws Exception {
@@ -100,14 +105,18 @@ public abstract class GenericTestSuite {
                 this.queryService.newQuery().
                         category(category).
                         viewSize(10));
-        this.printBreadcrumbs(result.getBreadcrumbs("/products", "Products"));
+        this.printBreadcrumbs(result.getBreadcrumbs());
     }
 
     protected void testSearch(String searchPhrase) throws Exception {
+       testSearch(searchPhrase, null);
+    }
+
+    protected void testSearch(String searchPhrase, String categoryUrlPrefix) throws Exception {
         QueryResult result = this.queryService.query(this.queryService.newQuery().searchPhrase(searchPhrase).viewSize(100));
         LOG.info("Total count: " + result.getTotalCount());
         this.printProducts(result);
-        this.printFacets(result.getFacetGroups(null));
+        this.printFacets(result.getFacetGroups());
     }
 
     protected void testSearchWithFacets(String searchPhase, List<FacetParameter> facets) throws Exception {
@@ -118,7 +127,7 @@ public abstract class GenericTestSuite {
                         facets(facets));
         LOG.info("Total count: " + result.getTotalCount());
         this.printProducts(result);
-        this.printFacets(result.getFacetGroups(null));
+        this.printFacets(result.getFacetGroups());
     }
 
     protected void testQueryFlyout(String categoryPath) throws Exception {
@@ -129,7 +138,7 @@ public abstract class GenericTestSuite {
                         viewSize(10).
                         viewType(ViewType.FLYOUT));
 
-        this.printFacets(result.getFacetGroups(null));
+        this.printFacets(result.getFacetGroups());
         this.printPromotions(result.getPromotions());
     }
 
@@ -140,7 +149,7 @@ public abstract class GenericTestSuite {
                         category(category).
                         viewSize(10).
                         filterAttribute(filterAttribute));
-        this.printFacets(result.getFacetGroups(null));
+        this.printFacets(result.getFacetGroups());
         this.printPromotions(result.getPromotions());
     }
 
@@ -152,14 +161,14 @@ public abstract class GenericTestSuite {
         LOG.info("Product Name: " + product.getName());
         LOG.info("Product Description: " + product.getDescription());
         LOG.info("Price: " + product.getPrice().getPrice());
-        LOG.info("Detail Page URL:" + product.getDetailPageUrl());
+        LOG.info("Detail Page URL:" + this.linkResolver.getProductDetailLink(product));
         LOG.info("Primary Image URL: " + product.getPrimaryImageUrl());
         LOG.info("Categories: ");
         for ( Category category : product.getCategories() ) {
             LOG.info("ID: " + category.getId() + " Name: " + category.getName() + " Parent: " + category.getParent().getName());
         }
         LOG.info("Breadcrumbs: ");
-        this.printBreadcrumbs(result.getBreadcrumbs("/products", "Products"));
+        this.printBreadcrumbs(result.getBreadcrumbs());
         this.printPromotions(result.getPromotions());
         LOG.info("Facets: ");
         for ( FacetParameter facet : product.getFacets() ) {
@@ -203,6 +212,24 @@ public abstract class GenericTestSuite {
         LOG.info("------ Promotions: -------");
         for ( Promotion promotion : promotions ) {
             LOG.info("Promo ID: " + promotion.getId() + " Name: "  + promotion.getName() + " Title: " + promotion.getTitle());
+            if ( promotion instanceof ProductsPromotion ) {
+                ProductsPromotion productsPromotion = (ProductsPromotion) promotion;
+                LOG.info("  Products :");
+                for ( Product product : productsPromotion.getProducts() ) {
+                    LOG.info("  Product ID: " + product.getId() + " Name: " + product.getName());
+                }
+            }
+            else if ( promotion instanceof ImageMapPromotion ) {
+                ImageMapPromotion imageMapPromotion = (ImageMapPromotion) promotion;
+                LOG.info("  Content Areas :");
+                for (ImageMapPromotion.ContentArea contentArea : imageMapPromotion.getContentAreas() ) {
+                    LOG.info("    (" + contentArea.getX1() + "," + contentArea.getY1() + "),(" + contentArea.getX2() + "," + contentArea.getY2() + ") -> " + this.linkResolver.getLocationLink(contentArea.getLocation()));
+                }
+            }
+            else if ( promotion instanceof ContentPromotion ) {
+                ContentPromotion contentPromotion = (ContentPromotion) promotion;
+                LOG.info("  Content Promotion with image URL: " + contentPromotion.getImageUrl() + " location URL: " +  this.linkResolver.getLocationLink(contentPromotion.getLocation()));
+            }
         }
     }
 
@@ -212,7 +239,7 @@ public abstract class GenericTestSuite {
             LOG.info("Facet group title: " + facetGroup.getTitle() + ", type:" + facetGroup.getType());
             LOG.info("--------------------------------------------");
             for ( Facet facet : facetGroup.getFacets() ) {
-                LOG.info(facet.getTitle() + " (" + facet.getCount() + ")");
+                LOG.info(facet.getTitle() + " (" + facet.getCount() + ") URL: " + this.linkResolver.getFacetLink(facet));
             }
             LOG.info("");
         }

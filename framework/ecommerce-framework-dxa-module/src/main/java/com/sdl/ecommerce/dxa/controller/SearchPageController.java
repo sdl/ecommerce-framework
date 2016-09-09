@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.dxa.controller;
 
+import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.QueryResult;
 import com.sdl.ecommerce.api.model.Category;
@@ -11,6 +12,7 @@ import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,8 +86,8 @@ public class SearchPageController extends AbstractECommercePageController {
                 startIndex(this.getStartIndex(request)));
         if ( result != null ) {
 
-            if ( result.getRedirectUrl() != null ) {
-                return "redirect:" + result.getRedirectUrl();
+            if ( result.getRedirectLocation() != null ) {
+                return "redirect:" + this.linkResolver.getLocationLink(result.getRedirectLocation());
             }
 
             request.setAttribute(CATEGORY, category);

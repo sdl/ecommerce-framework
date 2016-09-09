@@ -6,6 +6,7 @@
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
 <jsp:useBean id="viewHelper" type="com.sdl.ecommerce.dxa.ECommerceViewHelper" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <div>
 
     <%-- Temporary fix to get the in-context menu enabled. Should be replaced by a separate in-context menu bar in the top of the page --%>
@@ -20,18 +21,19 @@
                 <c:when test="${facetGroup.isCategory()}">
                     <ul class="category-facets">
                         <c:forEach var="facet" items="${facetGroup.facets}">
-                            <li><a href="${facet.url}" class="facet-item">${facet.title}<c:if test="${facet.count gt 0}"> (${facet.count})</c:if></a></li>
+                            <li><a href="${linkResolver.getFacetLink(facet)}" class="facet-item">${facet.title}<c:if test="${facet.count gt 0}"> (${facet.count})</c:if></a></li>
                         </c:forEach>
                     </ul>
 
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="facet" items="${facetGroup.facets}">
-                        <a href="${facet.url}" class="facet-link">
+                        <c:set var="facetUrl" value="${linkResolver.getFacetLink(facet)}"/>
+                        <a href="${facetUrl}" class="facet-link">
                             <div class="checkbox facet-item">
                                 <label>
                                     <input onclick="window.location = this.getAttribute('data-facet-url');"
-                                           type="checkbox" data-facet-url="${facet.url}" <c:if test="${facet.selected}">checked="checked"</c:if>>${facet.title}<c:if test="${facet.count gt 0}"> (${facet.count})</c:if>
+                                           type="checkbox" data-facet-url="${facetUrl}" <c:if test="${facet.selected}">checked="checked"</c:if>>${facet.title}<c:if test="${facet.count gt 0}"> (${facet.count})</c:if>
                                 </label>
                             </div>
                         </a>

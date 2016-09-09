@@ -47,6 +47,9 @@ public class AbstractECommercePageController extends BaseController {
     protected ContentProvider contentProvider;
 
     @Autowired
+    protected ECommerceLinkResolver linkResolver;
+
+    @Autowired
     private Markup markup;
 
     @Autowired

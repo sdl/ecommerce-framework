@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Widget Controller.
@@ -57,6 +59,9 @@ public class WidgetController extends BaseController {
 
     @Autowired
     private WebRequestContext webRequestContext;
+
+    @Autowired
+    private ECommerceLinkResolver linkResolver;
 
     @Autowired(required = false)
     private EditService editService;
@@ -110,6 +115,7 @@ public class WidgetController extends BaseController {
         this.processListerNavigationLinks(entity, queryResult, this.getFacets(request));
 
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -124,6 +130,8 @@ public class WidgetController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "Facets/{entityId}")
     public String handleFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+
+        // TODO: Generate the URLs to facets here!!!
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
 
@@ -144,10 +152,11 @@ public class WidgetController extends BaseController {
             queryResult = this.getQueryResult(request);
         }
 
-        entity.setFacetGroups(queryResult.getFacetGroups(this.getUrlPrefix(request)));
+        entity.setFacetGroups(queryResult.getFacetGroups());
 
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
         this.buildInContextControls(request);
 
         final MvcData mvcData = entity.getMvcData();
@@ -181,12 +190,13 @@ public class WidgetController extends BaseController {
         else {
             result = this.getResult(request);
         }
-        entity.setBreadcrumbs(result.getBreadcrumbs(this.getUrlPrefix(request), this.getRootCategoryTitle(request)));
+        entity.setBreadcrumbs(result.getBreadcrumbs()); // this.getUrlPrefix(request), this.getRootCategoryTitle(request)));
         if ( result instanceof QueryResult ) {
             entity.setTotalItems(((QueryResult) result).getTotalCount());
         }
 
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -226,6 +236,7 @@ public class WidgetController extends BaseController {
 
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -243,12 +254,12 @@ public class WidgetController extends BaseController {
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
         Localization localization = this.webRequestContext.getLocalization();
-        String navigationBasePath = localization.localizePath("/c");
+        String navigationBasePath = localization.localizePath("/c"); // TODO: Have this configurable. Consider to have some kind of Context
 
         if ( entity.getCategoryReference() != null ) {
             Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());
             if (topCategory != null) {
-                entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink(navigationBasePath)); // For flyout is the URL's always based on the category url pattern
+                entity.getCategoryReference().setCategoryUrl(this.linkResolver.getCategoryLink(topCategory)); // For flyout is the URL's always based on the category url pattern
 
                 boolean useCache = this.isSessionPreview(request) == false;
 
@@ -262,7 +273,7 @@ public class WidgetController extends BaseController {
                                     category(topCategory).
                                     viewType(ViewType.FLYOUT));
                     flyoutData = new FlyoutData();
-                    flyoutData.facetGroups = flyoutResult.getFacetGroups(navigationBasePath);
+                    flyoutData.facetGroups = flyoutResult.getFacetGroups();
                     flyoutData.promotions = flyoutResult.getPromotions();
                     this.categoryDataCache.setCategoryData(topCategory, "flyout", flyoutData);
                 }
@@ -273,6 +284,7 @@ public class WidgetController extends BaseController {
         }
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);

@@ -22,11 +22,6 @@ public class LocalizationServiceImpl implements LocalizationService {
     private WebRequestContext webRequestContext;
 
     @Override
-    public String getPublicationId() {
-        return this.webRequestContext.getLocalization().getId();
-    }
-
-    @Override
     public String getLocale() {
         return this.webRequestContext.getLocalization().getCulture();
     }
@@ -34,11 +29,6 @@ public class LocalizationServiceImpl implements LocalizationService {
     @Override
     public String getLocalizedConfigProperty(String name) {
         return this.webRequestContext.getLocalization().getConfiguration("e-commerce." + name);
-    }
-
-    @Override
-    public String localizePath(String url) {
-        return webRequestContext.getLocalization().localizePath(url);
     }
 
     @Override

@@ -2,13 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="promotion" type="com.sdl.ecommerce.api.model.ContentPromotion" scope="request"/>
 <jsp:useBean id="viewHelper" type="com.sdl.ecommerce.dxa.ECommerceViewHelper" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <div>
     <div style="position: relative;">
         <c:if test="${viewHelper.showEditControls(promotion)}">
             <a class="xpm-button popup-iframe" style="margin: 8px 8px; position: absolute;background-color: transparent;" href="${promotion.editUrl}"><i class="fa fa-pencil-square"></i></a>
         </c:if>
     </div>
-    <a href="${promotion.link}">
+    <a href="${linkResolver.getLocationLink(promotion.location)}">
         <c:choose>
             <c:when test="${not empty promotion.imageUrl}">
                 <div class="hero">

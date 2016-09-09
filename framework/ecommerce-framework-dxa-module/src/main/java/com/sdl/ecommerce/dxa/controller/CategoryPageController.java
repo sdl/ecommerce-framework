@@ -53,7 +53,8 @@ public class CategoryPageController extends AbstractECommercePageController {
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleCategoryPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException {
 
-        //final String requestPath = webRequestContext.getRequestPath().replaceFirst("/c", "");
+        // TODO: Have the '/c' configurable
+        //
         final String requestPath = request.getRequestURI().replaceFirst("/c", "");
         final Localization localization = webRequestContext.getLocalization();
         final Category category = this.categoryService.getCategoryByPath(requestPath);
@@ -70,20 +71,14 @@ public class CategoryPageController extends AbstractECommercePageController {
 
         if ( result != null ) {
 
-            if ( result.getRedirectUrl() != null ) {
-                return "redirect:" + result.getRedirectUrl();
+            if ( result.getRedirectLocation() != null ) {
+                return "redirect:" + this.linkResolver.getLocationLink(result.getRedirectLocation());
             }
 
             request.setAttribute(CATEGORY, category);
             request.setAttribute(RESULT, result);
             request.setAttribute(FACETS, facets);
             request.setAttribute(URL_PREFIX, localization.localizePath("/c"));
-
-            // TODO: Fix show store link option
-            //if ( Boolean.TRUE.equals(queryConfiguration.isShowStoreLink()) ) {
-            //    request.setAttribute(ROOT_CATEGORY_TITLE, STORE_TITLE);
-            //}
-
 
             if ( category != null ) {
                 templatePage.setTitle(category.getName());
@@ -127,6 +122,8 @@ public class CategoryPageController extends AbstractECommercePageController {
         return searchPath;
     }
 
+
+    // TODO: Exceptionhandler is needed here
 
 }
 

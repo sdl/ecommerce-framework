@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="promotion" type="com.sdl.ecommerce.api.model.ImageMapPromotion" scope="request"/>
 <jsp:useBean id="viewHelper" type="com.sdl.ecommerce.dxa.ECommerceViewHelper" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <div class="hero">
     <div style="position: relative;">
         <c:if test="${viewHelper.showEditControls(promotion)}">
@@ -11,7 +12,7 @@
     <img src="${promotion.imageUrl}" usemap="${promotion.id}">
     <map name="${promotion.id}">
         <c:forEach var="contentArea" items="${promotion.contentAreas}">
-            <area shape="rect" coords="${contentArea.x1},${contentArea.y1},${contentArea.x2},${contentArea.y2}" href="${contentArea.link}">
+            <area shape="rect" coords="${contentArea.x1},${contentArea.y1},${contentArea.x2},${contentArea.y2}" href="${linkResolver.getLocationLink(contentArea.location)}">
         </c:forEach>
     </map>
 </div>

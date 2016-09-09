@@ -22,9 +22,9 @@ public interface ContentPromotion extends Promotion {
     String getImageUrl();
 
     /**
-     * Get call-to-action link for this promotion.
-     * @return link
+     * Get call-to-action location for this promotion.
+     * @return location
      */
-    String getLink();
+    Location getLocation();
 
 }
