@@ -31,14 +31,11 @@ public class ODataCategory implements Category {
     @EdmProperty(name = "path")
     private String path;
 
-    @EdmProperty(name = "categoryLink")
-    private String categoryLink;
-
     @EdmProperty(name = "pathName")
     private String pathName;
 
     @EdmProperty(name = "locale")
-    private String locale;
+    private String locale;  //????
 
     @EdmNavigationProperty(name = "parent")
     private ODataCategory parent = null;
@@ -53,7 +50,6 @@ public class ODataCategory implements Category {
     public ODataCategory(Category category) {
         this.id = category.getId();
         this.name = category.getName();
-        this.categoryLink = category.getCategoryLink("");
         this.pathName = category.getPathName();
     }
 
@@ -88,11 +84,6 @@ public class ODataCategory implements Category {
         return this.name;
     }
 
-
-    @Override
-    public String getCategoryLink(String urlPrefix) {
-        return urlPrefix + this.categoryLink;
-    }
 
     @Override
     public String getPathName() {

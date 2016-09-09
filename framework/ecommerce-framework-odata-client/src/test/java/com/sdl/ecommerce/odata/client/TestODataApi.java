@@ -57,4 +57,7 @@ public class TestODataApi {
             LOG.info("Subcategory: " + subCategory.getId() + " name: " + subCategory.getName());
         }
     }
+
+
+
 }

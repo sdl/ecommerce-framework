@@ -8,6 +8,7 @@ import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.processor.datasource.DataSource;
 import com.sdl.odata.api.processor.datasource.ODataDataSourceException;
 import com.sdl.odata.api.processor.query.QueryOperation;
+import com.sdl.odata.api.processor.query.QueryResult;
 import com.sdl.odata.api.processor.query.SelectByKeyOperation;
 import com.sdl.odata.api.processor.query.strategy.QueryOperationStrategy;
 import com.sdl.odata.api.service.ODataRequestContext;
@@ -56,7 +57,7 @@ public class ProductDataSourceProvider extends ECommerceDataSourceProvider {
         // TODO: Have a different model for products when query listers???
 
         return () -> {
-            return products;
+            return QueryResult.from(products);
         };
     }
 }

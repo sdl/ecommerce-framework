@@ -7,6 +7,7 @@ import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.model.EntityDataModel;
 import com.sdl.odata.api.parser.ODataUri;
 import com.sdl.odata.api.processor.datasource.DataSource;
+import com.sdl.odata.api.processor.datasource.TransactionalDataSource;
 import com.sdl.odata.api.processor.link.ODataLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,5 +64,10 @@ public class ProductDataSource implements DataSource {
     @Override
     public void deleteLink(ODataUri oDataUri, ODataLink oDataLink, EntityDataModel entityDataModel) throws ODataException {
 
+    }
+
+    @Override
+    public TransactionalDataSource startTransaction() {
+        return null;
     }
 }

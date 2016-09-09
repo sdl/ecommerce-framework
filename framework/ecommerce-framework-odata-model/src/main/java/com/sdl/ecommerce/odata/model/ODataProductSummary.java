@@ -31,10 +31,6 @@ public class ODataProductSummary implements Product {
     @EdmProperty
     private String thumbnailUrl;
 
-    @EdmProperty
-    // TODO: Move this to the controller instead
-    private String detailPageUrl;
-
 
     public ODataProductSummary() {}
     public ODataProductSummary(Product product) {
@@ -42,7 +38,6 @@ public class ODataProductSummary implements Product {
         this.name = product.getName();
         this.price = new ODataProductPrice(product.getPrice());
         this.thumbnailUrl = product.getThumbnailUrl();
-        this.detailPageUrl = product.getDetailPageUrl();
     }
 
     @Override
@@ -63,11 +58,6 @@ public class ODataProductSummary implements Product {
     @Override
     public String getThumbnailUrl() {
         return this.thumbnailUrl;
-    }
-
-    @Override
-    public String getDetailPageUrl() {
-        return this.detailPageUrl;
     }
 
     /********* Data only available for product details ***********/

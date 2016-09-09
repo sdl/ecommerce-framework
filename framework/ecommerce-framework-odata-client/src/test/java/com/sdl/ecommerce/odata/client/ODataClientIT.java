@@ -45,8 +45,13 @@ public class ODataClientIT extends GenericTestSuite {
     }
 
     @Test
+    public void testListProductsInCategory() throws Exception {
+        this.testGetProductsInCategory("/women");
+    }
+
+    @Test
     public void testProductSearch() throws Exception {
-        this.testSearch("watch");
+        this.testSearch("watch", "/c");
     }
 
     @Test
@@ -56,6 +61,9 @@ public class ODataClientIT extends GenericTestSuite {
         this.testSearchWithFacets("women watch", facets);
     }
 
-
+    @Test
+    public void testPromotions() throws Exception {
+        this.testPromotions("/women");
+    }
 
 }

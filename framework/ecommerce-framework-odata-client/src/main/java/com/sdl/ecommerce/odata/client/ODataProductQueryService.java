@@ -36,6 +36,13 @@ public class ODataProductQueryService implements ProductQueryService {
         this.odataClient.registerModelClass(ODataFacetGroup.class);
         this.odataClient.registerModelClass(ODataFacet.class);
         this.odataClient.registerModelClass(ODataQuerySuggestion.class);
+        this.odataClient.registerModelClass(ODataLocation.class);
+        this.odataClient.registerModelClass(ODataCategoryRef.class);
+        this.odataClient.registerModelClass(ODataProductRef.class);
+        this.odataClient.registerModelClass(ODataPromotion.class);
+        this.odataClient.registerModelClass(ODataProductsPromotion.class);
+        this.odataClient.registerModelClass(ODataContentPromotion.class);
+        this.odataClient.registerModelClass(ODataContentArea.class);
     }
 
     @Override

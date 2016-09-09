@@ -1,9 +1,7 @@
 package com.sdl.ecommerce.odata.client;
 
-import com.sdl.ecommerce.api.LocalizationService;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.ProductDetailService;
-import com.sdl.ecommerce.api.ProductQueryService;
+import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.test.TestLinkResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,4 +31,7 @@ public class TestContext {
 
     @Bean
     public LocalizationService getLocalizationService() { return new TestLocalizationService(); }
+
+    @Bean
+    public ECommerceLinkResolver getLinkResolver() { return new TestLinkResolver(); }
 }

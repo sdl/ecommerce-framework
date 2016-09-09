@@ -19,11 +19,6 @@ public class TestLocalizationService implements LocalizationService {
     }
 
     @Override
-    public String getPublicationId() {
-        return "1";
-    }
-
-    @Override
     public String getLocale() {
         return "en-GB";
     }
@@ -33,8 +28,4 @@ public class TestLocalizationService implements LocalizationService {
         return null;
     }
 
-    @Override
-    public String localizePath(String url) {
-        return url;
-    }
 }

@@ -4,17 +4,18 @@ import com.sdl.ecommerce.fredhopper.FredhopperModuleInitializer;
 import com.sdl.odata.service.ODataServiceConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.*;
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * ServiceContainer
+ *
+ * To avoid problems when quering on slashes, please use the following JVM arguments:
+ * -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true
  *
  * @author nic
  */

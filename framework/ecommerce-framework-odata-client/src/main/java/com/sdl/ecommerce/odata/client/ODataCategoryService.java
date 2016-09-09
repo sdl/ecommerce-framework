@@ -21,6 +21,7 @@ import java.util.List;
 @Component
 public class ODataCategoryService implements ProductCategoryService, NavigationPropertyResolver {
 
+    // TODO: Should the categories be cached client side as well??
 
     @Autowired
     private ODataClient odataClient;

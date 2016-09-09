@@ -37,7 +37,7 @@ public class ODataQueryResult implements QueryResult {
     private int currentSet;
 
     @EdmProperty
-    private String redirectUrl;
+    private ODataLocation redirectLocation;
 
     @EdmProperty
     private List<ODataQuerySuggestion> querySuggestions = new ArrayList<>();
@@ -48,6 +48,9 @@ public class ODataQueryResult implements QueryResult {
     @EdmProperty
     private List<ODataProductSummary> products = new ArrayList<>();
 
+    @EdmProperty
+    private List<ODataPromotion> promotions = new ArrayList<>();
+
     public ODataQueryResult() {}
 
     public ODataQueryResult(QueryResult queryResult) {
@@ -56,16 +59,19 @@ public class ODataQueryResult implements QueryResult {
         this.currentSet = queryResult.getCurrentSet();
         this.startIndex = queryResult.getStartIndex();
         this.viewSize = queryResult.getViewSize();
-        this.redirectUrl = queryResult.getRedirectUrl();
+        if ( queryResult.getRedirectLocation() != null ) {
+            this.redirectLocation = new ODataLocation(queryResult.getRedirectLocation());
+        }
         if ( queryResult.getQuerySuggestions() != null ) {
             queryResult.getQuerySuggestions().forEach(querySuggestion -> this.querySuggestions.add(new ODataQuerySuggestion(querySuggestion)));
         }
 
-        // Temporary solution
-        //
-        List<FacetGroup> facetGroups = queryResult.getFacetGroups("");
+        List<FacetGroup> facetGroups = queryResult.getFacetGroups();
         if ( facetGroups != null ) {
             facetGroups.forEach(facetGroup -> this.facetGroups.add(new ODataFacetGroup(facetGroup)));
+        }
+        if ( queryResult.getPromotions() != null ) {
+            queryResult.getPromotions().forEach(promotion -> this.promotions.add(new ODataPromotion(promotion)));
         }
     }
 
@@ -81,10 +87,9 @@ public class ODataQueryResult implements QueryResult {
     }
 
     @Override
-    public List<FacetGroup> getFacetGroups(String urlPrefix) {
-        // TODO: Hook this into a link strategy!!!
-        // Return something normalized tere
-        return this.facetGroups.stream().collect(Collectors.toList());
+    public List<FacetGroup> getFacetGroups() {
+        List<FacetGroup> facetGroups = this.facetGroups.stream().collect(Collectors.toList());
+        return facetGroups;
     }
 
     @Override
@@ -114,17 +119,19 @@ public class ODataQueryResult implements QueryResult {
 
     @Override
     public QueryResult next() throws ECommerceException {
+        // TODO: IMPLEMENT!!!
         return null;
     }
 
     @Override
     public QueryResult previous() throws ECommerceException {
+        // TODO: IMPLEMENT
         return null;
     }
 
     @Override
-    public String getRedirectUrl() {
-        return this.redirectUrl;
+    public Location getRedirectLocation() {
+        return this.redirectLocation;
     }
 
     @Override
@@ -134,14 +141,13 @@ public class ODataQueryResult implements QueryResult {
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
-        // TODO: Do something smart here like have regex for url prefix & root title
+    public List<Breadcrumb> getBreadcrumbs() {
+
         return null;
     }
 
     @Override
     public List<Promotion> getPromotions() {
-        // TODO: How to handle promotion sub classes???
-        return null;
+        return this.promotions.stream().map(promotion -> promotion.toPromotion()).collect(Collectors.toList());
     }
 }

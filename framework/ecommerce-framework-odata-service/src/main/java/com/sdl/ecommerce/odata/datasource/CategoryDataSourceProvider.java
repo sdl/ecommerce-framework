@@ -138,7 +138,7 @@ public class CategoryDataSourceProvider extends ECommerceDataSourceProvider {
             throw new ODataSystemException("Unsupported query operation: " + queryOperation);
         }
 
-        return () -> categories;
+        return () -> QueryResult.from(categories);
         /*
         {
             return categories;

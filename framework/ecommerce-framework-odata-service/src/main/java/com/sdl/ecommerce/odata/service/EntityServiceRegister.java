@@ -24,6 +24,7 @@ public class EntityServiceRegister {
     @Autowired
     private ODataEdmRegistry oDataEdmRegistry;
 
+    // Share this with the client? Is that possible??
 
     @PostConstruct
     public void registerEntities() throws ODataException {
@@ -40,6 +41,13 @@ public class EntityServiceRegister {
                 ODataFacetGroup.class,
                 ODataFacet.class,
                 ODataQuerySuggestion.class,
+                ODataLocation.class,
+                ODataCategoryRef.class,
+                ODataProductRef.class,
+                ODataPromotion.class,
+                ODataProductsPromotion.class,
+                ODataContentPromotion.class,
+                ODataContentArea.class,
                 // Functions
                 ProductQueryFunction.class,
                 ProductQueryFunctionImport.class,

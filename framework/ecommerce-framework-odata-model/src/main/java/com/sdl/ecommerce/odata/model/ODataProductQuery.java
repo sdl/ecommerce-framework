@@ -15,6 +15,8 @@ import java.util.List;
  * @author nic
  */
 
+
+// TODO: IS THIS ONE USED????
 public class ODataProductQuery {
 
     private Category category;

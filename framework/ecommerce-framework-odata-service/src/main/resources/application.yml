@@ -1,9 +1,12 @@
-# Fredhopper Application Configuration
+# E-Commerce Micro Service Configuration
 #
 
-# Temporary configuration. Each connector will use it's own configuration
+# Spring Boot
+#
+server:
+  port: 8097
 
-# System Properties
+# Fredhopper Connector
 #
 fredhopper:
   queryserver:
@@ -19,6 +22,9 @@ fredhopper:
   imageurl:
     mappings: http://demo.fredhopper.com/images=/fredhopper-images
 
+
+# Localization properties
+#
 localization:
   defaultLocale: en-GB
   locales:

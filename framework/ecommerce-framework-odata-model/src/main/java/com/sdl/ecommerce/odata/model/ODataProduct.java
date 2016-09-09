@@ -38,10 +38,6 @@ public class ODataProduct implements Product, Serializable {
     @EdmProperty
     private String primaryImageUrl;
 
-    @EdmProperty
-    // TODO: Move this to the controller instead
-    private String detailPageUrl;
-
     @EdmProperty(name = "attributes")
     private List<ODataProductAttribute> attributes;
 
@@ -56,7 +52,6 @@ public class ODataProduct implements Product, Serializable {
         this.price = new ODataProductPrice(product.getPrice());
         this.thumbnailUrl = product.getThumbnailUrl();
         this.primaryImageUrl = product.getPrimaryImageUrl();
-        this.detailPageUrl = product.getDetailPageUrl();
         Map<String,Object> attributes = product.getAttributes();
         if ( attributes != null ) {
             this.attributes = new ArrayList<>();
@@ -94,11 +89,6 @@ public class ODataProduct implements Product, Serializable {
     @Override
     public String getPrimaryImageUrl() {
         return this.primaryImageUrl;
-    }
-
-    @Override
-    public String getDetailPageUrl() {
-        return this.detailPageUrl;
     }
 
     // TODO: IMPLEMENT !!!

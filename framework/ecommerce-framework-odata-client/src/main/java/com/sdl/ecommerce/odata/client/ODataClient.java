@@ -19,7 +19,7 @@ public class ODataClient {
 
 
     // TODO: Have service URI configurable!!!
-    private String serviceUri = "http://localhost:8080/ecommerce.svc";
+    private String serviceUri = "http://localhost:8097/ecommerce.svc";
 
     private Map<String, DefaultODataClient> clients = new HashMap<>();
     private Map<String, DefaultODataClient> clientsNoEncoding = new HashMap<>();

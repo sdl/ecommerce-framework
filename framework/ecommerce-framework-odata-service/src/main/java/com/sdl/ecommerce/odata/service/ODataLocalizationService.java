@@ -68,17 +68,4 @@ public class ODataLocalizationService implements LocalizationService {
         return null;
     }
 
-    @Override
-    public String getPublicationId() {
-        // Not applicable in the micro service layer
-        //
-        return null;
-    }
-
-    @Override
-    public String localizePath(String url) {
-        // Not applicable in the micro service layer
-        //
-        return url;
-    }
 }
