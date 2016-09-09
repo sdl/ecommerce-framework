@@ -1,13 +1,17 @@
 package com.sdl.ecommerce.fredhopper.model.promotion;
 
+import com.fredhopper.lang.query.location.criteria.Criterion;
+import com.fredhopper.lang.query.location.criteria.MultiValuedCriterion;
 import com.fredhopper.webservice.client.ContentLinkBase;
 import com.fredhopper.webservice.client.Theme;
 import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.model.Editable;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.Promotion;
+import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.api.model.impl.GenericLocation;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -23,7 +27,7 @@ public class FredhopperPromotion implements Promotion, Editable {
     protected String name;
     protected String title;
     protected String slogan;
-    protected String link;
+    protected Location location;
     protected String editUrl;
 
     protected FredhopperPromotion(Theme theme, String editUrl) {
@@ -55,25 +59,24 @@ public class FredhopperPromotion implements Promotion, Editable {
         return null;
     }
 
-    protected String getPromotionLink(ContentLinkBase contentLink, FredhopperLinkManager linkManager, ProductCategoryService categoryService) {
+    protected Location getPromotionLocation(ContentLinkBase contentLink, FredhopperLinkManager linkManager, ProductCategoryService categoryService) {
 
-        if ( contentLink.getType().value().equals("catalog") ) {
+        if (contentLink.getType().value().equals("catalog")) {
             StringTokenizer tokenizer = new StringTokenizer(contentLink.getValue(), "=&");
-            while ( tokenizer.hasMoreTokens() ) {
+            while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
-                if ( token.equals("fh_location") ) {
+                if (token.equals("fh_location")) {
                     String locationLink = tokenizer.nextToken();
-                    return linkManager.convertToSEOLink(locationLink, categoryService);
+
+
+                    return linkManager.resolveLocation(locationLink, categoryService);
                 }
             }
             return null;
 
+        } else {
+            return new GenericLocation(contentLink.getValue());
         }
-        else {
-            return contentLink.getValue();
-        }
-
-
     }
 
     @Override
@@ -97,8 +100,8 @@ public class FredhopperPromotion implements Promotion, Editable {
     }
 
     //@Override
-    public String getLink() {
-        return link;
+    public Location getLocation() {
+        return location;
     }
 
     @Override

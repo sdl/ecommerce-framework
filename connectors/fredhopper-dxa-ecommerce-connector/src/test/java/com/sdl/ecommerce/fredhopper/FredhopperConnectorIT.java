@@ -36,6 +36,7 @@ public class FredhopperConnectorIT extends GenericTestSuite {
 
     @Test
     public void testPromotions() throws Exception {
+        // TODO: Validate so this test really returns promos
         this.testPromotions("/women");
     }
 
@@ -79,14 +80,14 @@ public class FredhopperConnectorIT extends GenericTestSuite {
                         viewSize(10).
                         facet(new FacetParameter("brand", "adidas")).
                         facet(new FacetParameter("spotlight", "this20week27s20brochure")));
-        LOG.info("Redirect URL: " + result.getRedirectUrl());
+        LOG.info("Redirect Location: " + this.linkResolver.getLocationLink(result.getRedirectLocation()));
     }
 
     @Test
     public void testSearchRedirect() throws Exception {
         LOG.info("Testing redirects that are triggered by specific search keywords...");
         QueryResult result = this.queryService.query(this.queryService.newQuery().searchPhrase("contact").viewSize(100));
-        LOG.info("Redirect URL: " + result.getRedirectUrl());
+        LOG.info("Redirect Location: " + result.getRedirectLocation());
     }
 
 }

@@ -1,9 +1,7 @@
 package com.sdl.ecommerce.fredhopper;
 
-import com.sdl.ecommerce.api.LocalizationService;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.ProductDetailService;
-import com.sdl.ecommerce.api.ProductQueryService;
+import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.test.TestLinkResolver;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,4 +44,7 @@ public class TestContext {
         placeholderConfigurer.setLocation(new ClassPathResource("application-test.properties"));
         return placeholderConfigurer;
     }
+
+    @Bean
+    public ECommerceLinkResolver getLinkResolver() { return new TestLinkResolver(); }
 }

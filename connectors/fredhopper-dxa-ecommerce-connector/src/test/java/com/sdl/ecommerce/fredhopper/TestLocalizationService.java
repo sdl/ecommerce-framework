@@ -26,11 +26,6 @@ public class TestLocalizationService implements LocalizationService {
     }
 
     @Override
-    public String getPublicationId() {
-        return "1";
-    }
-
-    @Override
     public String getLocalizedConfigProperty(String name) {
         if ( name.equals("fredhopper-universe") ) {
             return universe;
@@ -49,10 +44,6 @@ public class TestLocalizationService implements LocalizationService {
         }
     }
 
-    @Override
-    public String localizePath(String url) {
-        return url;
-    }
 
     @Override
     public Map<URI, Object> getAllClaims() {

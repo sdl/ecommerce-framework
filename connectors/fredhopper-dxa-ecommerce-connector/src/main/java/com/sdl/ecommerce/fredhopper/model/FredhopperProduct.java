@@ -85,21 +85,6 @@ public class FredhopperProduct implements Product {
     }
 
     @Override
-    public String getDetailPageUrl() {
-        String name = this.getName();
-        if ( name != null ) {
-
-            // TODO: Let this be done by a product link strategy instead!!!!!!!
-
-            // Generate a SEO friendly URL
-            //
-            String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");
-            return this.localizationService.localizePath("/p/") + seoName + "/" + this.id;
-        }
-        return this.localizationService.localizePath("/p/") + this.id;
-    }
-
-    @Override
     public List<Category> getCategories() {
         if ( this.categories == null ) {
             synchronized (this) {
