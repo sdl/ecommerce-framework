@@ -18,6 +18,9 @@ import javax.annotation.PostConstruct;
 @RegisteredViewModels({
 @RegisteredViewModel(viewName = "ExternalContentLibraryStubSchemafredhopper", modelClass = FredhopperEclItem.class)
 })
+
+// TODO: Where should this be initialized?? If we have a generic ECL using the micro service then we do not need to have the DXA wrapper for each connector!!!
+
 public class FredhopperModuleInitializer extends AbstractInitializer {
 
     private static final String AREA_NAME = "Fredhopper";

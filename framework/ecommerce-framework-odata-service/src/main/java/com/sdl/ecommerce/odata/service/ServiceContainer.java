@@ -1,6 +1,5 @@
 package com.sdl.ecommerce.odata.service;
 
-import com.sdl.ecommerce.fredhopper.FredhopperModuleInitializer;
 import com.sdl.odata.service.ODataServiceConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +25,8 @@ import org.springframework.context.annotation.*;
         //InMemoryDataSourceConfiguration.class,
         ODataServiceConfiguration.class
 })
-@ComponentScan (basePackages = {"com.sdl.ecommerce.odata", "com.sdl.ecommerce.fredhopper"},
-        excludeFilters={
-                @ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value=FredhopperModuleInitializer.class)})
-//@ImportResource("classpath*:/META-INF/spring-context.xml")
+@ComponentScan (basePackages = {"com.sdl.ecommerce.odata"})
+@ImportResource("classpath*:/META-INF/ecommerce-connector.xml")
 public class ServiceContainer {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServiceContainer.class);
