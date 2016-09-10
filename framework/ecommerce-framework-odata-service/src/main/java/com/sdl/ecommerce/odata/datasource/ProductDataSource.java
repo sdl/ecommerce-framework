@@ -66,8 +66,10 @@ public class ProductDataSource implements DataSource {
 
     }
 
+    /* OData v2.1.0
     @Override
     public TransactionalDataSource startTransaction() {
         return null;
     }
+    */
 }
