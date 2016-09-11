@@ -16,6 +16,7 @@
     <properties>
         <spring.boot.version>1.2.3.RELEASE</spring.boot.version>
         <java-version>1.8</java-version>
+        <start-class>com.sdl.ecommerce.odata.service.ServiceContainer</start-class>
     </properties>
 
     <dependencyManagement>
@@ -42,6 +43,24 @@
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>microservice-singlejar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
