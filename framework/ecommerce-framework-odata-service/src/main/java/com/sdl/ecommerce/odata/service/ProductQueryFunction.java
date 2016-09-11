@@ -1,6 +1,5 @@
 package com.sdl.ecommerce.odata.service;
 
-import com.sdl.ecommerce.api.ProductQueryService;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.QueryResult;
 import com.sdl.ecommerce.api.ViewType;
@@ -12,7 +11,6 @@ import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.annotations.EdmFunction;
 import com.sdl.odata.api.edm.annotations.EdmParameter;
 import com.sdl.odata.api.edm.annotations.EdmReturnType;
-import com.sdl.odata.api.edm.model.Operation;
 import com.sdl.odata.api.processor.datasource.factory.DataSourceFactory;
 import com.sdl.odata.api.service.ODataRequestContext;
 import org.slf4j.Logger;
@@ -33,7 +31,7 @@ import java.util.StringTokenizer;
 @EdmReturnType(
         type = "SDL.ECommerce.ProductQueryResult"
 )
-public class ProductQueryFunction implements Operation<ODataQueryResult> {
+public class ProductQueryFunction extends ECommerceOperation {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductQueryFunction.class);
 
@@ -60,8 +58,9 @@ public class ProductQueryFunction implements Operation<ODataQueryResult> {
 
     // TODO: Add filter attributes here
 
+
     @Override
-    public ODataQueryResult doOperation(ODataRequestContext oDataRequestContext, DataSourceFactory dataSourceFactory) throws ODataException {
+    protected ODataQueryResult doECommerceOperation(ODataRequestContext oDataRequestContext, DataSourceFactory dataSourceFactory) throws ODataException {
 
         // TODO: Use this approach instead?? ApplicationContextProvider.getApplicationContext().getBean(TaxonomyFactory.class);
 

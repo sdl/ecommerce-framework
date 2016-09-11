@@ -43,7 +43,7 @@ public class ODataLocalizationService implements LocalizationService {
     @Override
     public String getLocale() {
         String locale = null;
-        ODataRequestContext requestContext = ECommerceDataSourceProvider.getRequestContext();
+        ODataRequestContext requestContext = ODataRequestContextHolder.get();
         if ( requestContext != null ) {
             locale = requestContext.getRequest().getHeader("ECommerce-Locale");
         }
