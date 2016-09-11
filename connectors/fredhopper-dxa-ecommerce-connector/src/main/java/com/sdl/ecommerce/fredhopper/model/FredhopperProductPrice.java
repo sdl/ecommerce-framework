@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
  */
 public class FredhopperProductPrice implements ProductPrice {
 
+    private float price;
     private String formattedPrice;
 
-    static private Pattern PRICE_PATTERN = Pattern.compile("[\\D ]*([0-9]*\\.[0-9]+|[0-9]+)[\\D ]*");
-
-    public FredhopperProductPrice(String formattedPrice) {
+    public FredhopperProductPrice(float price, String formattedPrice) {
+        this.price = price;
         this.formattedPrice = formattedPrice;
     }
 
@@ -27,11 +27,7 @@ public class FredhopperProductPrice implements ProductPrice {
 
     @Override
     public float getPrice() {
-        Matcher priceMatcher = PRICE_PATTERN.matcher(formattedPrice);
-        if ( priceMatcher.matches() ) {
-            return Float.parseFloat(priceMatcher.group(1));
-        }
-        return 0.0f;
+        return this.price;
     }
 
     @Override

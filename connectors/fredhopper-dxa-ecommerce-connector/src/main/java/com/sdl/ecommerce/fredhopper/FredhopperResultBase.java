@@ -81,6 +81,7 @@ public abstract class FredhopperResultBase {
                     continue;
                 }
                 String baseType = attribute.getBasetype().value();
+
                 /*
                 if ( baseType.equals("text") ) {
                     value = attribute.getValue().get(0).getValue();
@@ -111,6 +112,11 @@ public abstract class FredhopperResultBase {
                     value = attribute.getValue().get(0).getValue();
                 }
                 fhItem.getAttributes().put(name, value);
+
+                // Save the internal representation as well.
+                // TODO: Merge this with the generic attribute representation
+                //
+                fhItem.addFredhopperlAttribute(name, attribute);
             }
         }
         return products;

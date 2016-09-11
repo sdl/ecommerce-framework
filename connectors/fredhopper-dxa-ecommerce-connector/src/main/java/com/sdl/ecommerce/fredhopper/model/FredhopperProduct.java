@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.fredhopper.model;
 
+import com.fredhopper.webservice.client.Attribute;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
@@ -7,6 +8,7 @@ import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 import com.sdl.webapp.common.api.localization.Localization;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +25,8 @@ public class FredhopperProduct implements Product {
     private String id;
     private List<FacetParameter> facets;
     private Map<String,Object> attributes = new HashMap<>();
+    // TODO: Replace this with a single list of attribute values.
+    private Map<String,Attribute> fhAttributes = new HashedMap();
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
@@ -63,7 +67,16 @@ public class FredhopperProduct implements Product {
 
     @Override
     public ProductPrice getPrice() {
-        return new FredhopperProductPrice(this.getModelAttribute("price"));
+        String fredhopperAttributeName = this.modelMappings.get("price");
+        if ( fredhopperAttributeName != null ) {
+            Attribute fhPrice = this.fhAttributes.get(fredhopperAttributeName);
+            if ( fhPrice != null && !fhPrice.getValue().isEmpty() ) {
+                float price = Float.parseFloat(fhPrice.getValue().get(0).getNonMl());
+                String formattedPrice = fhPrice.getValue().get(0).getValue();
+                return new FredhopperProductPrice(price, formattedPrice);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -104,6 +117,11 @@ public class FredhopperProduct implements Product {
     @Override
     public Map<String,Object> getAttributes() {
         return this.attributes;
+    }
+
+
+    public void addFredhopperlAttribute(String name, Attribute attribute) {
+        this.fhAttributes.put(name, attribute);
     }
 
     public void setFacets(List<FacetParameter> facets) {
