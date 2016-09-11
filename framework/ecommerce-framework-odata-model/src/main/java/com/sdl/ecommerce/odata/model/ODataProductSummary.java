@@ -36,7 +36,9 @@ public class ODataProductSummary implements Product {
     public ODataProductSummary(Product product) {
         this.id = product.getId();
         this.name = product.getName();
-        this.price = new ODataProductPrice(product.getPrice());
+        if ( product.getPrice() != null ) {
+            this.price = new ODataProductPrice(product.getPrice());
+        }
         this.thumbnailUrl = product.getThumbnailUrl();
     }
 
