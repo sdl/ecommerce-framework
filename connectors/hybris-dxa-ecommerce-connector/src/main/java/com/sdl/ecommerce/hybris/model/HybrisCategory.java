@@ -67,16 +67,4 @@ public class HybrisCategory implements Category {
     public String getPathName() {
         return this.hybrisCategory.getName().toLowerCase().replace(" ", "_").replace("&", "and");
     }
-
-    @Override
-    public String getCategoryLink(String urlPrefix) {
-        String link = "";
-        Category currentCategory = this;
-        while ( currentCategory != null ) {
-            link = currentCategory.getPathName() + "/" + link;
-            currentCategory = currentCategory.getParent();
-        }
-        link = urlPrefix + "/" + link;
-        return link;
-    }
 }

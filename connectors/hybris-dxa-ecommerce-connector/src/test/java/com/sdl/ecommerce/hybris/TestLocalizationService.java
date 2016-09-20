@@ -41,11 +41,6 @@ public class TestLocalizationService implements LocalizationService {
     }
 
     @Override
-    public String getPublicationId() {
-        return "1";
-    }
-
-    @Override
     public String getLocalizedConfigProperty(String name) {
         if ( name.equals("hybris-siteId") ) {
             return this.siteId;
@@ -71,11 +66,6 @@ public class TestLocalizationService implements LocalizationService {
         else {
             return null;
         }
-    }
-
-    @Override
-    public String localizePath(String url) {
-        return url;
     }
 
     @Override

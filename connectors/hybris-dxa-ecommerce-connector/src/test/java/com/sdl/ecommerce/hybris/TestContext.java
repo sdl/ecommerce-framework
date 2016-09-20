@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.test.TestLinkResolver;
 import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
 import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -44,4 +45,7 @@ public class TestContext {
         placeholderConfigurer.setLocation(new ClassPathResource("application-test.properties"));
         return placeholderConfigurer;
     }
+
+    @Bean
+    public ECommerceLinkResolver getLinkResolver() { return new TestLinkResolver(); }
 }

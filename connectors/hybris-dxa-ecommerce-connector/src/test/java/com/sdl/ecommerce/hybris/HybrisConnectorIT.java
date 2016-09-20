@@ -39,6 +39,7 @@ public class HybrisConnectorIT extends GenericTestSuite {
 
     @Test
     public void testGetCategoryByPath() throws Exception {
+        this.testGetCategoryByPath("/cameras");
         this.testGetCategoryByPath("/cameras/film_cameras");
     }
 
@@ -57,6 +58,11 @@ public class HybrisConnectorIT extends GenericTestSuite {
         List<FacetParameter> facets = new ArrayList<>();
         facets.add(new FacetParameter("price", "$50-$199.99"));
         this.testSearchWithFacets("sony", facets);
+    }
+
+    @Test
+    public void testBreadcrumbs() throws Exception {
+        this.testBreadcrumbs("/cameras");
     }
 
     @Test

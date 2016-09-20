@@ -1,9 +1,6 @@
 package com.sdl.ecommerce.hybris;
 
-import com.sdl.ecommerce.api.ECommerceException;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.ProductDetailResult;
-import com.sdl.ecommerce.api.ProductDetailService;
+import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.hybris.api.HybrisClientImpl;

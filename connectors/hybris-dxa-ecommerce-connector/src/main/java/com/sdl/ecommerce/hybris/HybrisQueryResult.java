@@ -7,6 +7,8 @@ import com.sdl.ecommerce.api.model.Breadcrumb;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Facet;
 import com.sdl.ecommerce.api.model.Product;
+import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
+import com.sdl.ecommerce.api.model.impl.GenericFacet;
 import com.sdl.ecommerce.hybris.api.model.*;
 import com.sdl.ecommerce.hybris.model.*;
 
@@ -60,21 +62,19 @@ public class HybrisQueryResult implements QueryResult {
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
+    public List<Breadcrumb> getBreadcrumbs() {
 
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
-        if ( rootTitle != null ) {
-            breadcrumbs.add(new HybrisBreadcrumb(rootTitle, urlPrefix, true));
-        }
         Category category = this.query.getCategory();
         while ( category != null ) {
-            breadcrumbs.add(0, new HybrisBreadcrumb(category.getName(), category.getCategoryLink(urlPrefix), true));
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category));
             category = category.getParent();
         }
         if ( this.searchResult != null ) {
             for (com.sdl.ecommerce.hybris.api.model.Breadcrumb hybrisBreadcrumb : this.searchResult.getBreadcrumbs() ) {
                 if ( !hybrisBreadcrumb.getFacetCode().equals("category") ) {
-                    breadcrumbs.add(new HybrisBreadcrumb(hybrisBreadcrumb.getFacetValueName(), this.getFacetUrl(hybrisBreadcrumb.getRemoveQuery().getFacets(), urlPrefix), false));
+                    breadcrumbs.add(new HybrisBreadcrumb(hybrisBreadcrumb));
+                    //breadcrumbs.add(new HybrisBreadcrumb(hybrisBreadcrumb.getFacetValueName(), this.getFacetUrl(hybrisBreadcrumb.getRemoveQuery().getFacets(), urlPrefix), false));
                 }
             }
         }
@@ -97,7 +97,7 @@ public class HybrisQueryResult implements QueryResult {
     }
 
     @Override
-    public List<FacetGroup> getFacetGroups(String urlPrefix) {
+    public List<FacetGroup> getFacetGroups() {
 
         List<FacetGroup> facetGroups = new ArrayList<>();
         if ( this.searchResult != null ) {
@@ -105,7 +105,7 @@ public class HybrisQueryResult implements QueryResult {
                 if ( hybrisFacet.getId().equals("category") ) {
                     FacetGroup facetGroup = new HybrisFacetGroup(hybrisFacet.getId(), hybrisFacet.getName(), true);
                     for ( FacetValue facetValue : hybrisFacet.getValues() ) {
-                        Facet facet = new HybrisFacet(facetValue.getName(), this.getFacetUrl(facetValue.getQueryFacets(), urlPrefix), facetValue.getCount(), facetValue.isSelected());
+                        Facet facet = new HybrisFacet(facetValue);
                         facetGroup.getFacets().add(facet);
                     }
                     facetGroups.add(facetGroup);
@@ -113,7 +113,7 @@ public class HybrisQueryResult implements QueryResult {
                 else if ( this.facetIncludeList == null || (this.facetIncludeList != null && this.facetIncludeList.contains(hybrisFacet.getId())) ) {
                     FacetGroup facetGroup = new HybrisFacetGroup(hybrisFacet.getId(), hybrisFacet.getName(), false);
                     for ( FacetValue facetValue : hybrisFacet.getValues() ) {
-                        Facet facet = new HybrisFacet(facetValue.getName(), this.getFacetUrl(facetValue.getQueryFacets(), urlPrefix), facetValue.getCount(), facetValue.isSelected());
+                        Facet facet = new HybrisFacet(facetValue);
                         facetGroup.getFacets().add(facet);
                     }
                     facetGroups.add(facetGroup);
@@ -129,7 +129,9 @@ public class HybrisQueryResult implements QueryResult {
             FacetGroup categoryFacetGroup = new HybrisFacetGroup(null, "Categories", true); // TODO: Have a localized version of the categories here
             facetGroups.add(categoryFacetGroup);
             for ( Category category : this.query.getCategory().getCategories() ) {
-                Facet facet = new HybrisFacet(category.getName(), category.getCategoryLink(urlPrefix), 0, false);
+
+                Facet facet = new GenericFacet(category);
+               // Facet facet = new HybrisFacet(category.getName(), this.linkResolver.getCategoryLink(category, urlPrefix), 0, false);
                 categoryFacetGroup.getFacets().add(facet);
             }
 
@@ -146,6 +148,7 @@ public class HybrisQueryResult implements QueryResult {
      * @param urlPrefix
      * @return url
      */
+    // TODO: REMOVE THIS METHOD
     protected String getFacetUrl(List<FacetPair> facets, String urlPrefix) {
         String facetUrlPrefix = "";
         String facetUrl = "?";
@@ -155,7 +158,7 @@ public class HybrisQueryResult implements QueryResult {
                 if ( facet.getId().equals("category") ) {
                     Category category = this.categoryService.getCategoryById(facet.getValue());
                     if ( category != null ) {
-                        facetUrlPrefix = category.getCategoryLink(urlPrefix);
+                        //facetUrlPrefix = this.linkResolver.getCategoryLink(category, urlPrefix);
                     }
                 }
                 else {
@@ -238,7 +241,7 @@ public class HybrisQueryResult implements QueryResult {
     }
 
     @Override
-    public String getRedirectUrl() {
+    public Location getRedirectLocation() {
         return null;
     }
 
