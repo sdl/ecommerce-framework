@@ -68,6 +68,7 @@ public interface Product {
      */
 
     // TODO: Use Map<String,List<String>> here instead?? To make it easier to map over OData???
+    // TODO: Have an AttributeValue representation here that indicate formatted value, raw value, type, single/multi value etc?
 
     Map<String,Object> getAttributes();
 }

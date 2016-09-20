@@ -13,6 +13,7 @@ public interface Facet {
     // RangeFacet, ValueFacet, LessThan, GreaterThan -> Do enums instead
     // getType(), getValues()
 
+    // TODO: Move this out a separate file
     enum FacetType {
         // Single value facets
         SINGLEVALUE,

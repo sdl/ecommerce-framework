@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.api.model.impl;
 
+import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Facet;
 
 import java.util.ArrayList;
@@ -19,6 +20,13 @@ public class GenericFacet implements Facet {
     private boolean isCategory;
     private FacetType type;
     private List<String> values = new ArrayList<>();
+
+    public GenericFacet(Category category) {
+        this.id = category.getId();
+        this.title = category.getName();
+        this.type = FacetType.SINGLEVALUE;
+        this.isCategory = true;
+    }
 
     public GenericFacet(String id, String title, String value, FacetType type) {
         this.id = id;

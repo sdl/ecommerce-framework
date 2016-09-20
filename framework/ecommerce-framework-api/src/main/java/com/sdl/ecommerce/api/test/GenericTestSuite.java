@@ -248,7 +248,7 @@ public abstract class GenericTestSuite {
     protected void printBreadcrumbs(List<Breadcrumb> breadcrumbs) {
         LOG.info("------- Breadcrumbs: ---------");
         for ( Breadcrumb breadcrumb : breadcrumbs ) {
-            LOG.info("\"" + breadcrumb.getTitle() + "\"" + " URL: " + breadcrumb.getUrl() + " category: " + breadcrumb.isCategory());
+            LOG.info("\"" + breadcrumb.getTitle() + "\"" + " URL: " + this.linkResolver.getBreadcrumbLink(breadcrumb) + " category: " + breadcrumb.isCategory());
         }
     }
 
