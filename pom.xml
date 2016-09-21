@@ -13,7 +13,7 @@
     <groupId>com.sdl</groupId>
     <artifactId>ecommerce-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <licenses>
         <license>
@@ -93,7 +93,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java-version>1.7</java-version>
 
-        <dxa.version>1.4.0</dxa.version>
+        <dxa.version>1.5.0</dxa.version>
 
         <!-- Servlet and JSP APIs -->
         <servlet-api-version>3.1.0</servlet-api-version>
@@ -126,6 +126,7 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- NEEDED??? -->
             <dependency>
                 <groupId>com.sdl.dxa</groupId>
                 <artifactId>dxa-bom-2013sp1</artifactId>
