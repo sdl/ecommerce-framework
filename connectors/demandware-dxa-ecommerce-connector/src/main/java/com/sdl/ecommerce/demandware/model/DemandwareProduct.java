@@ -113,20 +113,6 @@ public class DemandwareProduct implements Product {
     }
 
     @Override
-    public String getDetailPageUrl() {
-        // TODO: Have a standardized way of calculating the product URL. There an more characters that needs to be ignored as well....
-
-        String seoName = this.name.toLowerCase().
-                replace(" ", "-").
-                replace("'", "").
-                replace("--", "").
-                replace("/", "-").
-                replace("®", "").
-                replace("\"", "");
-        return "/p/" + seoName + "/" + this.id;
-    }
-
-    @Override
     public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
         if ( this.primaryCategory != null ) {

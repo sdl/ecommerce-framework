@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.demandware;
 
+import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.Breadcrumb;
 import com.sdl.ecommerce.api.model.Category;
@@ -18,9 +19,11 @@ import java.util.List;
 public class DemandwareDetailResult implements ProductDetailResult {
 
     private Product productDetail;
+    private ECommerceLinkResolver linkResolver;
 
-    public DemandwareDetailResult(Product productDetail) {
+    public DemandwareDetailResult(Product productDetail, ECommerceLinkResolver linkResolver) {
         this.productDetail = productDetail;
+        this.linkResolver = linkResolver;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class DemandwareDetailResult implements ProductDetailResult {
         if ( this.productDetail.getCategories() != null && this.productDetail.getCategories().size() > 0 ) {
             Category category = this.productDetail.getCategories().get(0);
             while ( category != null ) {
-                breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category.getCategoryLink(urlPrefix), true));
+                breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), this.linkResolver.getCategoryLink(category, urlPrefix), true));
                 category = category.getParent();
             }
         }

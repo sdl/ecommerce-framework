@@ -40,7 +40,7 @@ public class DemandwareShopClientManager {
      */
     public DemandwareShopClient getInstance() {
 
-        DemandwareShopClient shopClient = this.shopClients.get(this.localizationService.getPublicationId());
+        DemandwareShopClient shopClient = this.shopClients.get(this.localizationService.getLocale());
         if ( shopClient == null ) {
             shopClient = this.createShopClient();
         }
@@ -54,7 +54,7 @@ public class DemandwareShopClientManager {
     private synchronized DemandwareShopClient createShopClient() {
         String shopUrl = this.url + this.getSiteId();
         DemandwareShopClient shopClient = new DemandwareShopClientImpl(shopUrl, clientId, this.getLocale(), this.getCurrency(), overriddenOrigin, trustAllSSLCerts);
-        this.shopClients.put(this.localizationService.getPublicationId(), shopClient);
+        this.shopClients.put(this.localizationService.getLocale(), shopClient);
         return shopClient;
     }
 

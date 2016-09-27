@@ -44,12 +44,13 @@ public class DemandwareCategoryService implements ProductCategoryService {
      */
     private CategoryManager getCategoryManager() {
 
-        String publicationId = localizationService.getPublicationId();
-        CategoryManager categoryManager = categoryManagers.get(publicationId);
+
+        String locale = localizationService.getLocale();
+        CategoryManager categoryManager = categoryManagers.get(locale);
         if ( categoryManager == null ) {
             synchronized ( this ) {
                 categoryManager = new CategoryManager(this.shopClientManager.getInstance(), this.categoryExpiryTimeout);
-                categoryManagers.put(publicationId, categoryManager);
+                categoryManagers.put(locale, categoryManager);
             }
         }
         return categoryManager;

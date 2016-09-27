@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.test.TestLinkResolver;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -41,4 +42,8 @@ public class TestContext {
         placeholderConfigurer.setIgnoreResourceNotFound(true);
         return placeholderConfigurer;
     }
+
+    @Bean
+    public ECommerceLinkResolver getLinkResolver() { return new TestLinkResolver(); }
+
 }

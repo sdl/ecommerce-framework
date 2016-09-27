@@ -1,9 +1,6 @@
 package com.sdl.ecommerce.demandware;
 
-import com.sdl.ecommerce.api.ECommerceException;
-import com.sdl.ecommerce.api.ProductCategoryService;
-import com.sdl.ecommerce.api.Query;
-import com.sdl.ecommerce.api.QueryResult;
+import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
 import com.sdl.ecommerce.api.model.impl.GenericFacet;
@@ -32,6 +29,7 @@ public class DemandwareQueryResult implements QueryResult {
     private DemandwareShopClient shopClient;
     private ProductCategoryService categoryService;
     private List<String> facetIncludeList;
+    private ECommerceLinkResolver linkResolver;
 
     /**
      * Create new Demandware query result.
@@ -45,7 +43,8 @@ public class DemandwareQueryResult implements QueryResult {
                                  ProductSearchResult searchResult,
                                  DemandwareShopClient shopClient,
                                  ProductCategoryService categoryService,
-                                 List<String> facetIncludeList) {
+                                 List<String> facetIncludeList,
+                                 ECommerceLinkResolver linkResolver) {
 
         this.query = query;
         this.category = this.query.getCategory();
@@ -53,6 +52,7 @@ public class DemandwareQueryResult implements QueryResult {
         this.shopClient = shopClient;
         this.categoryService = categoryService;
         this.facetIncludeList = facetIncludeList;
+        this.linkResolver = linkResolver;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class DemandwareQueryResult implements QueryResult {
     }
 
     @Override
-    public List<FacetGroup> getFacetGroups(String urlPrefix) {
+    public List<FacetGroup> getFacetGroups() {
         List<FacetGroup> facetGroups = new ArrayList<>();
         if ( this.searchResult.getRefinements() != null ) {
             for (ProductSearchRefinement refinement : this.searchResult.getRefinements()) {
@@ -97,7 +97,7 @@ public class DemandwareQueryResult implements QueryResult {
                                 //
                                 continue;
                             }
-                            Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), false);
+                            Facet facet = new GenericFacet(refinement.getAttribute_id(), refinementValue.getLabel(), refinementValue.getValue(), refinementValue.getHit_count(), false);
                             facetGroup.getFacets().add(facet);
                         }
                     }
@@ -188,7 +188,7 @@ public class DemandwareQueryResult implements QueryResult {
         if ( refinementId.equals("cgid") ) {
             Category category = this.categoryService.getCategoryById(refinementValue);
             if ( category != null ) {
-                facetUrlPrefix = category.getCategoryLink(urlPrefix);
+                facetUrlPrefix = this.linkResolver.getCategoryLink(category, urlPrefix);
             }
         }
         else if (!isIncludedInMultivalue ) {
@@ -198,7 +198,7 @@ public class DemandwareQueryResult implements QueryResult {
             facetUrl += refinementId + "=" + refinementValue;
         }
         if ( facetUrlPrefix.length() == 0 && this.category != null ) {
-            facetUrlPrefix = this.category.getCategoryLink(urlPrefix);
+            facetUrlPrefix = this.linkResolver.getCategoryLink(this.category, urlPrefix);
         }
         return facetUrlPrefix + facetUrl;
     }
@@ -278,7 +278,7 @@ public class DemandwareQueryResult implements QueryResult {
         ProductSearchResult nextResult = this.shopClient.getNext(this.searchResult);
         Query newQuery = this.query.clone();
         newQuery.startIndex(nextResult.getStart());
-        return new DemandwareQueryResult(newQuery, nextResult, this.shopClient, this.categoryService, this.facetIncludeList);
+        return new DemandwareQueryResult(newQuery, nextResult, this.shopClient, this.categoryService, this.facetIncludeList, this.linkResolver);
     }
 
     @Override
@@ -286,24 +286,21 @@ public class DemandwareQueryResult implements QueryResult {
         ProductSearchResult previousResult = this.shopClient.getPrevious(this.searchResult);
         Query newQuery = this.query.clone();
         newQuery.startIndex(previousResult.getStart());
-        return new DemandwareQueryResult(newQuery, previousResult, this.shopClient, this.categoryService, this.facetIncludeList);
+        return new DemandwareQueryResult(newQuery, previousResult, this.shopClient, this.categoryService, this.facetIncludeList, this.linkResolver);
     }
 
     @Override
-    public String getRedirectUrl() {
+    public Location getRedirectLocation() {
         return null;
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
+    public List<Breadcrumb> getBreadcrumbs() {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         Category category = this.category;
         while ( category != null ) {
-            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category.getCategoryLink(urlPrefix), true));
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), this.linkResolver.getCategoryLink(category), true));
             category = category.getParent();
-        }
-        if ( rootTitle != null ) {
-            breadcrumbs.add(0, new GenericBreadcrumb(rootTitle, urlPrefix, true));
         }
         if ( this.searchResult.getSelected_refinements() != null ) {
             for ( String selectedRefinement : this.searchResult.getSelected_refinements().keySet() ) {
