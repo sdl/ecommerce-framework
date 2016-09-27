@@ -45,6 +45,11 @@ public class FredhopperFacet implements Facet {
     }
 
     @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
     public String getTitle() {
         return title;
     }
@@ -57,12 +62,6 @@ public class FredhopperFacet implements Facet {
     @Override
     public boolean isSelected() {
         return isSelected;
-    }
-
-    // ----
-    @Override
-    public String getId() {
-        return this.id;
     }
 
     @Override
