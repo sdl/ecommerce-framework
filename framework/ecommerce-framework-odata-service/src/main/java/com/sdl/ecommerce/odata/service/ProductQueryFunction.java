@@ -25,11 +25,10 @@ import java.util.StringTokenizer;
  */
 @EdmFunction(
         name = "ProductQueryFunction",
-        namespace = "SDL.ECommerce",
-        isBound = false
+        namespace = "SDL.ECommerce"
 )
 @EdmReturnType(
-        type = "SDL.ECommerce.ProductQueryResult"
+        type = "ProductQueryResults"
 )
 public class ProductQueryFunction extends ECommerceOperation {
 
