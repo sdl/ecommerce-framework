@@ -43,6 +43,9 @@ public class ODataCategory implements Category {
     @EdmNavigationProperty(name = "categories")
     private List<ODataCategory> categories = null;
 
+    @EdmProperty(name= "parentIds")
+    private List<String> parentIds = null;
+
     private NavigationPropertyResolver navigationPropertyResolver = null;
 
     public ODataCategory() {}
@@ -51,6 +54,13 @@ public class ODataCategory implements Category {
         this.id = category.getId();
         this.name = category.getName();
         this.pathName = category.getPathName();
+
+        this.parentIds = new ArrayList<>();
+        Category parent = category.getParent();
+        while ( parent != null ) {
+            this.parentIds.add(0, parent.getId());
+            parent = parent.getParent();
+        }
     }
 
     public void setNavigationPropertyResolver(NavigationPropertyResolver navigationPropertyResolver) {

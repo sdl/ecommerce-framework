@@ -148,6 +148,8 @@ public class FacetParameter {
      * Convert the facet parameter to URL format.
      * @return url fragment
      */
+    // TODO: Should this purely be part of the link resolver???
+    //
     public String toUrl() {
         return this.addValueToUrl(null);
     }
