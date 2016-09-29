@@ -83,6 +83,8 @@ Getting started
 
 To get started with the E-Commerce framework you need to do the following steps:
 
+TODO: UPDATE DXA INSTRUCTIONS BELOW !!
+
 1. If you have not DXA v1.3 in your repo you need to clone that first: `git clone -b release/1.3 https://github.com/sdl/dxa-web-application-java`. Then you do 'mvn install' and all DXA and needed non-public 3PPs are installed into your local Maven repository
 2. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
 3. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`

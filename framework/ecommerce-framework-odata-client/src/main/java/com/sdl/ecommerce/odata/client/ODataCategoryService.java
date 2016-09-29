@@ -74,6 +74,7 @@ public class ODataCategoryService implements ProductCategoryService, NavigationP
         if ( propertyName.equals("categories") ) {
             return this.getCategories(key);
         }
+        // TODO: Add parent here??
         return null;
     }
 

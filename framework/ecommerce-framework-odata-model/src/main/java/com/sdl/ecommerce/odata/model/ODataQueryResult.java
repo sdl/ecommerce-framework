@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ODataQueryResult implements QueryResult {
 
     @EdmProperty
-    private String resultId;
+    private String resultId = "result"; // TODO: What ID to use here???
 
     @EdmProperty
     private int totalCount;

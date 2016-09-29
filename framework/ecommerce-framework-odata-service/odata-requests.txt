@@ -14,7 +14,7 @@ http://localhost:8097/ecommerce.svc/Products('008010111647')
 
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery%28categoryId%3D%27catalog01_18661%27%29
 
-http://localhost:8080/ecommerce.svc/ProductQuery(searchPhrase='red')
+http://localhost:8097/ecommerce.svc/ProductQuery(searchPhrase='red')
 
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery%28searchPhrase%3D%27women+watch%27%2Cfacets%3D%27brand%3Ddkny%27%29
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery(searchPhrase='women watch',facets='brand=dkny')
