@@ -30,6 +30,11 @@ public class FredhopperConnectorIT extends GenericTestSuite {
     }
 
     @Test
+    public void testGetCategoryById() throws Exception {
+        this.testGetCategoryById("catalog01_18661_128622");
+    }
+
+    @Test
     public void testNavigateCategoryTree() throws Exception {
         this.testNavigateCategoryTree("/women");
     }
