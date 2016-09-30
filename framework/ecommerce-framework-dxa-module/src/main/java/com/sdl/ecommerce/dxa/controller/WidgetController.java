@@ -39,7 +39,7 @@ import java.util.Map;
  * @author nic
  */
 @Controller
-@RequestMapping("/system/mvc/ECommerce/WidgetController")
+@RequestMapping("/system/mvc/ECommerce/EComWidget")
 public class WidgetController extends BaseController {
 
     @Autowired
