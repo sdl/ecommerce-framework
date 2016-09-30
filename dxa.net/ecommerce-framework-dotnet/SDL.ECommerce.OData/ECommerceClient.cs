@@ -1,5 +1,6 @@
 ﻿using Sdl.Web.Delivery.DiscoveryService;
 using Sdl.Web.Delivery.Service;
+using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Service;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace SDL.ECommerce.OData
     /// <summary>
     /// ECommerce Client. Is the single entry point for all kind interactions with the E-Commerce OData micro service.
     /// </summary>
-    public class ECommerceClient
+    public class ECommerceClient : IECommerceClient
     {
         private ODataV4Service service;
         private ProductCategoryService categoryService;

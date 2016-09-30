@@ -69,7 +69,6 @@ namespace SDL.ECommerce.OData
             PrintQueryResult(result);
         }
 
-
         [TestMethod]
         public void TestSearchWithSearchPhraseAndCategory()
         {
