@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="FacetParameter.cs" />
     <Compile Include="CategoryRef.cs" />
+    <Compile Include="IECommerceClient.cs" />
     <Compile Include="Model\ICategory.cs" />
     <Compile Include="Model\IFacet.cs" />
     <Compile Include="Model\IFacetGroup.cs" />
