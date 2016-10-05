@@ -1,0 +1,25 @@
+﻿@using SDL.ECommerce.Api.Model
+@model IProductsPromotion
+<div>
+    <div class="row">
+        <h3 class="promotion-title"><i class="fa fa-arrow-circle-right"></i> @Model.Title</h3>
+    </div>
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+        <div class="col-sm-6 col-md-3 product-promo">
+            <a href="#" class="product-teaser-link">
+                <div class="teaser">
+                    <img src="@product.ThumbnailUrl" class="teaser-img loader-img" />
+                    <div class="product-promo-ribbon">
+                        <p class="teaser-description product-promo-name">
+                            @product.Name
+                        </p>
+                        <h4 class="teaser-heading product-price">@product.Price.FormattedPrice</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        }
+    </div>
+</div>

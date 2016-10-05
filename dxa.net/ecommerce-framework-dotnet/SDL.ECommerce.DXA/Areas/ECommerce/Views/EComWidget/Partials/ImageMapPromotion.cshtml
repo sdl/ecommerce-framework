@@ -1,0 +1,16 @@
+﻿@using SDL.ECommerce.Api.Model
+@model IImageMapPromotion
+<div class="hero">
+    <div style="position: relative;">
+        <div>
+            <img src="@Model.ImageUrl" usemap="@Model.Id">
+            <map name="@Model.Id">
+                @foreach (var contentArea in Model.ContentAreas)
+                {
+                    <area shape="rect" coords="@contentArea.X1,@contentArea.Y1,@contentArea.X2,@contentArea.Y2" href="#">
+                }               
+            </map>
+        </div>
+    </div>
+</div>
+

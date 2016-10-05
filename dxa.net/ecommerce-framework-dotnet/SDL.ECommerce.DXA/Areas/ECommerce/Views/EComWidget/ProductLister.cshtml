@@ -1,0 +1,31 @@
+﻿@using SDL.ECommerce.DXA
+@model ProductListerWidget
+@{
+    //Small screens show 2 columns, so we need to make sure we break the row divs accordingly
+    int cols = WebRequestContext.ScreenWidth == ScreenWidth.Small ? 2 : 4;
+}
+<div @Html.DxaEntityMarkup()>
+@for (int i = 0; i < Math.Ceiling(Model.Items.Count / Convert.ToDouble(cols)); i++)
+{ 
+   <div class="row row-eq-height">
+       @for (int j = 0; j < cols && (cols * i + j < Model.Items.Count); j++)
+       {
+        <div class="col-sm-6 col-md-3 lister-product-teaser">
+            @{ 
+                var item = Model.Items[cols * i + j];
+            }
+            <a href="@ECommerceContext.LinkResolver.GetProductDetailLink(item)" class="lister-product-teaser-link">
+                <div class="teaser">
+                    <img src="@item.ThumbnailUrl" class="teaser-img loader-img" />
+                    <p class="teaser-description lister-product-name">
+                        @item.Name
+                    </p>
+                    <h4 class="teaser-heading lister-product-price">@item.Price.FormattedPrice</h4>
+                </div>
+            </a>
+        </div>
+       }
+   </div>
+ }
+    @* Show navihation here *@
+ </div>

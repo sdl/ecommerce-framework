@@ -1,0 +1,36 @@
+﻿@using SDL.ECommerce.DXA
+@model FacetsWidget
+@* TODO: Add support for in-context edit menu here *@
+
+<div  @Html.DxaEntityMarkup()>
+    @foreach (var facetGroup in Model.FacetGroups)
+    {
+        <h5 class="facet-group">@facetGroup.Title</h5>
+        if (facetGroup.IsCategory)
+        {
+            <ul class="category-facets">
+                @foreach (var facet in facetGroup.Facets)
+                {
+                    <li><a href="@ECommerceContext.LinkResolver.GetFacetLink(facet)" class="facet-item">@facet.Title@if (facet.Count > 0) {<text> (@facet.Count)</text>}</a></li>
+                }
+            </ul>
+        }
+        else
+        {
+            foreach (var facet in facetGroup.Facets)
+            { 
+                string facetUrl = ECommerceContext.LinkResolver.GetFacetLink(facet);
+                
+                <a href="@facetUrl" class="facet-link">
+                    <div class="checkbox facet-item">
+                        <label>
+                            <input onclick="window.location = this.getAttribute('data-facet-url');"
+                                   type="checkbox" data-facet-url="@facetUrl" 
+                                   @if (facet.IsSelected) { <text>checked="checked"</text>}>@facet.Title @if (facet.Count > 0) {<text> (@facet.Count)</text>}
+                        </label>
+                    </div>
+                </a>
+            }
+        }
+    }
+</div>
