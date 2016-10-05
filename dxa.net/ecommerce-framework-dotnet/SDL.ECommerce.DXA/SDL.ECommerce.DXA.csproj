@@ -142,13 +142,21 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AbstractECommercePageController.cs" />
+    <Compile Include="Controllers\CategoryPageController.cs" />
     <Compile Include="Controllers\EComWidgetController.cs" />
-    <Compile Include="ECommerce.cs" />
+    <Compile Include="Controllers\ProductPageController.cs" />
+    <Compile Include="Controllers\SearchPageController.cs" />
+    <Compile Include="DXALinkResolver.cs" />
+    <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceAreaRegistration.cs" />
+    <Compile Include="Models\BreadcrumbWidget.cs" />
     <Compile Include="Models\ECommerceCategoryReference.cs" />
     <Compile Include="Models\ECommerceProductReference.cs" />
+    <Compile Include="Models\FacetsWidget.cs" />
     <Compile Include="Models\ProductDetailWidget.cs" />
     <Compile Include="Models\ProductListerWidget.cs" />
+    <Compile Include="Models\PromotionsWidget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +164,14 @@
     <Content Include="packages.config" />
     <Content Include="Areas\ECommerce\Views\web.config" />
     <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetail.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\ProductLister.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Facets.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Breadcrumb.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Promotions.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotion.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotion.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ImageMapPromotion.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\DetailBreadcrumb.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

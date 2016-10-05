@@ -11,9 +11,15 @@ namespace SDL.ECommerce.DXA.Models
     public class ProductListerWidget : EntityModel
     {
         [SemanticProperty("e:category")]
-        public ECommerceCategoryReference CategoryReference { get; }
+        public ECommerceCategoryReference CategoryReference { get; set; }
 
         [SemanticProperty("e:viewSize")]
-        public int ViewSize { get; }
+        public int ViewSize { get; set; }
+
+        [SemanticProperty("e:viewType")]
+        public string ViewType { get; set; }
+
+        [SemanticProperty(IgnoreMapping = true)]
+        public IList<IProduct> Items { get; set; }
     }
 }
