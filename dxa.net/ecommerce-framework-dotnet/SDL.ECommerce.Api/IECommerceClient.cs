@@ -9,6 +9,8 @@ namespace SDL.ECommerce.Api
 {
     public interface IECommerceClient
     {
+        IProductCategoryService CategoryService { get; }
+        IProductQueryService QueryService { get; }
         IProductDetailService DetailService { get; }
     }
 }

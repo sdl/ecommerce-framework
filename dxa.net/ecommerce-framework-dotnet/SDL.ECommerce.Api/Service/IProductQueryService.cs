@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDL.ECommerce.Api.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace SDL.ECommerce.Api.Service
 {
     public interface IProductQueryService
     {
+        IProductQueryResult Query(Query query);
     }
 }

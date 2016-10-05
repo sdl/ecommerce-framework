@@ -5,53 +5,53 @@ namespace SDL.ECommerce.Api.Model
 {
     public interface IFacet
     {
-        /**
-         * Get facet ID to uniquely identify the facet in URLs etc.
-         * @return id
-         */
-        string Id();
+        /// <summary>
+        /// Facet ID which uniquely identify the facet in URLs etc.
+        /// </summary>
+        /// <returns></returns>
+        string Id { get; }
 
-        /**
-         * Get facet title. Should be localized to current language.
-         * @return
-         */
-        string Title();
+        /// <summary>
+        ///  Facet title. Should be localized to current language.
+        /// </summary>
+        /// <returns></returns>
+        string Title { get; }
 
-        /**
-         * Get number of products in current result set.
-         * @return count
-         */
-        int Count();
+        /// <summary>
+        /// Get number of products in current result set.
+        /// </summary>
+        /// <returns></returns>
+        int Count { get; }
 
-        /**
-         * Indicate if the facet has been selected (for multi-select).
-         * @return selected
-         */
-        bool IsSelected();
+        /// <summary>
+        ///  Indicate if the facet has been selected (for multi-select).
+        /// </summary>
+        /// <returns></returns>
+        bool IsSelected { get; }
 
-        /**
-         * Indicate if the facet is an catagory facet.
-         * @return true if facet is a category
-         */
-        bool IsCategory();
+        /// <summary>
+        /// Indicate if the facet is an catagory facet.
+        /// </summary>
+        /// <returns></returns>
+        bool IsCategory { get; }
 
-        /**
-         * Get facet type.
-         * @return type
-         */
-        FacetType Type();
+        /// <summary>
+        /// Type of facet
+        /// </summary>
+        /// <returns></returns>
+        FacetType Type { get; }
 
-        /**
-         * Get facet value if the facet is a single value facet (determined by the facet type)
-         * @return value
-         */
-        string Value();
+        /// <summary>
+        /// Get facet value if the facet is a single value facet (determined by the facet type)
+        /// </summary>
+        /// <returns></returns>
+        string Value { get; }
 
-        /**
-         * Get facet values if the facet is a multi value facet.
-         * @return values
-         */
-        List<String> Values();
+        /// <summary>
+        /// Get facet values if the facet is a multi value facet.
+        /// </summary>
+        /// <returns></returns>
+        IList<String> Values { get; }
     }
 
     public enum FacetType

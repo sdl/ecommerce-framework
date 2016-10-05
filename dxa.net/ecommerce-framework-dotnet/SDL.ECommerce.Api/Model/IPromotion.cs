@@ -1,33 +1,26 @@
 ﻿namespace SDL.ECommerce.Api.Model
 {
-    /**
-     * Promotion
-     * Base interface for all kind of promotions driven by an E-Commerce system.
-     *
-     * @author nic
-     */
+    /// <summary>
+    ///  Promotion
+    /// Base interface for all kind of promotions driven by an E-Commerce system.
+    /// </summary>
     public interface IPromotion
     {
+        /// <summary>
+        /// Get unique identifier of the promotion.
+        /// </summary>
+        /// <returns></returns>
+        string Id { get; }
 
-        /**
-         * Get unique identifier of the promotion.
-         *
-         * @return id
-         */
-        string Id();
+        /// <summary>
+        /// Get name of the promotion.
+        /// </summary>
+        string Name { get; }
 
-        /**
-         * Get name of the promotion.
-         *
-         * @return name
-         */
-        string Name();
-
-        /**
-         * Get title of the promotion. This can be localized based on current langauge.
-         * @return title
-         */
-        string Title();
+        /// <summary>
+        /// Get title of the promotion. This can be localized based on current langauge.
+        /// </summary>
+        string Title { get; }
 
     }
 }

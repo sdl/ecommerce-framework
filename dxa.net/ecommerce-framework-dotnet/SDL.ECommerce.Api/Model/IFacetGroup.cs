@@ -3,37 +3,36 @@ using System.Collections.Generic;
 
 namespace SDL.ECommerce.Api.Model
 {
-    /**
-     * Facet Group.
-     * Represents a set of facets (e.g. brand, color, size etc).
-     *
-     * @author nic
-     */
+
+    /// <summary>
+    /// Facet Group.
+    /// Represents a set of facets(e.g.brand, color, size etc).
+    /// </summary>
+           
     public interface IFacetGroup
     {
 
-        /**
-         * Get unique identifier for this facet group
-         * @return id
-         */
-        String Id();
+        /// <summary>
+        /// Unique identifier for this facet group
+        /// </summary>
+        string Id { get; }
 
-        /**
-         * Get title of the facet group. Should be localized to current language.
-         * @return
-         */
-        String Title();
+        /// <summary>
+        /// Title of the facet group. Should be localized to current language.
+        /// </summary>
+        /// <returns></returns>
+        String Title { get; }
 
-        /**
-         * Get all belonging facets
-         * @return facets
-         */
-        List<IFacet> Facets();
+        /// <summary>
+        ///  Get all belonging facets
+        /// </summary>
+        /// <returns></returns>
+        ICollection<IFacet> Facets { get; }
 
-        /**
-         * Indicate if current facet group represents a product category or not.
-         * @return is category
-         */
-        bool IsCategory();
+        /// <summary>
+        ///  Indicate if current facet group represents a product category or not.
+        /// </summary>
+        /// <returns></returns>
+        bool IsCategory { get; }
     }
 }

@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\Temp\Build\SDL.ECommerce.Api\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,22 +40,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FacetParameter.cs" />
-    <Compile Include="CategoryRef.cs" />
+    <Compile Include="IECommerceLinkResolver.cs" />
+    <Compile Include="Model\FacetParameter.cs" />
+    <Compile Include="Model\IBreadcrumb.cs" />
+    <Compile Include="Model\ICategoryRef.cs" />
     <Compile Include="IECommerceClient.cs" />
     <Compile Include="Model\ICategory.cs" />
+    <Compile Include="Model\IContentArea.cs" />
+    <Compile Include="Model\IContentPromotion.cs" />
     <Compile Include="Model\IFacet.cs" />
     <Compile Include="Model\IFacetGroup.cs" />
+    <Compile Include="Model\IImageMapPromotion.cs" />
     <Compile Include="Model\ILocation.cs" />
     <Compile Include="Model\IProduct.cs" />
     <Compile Include="Model\IProductPrice.cs" />
-    <Compile Include="Model\IProductPromotion.cs" />
+    <Compile Include="Model\IProductsPromotion.cs" />
+    <Compile Include="Model\IProductQueryResult.cs" />
     <Compile Include="Model\IPromotion.cs" />
-    <Compile Include="ProductRef.cs" />
+    <Compile Include="Model\IProductRef.cs" />
+    <Compile Include="Model\IQuerySuggestion.cs" />
+    <Compile Include="Model\Query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IProductDetailService.cs" />
     <Compile Include="Service\IProductQueryService.cs" />
     <Compile Include="Service\IProductCategoryService.cs" />
+    <Compile Include="UnitTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,37 +6,23 @@ using System.Threading.Tasks;
 
 namespace SDL.ECommerce.Api.Model
 {
-    /**
-     * Location
-     *
-     * @author nic
-     */
+    /// <summary>
+    /// Location interface
+    /// </summary>
     public interface ILocation
     {
+      
+        ICategoryRef CategoryRef();
 
-        /**
-         * Get category reference
-         * @return reference
-         */
-        CategoryRef CategoryRef();
-
-        /**
-         * Get facet parameters
-         * @return list of facet parameters
-         */
         // TODO: Should this be Facet interface instead
         List<FacetParameter> Facets();
 
-        /**
-         * Get product reference
-         * @return reference
-         */
-        ProductRef ProductRef();
+        IProductRef ProductRef();
 
-        /**
-         * Static URL managed from the E-Commerce system
-         * @return
-         */
+        /// <summary>
+        /// Static URL managed from the E-Commerce system
+        /// </summary>
+        /// <returns></returns>
         string StaticUrl();
     }
 }

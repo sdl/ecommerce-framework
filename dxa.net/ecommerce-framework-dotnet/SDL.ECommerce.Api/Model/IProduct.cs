@@ -59,4 +59,6 @@ public interface IProduct
     /// Get all additional attributes of the product. Can for example be used in compare views etc.
     /// </summary>
     IDictionary<string, object> Attributes { get; }
+
+    // TODO: Have breadcrumbs and promotions here???
 }
