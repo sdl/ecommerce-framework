@@ -104,7 +104,7 @@ namespace SDL.ECommerce.OData
         /// <summary>
         /// Get query service
         /// </summary>
-        public ProductQueryService QueryService
+        public IProductQueryService QueryService
         {
             get
             {

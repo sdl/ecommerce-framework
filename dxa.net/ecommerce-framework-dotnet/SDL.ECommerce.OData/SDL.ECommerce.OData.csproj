@@ -87,14 +87,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Breadcrumb.cs" />
     <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\CategoryRef.cs" />
+    <Compile Include="Model\CategorySummary.cs" />
+    <Compile Include="Model\ContentArea.cs" />
+    <Compile Include="Model\Facet.cs" />
+    <Compile Include="Model\FacetGroup.cs" />
+    <Compile Include="Model\Location.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductPrice.cs" />
+    <Compile Include="Model\ProductQueryResult.cs" />
+    <Compile Include="Model\ProductRef.cs" />
+    <Compile Include="Model\ProductSummary.cs" />
+    <Compile Include="Model\Promotion.cs" />
+    <Compile Include="Model\QuerySuggestion.cs" />
     <Compile Include="Service\ProductCategoryService.cs" />
     <Compile Include="ECommerceClient.cs" />
     <Compile Include="Service\ProductDetailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Query.cs" />
     <Compile Include="Service\ProductQueryService.cs" />
     <Compile Include="Service References\E-Commerce OData Service\ECommerceODataService.cs" />
     <Compile Include="UnitTests.cs" />

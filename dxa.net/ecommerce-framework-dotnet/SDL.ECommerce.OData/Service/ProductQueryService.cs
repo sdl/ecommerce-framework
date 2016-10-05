@@ -1,4 +1,6 @@
 ﻿using Sdl.Web.Delivery.Service;
+using SDL.ECommerce.Api.Model;
+using SDL.ECommerce.Api.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,7 @@ namespace SDL.ECommerce.OData
     /// <summary>
     /// E-Commerce Product Query Service
     /// </summary>
-    // TODO: Implement an interface here from the API project
-    //
-    public class ProductQueryService
+    public class ProductQueryService : IProductQueryService
     {
         private ODataV4Service service;
 
@@ -30,9 +30,10 @@ namespace SDL.ECommerce.OData
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public ProductQueryResult Query(Query query)
+        public IProductQueryResult Query(Query query)
         {
             ODataV4ClientFunction func = new ODataV4ClientFunction("ProductQuery");
+            func.AllowCaching = false;
            
             // Category
             //
@@ -54,7 +55,7 @@ namespace SDL.ECommerce.OData
 
             // Facets
             //
-            if ( query.Facets != null )
+            if ( query.Facets != null && query.Facets.Count > 0 )
             {
                 var facetsString = new StringBuilder();
                 for (int i = 0; i < query.Facets.Count; i++)
@@ -68,10 +69,15 @@ namespace SDL.ECommerce.OData
                 }
                 func.WithParam("facets", facetsString.ToString());
             }
-            
+            if ( query.ViewSize != null)
+            {
+                // TODO: Add
+            }
+
             // TODO: Add pagination here!!!
 
             return Enumerable.FirstOrDefault<ProductQueryResult>(this.service.Execute<ProductQueryResult>(func));
+            
         }
     }
 }

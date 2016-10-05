@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SDL.ECommerce.Api;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace SDL.ECommerce.OData
         {
             get
             {
-                return new ECommerceClient("http://preview:8097/ecommerce.svc", "en_GB");
+                return new ECommerceClient("http://preview:8097/ecommerce.svc", "en-US");
             }
         }
 
@@ -78,6 +79,14 @@ namespace SDL.ECommerce.OData
         }
 
         [TestMethod]
+        public void TestSearchCategory()
+        {
+            var query = new Query { CategoryId = "catalog01_18661" };
+            var result = ECommerceClient.QueryService.Query(query);
+            PrintQueryResult(result);
+        }
+
+        [TestMethod]
         public void TestSearchWithFacets()
         {
             var query = new Query {
@@ -86,6 +95,37 @@ namespace SDL.ECommerce.OData
             };
             var result = ECommerceClient.QueryService.Query(query);
             PrintQueryResult(result);
+        }
+
+        [TestMethod]
+        public void TestSearches()
+        {
+            var queryService = ECommerceClient.QueryService;
+            Console.WriteLine("Search request #1:");
+            var query = new Query
+            {
+                CategoryId = "catalog01_18661"
+            };
+            var result = queryService.Query(query);
+            Console.WriteLine("  Breadcrumbs: " + result.Breadcrumbs.Count);
+            Console.WriteLine("Search request #2:");
+            var query2 = new Query
+            {
+                CategoryId = "catalog01_18661",
+                Facets = { new FacetParameter("brand", "dkny") }
+            };
+            var result2 = queryService.Query(query2);
+            Console.WriteLine("  Breadcrumbs: " + result2.Breadcrumbs.Count);
+            Console.WriteLine("Search request #3:");
+            var query3 = new Query
+            {
+                CategoryId = "catalog01_18661"
+            };
+            var result3 = queryService.Query(query);
+            Console.WriteLine("  Breadcrumbs: " + result3.Breadcrumbs.Count);
+
+
+
         }
 
         [TestMethod]
@@ -116,7 +156,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        void PrintQueryResult(ProductQueryResult result)
+        void PrintQueryResult(IProductQueryResult result)
         {
             Console.WriteLine("  Search Results:");
             Console.WriteLine("####################");
@@ -126,6 +166,8 @@ namespace SDL.ECommerce.OData
             {
                 Console.WriteLine("Product ID: " + product.Id + ", Name: " + product.Name);
             }
+            Console.WriteLine(" Facets:");
+            Console.WriteLine("--------------------------");
             foreach (var facetGroup in result.FacetGroups)
             {
                 Console.WriteLine("  FacetGroup: " + facetGroup.Title);
@@ -133,6 +175,18 @@ namespace SDL.ECommerce.OData
                 {
                     Console.WriteLine("   " + facet.Title + " (" + facet.Count + ")");
                 }
+            }
+            Console.WriteLine(" Promotions:");
+            Console.WriteLine("--------------------------");
+            foreach ( var promotion in result.Promotions )
+            {
+                Console.WriteLine("Name: " + promotion.Name);
+            }
+            Console.WriteLine(" Breadcrumbs:");
+            Console.WriteLine("--------------------------");
+            foreach ( var breadcrumb in result.Breadcrumbs )
+            {
+                Console.WriteLine("  Breadcrumb: " + breadcrumb.Title + " (category: " + breadcrumb.IsCategory + ")");
             }
         }
     }
