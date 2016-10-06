@@ -30,7 +30,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
-                var searchResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category, Facets = facets });
+                var searchResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category, Facets = facets, StartIndex = GetStartIndex() });
 
                 if ( searchResult.RedirectLocation != null )
                 {
@@ -46,9 +46,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 return NotFound();
             }
 
-            ControllerContext.RouteData.Values["controller"] = "Page";
-
-            return View(templatePage.MvcData.ViewName, templatePage);
+            return View(templatePage);
         }
 
         /// <summary>

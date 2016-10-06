@@ -58,6 +58,27 @@ namespace SDL.ECommerce.DXA
             return link;
         }
 
+        public string GetFacetLink(IList<FacetParameter> selectedFacets)
+        {
+            if (selectedFacets == null || selectedFacets.Count == 0) { return ""; }
+            StringBuilder sb = new StringBuilder();
+            bool firstParam = true;
+            foreach (var facet in selectedFacets)
+            {
+                if (firstParam)
+                {
+                    sb.Append("?");
+                    firstParam = false;
+                }
+                else
+                {
+                    sb.Append("&");
+                }
+                sb.Append(facet.ToUrl());
+            }
+            return sb.ToString();
+        }
+
         public string GetLocationLink(ILocation location)
         {
             throw new NotImplementedException();
@@ -84,6 +105,7 @@ namespace SDL.ECommerce.DXA
                                              Replace("--", "").
                                              Replace("/", "-").
                                              Replace("®", "").
+                                             Replace("&", "").
                                              Replace("\"", "");
                 return ECommerceContext.LocalizePath("/p/") + seoName + "/" + productId;
             }
@@ -100,27 +122,6 @@ namespace SDL.ECommerce.DXA
                 currentCategory = currentCategory.Parent;
             }
             return path;
-        }
-
-        protected string GetFacetLink(IList<FacetParameter> selectedFacets)
-        {
-            if (selectedFacets == null || selectedFacets.Count == 0) { return ""; }
-            StringBuilder sb = new StringBuilder();
-            bool firstParam = true;
-            foreach (var facet in selectedFacets)
-            {
-                if (firstParam)
-                {
-                    sb.Append("?");
-                    firstParam = false;
-                }
-                else
-                {
-                    sb.Append("&");
-                }
-                sb.Append(facet.ToUrl());
-            }
-            return sb.ToString();
         }
 
         protected string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)

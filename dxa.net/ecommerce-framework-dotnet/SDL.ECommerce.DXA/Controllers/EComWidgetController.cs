@@ -99,6 +99,7 @@ namespace SDL.ECommerce.DXA.Controller
             }
 
             widget.Items = queryResult.Products.ToList();
+            this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS));
 
             return View(entity.MvcData.ViewName, entity);
         }
@@ -228,6 +229,78 @@ namespace SDL.ECommerce.DXA.Controller
                 widget.QuerySuggestions = queryResult.QuerySuggestions.ToList();
             }
             return View(entity.MvcData.ViewName, entity);
+        }
+
+
+        /// <summary>
+        /// Process navigation links in product listers (next, previous etc).
+        /// </summary>
+        /// <param name="lister"></param>
+        /// <param name="result"></param>
+        /// <param name="facets"></param>
+        protected void ProcessListerNavigationLinks(ProductListerWidget lister, IProductQueryResult result, IList<FacetParameter> facets)
+        {
+
+            int totalCount = result.TotalCount;
+            int viewSize = result.ViewSize;
+            int startIndex = result.StartIndex;
+            int currentSet = result.CurrentSet;
+
+            lister.NavigationData = new ListerNavigationData();
+
+            int viewSets = 1;
+            if (totalCount > viewSize)
+            {
+                viewSets = (totalCount / viewSize) + 1;
+            }
+            lister.NavigationData.ViewSets = viewSets;
+
+            if (viewSets > 1)
+            {
+                int nextStartIndex = -1;
+                int previousStartIndex = -1;
+                if (currentSet > 1)
+                {
+                    previousStartIndex = startIndex - viewSize;
+                }
+                if (currentSet < viewSets)
+                {
+                    nextStartIndex = startIndex + viewSize;
+                }
+                string baseUrl = ECommerceContext.LinkResolver.GetFacetLink(facets);
+                if ( String.IsNullOrEmpty(baseUrl) )
+                {
+                    baseUrl += "?";
+                }
+                else
+                {
+                    baseUrl += "&";
+                }
+
+                if (previousStartIndex != -1)
+                {
+                    lister.NavigationData.PreviousUrl = baseUrl + "startIndex=" + previousStartIndex;
+                }
+                if (nextStartIndex != -1)
+                {
+                    lister.NavigationData.NextUrl = baseUrl + "startIndex=" + nextStartIndex;
+                }
+                if (currentSet > 2)
+                {
+                    lister.NavigationData.FirstUrl = baseUrl + "startIndex=0";
+                }
+                if (currentSet + 1 < viewSets)
+                {
+                    lister.NavigationData.LastUrl = baseUrl + "startIndex=" + ((viewSets - 1) * viewSize);
+                }
+                lister.NavigationData.CurrentSet = currentSet;
+                lister.NavigationData.ShowNavigation = true;
+            }
+            else
+            {
+                lister.NavigationData.ShowNavigation = false;
+            }
+
         }
     }
 }

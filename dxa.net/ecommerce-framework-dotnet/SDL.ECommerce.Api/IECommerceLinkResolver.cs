@@ -27,6 +27,13 @@ namespace SDL.ECommerce.Api
         string GetFacetLink(IFacet facet);
 
         /// <summary>
+        /// Get facet link based on a list of selected facet
+        /// </summary>
+        /// <param name="facetParameters"></param>
+        /// <returns></returns>
+        string GetFacetLink(IList<FacetParameter> selectedFacets);
+
+        /// <summary>
         /// Get an absolute facet link using a base category path (for flyouts etc).
         /// </summary>
         /// <param name="facet"></param>

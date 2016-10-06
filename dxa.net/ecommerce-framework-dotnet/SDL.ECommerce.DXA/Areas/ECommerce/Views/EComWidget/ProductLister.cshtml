@@ -5,27 +5,58 @@
     int cols = WebRequestContext.ScreenWidth == ScreenWidth.Small ? 2 : 4;
 }
 <div @Html.DxaEntityMarkup()>
-@for (int i = 0; i < Math.Ceiling(Model.Items.Count / Convert.ToDouble(cols)); i++)
-{ 
-   <div class="row row-eq-height">
-       @for (int j = 0; j < cols && (cols * i + j < Model.Items.Count); j++)
-       {
-        <div class="col-sm-6 col-md-3 lister-product-teaser">
-            @{ 
-                var item = Model.Items[cols * i + j];
+    @for (int i = 0; i < Math.Ceiling(Model.Items.Count / Convert.ToDouble(cols)); i++)
+    { 
+       <div class="row row-eq-height">
+           @for (int j = 0; j < cols && (cols * i + j < Model.Items.Count); j++)
+           {
+            <div class="col-sm-6 col-md-3 lister-product-teaser">
+                @{ 
+                    var item = Model.Items[cols * i + j];
+                }
+                <a href="@ECommerceContext.LinkResolver.GetProductDetailLink(item)" class="lister-product-teaser-link">
+                    <div class="teaser">
+                        <img src="@item.ThumbnailUrl" class="teaser-img loader-img" />
+                        <p class="teaser-description lister-product-name">
+                            @item.Name
+                        </p>
+                        <h4 class="teaser-heading lister-product-price">@item.Price.FormattedPrice</h4>
+                    </div>
+                </a>
+            </div>
+           }
+       </div>
+    }
+    @if (Model.NavigationData.ShowNavigation == true)
+    {
+        <ul class="pagination lister-navigation">
+            @if (@Model.NavigationData.PreviousUrl != null)
+            {
+                <li><a href="@Model.NavigationData.PreviousUrl"><i class="fa fa-angle-left"></i></a></li>
+                if ( Model.NavigationData.FirstUrl != null )
+                { 
+                    <li><a href="@Model.NavigationData.FirstUrl">1</a></li>
+                    if (Model.NavigationData.CurrentSet > 3)
+                    {
+                        <li class="lister-navigation-break"><a>...</a></li>
+                    }
+                }
+                <li><a href="@Model.NavigationData.PreviousUrl">@(Model.NavigationData.CurrentSet-1)</a></li>
             }
-            <a href="@ECommerceContext.LinkResolver.GetProductDetailLink(item)" class="lister-product-teaser-link">
-                <div class="teaser">
-                    <img src="@item.ThumbnailUrl" class="teaser-img loader-img" />
-                    <p class="teaser-description lister-product-name">
-                        @item.Name
-                    </p>
-                    <h4 class="teaser-heading lister-product-price">@item.Price.FormattedPrice</h4>
-                </div>
-            </a>
-        </div>
-       }
-   </div>
- }
-    @* Show navihation here *@
+            <li class="active"><a href="#">@Model.NavigationData.CurrentSet</a></li>
+            @if (Model.NavigationData.NextUrl != null)
+            {
+                <li><a href="@Model.NavigationData.NextUrl">@(Model.NavigationData.CurrentSet+1)</a></li>
+                if (Model.NavigationData.LastUrl != null)
+                {
+                    if (Model.NavigationData.CurrentSet + 2 < Model.NavigationData.ViewSets)
+                    {
+                        <li class="lister-navigation-break"><a>...</a></li>
+                    }
+                    <li><a href="@Model.NavigationData.LastUrl">@Model.NavigationData.ViewSets</a></li>
+                }
+                <li><a href="@Model.NavigationData.NextUrl"><i class="fa fa-angle-right"></i></a></li>
+            }
+        </ul>
+    }
  </div>

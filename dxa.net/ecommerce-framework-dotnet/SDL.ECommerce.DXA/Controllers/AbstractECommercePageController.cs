@@ -76,6 +76,17 @@ namespace SDL.ECommerce.DXA.Controllers
             return View(templatePage.MvcData.ViewName, templatePage);
         }
 
+        protected int GetStartIndex()
+        {
+            int startIndex = 0;
+            var startIndexStr = HttpContext.Request.QueryString["startIndex"];
+            if ( startIndexStr != null )
+            {
+                startIndex = Int32.Parse(startIndexStr);
+            }
+            return startIndex;
+        }
+
         /// <summary>
         /// Render a file not found page
         /// </summary>

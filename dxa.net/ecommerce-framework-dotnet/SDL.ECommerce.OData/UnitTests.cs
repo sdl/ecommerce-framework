@@ -73,9 +73,15 @@ namespace SDL.ECommerce.OData
         [TestMethod]
         public void TestSearchWithSearchPhraseAndCategory()
         {
+            var queryService = ECommerceClient.QueryService;
             var query = new Query { CategoryId = "catalog01_18661", SearchPhrase = "red" };
-            var result = ECommerceClient.QueryService.Query(query);
+            var result = queryService.Query(query);
             PrintQueryResult(result);
+            var nextResult = queryService.Query(query.Next(result));
+            Console.WriteLine("\n======================================================");
+            Console.WriteLine("      NEXT " + nextResult.ViewSize + " PRODUCTS ");
+            Console.WriteLine("======================================================\n");
+            PrintQueryResult(nextResult);
         }
 
         [TestMethod]
@@ -161,6 +167,8 @@ namespace SDL.ECommerce.OData
             Console.WriteLine("  Search Results:");
             Console.WriteLine("####################");
             Console.WriteLine("Total Count: " + result.TotalCount);
+            Console.WriteLine("Start index: " + result.StartIndex);
+            Console.WriteLine("Current set: " + result.CurrentSet);
             Console.WriteLine("First " + result.ViewSize + " products:");
             foreach (var product in result.Products)
             {

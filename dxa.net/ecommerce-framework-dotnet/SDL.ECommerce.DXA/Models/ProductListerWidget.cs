@@ -21,5 +21,11 @@ namespace SDL.ECommerce.DXA.Models
 
         [SemanticProperty(IgnoreMapping = true)]
         public IList<IProduct> Items { get; set; }
+    
+        [SemanticProperty(IgnoreMapping = true)]
+        public ListerNavigationData NavigationData { get; set; }
+
+     
+
     }
 }

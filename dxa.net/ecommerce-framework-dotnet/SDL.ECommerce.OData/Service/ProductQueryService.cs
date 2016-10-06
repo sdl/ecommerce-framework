@@ -69,13 +69,15 @@ namespace SDL.ECommerce.OData
                 }
                 func.WithParam("facets", facetsString.ToString());
             }
+            if (query.StartIndex != null)
+            {
+                func.WithParam("startIndex", query.StartIndex);
+            }
             if ( query.ViewSize != null)
             {
                 // TODO: Add
             }
-
-            // TODO: Add pagination here!!!
-
+          
             return Enumerable.FirstOrDefault<ProductQueryResult>(this.service.Execute<ProductQueryResult>(func));
             
         }

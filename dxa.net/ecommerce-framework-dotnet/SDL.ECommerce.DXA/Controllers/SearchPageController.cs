@@ -33,7 +33,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 var category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryUrl);
                 if (category != null)
                 {
-                    query = new Query { SearchPhrase = searchPhrase, Category = category, Facets = facets };
+                    query = new Query { SearchPhrase = searchPhrase, Category = category, Facets = facets, StartIndex = GetStartIndex() };
                 }
                 else
                 {
@@ -42,7 +42,7 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             else
             {
-                query = new Query { SearchPhrase = searchPhrase, Facets = facets };
+                query = new Query { SearchPhrase = searchPhrase, Facets = facets, StartIndex = GetStartIndex() };
             } 
             
             templatePage = this.ResolveTemplatePage(this.GetSearchPath());
