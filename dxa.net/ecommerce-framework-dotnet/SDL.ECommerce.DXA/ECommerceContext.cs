@@ -22,6 +22,7 @@ namespace SDL.ECommerce.DXA
         public const string PRODUCT = "Product";
         public const string CATEGORY = "Category";
         public const string ROOT_TITLE = "RootTitle";
+        public const string SEARCH_PHRASE = "SearchPhrase";
 
         private static IDictionary<string, IECommerceClient> clients = new Dictionary<string,IECommerceClient>();
         private static IECommerceLinkResolver linkResolver = new DXALinkResolver();

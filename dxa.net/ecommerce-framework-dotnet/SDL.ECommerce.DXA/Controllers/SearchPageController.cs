@@ -14,7 +14,22 @@ namespace SDL.ECommerce.DXA.Controllers
     /// </summary>
     public class SearchPageController : AbstractECommercePageController
     {
-        
+        /// <summary>
+        /// Search triggered by the search box
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Search()
+        {
+            var searchPhrase = HttpContext.Request.QueryString["q"];
+            return Redirect(ECommerceContext.LocalizePath("/search/") + searchPhrase);
+        }
+
+        /// <summary>
+        /// Handle search category page where the search results are presented
+        /// </summary>
+        /// <param name="searchPhrase"></param>
+        /// <param name="categoryUrl"></param>
+        /// <returns></returns>
         public ActionResult SearchCategoryPage(string searchPhrase, string categoryUrl)
         {
             Log.Info("Entering search page controller with search phrase: " + searchPhrase + ", category: "  + categoryUrl);
@@ -58,6 +73,7 @@ namespace SDL.ECommerce.DXA.Controllers
             }
 
             ECommerceContext.Set(ECommerceContext.QUERY_RESULT, searchResult);
+            ECommerceContext.Set(ECommerceContext.SEARCH_PHRASE, searchPhrase);
             ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/search/") + searchPhrase);
             ECommerceContext.Set(ECommerceContext.FACETS, facets);
             ECommerceContext.Set(ECommerceContext.ROOT_TITLE, "Search Results"); // TODO: Have this configurable in locale properties so it can be translated
