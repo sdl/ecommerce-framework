@@ -86,6 +86,8 @@ namespace SDL.ECommerce.DXA
 
         public string GetProductDetailLink(IProduct product)
         {
+            // TODO: Add support to resolve to dynamic links if product page is CMS made
+
             return GetProductDetailLink(product.Id, product.Name);
         }
 
@@ -143,7 +145,7 @@ namespace SDL.ECommerce.DXA
                     {
                         sb.Append("&");
                     }
-                    if (facetParam.Name().Equals(facet.Id) && !facetParam.ContainsValue(facet.Value))
+                    if (facetParam.Name.Equals(facet.Id) && !facetParam.ContainsValue(facet.Value))
                     {
                         sb.Append(facetParam.AddValueToUrl(facet.Value));
                         foundFacet = true;
@@ -179,9 +181,9 @@ namespace SDL.ECommerce.DXA
                 foreach (var facetParam in selectedFacets)
                 {
                     string facetString;
-                    if (facetParam.Name().Equals(facet.Id) && facetParam.ContainsValue(facet.Value))
+                    if (facetParam.Name.Equals(facet.Id) && facetParam.ContainsValue(facet.Value))
                     {
-                        facetString = facetParam.RemoveValueToUrl(facet.Value);
+                        facetString = facetParam.RemoveValueFromUrl(facet.Value);
                     }
                     else
                     {

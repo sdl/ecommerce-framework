@@ -20,6 +20,8 @@ namespace SDL.ECommerce.DXA
         public const string URL_PREFIX = "UrlPrefix";
         public const string FACETS = "Facets";
         public const string PRODUCT = "Product";
+        public const string CATEGORY = "Category";
+        public const string ROOT_TITLE = "RootTitle";
 
         private static IDictionary<string, IECommerceClient> clients = new Dictionary<string,IECommerceClient>();
         private static IECommerceLinkResolver linkResolver = new DXALinkResolver();

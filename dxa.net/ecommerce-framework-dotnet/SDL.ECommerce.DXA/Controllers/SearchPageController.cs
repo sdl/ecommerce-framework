@@ -34,6 +34,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 if (category != null)
                 {
                     query = new Query { SearchPhrase = searchPhrase, Category = category, Facets = facets, StartIndex = GetStartIndex() };
+                    ECommerceContext.Set(ECommerceContext.CATEGORY, category);
                 }
                 else
                 {
@@ -59,6 +60,7 @@ namespace SDL.ECommerce.DXA.Controllers
             ECommerceContext.Set(ECommerceContext.QUERY_RESULT, searchResult);
             ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/search/") + searchPhrase);
             ECommerceContext.Set(ECommerceContext.FACETS, facets);
+            ECommerceContext.Set(ECommerceContext.ROOT_TITLE, "Search Results"); // TODO: Have this configurable in locale properties so it can be translated
 
             return View(templatePage);
         }

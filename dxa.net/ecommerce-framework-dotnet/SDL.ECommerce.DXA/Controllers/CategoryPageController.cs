@@ -40,6 +40,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 ECommerceContext.Set(ECommerceContext.QUERY_RESULT, searchResult);
                 ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
                 ECommerceContext.Set(ECommerceContext.FACETS, facets);
+                ECommerceContext.Set(ECommerceContext.CATEGORY, category);
             }
             else
             {

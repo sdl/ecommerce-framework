@@ -16,10 +16,11 @@ namespace SDL.ECommerce.Api
         // TODO: Optimize the implementation to minimize the parsing of the facet _values
         // TODO: Combine this together with the Facet. This seems rather being an implementation of the facet for web implementations
 
-        /**
-         * Parameter type
-         */
-        public enum ParameterType {
+        /// <summary>
+        /// Parameter Type
+        /// </summary>
+        public enum ParameterType
+        {
             SINGLEVALUE,
             MULTISELECT,
             RANGE,
@@ -35,19 +36,20 @@ namespace SDL.ECommerce.Api
         private List<string> _values = new List<string>();
         private ParameterType type;
 
-        /**
-         * Create new facet parameter
-         * @param _name
-         */
-        public FacetParameter(string name) {
+        /// <summary>
+        /// Create new facet parameter
+        /// </summary>
+        /// <param name="name"></param>
+        public FacetParameter(string name)
+        {
             _name = name;
         }
 
-        /**
-         * Create a new facet. The value is parsed to extract current type and _values.
-         * @param _name
-         * @param strValue
-         */
+        /// <summary>
+        ///  Create a new facet. The value is parsed to extract current type and _values.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="strValue"></param>
         public FacetParameter(string name, string strValue)
         {
             _name = name;
@@ -97,32 +99,38 @@ namespace SDL.ECommerce.Api
 
         }
 
-        // TODO: REFACTOR INTO C# PROPERTIES HERE
-
-        /**
-         * Name of the facet parameter. Is shown in the facet URL.
-         * @return _name
-         */
-        public string Name() {
-            return _name;
+        /// <summary>
+        /// Name of the facet parameter. Is shown in the facet URL.
+        /// </summary>
+        /// <returns></returns>
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+           
         }
 
-        /**
-         * Get all facet _values.
-         * @return facet _values
-         */
-        public List<String> Values() {
-            return _values;
+        /// <summary>
+        /// Get all facet _values.
+        /// </summary>
+        /// <returns></returns>
+        public List<String> Values
+        {
+            get
+            {
+                return _values;
+            }
         }
 
-        /**
-         * Check if specific value is included in this facet parameter (when having multi select facets).
-         *
-         * @param facetValue
-         * @return contains value
-         */
-        public bool ContainsValue(string facetValue) {
-            
+        /// <summary>
+        ///  Check if specific value is included in this facet parameter (when having multi select facets).
+        /// </summary>
+        /// <param name="facetValue"></param>
+        /// <returns></returns>
+        public bool ContainsValue(string facetValue)
+        {           
             if ( this.type == ParameterType.RANGE ) {
             
                 var rangeMatcher = RANGE_PATTERN.Match(facetValue);
@@ -139,12 +147,16 @@ namespace SDL.ECommerce.Api
             }
         }
 
-        /**
-         * Get parameter type.
-         * @return type
-         */
-        public ParameterType Type() {
-            return type;
+        /// <summary>
+        /// Parameter Type
+        /// </summary>
+        /// <returns></returns>
+        public ParameterType Type
+        {
+            get
+            {
+                return type;
+            }
         }
 
         public static FacetParameter FromUrl(String facetUrl)
@@ -160,21 +172,22 @@ namespace SDL.ECommerce.Api
             return new FacetParameter(name, strValue);
         }
 
-        /**
-         * Convert the facet parameter to URL format.
-         * @return url fragment
-         */
-        public string ToUrl() {
+        /// <summary>
+        ///  Convert the facet parameter to URL format.
+        /// </summary>
+        /// <returns></returns>
+        public string ToUrl()
+        {
             return AddValueToUrl(null);
         }
 
-        /**
-         * Convert the facet parameter to URL format.
-         *
-         * @param additionalValue
-         * @return url fragment
-         */
-        public string AddValueToUrl(string additionalValue) {
+        /// <summary>
+        /// Convert the facet parameter to URL format.
+        /// </summary>
+        /// <param name="additionalValue"></param>
+        /// <returns></returns>
+        public string AddValueToUrl(string additionalValue)
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append(this._name);
             if ( type == ParameterType.SINGLEVALUE ) {
@@ -207,13 +220,13 @@ namespace SDL.ECommerce.Api
             return sb.ToString();
         }
 
-        /**
-         * Remove a value from a facet URL fragment (used for breadcrumbs and de-selecting multi-value facets).
-         * @param removedValue
-         * @return url fragment
-         */
-         // TODO: Rename to RemoveValueFromUrl
-        public String RemoveValueToUrl(String removedValue) {
+        /// <summary>
+        /// Remove a value from a facet URL fragment (used for breadcrumbs and de-selecting multi-value facets).
+        /// </summary>
+        /// <param name="removedValue"></param>
+        /// <returns></returns>
+        public String RemoveValueFromUrl(String removedValue)
+        {
             if ( ( _values.Count == 1 && _values[0].Equals(removedValue) ) ||
                     ( type == ParameterType.RANGE && this._values.Count == 2 ) ) {
                 return "";

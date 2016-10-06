@@ -1,21 +1,34 @@
 ﻿@using SDL.ECommerce.DXA
 @model BreadcrumbWidget
 <div  @Html.DxaEntityMarkup()> 
+    @{ 
+        var currentCategory = (ICategory) ECommerceContext.Get(ECommerceContext.CATEGORY);
+        var rootTitle = (string)ECommerceContext.Get(ECommerceContext.ROOT_TITLE);
+        var rootUrlPrefix = (string)ECommerceContext.Get(ECommerceContext.URL_PREFIX);
+    }
     <ol class="breadcrumb">
         <li>
             <!-- Localize the home name here!! -->
             <a href="@SDL.ECommerce.DXA.ECommerceContext.LocalizePath("/")"><i class="fa fa-home"><span class="sr-only">Home</span></i></a>
         </li>
-        @foreach (var breadcrumb in Model.Breadcrumbs.Where(breadcrumb => breadcrumb.IsCategory == true))
-        {          
-            /* TODO: SHOW THIS FOR ACTIVE CATEGORY
-                <li class="active">
-                    ${breadcrumb.title}
-                </li>
-            */
+        @if ( rootTitle != null )
+        {
             <li>
-                <a href="@ECommerceContext.LinkResolver.GetBreadcrumbLink(breadcrumb)">@breadcrumb.Title</a>
+                <a href="@rootUrlPrefix">@rootTitle</a>
             </li>
+        }
+        @foreach (var breadcrumb in Model.Breadcrumbs.Where(breadcrumb => breadcrumb.IsCategory == true))
+        {
+            if (currentCategory != null && breadcrumb.Title.Equals(currentCategory.Name))
+            {
+                <li class="active">@breadcrumb.Title</li>
+            }
+            else
+            {
+                <li>
+                    <a href="@ECommerceContext.LinkResolver.GetBreadcrumbLink(breadcrumb)">@breadcrumb.Title</a>
+                </li>
+            }
         }
         <li class="active item-count">(@Model.TotalItems)</li>
     </ol>
