@@ -31,6 +31,7 @@ namespace SDL.ECommerce.DXA
             RegisterViewModel("Promotions", typeof(PromotionsWidget), "EComWidget");
             RegisterViewModel("Breadcrumb", typeof(BreadcrumbWidget), "EComWidget");
             RegisterViewModel("DetailBreadcrumb", typeof(BreadcrumbWidget), "EComWidget");
+            RegisterViewModel("SearchFeedback", typeof(SearchFeedbackWidget), "EComWidget");
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
@@ -46,6 +47,9 @@ namespace SDL.ECommerce.DXA
 
             MapRoute(context, "ECommerce_Page", "p/{*productUrl}",
                 new { controller = "ProductPage", action = "ProductPage" });
+
+            MapRoute(context, "ECommerce_Search", "search/{searchPhrase}/{*categoryUrl}",
+                new { controller = "SearchPage", action = "SearchCategoryPage" });
         }
 
         protected void MapRoute(AreaRegistrationContext context, string name, string url, object defaults)

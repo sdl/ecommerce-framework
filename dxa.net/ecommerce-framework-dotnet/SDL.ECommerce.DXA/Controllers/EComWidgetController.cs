@@ -208,9 +208,26 @@ namespace SDL.ECommerce.DXA.Controller
                 widget.Breadcrumbs = Enumerable.Empty<IBreadcrumb>().ToList();
             }
            
-
             return View(entity.MvcData.ViewName, entity);
         }
 
+        /// <summary>
+        /// Search Feedback
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="containerSize"></param>
+        /// <returns></returns>
+        public ActionResult SearchFeedback(EntityModel entity, int containerSize = 0)
+        {
+            SetupViewData(entity, containerSize);
+            SearchFeedbackWidget widget = (SearchFeedbackWidget)entity;
+
+            var queryResult = (IProductQueryResult)ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
+            if ( queryResult != null && queryResult.QuerySuggestions != null )
+            {
+                widget.QuerySuggestions = queryResult.QuerySuggestions.ToList();
+            }
+            return View(entity.MvcData.ViewName, entity);
+        }
     }
 }

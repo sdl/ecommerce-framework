@@ -158,6 +158,7 @@
     <Compile Include="Models\ProductListerWidget.cs" />
     <Compile Include="Models\PromotionsWidget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchFeedbackWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -172,6 +173,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotion.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ImageMapPromotion.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\DetailBreadcrumb.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\SearchFeedback.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
