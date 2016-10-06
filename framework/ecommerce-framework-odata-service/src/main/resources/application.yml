@@ -20,7 +20,7 @@ fredhopper:
     username: admin
     password: admin
   imageurl:
-    mappings: http://demo.fredhopper.com/images=/fredhopper-images
+    mappings: #http://demo.fredhopper.com/images=/fredhopper-images
 
 
 # Localization properties
@@ -28,6 +28,11 @@ fredhopper:
 localization:
   defaultLocale: en_GB
   locales:
+    "en-US":
+      fredhopper-universe: catalog01
+      fredhopper-locale: en_GB
+      fredhopper-productModelMappings: "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl"
+      fredhopper-triggerMappings: "taf:claim:segment=fh_keyword"
     "en_GB":
       fredhopper-universe: catalog01
       fredhopper-locale: en_GB

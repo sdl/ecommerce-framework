@@ -34,6 +34,7 @@ public class EntityServiceRegister {
                 // Entities & complex types
                 Cart.class,
                 ODataCategory.class,
+                ODataCategorySummary.class,
                 ODataProduct.class,
                 ODataProductSummary.class,
                 ODataProductPrice.class,
@@ -48,6 +49,7 @@ public class EntityServiceRegister {
                 ODataProductsPromotion.class,
                 ODataContentPromotion.class,
                 ODataContentArea.class,
+                ODataBreadcrumb.class,
                 // Functions
                 ProductQueryFunction.class,
                 ProductQueryFunctionImport.class,

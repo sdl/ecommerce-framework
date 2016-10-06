@@ -5,12 +5,8 @@ import com.sdl.ecommerce.api.ProductQueryService;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.QueryResult;
 import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.QuerySuggestion;
 import com.sdl.ecommerce.api.model.impl.GenericQuery;
-import com.sdl.ecommerce.api.model.impl.SimpleProductDetailResult;
 import com.sdl.ecommerce.odata.model.*;
-import com.sdl.odata.client.BasicODataClientQuery;
 import com.sdl.odata.client.FunctionImportClientQuery;
 import com.sdl.odata.client.api.ODataClientQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +39,8 @@ public class ODataProductQueryService implements ProductQueryService {
         this.odataClient.registerModelClass(ODataProductsPromotion.class);
         this.odataClient.registerModelClass(ODataContentPromotion.class);
         this.odataClient.registerModelClass(ODataContentArea.class);
+        this.odataClient.registerModelClass(ODataBreadcrumb.class);
+        this.odataClient.registerModelClass(ODataCategorySummary.class);
     }
 
     @Override

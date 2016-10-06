@@ -4,6 +4,7 @@ import com.sdl.ecommerce.api.model.Facet;
 import com.sdl.odata.api.edm.annotations.EdmComplex;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

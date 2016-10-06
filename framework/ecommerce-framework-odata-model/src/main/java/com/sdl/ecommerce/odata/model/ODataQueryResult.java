@@ -51,6 +51,9 @@ public class ODataQueryResult implements QueryResult {
     @EdmProperty
     private List<ODataPromotion> promotions = new ArrayList<>();
 
+    @EdmProperty
+    private List<ODataBreadcrumb> breadcrumbs = new ArrayList<>();
+
     public ODataQueryResult() {}
 
     public ODataQueryResult(QueryResult queryResult) {
@@ -72,6 +75,9 @@ public class ODataQueryResult implements QueryResult {
         }
         if ( queryResult.getPromotions() != null ) {
             queryResult.getPromotions().forEach(promotion -> this.promotions.add(new ODataPromotion(promotion)));
+        }
+        if ( queryResult.getBreadcrumbs() != null ) {
+            queryResult.getBreadcrumbs().forEach(breadcrumb -> this.breadcrumbs.add(new ODataBreadcrumb(breadcrumb)));
         }
     }
 
@@ -142,8 +148,8 @@ public class ODataQueryResult implements QueryResult {
 
     @Override
     public List<Breadcrumb> getBreadcrumbs() {
-
-        return null;
+        // TODO: Will this work for JDK7 clients??
+        return this.breadcrumbs.stream().collect(Collectors.toList());
     }
 
     @Override

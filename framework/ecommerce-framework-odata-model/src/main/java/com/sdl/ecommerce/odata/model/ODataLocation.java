@@ -4,6 +4,7 @@ import com.sdl.ecommerce.api.model.*;
 import com.sdl.odata.api.edm.annotations.EdmComplex;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public class ODataLocation implements Location {
         if ( location.getCategoryRef() != null ) {
             this.categoryRef = new ODataCategoryRef(location.getCategoryRef());
         }
+        this.facets = new ArrayList<>();
         if ( location.getFacets() != null ) {
             this.facets = location.getFacets().stream().map(facet -> facet.toUrl()).collect(Collectors.toList());
         }

@@ -49,7 +49,7 @@ public class ProductDataSourceProvider extends ECommerceDataSourceProvider {
             String id = (String)keys.get("id");
             ProductDetailResult result = this.productDataSource.getProductDetailService().getDetail(id);
             if ( result != null && result.getProductDetail() != null ) {
-                products.add(new ODataProduct(result.getProductDetail()));
+                products.add(new ODataProduct(result));
             }
         }
 

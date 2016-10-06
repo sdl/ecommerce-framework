@@ -1,15 +1,14 @@
 package com.sdl.ecommerce.odata.model;
 
-import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.ProductPrice;
+import com.sdl.ecommerce.api.ProductDetailResult;
+import com.sdl.ecommerce.api.model.*;
 import com.sdl.odata.api.edm.annotations.EdmEntity;
 import com.sdl.odata.api.edm.annotations.EdmEntitySet;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * OData Product
@@ -19,6 +18,10 @@ import java.util.*;
 @EdmEntity(name="Product", key = "id", namespace = "SDL.ECommerce")
 @EdmEntitySet(name="Products")
 public class ODataProduct implements Product, Serializable {
+
+    // TODO: Should breadcrumbs, promotions etc be part of this entity????
+
+    // TODO: Should this be called ProductDetail instead and be a complex type???
 
     @EdmProperty
     private String id;
@@ -43,9 +46,19 @@ public class ODataProduct implements Product, Serializable {
 
     private Map<String,Object> attributeMap = null;
 
+    @EdmProperty
+    private List<ODataCategorySummary> categories = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataPromotion> promotions = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataBreadcrumb> breadcrumbs = new ArrayList<>();
+
     public ODataProduct() {}
 
-    public ODataProduct(Product product) {
+    public ODataProduct(ProductDetailResult detailResult) {
+        Product product = detailResult.getProductDetail();
         this.id = product.getId();
         this.name = product.getName();
         this.description = product.getDescription();
@@ -58,6 +71,15 @@ public class ODataProduct implements Product, Serializable {
             for ( String name : attributes.keySet() ) {
                 this.attributes.add(new ODataProductAttribute(name, attributes.get(name)));
             }
+        }
+        if ( product.getCategories() != null ) {
+            product.getCategories().forEach(category -> this.categories.add(new ODataCategorySummary(category)));
+        }
+        if ( detailResult.getPromotions() != null ) {
+            detailResult.getPromotions().forEach(promotion -> this.promotions.add(new ODataPromotion(promotion)));
+        }
+        if ( detailResult.getBreadcrumbs() != null ) {
+            detailResult.getBreadcrumbs().forEach(breadcrumb -> this.breadcrumbs.add(new ODataBreadcrumb(breadcrumb)));
         }
     }
 
@@ -91,10 +113,9 @@ public class ODataProduct implements Product, Serializable {
         return this.primaryImageUrl;
     }
 
-    // TODO: IMPLEMENT !!!
     @Override
     public List<Category> getCategories() {
-        return Collections.emptyList();
+        return this.categories.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -122,4 +143,11 @@ public class ODataProduct implements Product, Serializable {
         return this.attributeMap;
     }
 
+    public List<Promotion> getPromotions() {
+        return promotions.stream().collect(Collectors.toList());
+    }
+
+    public List<Breadcrumb> getBreadcrumbs() {
+        return breadcrumbs.stream().collect(Collectors.toList());
+    }
 }

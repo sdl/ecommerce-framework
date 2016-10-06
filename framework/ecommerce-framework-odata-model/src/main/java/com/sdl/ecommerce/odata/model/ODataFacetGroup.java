@@ -38,8 +38,8 @@ public class ODataFacetGroup implements FacetGroup {
         this.title = facetGroup.getTitle();
         this.type = facetGroup.getType();
         this.isCategory = facetGroup.isCategory();
+        this.facets = new ArrayList<>();
         if ( facetGroup.getFacets() != null ) {
-            facets = new ArrayList<>();
             facetGroup.getFacets().forEach(facet -> this.facets.add(new ODataFacet(facet)));
         }
     }
