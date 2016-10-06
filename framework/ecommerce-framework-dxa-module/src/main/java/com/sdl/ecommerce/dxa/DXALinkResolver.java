@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.FACETS;
@@ -85,7 +87,7 @@ public class DXALinkResolver implements ECommerceLinkResolver {
     public String getBreadcrumbLink(Breadcrumb breadcrumb) {
 
         if ( breadcrumb.isCategory() ) {
-            return this.getCategoryLink(breadcrumb.getCategory());
+            return this.getCategoryLink(breadcrumb.getCategoryRef());
         }
         else { // Facet
             List<FacetParameter> selectedFacets = this.getFacets(request);
@@ -131,6 +133,10 @@ public class DXALinkResolver implements ECommerceLinkResolver {
 
     protected String getProductDetailLink(String productId, String productName) {
 
+        // Handle some special characters on product IDs
+        //
+        productId = productId.replace("+", "__plus__");
+
         if ( productName != null ) {
             // Generate a SEO friendly URL
             //
@@ -140,12 +146,17 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                     replace("--", "").
                     replace("/", "-").
                     replace("®", "").
+                    replace("&", "").
                     replace("\"", "");
             return  webRequestContext.getLocalization().localizePath("/p/") + seoName + "/" + productId;
         }
         return  webRequestContext.getLocalization().localizePath("/p/") + productId;
     }
 
+    protected String getCategoryLink(CategoryRef categoryRef) {
+        String urlPrefix = this.getUrlPrefix(request);
+        return urlPrefix + categoryRef.getPath();
+    }
 
     protected static String getFacetLink(List<FacetParameter> selectedFacets) {
         if ( selectedFacets == null || selectedFacets.size() == 0 ) { return ""; }

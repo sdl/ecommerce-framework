@@ -343,6 +343,30 @@ public class WidgetController extends BaseController {
     }
 
     /**
+     * Handle product detail for an E-Commerce ECL item.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "ProductDetailEclItem/{entityId}")
+    public String handleProductDetailEclItem(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+
+        ECommerceEclItem entity = (ECommerceEclItem) this.getEntityFromRequest(request, entityId);
+        String productId = entity.getExternalId();
+        ProductDetailResult result = this.detailService.getDetail(productId);
+
+        if (result.getProductDetail() == null) {
+            throw new ContentProviderException("No product found!");
+        }
+        request.setAttribute("entity", entity);
+        request.setAttribute("product", result.getProductDetail());
+
+        final MvcData mvcData = entity.getMvcData();
+        return resolveView(mvcData, "Entity", request);
+    }
+
+    /**
      * Get current query result from the HTTP request.
      * @param request
      * @return result
@@ -618,6 +642,8 @@ public class WidgetController extends BaseController {
      * @return link
      */
     protected String getFacetLink(List<FacetParameter> facets) {
+
+        // TODO: Use the link resolver here!!!!!
 
         if ( facets == null || facets.size() == 0 ) { return ""; }
         StringBuilder sb = new StringBuilder();

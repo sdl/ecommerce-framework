@@ -12,6 +12,7 @@
             <!-- Localize the home name here!! -->
             <a href="${localization.localizePath('/')}"><i class="fa fa-home"><span class="sr-only">Home</span></i></a>
         </li>
+        <%-- TODO: Add support for root titles, such as 'Search Results' --%>
         <c:forEach var="breadcrumb" items="${entity.breadcrumbs}">
             <c:choose>
                 <c:when test="${breadcrumb.category == true && breadcrumb.title == eComCategory.name}">

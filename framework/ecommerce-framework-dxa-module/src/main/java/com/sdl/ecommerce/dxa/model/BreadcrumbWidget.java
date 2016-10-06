@@ -26,7 +26,7 @@ public class BreadcrumbWidget extends AbstractEntityModel implements QueryInputC
     private ECommerceProductReference productReference;
 
     @SemanticProperty("e:includeStoreLink")
-    private boolean includeStoreLink = false;
+    private boolean includeStoreLink = false;  // TODO: REMOVE???
 
     private List<Breadcrumb> breadcrumbs;
     private int totalItems;

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +50,11 @@ public class ProductPageController extends AbstractECommercePageController {
 
         // TODO: How to handle variants ??
 
-        // Path pattern for product detail pages: /p/[SEO name]/[second id]
-        //final String requestPath = webRequestContext.getRequestPath().replaceFirst("/p", "");
         final String requestPath = request.getRequestURI().replaceFirst("/p", "");
         final Localization localization = webRequestContext.getLocalization();
         final String[] pathTokens = requestPath.split("/");
         final String productSeoId;
-        final String productId;
+        String productId;
         if ( pathTokens.length == 3 ) {
             productSeoId = pathTokens[1];
             productId = pathTokens[2];
@@ -66,6 +66,10 @@ public class ProductPageController extends AbstractECommercePageController {
         else {
             throw new PageNotFoundException("Invalid product detail URL.");
         }
+
+        // Handle some special characters
+        //
+        productId = productId.replace("__plus__", "+");
 
         //final List<FacetParameter> facets = fredhopperService.getFacetParametersFromRequestMap(request.getParameterMap());
         ProductDetailResult detailResult = this.detailService.getDetail(productId);
@@ -92,8 +96,6 @@ public class ProductPageController extends AbstractECommercePageController {
      * @return search path
      */
     protected List<String> getSearchPath(Localization localization, String productSeoId, String productId, List<Category> categories) {
-
-        // TODO: Can we extract the categories from the product???
 
         // Should we allow some alternative lookup mechanism here as well? Such as search for
 

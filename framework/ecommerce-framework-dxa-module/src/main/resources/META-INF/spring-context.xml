@@ -10,9 +10,9 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.sdl.ecommerce.dxa"/>
 
+    <!-- TODO: Remove and register manually in the module initialization -->
     <bean class="com.sdl.webapp.common.api.mapping.semantic.RegisterSemanticClasses">
         <property name="namespace" value="com.sdl.ecommerce.dxa.model"/>
     </bean>
-
 
 </beans>
