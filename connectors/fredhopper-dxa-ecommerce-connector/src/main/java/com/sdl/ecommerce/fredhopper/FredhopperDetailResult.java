@@ -90,7 +90,7 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
             /*
             breadcrumbs.add(0, new FredhopperBreadcrumb(category.getName(), this.linkManager.resolveCategoryUrl(category, urlPrefix), true));
             */
-            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category));
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
             category = category.getParent();
         }
         /*

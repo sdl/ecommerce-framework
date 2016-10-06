@@ -66,7 +66,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getTotalCount() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getTotalItems();
         }
         else {
@@ -76,7 +76,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getCurrentSet() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getCurrentSet();
         }
         else {
@@ -86,7 +86,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getStartIndex() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getStartIndex();
         }
         else {
@@ -96,7 +96,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getViewSize() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null  && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getViewSize();
         }
         else {

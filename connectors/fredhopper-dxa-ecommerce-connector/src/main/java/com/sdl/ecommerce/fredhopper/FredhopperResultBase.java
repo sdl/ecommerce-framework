@@ -160,7 +160,7 @@ public abstract class FredhopperResultBase {
             if (fhCrumb.getName().getAttributeType() != null && fhCrumb.getName().getAttributeType().equals("categories")) {
                 String categoryId = fhCrumb.getName().getNonMlValue().replace("{", "").replace("}", "");
                 Category category = categoryService.getCategoryById(categoryId);
-                Breadcrumb breadcrumb = new GenericBreadcrumb(fhCrumb.getName().getValue(), category);
+                Breadcrumb breadcrumb = new GenericBreadcrumb(fhCrumb.getName().getValue(), new CategoryRef(category));
                 breadcrumbs.add(breadcrumb);
             }
             // Facet
