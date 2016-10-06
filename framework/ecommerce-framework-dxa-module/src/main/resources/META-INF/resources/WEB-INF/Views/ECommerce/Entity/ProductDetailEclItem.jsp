@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-6">
             <h3 class="product-title">
-                ${product.title}
+                ${product.name}
             </h3>
             <div class="product-description">
                 <div>
