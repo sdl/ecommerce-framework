@@ -2,10 +2,7 @@ package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.ProductDetailResult;
-import com.sdl.ecommerce.api.model.Breadcrumb;
-import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.Promotion;
+import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
 import com.sdl.ecommerce.hybris.model.HybrisBreadcrumb;
 
@@ -33,7 +30,7 @@ public class HybrisDetailResult implements ProductDetailResult {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         if ( this.productDetail.getCategories() != null ) {
             for ( Category category : this.productDetail.getCategories() ) {
-                breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category));
+                breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
             }
         }
         return breadcrumbs;

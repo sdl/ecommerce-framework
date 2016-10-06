@@ -24,4 +24,5 @@ public class HybrisModuleInitializer extends AbstractInitializer {
     protected String getAreaName() {
         return AREA_NAME;
     }
+
 }

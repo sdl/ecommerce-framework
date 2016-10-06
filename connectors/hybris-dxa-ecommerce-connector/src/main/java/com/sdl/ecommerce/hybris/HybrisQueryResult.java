@@ -67,7 +67,7 @@ public class HybrisQueryResult implements QueryResult {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         Category category = this.query.getCategory();
         while ( category != null ) {
-            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), category));
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
             category = category.getParent();
         }
         if ( this.searchResult != null ) {

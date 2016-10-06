@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.hybris.model;
 
 import com.sdl.ecommerce.api.model.Breadcrumb;
-import com.sdl.ecommerce.api.model.Category;
+import com.sdl.ecommerce.api.model.CategoryRef;
 import com.sdl.ecommerce.api.model.Facet;
 import com.sdl.ecommerce.api.model.impl.GenericFacet;
 
@@ -28,14 +28,8 @@ public class HybrisBreadcrumb implements Breadcrumb {
         return false;
     }
 
-    // TODO: REMOVE
     @Override
-    public String getUrl() {
-        return null;
-    }
-
-    @Override
-    public Category getCategory() {
+    public CategoryRef getCategoryRef() {
         return null;
     }
 
