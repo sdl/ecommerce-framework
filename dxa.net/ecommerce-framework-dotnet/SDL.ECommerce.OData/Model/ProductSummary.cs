@@ -43,5 +43,28 @@ namespace SDL.ECommerce.OData
             }
         }
 
+        public List<ICategory> Categories
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IBreadcrumb> Breadcrumbs
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IPromotion> Promotions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

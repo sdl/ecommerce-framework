@@ -1,4 +1,21 @@
-﻿@model BreadcrumbWidget
-<div @Html.DxaEntityMarkup()>
-
+﻿@using SDL.ECommerce.DXA
+@model BreadcrumbWidget
+<div>
+    <ol class="breadcrumb" @Html.DxaEntityMarkup()>
+        <li>
+            <a href="javascript:history.back(-1)"><i class="fa fa-chevron-left"></i></a>
+        </li>
+        <li class="detail-home-nav">
+            <a href="@ECommerceContext.LocalizePath("/")"><i class="fa fa-home"><span class="sr-only">Home</span></i></a>
+        </li>
+        @foreach (var breadcrumb in Model.Breadcrumbs)
+        {
+            if (breadcrumb.IsCategory == true)
+            {
+                <li>
+                    <a href="@ECommerceContext.LinkResolver.GetBreadcrumbLink(breadcrumb)">@breadcrumb.Title</a>
+                </li>
+            }
+        }
+    </ol>
 </div>

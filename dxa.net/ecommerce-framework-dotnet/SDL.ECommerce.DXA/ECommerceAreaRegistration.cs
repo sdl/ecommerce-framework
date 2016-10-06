@@ -52,6 +52,14 @@ namespace SDL.ECommerce.DXA
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
         }
 
+        /// <summary>
+        /// Map route for a page controller. 
+        /// As this is called after the global DXA initialization we have to shuffle around the route definition so it comes before the DXA page controller.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="name"></param>
+        /// <param name="url"></param>
+        /// <param name="defaults"></param>
         protected void MapRoute(AreaRegistrationContext context, string name, string url, object defaults)
         {
             var route = context.MapRoute(name, url, defaults);

@@ -160,6 +160,21 @@ namespace SDL.ECommerce.OData
                 }
                
             }
+            Console.WriteLine("Categories: ");
+            foreach ( var category in product.Categories )
+            {
+                Console.WriteLine("  " + category.Name);
+            }
+            Console.WriteLine("Breadcrumbs: ");
+            foreach ( var breadcrumb in product.Breadcrumbs )
+            {
+                Console.WriteLine("  " + breadcrumb.Title);
+            }
+            Console.WriteLine("Promotions: ");
+            foreach ( var promotion  in product.Promotions )
+            {
+                Console.WriteLine("  " + product.Name);
+            }
         }
 
         void PrintQueryResult(IProductQueryResult result)

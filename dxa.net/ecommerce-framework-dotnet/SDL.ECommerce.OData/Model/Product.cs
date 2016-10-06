@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SDL.ECommerce.Api.Model;
 
 namespace SDL.ECommerce.OData
@@ -73,6 +74,30 @@ namespace SDL.ECommerce.OData
                     attributes.Add(attribute.Name, value);
                 }
                 return attributes;
+            }
+        }
+
+        List<ICategory> IProduct.Categories
+        {
+            get
+            {
+                return this.Categories.Cast<ICategory>().ToList();
+            }
+        }
+
+        IList<IBreadcrumb> IProduct.Breadcrumbs
+        {
+            get
+            {
+                return this.Breadcrumbs.Cast<IBreadcrumb>().ToList();
+            }
+        }
+
+        IList<IPromotion> IProduct.Promotions
+        {
+            get
+            {
+                return this.Promotions.Select(promo => promo.ToConcretePromotion()).ToList();
             }
         }
     }

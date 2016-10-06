@@ -41,22 +41,22 @@ namespace SDL.ECommerce.DXA.Controllers
                 return NotFound();
             }
             
-            // TODO: Migrate to product result here!!
-            var result = ECommerceContext.Client.DetailService.GetDetail(productId);
-            if ( result == null )
+            var product = ECommerceContext.Client.DetailService.GetDetail(productId);
+            if ( product == null )
             {
                 Log.Info("Product not found: " + productId);
                 return NotFound();
             }
-            PageModel templatePage = this.ResolveTemplatePage(this.GetSearchPath(productSeoId, result));
+            PageModel templatePage = this.ResolveTemplatePage(this.GetSearchPath(productSeoId, product));
             if ( templatePage == null )
             {
                 Log.Error("Product template page could not be found for product URL: " + productUrl);
                 return NotFound();
             }
 
-            templatePage.Title = result.Name;
-            ECommerceContext.Set(ECommerceContext.PRODUCT, result);
+            templatePage.Title = product.Name;
+            ECommerceContext.Set(ECommerceContext.PRODUCT, product);
+            ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
             return View(templatePage);
 
         }
@@ -70,24 +70,33 @@ namespace SDL.ECommerce.DXA.Controllers
         protected IList<string> GetSearchPath(string productSeoId, IProduct product)
         {
             var searchPath = new List<string>();
-
             var basePath = ECommerceContext.LocalizePath("/products/");
+
+            // SEO id
+            //
             if (productSeoId != null)
             {
                 searchPath.Add(basePath + productSeoId);
-
             }
+
+            // Product ID
+            //
             searchPath.Add(basePath + product.Id);
-            /*
+            
+            // Product Categories
+            //
             if (product.Categories != null)
             {
-                for (Category category : categories)
+                foreach (var category in product.Categories)
                 {
-                    searchPath.add(basePath + category.getId());
+                    searchPath.Add(basePath + category.Id);
                 }
             }
-            */
+            
+            // Generic fallback product look&feel
+            //
             searchPath.Add(basePath + "generic");
+
             return searchPath;
         }
     }

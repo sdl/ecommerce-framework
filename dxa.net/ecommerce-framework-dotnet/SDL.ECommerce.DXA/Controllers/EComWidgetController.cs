@@ -158,18 +158,22 @@ namespace SDL.ECommerce.DXA.Controller
                 queryResult = (IProductQueryResult)ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
             }
 
-            // TODO: Fix so product detail also return a result object
-
             if ( queryResult != null )
             {
                 widget.Promotions = queryResult.Promotions.ToList();
             }
             else
             {
-                widget.Promotions = Enumerable.Empty<IPromotion>().ToList();
+                var product = (IProduct)ECommerceContext.Get(ECommerceContext.PRODUCT);
+                if ( product != null )
+                {
+                    widget.Promotions = product.Promotions;
+                }
+                else
+                {
+                    widget.Promotions = Enumerable.Empty<IPromotion>().ToList();
+                }               
             }
-           
-
             return View(entity.MvcData.ViewName, entity);
         }
 
@@ -201,14 +205,20 @@ namespace SDL.ECommerce.DXA.Controller
             if ( queryResult != null )
             {
                 widget.Breadcrumbs = queryResult.Breadcrumbs.ToList();
-                // TODO: Add check if result is a product detail result -> do not show total count then
                 widget.TotalItems = queryResult.TotalCount;
             }
             else
             {
-                widget.Breadcrumbs = Enumerable.Empty<IBreadcrumb>().ToList();
+                var product = (IProduct)ECommerceContext.Get(ECommerceContext.PRODUCT);
+                if ( product != null )
+                {
+                    widget.Breadcrumbs = product.Breadcrumbs;
+                }
+                else
+                {
+                    widget.Breadcrumbs = Enumerable.Empty<IBreadcrumb>().ToList();
+                }            
             }
-           
             return View(entity.MvcData.ViewName, entity);
         }
 
@@ -230,7 +240,6 @@ namespace SDL.ECommerce.DXA.Controller
             }
             return View(entity.MvcData.ViewName, entity);
         }
-
 
         /// <summary>
         /// Process navigation links in product listers (next, previous etc).

@@ -42,11 +42,10 @@ public interface IProduct
     /// </summary>
     string PrimaryImageUrl { get; }
 
-    /**
-     * Get categories the product belong to.
-     * @return list of categories
-     */
-    //List<ICategory> Categories { get; }
+    /// <summary>
+    /// Get categories the product belong to.
+    /// </summary>
+    List<ICategory> Categories { get; }
 
     /**
      * Get product facets.
@@ -60,5 +59,13 @@ public interface IProduct
     /// </summary>
     IDictionary<string, object> Attributes { get; }
 
-    // TODO: Have breadcrumbs and promotions here???
+    /// <summary>
+    /// Product breadcrumbs
+    /// </summary>
+    IList<IBreadcrumb> Breadcrumbs { get; }
+
+    /// <summary>
+    /// Associated promotions to the product, such as recommendations, upsells etc.
+    /// </summary>
+    IList<IPromotion> Promotions { get; }
 }

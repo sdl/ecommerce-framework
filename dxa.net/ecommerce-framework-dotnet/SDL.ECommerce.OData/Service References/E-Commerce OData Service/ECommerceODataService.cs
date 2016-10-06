@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 10/4/2016 8:15:03 PM
+// Generation date: 10/6/2016 6:25:24 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -208,6 +208,9 @@ namespace SDL.ECommerce.OData
         <Property Name=""thumbnailUrl"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""primaryImageUrl"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""attributes"" Type=""Collection(SDL.ECommerce.ProductAttribute)"" Nullable=""true""></Property>
+        <Property Name=""categories"" Type=""Collection(SDL.ECommerce.CategorySummary)"" Nullable=""true""></Property>
+        <Property Name=""promotions"" Type=""Collection(SDL.ECommerce.Promotion)"" Nullable=""true""></Property>
+        <Property Name=""breadcrumbs"" Type=""Collection(SDL.ECommerce.Breadcrumb)"" Nullable=""true""></Property>
       </EntityType>
       <EntityType Name=""ProductQueryResult"">
         <Key>
@@ -927,6 +930,75 @@ namespace SDL.ECommerce.OData
         private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute> _Attributes = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute>();
         partial void OnAttributesChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute> value);
         partial void OnAttributesChanged();
+        /// <summary>
+        /// There are no comments for Property Categories in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("categories")]
+        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> Categories
+        {
+            get
+            {
+                return this._Categories;
+            }
+            set
+            {
+                this.OnCategoriesChanging(value);
+                this._Categories = value;
+                this.OnCategoriesChanged();
+                this.OnPropertyChanged("categories");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> _Categories = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary>();
+        partial void OnCategoriesChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> value);
+        partial void OnCategoriesChanged();
+        /// <summary>
+        /// There are no comments for Property Promotions in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("promotions")]
+        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> Promotions
+        {
+            get
+            {
+                return this._Promotions;
+            }
+            set
+            {
+                this.OnPromotionsChanging(value);
+                this._Promotions = value;
+                this.OnPromotionsChanged();
+                this.OnPropertyChanged("promotions");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> _Promotions = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion>();
+        partial void OnPromotionsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> value);
+        partial void OnPromotionsChanged();
+        /// <summary>
+        /// There are no comments for Property Breadcrumbs in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("breadcrumbs")]
+        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> Breadcrumbs
+        {
+            get
+            {
+                return this._Breadcrumbs;
+            }
+            set
+            {
+                this.OnBreadcrumbsChanging(value);
+                this._Breadcrumbs = value;
+                this.OnBreadcrumbsChanged();
+                this.OnPropertyChanged("breadcrumbs");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb>();
+        partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> value);
+        partial void OnBreadcrumbsChanged();
         /// <summary>
         /// This event is raised when the value of the property is changed
         /// </summary>
