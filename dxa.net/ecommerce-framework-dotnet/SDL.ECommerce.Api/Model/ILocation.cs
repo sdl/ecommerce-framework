@@ -12,17 +12,25 @@ namespace SDL.ECommerce.Api.Model
     public interface ILocation
     {
       
-        ICategoryRef CategoryRef();
+        /// <summary>
+        /// Category reference
+        /// </summary>
+        ICategoryRef CategoryRef { get; }
 
-        // TODO: Should this be Facet interface instead
-        List<FacetParameter> Facets();
-
-        IProductRef ProductRef();
+        /// <summary>
+        /// Facets
+        /// </summary>
+        IList<FacetParameter> Facets { get; }
+        
+        /// <summary>
+        /// Product reference
+        /// </summary>
+        IProductRef ProductRef { get; }
 
         /// <summary>
         /// Static URL managed from the E-Commerce system
         /// </summary>
         /// <returns></returns>
-        string StaticUrl();
+        string StaticUrl { get; }
     }
 }

@@ -10,24 +10,35 @@ namespace SDL.ECommerce.OData
 {
     public partial class Location : ILocation
     {
-        ICategoryRef ILocation.CategoryRef()
+        private IList<FacetParameter> facets;
+          
+        ICategoryRef ILocation.CategoryRef
         {
-            return this.CategoryRef;
+            get
+            {
+                return this.CategoryRef;
+            }
         }
 
-        List<FacetParameter> ILocation.Facets()
+        IList<FacetParameter> ILocation.Facets
         {
-            throw new NotImplementedException();
+            get
+            {
+                if ( this.Facets != null && facets == null )
+                {
+                    facets = this.Facets.Select(facet => FacetParameter.FromUrl(facet)).ToList();
+                }
+                return facets;
+            }
         }
 
-        IProductRef ILocation.ProductRef()
+        IProductRef ILocation.ProductRef
         {
-            return this.ProductRef;
+            get 
+            {
+                return this.ProductRef;
+            }
         }
-
-        string ILocation.StaticUrl()
-        {
-            return this.StaticUrl;
-        }
+    
     }
 }

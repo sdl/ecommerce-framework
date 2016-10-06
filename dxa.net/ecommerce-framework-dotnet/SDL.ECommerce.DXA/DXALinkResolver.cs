@@ -81,7 +81,35 @@ namespace SDL.ECommerce.DXA
 
         public string GetLocationLink(ILocation location)
         {
-            throw new NotImplementedException();
+            if (location == null) { return ""; }
+            if (location.StaticUrl != null)
+            {
+                return location.StaticUrl;
+            }
+            if (location.ProductRef != null)
+            {
+                return this.GetProductDetailLink(location.ProductRef.Id, location.ProductRef.Name);
+            }
+            StringBuilder link = new StringBuilder();
+            if (location.CategoryRef != null)
+            {
+                string urlPrefix = (string) ECommerceContext.Get(ECommerceContext.URL_PREFIX);
+                link.Append(urlPrefix + location.CategoryRef.Path);
+            }
+            if (location.Facets != null && location.Facets.Count > 0)
+            {
+                link.Append("?");
+                for (int i = 0; i < location.Facets.Count; i++)
+                {
+                    FacetParameter facet = location.Facets[i];
+                    link.Append(facet.ToUrl());
+                    if (i + 1 < location.Facets.Count)
+                    {
+                        link.Append("&");
+                    }
+                }
+            }
+            return link.ToString();
         }
 
         public string GetProductDetailLink(IProduct product)
