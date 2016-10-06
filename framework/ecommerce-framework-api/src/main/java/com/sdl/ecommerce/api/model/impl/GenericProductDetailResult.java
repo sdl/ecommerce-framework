@@ -9,16 +9,24 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * SimpleProductDetailResult
+ * Generic Product Detail Result
  *
  * @author nic
  */
-public class SimpleProductDetailResult implements ProductDetailResult {
+public class GenericProductDetailResult implements ProductDetailResult {
 
     private Product product;
+    private List<Breadcrumb> breadcrumbs = Collections.emptyList();
+    private List<Promotion> promotions = Collections.emptyList();
 
-    public SimpleProductDetailResult(Product product) {
+    public GenericProductDetailResult(Product product) {
         this.product = product;
+    }
+
+    public GenericProductDetailResult(Product product, List<Breadcrumb> breadcrumbs, List<Promotion> promotions) {
+        this.product = product;
+        this.breadcrumbs = breadcrumbs;
+        this.promotions = promotions;
     }
 
     @Override
@@ -28,11 +36,11 @@ public class SimpleProductDetailResult implements ProductDetailResult {
 
     @Override
     public List<Breadcrumb> getBreadcrumbs() {
-        return Collections.emptyList();
+        return this.breadcrumbs;
     }
 
     @Override
     public List<Promotion> getPromotions() {
-        return Collections.emptyList();
+        return this.promotions;
     }
 }

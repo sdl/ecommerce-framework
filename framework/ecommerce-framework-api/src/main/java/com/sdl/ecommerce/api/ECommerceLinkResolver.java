@@ -42,7 +42,7 @@ public interface ECommerceLinkResolver {
     String getBreadcrumbLink(Breadcrumb breadcrumb);
 
     /**
-     * Get link to location, normallyt a category + a set of facets)
+     * Get link to location, normally a category + a set of facets)
      * @param location
      * @return location
      */

@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.api.model.impl;
 
 import com.sdl.ecommerce.api.model.Breadcrumb;
-import com.sdl.ecommerce.api.model.Category;
+import com.sdl.ecommerce.api.model.CategoryRef;
 import com.sdl.ecommerce.api.model.Facet;
 
 /**
@@ -14,7 +14,7 @@ public class GenericBreadcrumb implements Breadcrumb {
     private String title;
     private String url;
     private boolean isCategory;
-    private Category category;
+    private CategoryRef categoryRef;
     private Facet facet;
 
     // OLD CONSTRUCTOR - TO BE REMOVED !!!
@@ -24,9 +24,9 @@ public class GenericBreadcrumb implements Breadcrumb {
         this.isCategory = isCategory;
     }
 
-    public GenericBreadcrumb(String title, Category category) {
+    public GenericBreadcrumb(String title, CategoryRef categoryRef) {
         this.title = title;
-        this.category = category;
+        this.categoryRef = categoryRef;
         this.isCategory = true;
     }
 
@@ -41,18 +41,13 @@ public class GenericBreadcrumb implements Breadcrumb {
     }
 
     @Override
-    public String getUrl() {
-        return this.url;
-    }
-
-    @Override
     public boolean isCategory() {
         return this.isCategory;
     }
 
     @Override
-    public Category getCategory() {
-        return this.category;
+    public CategoryRef getCategoryRef() {
+        return this.categoryRef;
     }
 
     @Override
