@@ -12,7 +12,25 @@ namespace SDL.ECommerce.DXA
     {
         public string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
         {
-            throw new NotImplementedException();
+            string link;
+            if ( facet.IsCategory )
+            {
+                var category = ECommerceContext.Client.CategoryService.GetCategoryById(facet.Value);
+                link = this.GetCategoryLink(category);
+                link += this.GetFacetLink((IList<FacetParameter>)null);
+            }
+            else // facet
+            {
+                if ( facet.IsSelected )
+                {
+                    link = navigationBasePath + this.GetRemoveFacetLink(facet, null);
+                }
+                else
+                {
+                    link = navigationBasePath + this.GetAddFacetLink(facet, null);
+                }
+            }
+            return link;
         }
 
         public string GetBreadcrumbLink(IBreadcrumb breadcrumb)
@@ -31,7 +49,12 @@ namespace SDL.ECommerce.DXA
 
         public string GetCategoryLink(ICategory category)
         {
-            return ECommerceContext.Get(ECommerceContext.URL_PREFIX) + GetCategoryAbsolutePath(category);
+            string urlPrefix = (string) ECommerceContext.Get(ECommerceContext.URL_PREFIX);
+            if ( urlPrefix == null || urlPrefix.Length == 0 )
+            {
+                urlPrefix = ECommerceContext.LocalizePath("/c"); // Fallback on default
+            }
+            return urlPrefix + GetCategoryAbsolutePath(category);
         }
 
         public string GetFacetLink(IFacet facet)

@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace SDL.ECommerce.OData
 {
     public partial class ProductQueryResult : IProductQueryResult
-    {
+    { 
+
         ICollection<IBreadcrumb> IProductQueryResult.Breadcrumbs
         {
             get

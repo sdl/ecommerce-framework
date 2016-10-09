@@ -1,4 +1,5 @@
 ﻿using Sdl.Web.Common.Models;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,8 @@ namespace SDL.ECommerce.DXA.Models
 
         [SemanticProperty("e:categoryId")]
         public string CategoryId { get; set; }
+
+        [SemanticProperty(IgnoreMapping = true)]
+        public ICategory Category { get; set; }
     }
 }

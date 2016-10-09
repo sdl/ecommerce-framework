@@ -12,6 +12,9 @@ using Sdl.Web.Common.Models;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    /// <summary>
+    /// E-Commerce Category Page Controller
+    /// </summary>
     public class CategoryPageController : AbstractECommercePageController
     {
         public ActionResult CategoryPage(string categoryUrl)
@@ -31,7 +34,6 @@ namespace SDL.ECommerce.DXA.Controllers
                 SetupViewData(templatePage);
 
                 var searchResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category, Facets = facets, StartIndex = GetStartIndex() });
-
                 if ( searchResult.RedirectLocation != null )
                 {
                     return Redirect(ECommerceContext.LinkResolver.GetLocationLink(searchResult.RedirectLocation));
@@ -65,7 +67,7 @@ namespace SDL.ECommerce.DXA.Controllers
             var currentCategory = category;
             while ( currentCategory != null)
             {
-                searchPath.Add(categoryPath + category.Id);
+                searchPath.Add(categoryPath + currentCategory.Id);
                 currentCategory = currentCategory.Parent;
             }
             var urlTokens = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);

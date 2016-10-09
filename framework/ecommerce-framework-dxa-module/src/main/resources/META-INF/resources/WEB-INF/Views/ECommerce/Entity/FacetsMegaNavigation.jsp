@@ -30,7 +30,7 @@
 
 %>
 <li class="mega-nav-link">
-    <a href="${entity.categoryReference.categoryUrl}">${entity.categoryReference.category.name}</a>
+    <a href="${linkResolver.getCategoryLink(entity.categoryReference.category)}">${entity.categoryReference.category.name}</a>
     <div class="mega-nav" style="width: ${navWidth}px;">
         <div class="row">
             <div class="col-sm-12">
@@ -53,6 +53,7 @@
                                 <c:if test="${status.index lt 2}">
                                     <div class="col-sm-${colWidth+colRemainder}">
                                         <c:set var="promotion" value="${promotion}" scope="request"/>
+                                        <!-- TODO: Ignore image map promotions here?? -->
                                         <c:import url="/WEB-INF/Views/ECommerce/Entity/Partials/${entity.getPromotionViewName(promotion)}-MegaNav.jsp"/>
                                     </div>
                                 </c:if>

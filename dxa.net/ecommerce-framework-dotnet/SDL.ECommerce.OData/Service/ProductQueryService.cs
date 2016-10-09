@@ -75,11 +75,21 @@ namespace SDL.ECommerce.OData
             }
             if ( query.ViewSize != null)
             {
-                // TODO: Add
+                func.WithParam("viewSize", query.ViewSize);
             }
-          
+            if ( query.ViewType != null )
+            {
+                func.WithParam("viewType", query.ViewType.ToString());
+            }
+
             return Enumerable.FirstOrDefault<ProductQueryResult>(this.service.Execute<ProductQueryResult>(func));
-            
+
+            /*
+            var uriString = string.Format("{0}/{1}", (object)this.service.Service.BaseUri, (object)func);
+            Uri uri = new Uri(uriString);
+            return Enumerable.FirstOrDefault<ProductQueryResult>(this.service.Service.Execute<ProductQueryResult>(uri));
+            */
+
         }
     }
 }

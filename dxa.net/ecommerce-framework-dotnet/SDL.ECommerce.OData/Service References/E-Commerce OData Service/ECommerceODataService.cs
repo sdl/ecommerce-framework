@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 10/6/2016 6:25:24 PM
+// Generation date: 10/7/2016 4:11:35 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -382,9 +382,8 @@ namespace SDL.ECommerce.OData
     /// Id
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("id")]
-    [global::Microsoft.OData.Client.EntitySet("Carts")]
     [global::Microsoft.OData.Client.OriginalNameAttribute("Cart")]
-    public partial class Cart : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Cart : global::Microsoft.OData.Client.BaseEntityType
     {
         /// <summary>
         /// Create a new Cart object.
@@ -413,30 +412,12 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _Id;
         partial void OnIdChanging(string value);
         partial void OnIdChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for CategorySingle in the schema.
@@ -514,9 +495,8 @@ namespace SDL.ECommerce.OData
     /// Id
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("id")]
-    [global::Microsoft.OData.Client.EntitySet("Categories")]
     [global::Microsoft.OData.Client.OriginalNameAttribute("Category")]
-    public partial class Category : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Category : global::Microsoft.OData.Client.BaseEntityType
     {
         /// <summary>
         /// Create a new Category object.
@@ -547,7 +527,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -570,7 +549,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -593,7 +571,6 @@ namespace SDL.ECommerce.OData
                 this.OnPathChanging(value);
                 this._Path = value;
                 this.OnPathChanged();
-                this.OnPropertyChanged("path");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -616,7 +593,6 @@ namespace SDL.ECommerce.OData
                 this.OnPathNameChanging(value);
                 this._PathName = value;
                 this.OnPathNameChanged();
-                this.OnPropertyChanged("pathName");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -639,7 +615,6 @@ namespace SDL.ECommerce.OData
                 this.OnLocaleChanging(value);
                 this._Locale = value;
                 this.OnLocaleChanged();
-                this.OnPropertyChanged("locale");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -651,7 +626,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("parentIds")]
-        public global::System.Collections.ObjectModel.ObservableCollection<string> ParentIds
+        public global::System.Collections.ObjectModel.Collection<string> ParentIds
         {
             get
             {
@@ -662,12 +637,11 @@ namespace SDL.ECommerce.OData
                 this.OnParentIdsChanging(value);
                 this._ParentIds = value;
                 this.OnParentIdsChanged();
-                this.OnPropertyChanged("parentIds");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<string> _ParentIds = new global::System.Collections.ObjectModel.ObservableCollection<string>();
-        partial void OnParentIdsChanging(global::System.Collections.ObjectModel.ObservableCollection<string> value);
+        private global::System.Collections.ObjectModel.Collection<string> _ParentIds = new global::System.Collections.ObjectModel.Collection<string>();
+        partial void OnParentIdsChanging(global::System.Collections.ObjectModel.Collection<string> value);
         partial void OnParentIdsChanged();
         /// <summary>
         /// There are no comments for Property Parent in the schema.
@@ -685,7 +659,6 @@ namespace SDL.ECommerce.OData
                 this.OnParentChanging(value);
                 this._Parent = value;
                 this.OnParentChanged();
-                this.OnPropertyChanged("parent");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -697,7 +670,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("categories")]
-        public global::Microsoft.OData.Client.DataServiceCollection<global::SDL.ECommerce.OData.Category> Categories
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Category> Categories
         {
             get
             {
@@ -708,30 +681,12 @@ namespace SDL.ECommerce.OData
                 this.OnCategoriesChanging(value);
                 this._Categories = value;
                 this.OnCategoriesChanged();
-                this.OnPropertyChanged("categories");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Microsoft.OData.Client.DataServiceCollection<global::SDL.ECommerce.OData.Category> _Categories = new global::Microsoft.OData.Client.DataServiceCollection<global::SDL.ECommerce.OData.Category>(null, global::Microsoft.OData.Client.TrackingMode.None);
-        partial void OnCategoriesChanging(global::Microsoft.OData.Client.DataServiceCollection<global::SDL.ECommerce.OData.Category> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Category> _Categories = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Category>();
+        partial void OnCategoriesChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Category> value);
         partial void OnCategoriesChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductSingle in the schema.
@@ -765,9 +720,8 @@ namespace SDL.ECommerce.OData
     /// Id
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("id")]
-    [global::Microsoft.OData.Client.EntitySet("Products")]
     [global::Microsoft.OData.Client.OriginalNameAttribute("Product")]
-    public partial class Product : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Product : global::Microsoft.OData.Client.BaseEntityType
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -785,7 +739,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -808,7 +761,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -831,7 +783,6 @@ namespace SDL.ECommerce.OData
                 this.OnDescriptionChanging(value);
                 this._Description = value;
                 this.OnDescriptionChanged();
-                this.OnPropertyChanged("description");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -854,7 +805,6 @@ namespace SDL.ECommerce.OData
                 this.OnPriceChanging(value);
                 this._Price = value;
                 this.OnPriceChanged();
-                this.OnPropertyChanged("price");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -877,7 +827,6 @@ namespace SDL.ECommerce.OData
                 this.OnThumbnailUrlChanging(value);
                 this._ThumbnailUrl = value;
                 this.OnThumbnailUrlChanged();
-                this.OnPropertyChanged("thumbnailUrl");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -900,7 +849,6 @@ namespace SDL.ECommerce.OData
                 this.OnPrimaryImageUrlChanging(value);
                 this._PrimaryImageUrl = value;
                 this.OnPrimaryImageUrlChanged();
-                this.OnPropertyChanged("primaryImageUrl");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -912,7 +860,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("attributes")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute> Attributes
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductAttribute> Attributes
         {
             get
             {
@@ -923,19 +871,18 @@ namespace SDL.ECommerce.OData
                 this.OnAttributesChanging(value);
                 this._Attributes = value;
                 this.OnAttributesChanged();
-                this.OnPropertyChanged("attributes");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute> _Attributes = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute>();
-        partial void OnAttributesChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductAttribute> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductAttribute> _Attributes = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductAttribute>();
+        partial void OnAttributesChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductAttribute> value);
         partial void OnAttributesChanged();
         /// <summary>
         /// There are no comments for Property Categories in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("categories")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> Categories
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CategorySummary> Categories
         {
             get
             {
@@ -946,19 +893,18 @@ namespace SDL.ECommerce.OData
                 this.OnCategoriesChanging(value);
                 this._Categories = value;
                 this.OnCategoriesChanged();
-                this.OnPropertyChanged("categories");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> _Categories = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary>();
-        partial void OnCategoriesChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.CategorySummary> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CategorySummary> _Categories = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CategorySummary>();
+        partial void OnCategoriesChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CategorySummary> value);
         partial void OnCategoriesChanged();
         /// <summary>
         /// There are no comments for Property Promotions in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("promotions")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> Promotions
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> Promotions
         {
             get
             {
@@ -969,19 +915,18 @@ namespace SDL.ECommerce.OData
                 this.OnPromotionsChanging(value);
                 this._Promotions = value;
                 this.OnPromotionsChanged();
-                this.OnPropertyChanged("promotions");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> _Promotions = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion>();
-        partial void OnPromotionsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> _Promotions = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion>();
+        partial void OnPromotionsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> value);
         partial void OnPromotionsChanged();
         /// <summary>
         /// There are no comments for Property Breadcrumbs in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("breadcrumbs")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> Breadcrumbs
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> Breadcrumbs
         {
             get
             {
@@ -992,30 +937,12 @@ namespace SDL.ECommerce.OData
                 this.OnBreadcrumbsChanging(value);
                 this._Breadcrumbs = value;
                 this.OnBreadcrumbsChanged();
-                this.OnPropertyChanged("breadcrumbs");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb>();
-        partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb>();
+        partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> value);
         partial void OnBreadcrumbsChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductQueryResultSingle in the schema.
@@ -1049,9 +976,8 @@ namespace SDL.ECommerce.OData
     /// ResultId
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("resultId")]
-    [global::Microsoft.OData.Client.EntitySet("ProductQueryResults")]
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductQueryResult")]
-    public partial class ProductQueryResult : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductQueryResult : global::Microsoft.OData.Client.BaseEntityType
     {
         /// <summary>
         /// There are no comments for Property ResultId in the schema.
@@ -1069,7 +995,6 @@ namespace SDL.ECommerce.OData
                 this.OnResultIdChanging(value);
                 this._ResultId = value;
                 this.OnResultIdChanged();
-                this.OnPropertyChanged("resultId");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1092,7 +1017,6 @@ namespace SDL.ECommerce.OData
                 this.OnTotalCountChanging(value);
                 this._TotalCount = value;
                 this.OnTotalCountChanged();
-                this.OnPropertyChanged("totalCount");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1115,7 +1039,6 @@ namespace SDL.ECommerce.OData
                 this.OnStartIndexChanging(value);
                 this._StartIndex = value;
                 this.OnStartIndexChanged();
-                this.OnPropertyChanged("startIndex");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1138,7 +1061,6 @@ namespace SDL.ECommerce.OData
                 this.OnViewSizeChanging(value);
                 this._ViewSize = value;
                 this.OnViewSizeChanged();
-                this.OnPropertyChanged("viewSize");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1161,7 +1083,6 @@ namespace SDL.ECommerce.OData
                 this.OnCurrentSetChanging(value);
                 this._CurrentSet = value;
                 this.OnCurrentSetChanged();
-                this.OnPropertyChanged("currentSet");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1184,7 +1105,6 @@ namespace SDL.ECommerce.OData
                 this.OnRedirectLocationChanging(value);
                 this._RedirectLocation = value;
                 this.OnRedirectLocationChanged();
-                this.OnPropertyChanged("redirectLocation");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1196,7 +1116,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("querySuggestions")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.QuerySuggestion> QuerySuggestions
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.QuerySuggestion> QuerySuggestions
         {
             get
             {
@@ -1207,19 +1127,18 @@ namespace SDL.ECommerce.OData
                 this.OnQuerySuggestionsChanging(value);
                 this._QuerySuggestions = value;
                 this.OnQuerySuggestionsChanged();
-                this.OnPropertyChanged("querySuggestions");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.QuerySuggestion> _QuerySuggestions = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.QuerySuggestion>();
-        partial void OnQuerySuggestionsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.QuerySuggestion> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.QuerySuggestion> _QuerySuggestions = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.QuerySuggestion>();
+        partial void OnQuerySuggestionsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.QuerySuggestion> value);
         partial void OnQuerySuggestionsChanged();
         /// <summary>
         /// There are no comments for Property FacetGroups in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("facetGroups")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.FacetGroup> FacetGroups
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.FacetGroup> FacetGroups
         {
             get
             {
@@ -1230,19 +1149,18 @@ namespace SDL.ECommerce.OData
                 this.OnFacetGroupsChanging(value);
                 this._FacetGroups = value;
                 this.OnFacetGroupsChanged();
-                this.OnPropertyChanged("facetGroups");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.FacetGroup> _FacetGroups = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.FacetGroup>();
-        partial void OnFacetGroupsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.FacetGroup> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.FacetGroup> _FacetGroups = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.FacetGroup>();
+        partial void OnFacetGroupsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.FacetGroup> value);
         partial void OnFacetGroupsChanged();
         /// <summary>
         /// There are no comments for Property Products in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("products")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> Products
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> Products
         {
             get
             {
@@ -1253,19 +1171,18 @@ namespace SDL.ECommerce.OData
                 this.OnProductsChanging(value);
                 this._Products = value;
                 this.OnProductsChanged();
-                this.OnPropertyChanged("products");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> _Products = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary>();
-        partial void OnProductsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> _Products = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary>();
+        partial void OnProductsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> value);
         partial void OnProductsChanged();
         /// <summary>
         /// There are no comments for Property Promotions in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("promotions")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> Promotions
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> Promotions
         {
             get
             {
@@ -1276,19 +1193,18 @@ namespace SDL.ECommerce.OData
                 this.OnPromotionsChanging(value);
                 this._Promotions = value;
                 this.OnPromotionsChanged();
-                this.OnPropertyChanged("promotions");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> _Promotions = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion>();
-        partial void OnPromotionsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Promotion> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> _Promotions = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion>();
+        partial void OnPromotionsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Promotion> value);
         partial void OnPromotionsChanged();
         /// <summary>
         /// There are no comments for Property Breadcrumbs in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("breadcrumbs")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> Breadcrumbs
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> Breadcrumbs
         {
             get
             {
@@ -1299,36 +1215,18 @@ namespace SDL.ECommerce.OData
                 this.OnBreadcrumbsChanging(value);
                 this._Breadcrumbs = value;
                 this.OnBreadcrumbsChanged();
-                this.OnPropertyChanged("breadcrumbs");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb>();
-        partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Breadcrumb> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb>();
+        partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> value);
         partial void OnBreadcrumbsChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for CategorySummary in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("CategorySummary")]
-    public partial class CategorySummary : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class CategorySummary
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -1346,7 +1244,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1369,7 +1266,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1392,36 +1288,18 @@ namespace SDL.ECommerce.OData
                 this.OnPathNameChanging(value);
                 this._PathName = value;
                 this.OnPathNameChanged();
-                this.OnPropertyChanged("pathName");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _PathName;
         partial void OnPathNameChanging(string value);
         partial void OnPathNameChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductSummary in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductSummary")]
-    public partial class ProductSummary : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductSummary
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -1439,7 +1317,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1462,7 +1339,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1485,7 +1361,6 @@ namespace SDL.ECommerce.OData
                 this.OnPriceChanging(value);
                 this._Price = value;
                 this.OnPriceChanged();
-                this.OnPropertyChanged("price");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1508,36 +1383,18 @@ namespace SDL.ECommerce.OData
                 this.OnThumbnailUrlChanging(value);
                 this._ThumbnailUrl = value;
                 this.OnThumbnailUrlChanged();
-                this.OnPropertyChanged("thumbnailUrl");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _ThumbnailUrl;
         partial void OnThumbnailUrlChanging(string value);
         partial void OnThumbnailUrlChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductPrice in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductPrice")]
-    public partial class ProductPrice : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductPrice
     {
         /// <summary>
         /// There are no comments for Property Price in the schema.
@@ -1555,7 +1412,6 @@ namespace SDL.ECommerce.OData
                 this.OnPriceChanging(value);
                 this._Price = value;
                 this.OnPriceChanged();
-                this.OnPropertyChanged("price");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1578,7 +1434,6 @@ namespace SDL.ECommerce.OData
                 this.OnFormattedPriceChanging(value);
                 this._FormattedPrice = value;
                 this.OnFormattedPriceChanged();
-                this.OnPropertyChanged("formattedPrice");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1601,36 +1456,18 @@ namespace SDL.ECommerce.OData
                 this.OnCurrencyChanging(value);
                 this._Currency = value;
                 this.OnCurrencyChanged();
-                this.OnPropertyChanged("currency");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _Currency;
         partial void OnCurrencyChanging(string value);
         partial void OnCurrencyChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductAttribute in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductAttribute")]
-    public partial class ProductAttribute : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductAttribute
     {
         /// <summary>
         /// There are no comments for Property Name in the schema.
@@ -1648,7 +1485,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1671,7 +1507,6 @@ namespace SDL.ECommerce.OData
                 this.OnSingleValueChanging(value);
                 this._SingleValue = value;
                 this.OnSingleValueChanged();
-                this.OnPropertyChanged("singleValue");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1683,7 +1518,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("multiValue")]
-        public global::System.Collections.ObjectModel.ObservableCollection<string> MultiValue
+        public global::System.Collections.ObjectModel.Collection<string> MultiValue
         {
             get
             {
@@ -1694,36 +1529,18 @@ namespace SDL.ECommerce.OData
                 this.OnMultiValueChanging(value);
                 this._MultiValue = value;
                 this.OnMultiValueChanged();
-                this.OnPropertyChanged("multiValue");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<string> _MultiValue = new global::System.Collections.ObjectModel.ObservableCollection<string>();
-        partial void OnMultiValueChanging(global::System.Collections.ObjectModel.ObservableCollection<string> value);
+        private global::System.Collections.ObjectModel.Collection<string> _MultiValue = new global::System.Collections.ObjectModel.Collection<string>();
+        partial void OnMultiValueChanging(global::System.Collections.ObjectModel.Collection<string> value);
         partial void OnMultiValueChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for FacetGroup in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("FacetGroup")]
-    public partial class FacetGroup : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class FacetGroup
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -1741,7 +1558,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1764,7 +1580,6 @@ namespace SDL.ECommerce.OData
                 this.OnTitleChanging(value);
                 this._Title = value;
                 this.OnTitleChanged();
-                this.OnPropertyChanged("title");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1787,7 +1602,6 @@ namespace SDL.ECommerce.OData
                 this.OnTypeChanging(value);
                 this._Type = value;
                 this.OnTypeChanged();
-                this.OnPropertyChanged("type");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1810,7 +1624,6 @@ namespace SDL.ECommerce.OData
                 this.OnIsCategoryChanging(value);
                 this._IsCategory = value;
                 this.OnIsCategoryChanged();
-                this.OnPropertyChanged("isCategory");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1822,7 +1635,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("facets")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Facet> Facets
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet> Facets
         {
             get
             {
@@ -1833,36 +1646,18 @@ namespace SDL.ECommerce.OData
                 this.OnFacetsChanging(value);
                 this._Facets = value;
                 this.OnFacetsChanged();
-                this.OnPropertyChanged("facets");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Facet> _Facets = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Facet>();
-        partial void OnFacetsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.Facet> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet> _Facets = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet>();
+        partial void OnFacetsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet> value);
         partial void OnFacetsChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for Facet in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("Facet")]
-    public partial class Facet : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Facet
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -1880,7 +1675,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1903,7 +1697,6 @@ namespace SDL.ECommerce.OData
                 this.OnTitleChanging(value);
                 this._Title = value;
                 this.OnTitleChanged();
-                this.OnPropertyChanged("title");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1926,7 +1719,6 @@ namespace SDL.ECommerce.OData
                 this.OnCountChanging(value);
                 this._Count = value;
                 this.OnCountChanged();
-                this.OnPropertyChanged("count");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1949,7 +1741,6 @@ namespace SDL.ECommerce.OData
                 this.OnIsSelectedChanging(value);
                 this._IsSelected = value;
                 this.OnIsSelectedChanged();
-                this.OnPropertyChanged("isSelected");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1972,7 +1763,6 @@ namespace SDL.ECommerce.OData
                 this.OnIsCategoryChanging(value);
                 this._IsCategory = value;
                 this.OnIsCategoryChanged();
-                this.OnPropertyChanged("isCategory");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1995,7 +1785,6 @@ namespace SDL.ECommerce.OData
                 this.OnTypeChanging(value);
                 this._Type = value;
                 this.OnTypeChanged();
-                this.OnPropertyChanged("type");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2007,7 +1796,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("values")]
-        public global::System.Collections.ObjectModel.ObservableCollection<string> Values
+        public global::System.Collections.ObjectModel.Collection<string> Values
         {
             get
             {
@@ -2018,36 +1807,18 @@ namespace SDL.ECommerce.OData
                 this.OnValuesChanging(value);
                 this._Values = value;
                 this.OnValuesChanged();
-                this.OnPropertyChanged("values");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<string> _Values = new global::System.Collections.ObjectModel.ObservableCollection<string>();
-        partial void OnValuesChanging(global::System.Collections.ObjectModel.ObservableCollection<string> value);
+        private global::System.Collections.ObjectModel.Collection<string> _Values = new global::System.Collections.ObjectModel.Collection<string>();
+        partial void OnValuesChanging(global::System.Collections.ObjectModel.Collection<string> value);
         partial void OnValuesChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for QuerySuggestion in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("QuerySuggestion")]
-    public partial class QuerySuggestion : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class QuerySuggestion
     {
         /// <summary>
         /// There are no comments for Property Original in the schema.
@@ -2065,7 +1836,6 @@ namespace SDL.ECommerce.OData
                 this.OnOriginalChanging(value);
                 this._Original = value;
                 this.OnOriginalChanged();
-                this.OnPropertyChanged("original");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2088,36 +1858,18 @@ namespace SDL.ECommerce.OData
                 this.OnSuggestionChanging(value);
                 this._Suggestion = value;
                 this.OnSuggestionChanged();
-                this.OnPropertyChanged("suggestion");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _Suggestion;
         partial void OnSuggestionChanging(string value);
         partial void OnSuggestionChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for Location in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("Location")]
-    public partial class Location : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Location
     {
         /// <summary>
         /// There are no comments for Property CategoryRef in the schema.
@@ -2135,7 +1887,6 @@ namespace SDL.ECommerce.OData
                 this.OnCategoryRefChanging(value);
                 this._CategoryRef = value;
                 this.OnCategoryRefChanged();
-                this.OnPropertyChanged("categoryRef");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2147,7 +1898,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("facets")]
-        public global::System.Collections.ObjectModel.ObservableCollection<string> Facets
+        public global::System.Collections.ObjectModel.Collection<string> Facets
         {
             get
             {
@@ -2158,12 +1909,11 @@ namespace SDL.ECommerce.OData
                 this.OnFacetsChanging(value);
                 this._Facets = value;
                 this.OnFacetsChanged();
-                this.OnPropertyChanged("facets");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<string> _Facets = new global::System.Collections.ObjectModel.ObservableCollection<string>();
-        partial void OnFacetsChanging(global::System.Collections.ObjectModel.ObservableCollection<string> value);
+        private global::System.Collections.ObjectModel.Collection<string> _Facets = new global::System.Collections.ObjectModel.Collection<string>();
+        partial void OnFacetsChanging(global::System.Collections.ObjectModel.Collection<string> value);
         partial void OnFacetsChanged();
         /// <summary>
         /// There are no comments for Property ProductRef in the schema.
@@ -2181,7 +1931,6 @@ namespace SDL.ECommerce.OData
                 this.OnProductRefChanging(value);
                 this._ProductRef = value;
                 this.OnProductRefChanged();
-                this.OnPropertyChanged("productRef");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2204,36 +1953,18 @@ namespace SDL.ECommerce.OData
                 this.OnStaticUrlChanging(value);
                 this._StaticUrl = value;
                 this.OnStaticUrlChanged();
-                this.OnPropertyChanged("staticUrl");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _StaticUrl;
         partial void OnStaticUrlChanging(string value);
         partial void OnStaticUrlChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for CategoryRef in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("CategoryRef")]
-    public partial class CategoryRef : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class CategoryRef
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -2251,7 +1982,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2274,7 +2004,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2297,36 +2026,18 @@ namespace SDL.ECommerce.OData
                 this.OnPathChanging(value);
                 this._Path = value;
                 this.OnPathChanged();
-                this.OnPropertyChanged("path");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _Path;
         partial void OnPathChanging(string value);
         partial void OnPathChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductRef in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductRef")]
-    public partial class ProductRef : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductRef
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -2344,7 +2055,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2367,36 +2077,18 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private string _Name;
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for Promotion in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("Promotion")]
-    public partial class Promotion : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Promotion
     {
         /// <summary>
         /// There are no comments for Property Id in the schema.
@@ -2414,7 +2106,6 @@ namespace SDL.ECommerce.OData
                 this.OnIdChanging(value);
                 this._Id = value;
                 this.OnIdChanged();
-                this.OnPropertyChanged("id");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2437,7 +2128,6 @@ namespace SDL.ECommerce.OData
                 this.OnNameChanging(value);
                 this._Name = value;
                 this.OnNameChanged();
-                this.OnPropertyChanged("name");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2460,7 +2150,6 @@ namespace SDL.ECommerce.OData
                 this.OnTitleChanging(value);
                 this._Title = value;
                 this.OnTitleChanged();
-                this.OnPropertyChanged("title");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2483,7 +2172,6 @@ namespace SDL.ECommerce.OData
                 this.OnProductsPromotionChanging(value);
                 this._ProductsPromotion = value;
                 this.OnProductsPromotionChanged();
-                this.OnPropertyChanged("productsPromotion");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2506,43 +2194,25 @@ namespace SDL.ECommerce.OData
                 this.OnContentPromotionChanging(value);
                 this._ContentPromotion = value;
                 this.OnContentPromotionChanged();
-                this.OnPropertyChanged("contentPromotion");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::SDL.ECommerce.OData.ContentPromotion _ContentPromotion;
         partial void OnContentPromotionChanging(global::SDL.ECommerce.OData.ContentPromotion value);
         partial void OnContentPromotionChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ProductsPromotion in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ProductsPromotion")]
-    public partial class ProductsPromotion : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ProductsPromotion
     {
         /// <summary>
         /// There are no comments for Property Products in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("products")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> Products
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> Products
         {
             get
             {
@@ -2553,36 +2223,18 @@ namespace SDL.ECommerce.OData
                 this.OnProductsChanging(value);
                 this._Products = value;
                 this.OnProductsChanged();
-                this.OnPropertyChanged("products");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> _Products = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary>();
-        partial void OnProductsChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ProductSummary> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> _Products = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary>();
+        partial void OnProductsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductSummary> value);
         partial void OnProductsChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ContentPromotion in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ContentPromotion")]
-    public partial class ContentPromotion : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ContentPromotion
     {
         /// <summary>
         /// There are no comments for Property Text in the schema.
@@ -2600,7 +2252,6 @@ namespace SDL.ECommerce.OData
                 this.OnTextChanging(value);
                 this._Text = value;
                 this.OnTextChanged();
-                this.OnPropertyChanged("text");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2623,7 +2274,6 @@ namespace SDL.ECommerce.OData
                 this.OnImageUrlChanging(value);
                 this._ImageUrl = value;
                 this.OnImageUrlChanged();
-                this.OnPropertyChanged("imageUrl");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2646,7 +2296,6 @@ namespace SDL.ECommerce.OData
                 this.OnLocationChanging(value);
                 this._Location = value;
                 this.OnLocationChanged();
-                this.OnPropertyChanged("location");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2658,7 +2307,7 @@ namespace SDL.ECommerce.OData
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         [global::Microsoft.OData.Client.OriginalNameAttribute("contentAreas")]
-        public global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ContentArea> ContentAreas
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ContentArea> ContentAreas
         {
             get
             {
@@ -2669,36 +2318,18 @@ namespace SDL.ECommerce.OData
                 this.OnContentAreasChanging(value);
                 this._ContentAreas = value;
                 this.OnContentAreasChanged();
-                this.OnPropertyChanged("contentAreas");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ContentArea> _ContentAreas = new global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ContentArea>();
-        partial void OnContentAreasChanging(global::System.Collections.ObjectModel.ObservableCollection<global::SDL.ECommerce.OData.ContentArea> value);
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ContentArea> _ContentAreas = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ContentArea>();
+        partial void OnContentAreasChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ContentArea> value);
         partial void OnContentAreasChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for ContentArea in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("ContentArea")]
-    public partial class ContentArea : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class ContentArea
     {
         /// <summary>
         /// There are no comments for Property X1 in the schema.
@@ -2716,7 +2347,6 @@ namespace SDL.ECommerce.OData
                 this.OnX1Changing(value);
                 this._X1 = value;
                 this.OnX1Changed();
-                this.OnPropertyChanged("x1");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2739,7 +2369,6 @@ namespace SDL.ECommerce.OData
                 this.OnY1Changing(value);
                 this._Y1 = value;
                 this.OnY1Changed();
-                this.OnPropertyChanged("y1");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2762,7 +2391,6 @@ namespace SDL.ECommerce.OData
                 this.OnX2Changing(value);
                 this._X2 = value;
                 this.OnX2Changed();
-                this.OnPropertyChanged("x2");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2785,7 +2413,6 @@ namespace SDL.ECommerce.OData
                 this.OnY2Changing(value);
                 this._Y2 = value;
                 this.OnY2Changed();
-                this.OnPropertyChanged("y2");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2808,36 +2435,18 @@ namespace SDL.ECommerce.OData
                 this.OnLocationChanging(value);
                 this._Location = value;
                 this.OnLocationChanged();
-                this.OnPropertyChanged("location");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::SDL.ECommerce.OData.Location _Location;
         partial void OnLocationChanging(global::SDL.ECommerce.OData.Location value);
         partial void OnLocationChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// There are no comments for Breadcrumb in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("Breadcrumb")]
-    public partial class Breadcrumb : global::System.ComponentModel.INotifyPropertyChanged
+    public partial class Breadcrumb
     {
         /// <summary>
         /// There are no comments for Property Title in the schema.
@@ -2855,7 +2464,6 @@ namespace SDL.ECommerce.OData
                 this.OnTitleChanging(value);
                 this._Title = value;
                 this.OnTitleChanged();
-                this.OnPropertyChanged("title");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2878,7 +2486,6 @@ namespace SDL.ECommerce.OData
                 this.OnIsCategoryChanging(value);
                 this._IsCategory = value;
                 this.OnIsCategoryChanged();
-                this.OnPropertyChanged("isCategory");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2901,7 +2508,6 @@ namespace SDL.ECommerce.OData
                 this.OnFacetChanging(value);
                 this._Facet = value;
                 this.OnFacetChanged();
-                this.OnPropertyChanged("facet");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -2924,30 +2530,12 @@ namespace SDL.ECommerce.OData
                 this.OnCategoryRefChanging(value);
                 this._CategoryRef = value;
                 this.OnCategoryRefChanged();
-                this.OnPropertyChanged("categoryRef");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::SDL.ECommerce.OData.CategoryRef _CategoryRef;
         partial void OnCategoryRefChanging(global::SDL.ECommerce.OData.CategoryRef value);
         partial void OnCategoryRefChanged();
-        /// <summary>
-        /// This event is raised when the value of the property is changed
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// The value of the property is changed
-        /// </summary>
-        /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
     }
     /// <summary>
     /// Class containing all extension methods

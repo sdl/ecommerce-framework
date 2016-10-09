@@ -30,6 +30,7 @@ namespace SDL.ECommerce.Api.Model
         public IList<FacetParameter> Facets { get; set; }
         public int? ViewSize { get; set; }   
         public int? StartIndex { get; set; }
+        public ViewType? ViewType { get; set; }
 
         // TODO: Add view type + filter attributes here
 

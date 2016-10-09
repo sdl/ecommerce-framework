@@ -253,8 +253,6 @@ public class WidgetController extends BaseController {
     public String handleFlyoutFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
-        Localization localization = this.webRequestContext.getLocalization();
-        String navigationBasePath = localization.localizePath("/c"); // TODO: Have this configurable. Consider to have some kind of Context
 
         if ( entity.getCategoryReference() != null ) {
             Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());

@@ -21,6 +21,9 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty(IgnoreMapping = true)]
         public IList<IFacetGroup> FacetGroups { get; set; }
 
+        [SemanticProperty(IgnoreMapping =true)]
+        public IList<IPromotion> RelatedPromotions { get; set; }
+
 
 
     }

@@ -10,7 +10,7 @@
          <a class="xpm-button popup-iframe" style="margin: 0px 8px;font-size: 14px;" href="${promotion.editUrl}"><i class="fa fa-pencil-square"></i></a>
         </c:if>
         </h5>
-
+        <!-- TODO: Limit the number of products returned from the promo -->
         <c:forEach var="product" items="${promotion.products}">
             <a href="${linkResolver.getProductDetailLink(product)}" class="product-teaser-link" style="display: flex;">
                 <div class="col-sm-6">

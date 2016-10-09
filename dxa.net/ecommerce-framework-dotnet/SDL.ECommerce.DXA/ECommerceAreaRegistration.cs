@@ -33,6 +33,7 @@ namespace SDL.ECommerce.DXA
             RegisterViewModel("DetailBreadcrumb", typeof(BreadcrumbWidget), "EComWidget");
             RegisterViewModel("SearchFeedback", typeof(SearchFeedbackWidget), "EComWidget");
             RegisterViewModel("SearchBox", typeof(SearchBox));
+            RegisterViewModel("FacetsMegaNavigation", typeof(FacetsWidget), "EComWidget");
         }
 
         public override void RegisterArea(AreaRegistrationContext context)

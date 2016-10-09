@@ -21,6 +21,6 @@
     "GeneratedFileNamePrefix": "ECommerceODataService",
     "UseNameSpacePrefix": true,
     "NamespacePrefix": "SDL.ECommerce.OData",
-    "UseDataServiceCollection": true
+    "UseDataServiceCollection": false
   }
 }

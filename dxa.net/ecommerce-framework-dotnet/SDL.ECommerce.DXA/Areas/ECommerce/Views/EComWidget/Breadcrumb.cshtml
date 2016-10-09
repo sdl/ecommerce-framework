@@ -1,5 +1,4 @@
-﻿@using SDL.ECommerce.DXA
-@model BreadcrumbWidget
+﻿@model BreadcrumbWidget
 <div  @Html.DxaEntityMarkup()> 
     @{ 
         var currentCategory = (ICategory) ECommerceContext.Get(ECommerceContext.CATEGORY);

@@ -11,11 +11,16 @@ using SDL.ECommerce.DXA.Models;
 using SDL.ECommerce.Api;
 using Sdl.Web.Mvc.Configuration;
 using SDL.ECommerce.Api.Model;
+using System.Runtime.Caching;
 
 namespace SDL.ECommerce.DXA.Controller
 {
+    /// <summary>
+    /// Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
+    /// </summary>
     public class EComWidgetController : BaseController
     {
+
         /// <summary>
         /// Product Detail
         /// </summary>
@@ -98,6 +103,7 @@ namespace SDL.ECommerce.DXA.Controller
                 queryResult = (IProductQueryResult) ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
             }
 
+
             widget.Items = queryResult.Products.ToList();
             this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS));
 
@@ -130,6 +136,44 @@ namespace SDL.ECommerce.DXA.Controller
             }
             widget.FacetGroups = queryResult.FacetGroups.ToList();
 
+            return View(entity.MvcData.ViewName, entity);
+        }
+
+        /// <summary>
+        /// Flyout Facets
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="containerSize"></param>
+        /// <returns></returns>
+        public ActionResult FlyoutFacets(EntityModel entity, int containerSize = 0)
+        {
+            SetupViewData(entity, containerSize);
+            FacetsWidget widget = (FacetsWidget)entity;
+
+            if ( widget.CategoryReference != null )
+            {
+                widget.CategoryReference.Category = ResolveCategory(widget.CategoryReference);
+                var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id);
+                if (cachedData == null)
+                {               
+                    var queryResult = ECommerceContext.Client.QueryService.Query(
+                        new Query
+                        {
+                            Category = widget.CategoryReference.Category,
+                            ViewType = Api.Model.ViewType.FLYOUT
+                        });
+
+                    cachedData = new FlyoutData
+                    {
+                        FacetGroups = queryResult.FacetGroups.ToList(),
+                        Promotions = queryResult.Promotions.ToList()
+                    };
+                    this.CacheFlyoutData(widget.CategoryReference.Category.Id, cachedData);
+                }
+                widget.FacetGroups = cachedData.FacetGroups;
+                widget.RelatedPromotions = cachedData.Promotions;
+            }
+            
             return View(entity.MvcData.ViewName, entity);
         }
 
@@ -242,6 +286,26 @@ namespace SDL.ECommerce.DXA.Controller
         }
 
         /// <summary>
+        /// Resolve category via a CMS category reference
+        /// </summary>
+        /// <param name="categoryReference"></param>
+        /// <returns></returns>
+        protected ICategory ResolveCategory(ECommerceCategoryReference categoryReference)
+        {
+            ICategory category = null;
+            if ( categoryReference.CategoryPath != null )
+            {
+                category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryReference.CategoryPath);
+            }
+            else if ( categoryReference.CategoryId != null )
+            {
+                category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryId);
+            }
+            // TODO: Add support for ECL references here as well
+            return category;
+        }
+
+        /// <summary>
         /// Process navigation links in product listers (next, previous etc).
         /// </summary>
         /// <param name="lister"></param>
@@ -311,5 +375,25 @@ namespace SDL.ECommerce.DXA.Controller
             }
 
         }
+
+        private FlyoutData GetCachedFlyoutData(string categoryId)
+        {
+            return this.flyoutCache[categoryId] as FlyoutData;
+        }
+
+        private void CacheFlyoutData(string categoryId, FlyoutData flyoutData)
+        {
+            // Default cache flyout data in 1 hour. TODO: Have this configurable
+            //
+            this.flyoutCache.Add(categoryId, flyoutData, DateTimeOffset.Now.AddHours(1.0));
+        }
+
+        private ObjectCache flyoutCache = MemoryCache.Default;
+    }
+
+    internal class FlyoutData
+    {
+        public IList<IFacetGroup> FacetGroups { get; set; }
+        public IList<IPromotion> Promotions { get; set; }
     }
 }

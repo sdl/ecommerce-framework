@@ -1,0 +1,40 @@
+﻿@model IContentPromotion
+<div>
+    <a href="@ECommerceContext.LinkResolver.GetLocationLink(Model.Location)">
+        
+        @if (Model.ImageUrl != null)
+        {
+            <div class="hero">
+                <img src="@Model.ImageUrl" />
+                @if (Model.Title != null || Model.Text != null)
+                {
+                    <div class="overlay overlay-tl ribbon">
+                        @if (Model.Title != null)
+                        {
+                            <h1>@Model.Title</h1>
+                        }
+                        @if (Model.Text != null)
+                        {
+                            @Model.Text    
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <article class="rich-text">
+                @if (Model.Title != null)
+                {
+                    <h1>@Model.Title</h1>
+                }
+                @if (Model.Text != null)
+                {
+                    <div class="content">
+                        @Model.Text
+                    </div>
+                }
+            </article>
+        }
+    </a>
+</div>
