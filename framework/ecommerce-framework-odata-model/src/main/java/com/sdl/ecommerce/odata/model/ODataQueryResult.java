@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ODataQueryResult implements QueryResult {
 
     @EdmProperty
-    private String resultId = "result"; // TODO: What ID to use here???
+    private String resultId;
 
     @EdmProperty
     private int totalCount;
@@ -57,6 +57,7 @@ public class ODataQueryResult implements QueryResult {
     public ODataQueryResult() {}
 
     public ODataQueryResult(QueryResult queryResult) {
+        this.resultId = Integer.toString(queryResult.hashCode());
         queryResult.getProducts().forEach(product -> products.add(new ODataProductSummary(product)));
         this.totalCount = queryResult.getTotalCount();
         this.currentSet = queryResult.getCurrentSet();
