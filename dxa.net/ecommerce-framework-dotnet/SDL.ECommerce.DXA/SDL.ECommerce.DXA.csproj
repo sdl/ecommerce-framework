@@ -152,7 +152,9 @@
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceAreaRegistration.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />
+    <Compile Include="Models\CartWidget.cs" />
     <Compile Include="Models\ECommerceCategoryReference.cs" />
+    <Compile Include="Models\ECommerceEclItem.cs" />
     <Compile Include="Models\ECommerceProductReference.cs" />
     <Compile Include="Models\FacetsWidget.cs" />
     <Compile Include="Models\ListerNavigationData.cs" />
@@ -183,6 +185,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\FacetsMegaNavigation.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotionMegaNav.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotionMegaNav.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

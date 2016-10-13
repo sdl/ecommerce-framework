@@ -14,7 +14,8 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:categoryPath")]
         public string CategoryPath { get; set; }
 
-        // TODO: Add ECL reference here
+        [SemanticProperty("e:categoryRef")]
+        public ECommerceEclItem CategoryRef { get; set; }
 
         [SemanticProperty("e:categoryId")]
         public string CategoryId { get; set; }

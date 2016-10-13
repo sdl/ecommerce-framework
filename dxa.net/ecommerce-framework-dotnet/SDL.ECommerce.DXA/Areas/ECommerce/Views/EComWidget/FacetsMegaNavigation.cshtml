@@ -1,11 +1,11 @@
 ﻿@model FacetsWidget
-@if (Model.CategoryReference != null && Model.CategoryReference.CategoryPath.Equals("Empty"))
+@if (Model.CategoryReference != null && Model.CategoryReference.CategoryPath != null && Model.CategoryReference.CategoryPath.Equals("Empty"))
 {
     <li class="mega-nav-link">
         <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
     </li>
 }
-@if (Model.CategoryReference.Category != null && Model.FacetGroups != null && Model.FacetGroups.Count > 0)
+@if (Model.CategoryReference != null && Model.CategoryReference.Category != null && Model.FacetGroups != null && Model.FacetGroups.Count > 0)
 {
 
     int cols = Model.FacetGroups.Count + (Model.RelatedPromotions.Count > 0 ? 1 : 0);

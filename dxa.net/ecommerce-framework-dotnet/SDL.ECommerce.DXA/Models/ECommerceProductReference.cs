@@ -13,6 +13,7 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:productId")]
         public string ProductId { get; set; }
 
-        // TODO: Declare the ECL item here as well
+        [SemanticProperty("e:productRef")]
+        public ECommerceEclItem ProductRef { get; set; }
     }
 }

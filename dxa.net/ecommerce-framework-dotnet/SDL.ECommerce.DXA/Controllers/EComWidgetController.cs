@@ -153,25 +153,28 @@ namespace SDL.ECommerce.DXA.Controller
             if ( widget.CategoryReference != null )
             {
                 widget.CategoryReference.Category = ResolveCategory(widget.CategoryReference);
-                var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id);
-                if (cachedData == null)
-                {               
-                    var queryResult = ECommerceContext.Client.QueryService.Query(
-                        new Query
-                        {
-                            Category = widget.CategoryReference.Category,
-                            ViewType = Api.Model.ViewType.FLYOUT
-                        });
-
-                    cachedData = new FlyoutData
+                if (widget.CategoryReference.Category != null)
+                {
+                    var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id);
+                    if (cachedData == null)
                     {
-                        FacetGroups = queryResult.FacetGroups.ToList(),
-                        Promotions = queryResult.Promotions.ToList()
-                    };
-                    this.CacheFlyoutData(widget.CategoryReference.Category.Id, cachedData);
+                        var queryResult = ECommerceContext.Client.QueryService.Query(
+                            new Query
+                            {
+                                Category = widget.CategoryReference.Category,
+                                ViewType = Api.Model.ViewType.FLYOUT
+                            });
+
+                        cachedData = new FlyoutData
+                        {
+                            FacetGroups = queryResult.FacetGroups.ToList(),
+                            Promotions = queryResult.Promotions.ToList()
+                        };
+                        this.CacheFlyoutData(widget.CategoryReference.Category.Id, cachedData);
+                    }
+                    widget.FacetGroups = cachedData.FacetGroups;
+                    widget.RelatedPromotions = cachedData.Promotions;
                 }
-                widget.FacetGroups = cachedData.FacetGroups;
-                widget.RelatedPromotions = cachedData.Promotions;
             }
             
             return View(entity.MvcData.ViewName, entity);
@@ -286,6 +289,22 @@ namespace SDL.ECommerce.DXA.Controller
         }
 
         /// <summary>
+        /// Cart
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="containerSize"></param>
+        /// <returns></returns>
+        public ActionResult Cart(EntityModel entity, int containerSize = 0)
+        {
+            SetupViewData(entity, containerSize);
+            CartWidget widget = (CartWidget)entity;
+
+            // TODO: Resolve cart here
+
+            return View(entity.MvcData.ViewName, entity);
+        }
+
+        /// <summary>
         /// Resolve category via a CMS category reference
         /// </summary>
         /// <param name="categoryReference"></param>
@@ -301,7 +320,10 @@ namespace SDL.ECommerce.DXA.Controller
             {
                 category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryId);
             }
-            // TODO: Add support for ECL references here as well
+            else if ( categoryReference.CategoryRef != null )
+            {
+                category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryRef.ExternalId);
+            }
             return category;
         }
 

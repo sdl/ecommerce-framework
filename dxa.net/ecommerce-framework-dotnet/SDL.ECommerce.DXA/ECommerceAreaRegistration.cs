@@ -34,6 +34,7 @@ namespace SDL.ECommerce.DXA
             RegisterViewModel("SearchFeedback", typeof(SearchFeedbackWidget), "EComWidget");
             RegisterViewModel("SearchBox", typeof(SearchBox));
             RegisterViewModel("FacetsMegaNavigation", typeof(FacetsWidget), "EComWidget");
+            RegisterViewModel("CartMinimized", typeof(CartWidget), "EComWidget");
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
@@ -55,7 +56,21 @@ namespace SDL.ECommerce.DXA
 
             MapRoute(context, "ECommerce_SearchPage", "search/{searchPhrase}/{*categoryUrl}",
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
-           
+
+            // Localization routes
+            //
+            MapRoute(context, "ECommerce_Category_Loc", "{localization}/c/{*categoryUrl}",
+                new { controller = "CategoryPage", action = "CategoryPage" });
+
+            MapRoute(context, "ECommerce_Page", "{localization}/p/{*productUrl}",
+                new { controller = "ProductPage", action = "ProductPage" });
+
+            MapRoute(context, "ECommerce_Search", "search/_redirect",
+               new { controller = "SearchPage", action = "Search" });
+
+            MapRoute(context, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
+                new { controller = "SearchPage", action = "SearchCategoryPage" });
+
         }
 
         /// <summary>
