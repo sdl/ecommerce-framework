@@ -78,25 +78,6 @@ public class CartController extends BaseController {
     }
 
     /**
-     * Handle cart.
-     * @param request
-     * @param entityId
-     * @return view
-     * @throws ContentProviderException
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/system/mvc/ECommerce/CartController/Entity/{entityId}")
-    public String handleCart(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
-
-        CartWidget entity = (CartWidget) this.getEntityFromRequest(request, entityId);
-        entity.setCart(this.getCart(request));
-        request.setAttribute("entity", entity);
-        request.setAttribute("linkResolver", this.linkResolver);
-
-        final MvcData mvcData = entity.getMvcData();
-        return resolveView(mvcData, "Entity", request);
-    }
-
-    /**
      * Get stored cart from the HTTP session.
      *
      * @param request

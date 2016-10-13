@@ -33,10 +33,6 @@ import java.util.StringTokenizer;
  */
 @Controller
 @RequestMapping("/c")
-// TODO: We need to make localization to work here.... /en/c/
-// Can we dynamically bind the controller to all existing locales???
-// Or have an interceptor that forwards /en/c/... to /c/en/...
-
 public class CategoryPageController extends AbstractECommercePageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CategoryPageController.class);

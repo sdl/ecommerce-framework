@@ -9,6 +9,8 @@ import com.sdl.webapp.common.api.model.entity.EclItem;
  */
 public class ECommerceEclItem extends EclItem {
 
+    // TODO: Should this be part of the DXA module instead???
+
     /**
      * @return external ID of the ECL item (category or product ID)
      */
