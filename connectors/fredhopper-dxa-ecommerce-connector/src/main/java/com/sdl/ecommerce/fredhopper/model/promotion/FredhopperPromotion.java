@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
  *
  * @author nic
  */
-public class FredhopperPromotion implements Promotion, Editable {
+public class FredhopperPromotion implements Promotion {
 
 
     protected String id;

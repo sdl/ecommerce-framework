@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author nic
  */
-public class FredhopperFacetGroup implements FacetGroup, Editable {
+public class FredhopperFacetGroup implements FacetGroup {
 
     private String id;
     private String title;
