@@ -48,6 +48,7 @@
     <Compile Include="Model\ICategory.cs" />
     <Compile Include="Model\IContentArea.cs" />
     <Compile Include="Model\IContentPromotion.cs" />
+    <Compile Include="Model\IEditable.cs" />
     <Compile Include="Model\IFacet.cs" />
     <Compile Include="Model\IFacetGroup.cs" />
     <Compile Include="Model\IImageMapPromotion.cs" />

@@ -194,6 +194,7 @@ namespace SDL.ECommerce.OData
             foreach (var facetGroup in result.FacetGroups)
             {
                 Console.WriteLine("  FacetGroup: " + facetGroup.Title);
+                Console.WriteLine("  Edit URL: " + facetGroup.EditUrl);
                 foreach (var facet in facetGroup.Facets)
                 {
                     Console.WriteLine("   " + facet.Title + " (" + facet.Count + ")");

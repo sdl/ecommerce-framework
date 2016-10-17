@@ -54,6 +54,14 @@ namespace SDL.ECommerce.OData
                 return PromotionBase.Title;
             }
         }
+
+        public string EditUrl
+        {
+            get
+            {
+                return PromotionBase.EditUrl;
+            }
+        }
     }
 
     public partial class ProductsPromotion : AbstractPromotion, IProductsPromotion
@@ -140,6 +148,14 @@ namespace SDL.ECommerce.OData
             get
             {
                 return ContentPromotionBase.ContentAreas.Cast<IContentArea>().ToList();
+            }
+        }
+
+        public string EditUrl
+        {
+            get
+            {
+                return ContentPromotionBase.EditUrl;
             }
         }
     }

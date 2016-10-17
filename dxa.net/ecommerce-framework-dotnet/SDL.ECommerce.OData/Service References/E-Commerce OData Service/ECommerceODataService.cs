@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 10/7/2016 4:11:35 PM
+// Generation date: 10/14/2016 10:40:19 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -255,6 +255,7 @@ namespace SDL.ECommerce.OData
         <Property Name=""type"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""isCategory"" Type=""Edm.Boolean"" Nullable=""true""></Property>
         <Property Name=""facets"" Type=""Collection(SDL.ECommerce.Facet)"" Nullable=""true""></Property>
+        <Property Name=""editUrl"" Type=""Edm.String"" Nullable=""true""></Property>
       </ComplexType>
       <ComplexType Name=""Facet"">
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
@@ -288,6 +289,7 @@ namespace SDL.ECommerce.OData
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""name"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""title"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""editUrl"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""productsPromotion"" Type=""SDL.ECommerce.ProductsPromotion"" Nullable=""true""></Property>
         <Property Name=""contentPromotion"" Type=""SDL.ECommerce.ContentPromotion"" Nullable=""true""></Property>
       </ComplexType>
@@ -1652,6 +1654,28 @@ namespace SDL.ECommerce.OData
         private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet> _Facets = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet>();
         partial void OnFacetsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Facet> value);
         partial void OnFacetsChanged();
+        /// <summary>
+        /// There are no comments for Property EditUrl in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("editUrl")]
+        public string EditUrl
+        {
+            get
+            {
+                return this._EditUrl;
+            }
+            set
+            {
+                this.OnEditUrlChanging(value);
+                this._EditUrl = value;
+                this.OnEditUrlChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _EditUrl;
+        partial void OnEditUrlChanging(string value);
+        partial void OnEditUrlChanged();
     }
     /// <summary>
     /// There are no comments for Facet in the schema.
@@ -2156,6 +2180,28 @@ namespace SDL.ECommerce.OData
         private string _Title;
         partial void OnTitleChanging(string value);
         partial void OnTitleChanged();
+        /// <summary>
+        /// There are no comments for Property EditUrl in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("editUrl")]
+        public string EditUrl
+        {
+            get
+            {
+                return this._EditUrl;
+            }
+            set
+            {
+                this.OnEditUrlChanging(value);
+                this._EditUrl = value;
+                this.OnEditUrlChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _EditUrl;
+        partial void OnEditUrlChanging(string value);
+        partial void OnEditUrlChanged();
         /// <summary>
         /// There are no comments for Property ProductsPromotion in the schema.
         /// </summary>

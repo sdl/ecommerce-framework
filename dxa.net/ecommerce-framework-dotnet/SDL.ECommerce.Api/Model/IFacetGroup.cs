@@ -9,7 +9,7 @@ namespace SDL.ECommerce.Api.Model
     /// Represents a set of facets(e.g.brand, color, size etc).
     /// </summary>
            
-    public interface IFacetGroup
+    public interface IFacetGroup : IEditable
     {
 
         /// <summary>

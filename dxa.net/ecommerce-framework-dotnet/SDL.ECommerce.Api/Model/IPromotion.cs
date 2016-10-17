@@ -4,7 +4,7 @@
     ///  Promotion
     /// Base interface for all kind of promotions driven by an E-Commerce system.
     /// </summary>
-    public interface IPromotion
+    public interface IPromotion : IEditable
     {
         /// <summary>
         /// Get unique identifier of the promotion.
