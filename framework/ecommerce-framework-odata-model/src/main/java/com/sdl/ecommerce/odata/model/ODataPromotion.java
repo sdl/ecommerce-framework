@@ -28,6 +28,9 @@ public class ODataPromotion implements Promotion {
     @EdmProperty
     private String title;
 
+    @EdmProperty
+    private String editUrl;
+
     // Types of promotion
     //
     @EdmProperty
@@ -42,6 +45,7 @@ public class ODataPromotion implements Promotion {
         this.id = promotion.getId();
         this.name = promotion.getName();
         this.title = promotion.getTitle();
+        this.editUrl = promotion.getEditUrl();
         if ( promotion instanceof ProductsPromotion ) {
             this.productsPromotion = new ODataProductsPromotion((ProductsPromotion) promotion);
         }
@@ -63,6 +67,11 @@ public class ODataPromotion implements Promotion {
     @Override
     public String getTitle() {
         return this.title;
+    }
+
+    @Override
+    public String getEditUrl() {
+        return this.editUrl;
     }
 
     public Promotion toPromotion() {

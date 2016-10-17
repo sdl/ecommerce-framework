@@ -32,6 +32,12 @@ public class ODataFacetGroup implements FacetGroup {
     @EdmProperty
     private List<ODataFacet> facets;
 
+    @EdmProperty
+    private String editUrl;
+
+    // TODO: Skip the Editable interface? Gonna be a bit messy when passing this info over OData
+    // Or have a separate entity for this?
+
     public ODataFacetGroup() {}
     public ODataFacetGroup(FacetGroup facetGroup) {
         this.id = facetGroup.getId();
@@ -42,6 +48,7 @@ public class ODataFacetGroup implements FacetGroup {
         if ( facetGroup.getFacets() != null ) {
             facetGroup.getFacets().forEach(facet -> this.facets.add(new ODataFacet(facet)));
         }
+        this.editUrl = facetGroup.getEditUrl();
     }
 
     @Override
@@ -67,5 +74,10 @@ public class ODataFacetGroup implements FacetGroup {
     @Override
     public List<Facet> getFacets() {
         return this.facets.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public String getEditUrl() {
+        return this.editUrl;
     }
 }
