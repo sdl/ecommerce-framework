@@ -1,7 +1,7 @@
 ﻿@model FacetsWidget
-@* TODO: Add support for in-context edit menu here *@
-
 <div  @Html.DxaEntityMarkup()>
+    @* Temporary solution for the in-context menu - should be part of the header region *@
+    @Html.Partial("Partials/InContextEditMenu")
     @foreach (var facetGroup in Model.FacetGroups)
     {
         <h5 class="facet-group">@facetGroup.Title @Html.Partial("Partials/EditControl", facetGroup)</h5>

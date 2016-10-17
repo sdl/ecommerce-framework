@@ -33,12 +33,14 @@ namespace SDL.ECommerce.DXA.Controllers
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
-                var searchResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category, Facets = facets, StartIndex = GetStartIndex() });
+                var query = new Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
+                var searchResult = ECommerceContext.Client.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {
                     return Redirect(ECommerceContext.LinkResolver.GetLocationLink(searchResult.RedirectLocation));
                 }
 
+                ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);
                 ECommerceContext.Set(ECommerceContext.QUERY_RESULT, searchResult);
                 ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
                 ECommerceContext.Set(ECommerceContext.FACETS, facets);

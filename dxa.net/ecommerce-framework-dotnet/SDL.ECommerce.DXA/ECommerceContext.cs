@@ -17,6 +17,7 @@ namespace SDL.ECommerce.DXA
     /// </summary>
     public class ECommerceContext
     {
+        public const string CURRENT_QUERY = "CurrentQuery";
         public const string QUERY_RESULT = "QueryResult";
         public const string URL_PREFIX = "UrlPrefix";
         public const string FACETS = "Facets";
@@ -130,6 +131,19 @@ namespace SDL.ECommerce.DXA
         public static string EditUrl(IEditable editableItem)
         {
             return "/edit-proxy" + editableItem.EditUrl;
+        }
+
+        public static IEditMenu EditMenu
+        {
+            get
+            {
+                var currentQuery = Get(CURRENT_QUERY) as Query;
+                if (currentQuery != null && WebRequestContext.IsPreview )
+                {
+                    return Client.EditService.GetInContextMenuItems(currentQuery);
+                }
+                return null;
+            }
         }
     }
 }

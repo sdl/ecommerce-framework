@@ -177,6 +177,19 @@ namespace SDL.ECommerce.OData
             }
         }
 
+        [TestMethod]
+        public void TestGetInContextMenu()
+        {
+            var menu = ECommerceClient.EditService.GetInContextMenuItems(new Query { CategoryId = "catalog01_18661", SearchPhrase = "red" });
+            Console.WriteLine("  In-Context Edit Menu");
+            Console.WriteLine("#########################");
+            Console.WriteLine("Title: " + menu.Title);
+            foreach ( var menuItem in menu.MenuItems )
+            {
+                Console.WriteLine("  " + menuItem.Title + " => " + menuItem.Url);
+            }
+        }
+
         void PrintQueryResult(IProductQueryResult result)
         {
             Console.WriteLine("  Search Results:");

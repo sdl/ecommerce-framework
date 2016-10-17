@@ -69,6 +69,7 @@ namespace SDL.ECommerce.OData
         private ProductCategoryService categoryService;
         private ProductQueryService queryService;
         private ProductDetailService detailService;
+        private EditService editService;
        
         /// <summary>
         /// Constructor
@@ -116,6 +117,9 @@ namespace SDL.ECommerce.OData
             }
         }
 
+        /// <summary>
+        /// Get product detail service
+        /// </summary>
         public IProductDetailService DetailService
         {
             get
@@ -128,5 +132,19 @@ namespace SDL.ECommerce.OData
             }
         }
 
+        /// <summary>
+        /// Get edit service
+        /// </summary>
+        public IEditService EditService
+        {
+            get
+            {
+                if ( editService == null )
+                {
+                    editService = new EditService(this.service);
+                }
+                return editService;
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace SDL.ECommerce.DXA.Controllers
 
         private ActionResult GrabContent(string url, string path)
         {
+            // TODO: Add some verification on the XPM session as well here...
             if ( !WebRequestContext.IsPreview )
             {
                 return HttpNotFound("Edit proxy is not available for non-staging sites!");

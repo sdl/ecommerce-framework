@@ -72,6 +72,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 return Redirect(ECommerceContext.LinkResolver.GetLocationLink(searchResult.RedirectLocation));
             }
 
+            ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);
             ECommerceContext.Set(ECommerceContext.QUERY_RESULT, searchResult);
             ECommerceContext.Set(ECommerceContext.SEARCH_PHRASE, searchPhrase);
             ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/search/") + searchPhrase);

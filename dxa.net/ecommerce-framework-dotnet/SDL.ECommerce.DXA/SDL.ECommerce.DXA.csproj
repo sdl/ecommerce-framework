@@ -188,6 +188,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotionMegaNav.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\EditControl.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\InContextEditMenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

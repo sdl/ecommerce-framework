@@ -12,5 +12,6 @@ namespace SDL.ECommerce.Api
         IProductCategoryService CategoryService { get; }
         IProductQueryService QueryService { get; }
         IProductDetailService DetailService { get; }
+        IEditService EditService { get; }
     }
 }

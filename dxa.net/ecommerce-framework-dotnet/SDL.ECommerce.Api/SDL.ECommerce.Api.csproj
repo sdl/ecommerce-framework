@@ -49,10 +49,12 @@
     <Compile Include="Model\IContentArea.cs" />
     <Compile Include="Model\IContentPromotion.cs" />
     <Compile Include="Model\IEditable.cs" />
+    <Compile Include="Model\IEditMenu.cs" />
     <Compile Include="Model\IFacet.cs" />
     <Compile Include="Model\IFacetGroup.cs" />
     <Compile Include="Model\IImageMapPromotion.cs" />
     <Compile Include="Model\ILocation.cs" />
+    <Compile Include="Model\IMenuItem.cs" />
     <Compile Include="Model\IProduct.cs" />
     <Compile Include="Model\IProductPrice.cs" />
     <Compile Include="Model\IProductsPromotion.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Model\Query.cs" />
     <Compile Include="Model\ViewType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IEditService.cs" />
     <Compile Include="Service\IProductDetailService.cs" />
     <Compile Include="Service\IProductQueryService.cs" />
     <Compile Include="Service\IProductCategoryService.cs" />

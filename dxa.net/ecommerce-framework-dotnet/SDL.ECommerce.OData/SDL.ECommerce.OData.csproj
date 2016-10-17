@@ -92,9 +92,11 @@
     <Compile Include="Model\CategoryRef.cs" />
     <Compile Include="Model\CategorySummary.cs" />
     <Compile Include="Model\ContentArea.cs" />
+    <Compile Include="Model\EditMenu.cs" />
     <Compile Include="Model\Facet.cs" />
     <Compile Include="Model\FacetGroup.cs" />
     <Compile Include="Model\Location.cs" />
+    <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductPrice.cs" />
     <Compile Include="Model\ProductQueryResult.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Model\ProductSummary.cs" />
     <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\QuerySuggestion.cs" />
+    <Compile Include="Service\EditService.cs" />
     <Compile Include="Service\ProductCategoryService.cs" />
     <Compile Include="ECommerceClient.cs" />
     <Compile Include="Service\ProductDetailService.cs" />

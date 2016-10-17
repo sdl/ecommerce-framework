@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 10/14/2016 10:40:19 PM
+// Generation date: 10/17/2016 5:14:26 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -138,6 +138,24 @@ namespace SDL.ECommerce.OData
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::Microsoft.OData.Client.DataServiceQuery<ProductQueryResult> _ProductQueryResults;
         /// <summary>
+        /// There are no comments for EditMenus in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("EditMenus")]
+        public global::Microsoft.OData.Client.DataServiceQuery<EditMenu> EditMenus
+        {
+            get
+            {
+                if ((this._EditMenus == null))
+                {
+                    this._EditMenus = base.CreateQuery<EditMenu>("EditMenus");
+                }
+                return this._EditMenus;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::Microsoft.OData.Client.DataServiceQuery<EditMenu> _EditMenus;
+        /// <summary>
         /// There are no comments for Carts in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -168,6 +186,14 @@ namespace SDL.ECommerce.OData
         public void AddToProductQueryResults(ProductQueryResult productQueryResult)
         {
             base.AddObject("ProductQueryResults", productQueryResult);
+        }
+        /// <summary>
+        /// There are no comments for EditMenus in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public void AddToEditMenus(EditMenu editMenu)
+        {
+            base.AddObject("EditMenus", editMenu);
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private abstract class GeneratedEdmModel
@@ -227,6 +253,14 @@ namespace SDL.ECommerce.OData
         <Property Name=""products"" Type=""Collection(SDL.ECommerce.ProductSummary)"" Nullable=""true""></Property>
         <Property Name=""promotions"" Type=""Collection(SDL.ECommerce.Promotion)"" Nullable=""true""></Property>
         <Property Name=""breadcrumbs"" Type=""Collection(SDL.ECommerce.Breadcrumb)"" Nullable=""true""></Property>
+      </EntityType>
+      <EntityType Name=""EditMenu"">
+        <Key>
+          <PropertyRef Name=""menuId""></PropertyRef>
+        </Key>
+        <Property Name=""menuId"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""title"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""menuItems"" Type=""Collection(SDL.ECommerce.MenuItem)"" Nullable=""true""></Property>
       </EntityType>
       <ComplexType Name=""CategorySummary"">
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
@@ -315,6 +349,10 @@ namespace SDL.ECommerce.OData
         <Property Name=""facet"" Type=""SDL.ECommerce.Facet"" Nullable=""true""></Property>
         <Property Name=""categoryRef"" Type=""SDL.ECommerce.CategoryRef"" Nullable=""true""></Property>
       </ComplexType>
+      <ComplexType Name=""MenuItem"">
+        <Property Name=""title"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""url"" Type=""Edm.String"" Nullable=""true""></Property>
+      </ComplexType>
       <EntityContainer Name=""ECommerce"">
         <EntitySet Name=""Carts"" EntityType=""SDL.ECommerce.Cart""></EntitySet>
         <EntitySet Name=""Categories"" EntityType=""SDL.ECommerce.Category"">
@@ -323,6 +361,7 @@ namespace SDL.ECommerce.OData
         </EntitySet>
         <EntitySet Name=""Products"" EntityType=""SDL.ECommerce.Product""></EntitySet>
         <EntitySet Name=""ProductQueryResults"" EntityType=""SDL.ECommerce.ProductQueryResult""></EntitySet>
+        <EntitySet Name=""EditMenus"" EntityType=""SDL.ECommerce.EditMenu""></EntitySet>
       </EntityContainer>
     </Schema>
   </edmx:DataServices>
@@ -1223,6 +1262,108 @@ namespace SDL.ECommerce.OData
         private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb>();
         partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> value);
         partial void OnBreadcrumbsChanged();
+    }
+    /// <summary>
+    /// There are no comments for EditMenuSingle in the schema.
+    /// </summary>
+    [global::Microsoft.OData.Client.OriginalNameAttribute("EditMenuSingle")]
+    public partial class EditMenuSingle : global::Microsoft.OData.Client.DataServiceQuerySingle<EditMenu>
+    {
+        /// <summary>
+        /// Initialize a new EditMenuSingle object.
+        /// </summary>
+        public EditMenuSingle(global::Microsoft.OData.Client.DataServiceContext context, string path)
+            : base(context, path) {}
+
+        /// <summary>
+        /// Initialize a new EditMenuSingle object.
+        /// </summary>
+        public EditMenuSingle(global::Microsoft.OData.Client.DataServiceContext context, string path, bool isComposable)
+            : base(context, path, isComposable) {}
+
+        /// <summary>
+        /// Initialize a new EditMenuSingle object.
+        /// </summary>
+        public EditMenuSingle(global::Microsoft.OData.Client.DataServiceQuerySingle<EditMenu> query)
+            : base(query) {}
+
+    }
+    /// <summary>
+    /// There are no comments for EditMenu in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// MenuId
+    /// </KeyProperties>
+    [global::Microsoft.OData.Client.Key("menuId")]
+    [global::Microsoft.OData.Client.OriginalNameAttribute("EditMenu")]
+    public partial class EditMenu : global::Microsoft.OData.Client.BaseEntityType
+    {
+        /// <summary>
+        /// There are no comments for Property MenuId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("menuId")]
+        public string MenuId
+        {
+            get
+            {
+                return this._MenuId;
+            }
+            set
+            {
+                this.OnMenuIdChanging(value);
+                this._MenuId = value;
+                this.OnMenuIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _MenuId;
+        partial void OnMenuIdChanging(string value);
+        partial void OnMenuIdChanged();
+        /// <summary>
+        /// There are no comments for Property Title in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("title")]
+        public string Title
+        {
+            get
+            {
+                return this._Title;
+            }
+            set
+            {
+                this.OnTitleChanging(value);
+                this._Title = value;
+                this.OnTitleChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _Title;
+        partial void OnTitleChanging(string value);
+        partial void OnTitleChanged();
+        /// <summary>
+        /// There are no comments for Property MenuItems in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("menuItems")]
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.MenuItem> MenuItems
+        {
+            get
+            {
+                return this._MenuItems;
+            }
+            set
+            {
+                this.OnMenuItemsChanging(value);
+                this._MenuItems = value;
+                this.OnMenuItemsChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.MenuItem> _MenuItems = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.MenuItem>();
+        partial void OnMenuItemsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.MenuItem> value);
+        partial void OnMenuItemsChanged();
     }
     /// <summary>
     /// There are no comments for CategorySummary in the schema.
@@ -2584,6 +2725,57 @@ namespace SDL.ECommerce.OData
         partial void OnCategoryRefChanged();
     }
     /// <summary>
+    /// There are no comments for MenuItem in the schema.
+    /// </summary>
+    [global::Microsoft.OData.Client.OriginalNameAttribute("MenuItem")]
+    public partial class MenuItem
+    {
+        /// <summary>
+        /// There are no comments for Property Title in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("title")]
+        public string Title
+        {
+            get
+            {
+                return this._Title;
+            }
+            set
+            {
+                this.OnTitleChanging(value);
+                this._Title = value;
+                this.OnTitleChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _Title;
+        partial void OnTitleChanging(string value);
+        partial void OnTitleChanged();
+        /// <summary>
+        /// There are no comments for Property Url in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("url")]
+        public string Url
+        {
+            get
+            {
+                return this._Url;
+            }
+            set
+            {
+                this.OnUrlChanging(value);
+                this._Url = value;
+                this.OnUrlChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _Url;
+        partial void OnUrlChanging(string value);
+        partial void OnUrlChanged();
+    }
+    /// <summary>
     /// Class containing all extension methods
     /// </summary>
     public static class ExtensionMethods
@@ -2679,6 +2871,29 @@ namespace SDL.ECommerce.OData
                 { "resultId", resultId }
             };
             return new global::SDL.ECommerce.OData.ProductQueryResultSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+        }
+        /// <summary>
+        /// Get an entity of type global::SDL.ECommerce.OData.EditMenu as global::SDL.ECommerce.OData.EditMenuSingle specified by key from an entity set
+        /// </summary>
+        /// <param name="source">source entity set</param>
+        /// <param name="keys">dictionary with the names and values of keys</param>
+        public static global::SDL.ECommerce.OData.EditMenuSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.EditMenu> source, global::System.Collections.Generic.Dictionary<string, object> keys)
+        {
+            return new global::SDL.ECommerce.OData.EditMenuSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+        }
+        /// <summary>
+        /// Get an entity of type global::SDL.ECommerce.OData.EditMenu as global::SDL.ECommerce.OData.EditMenuSingle specified by key from an entity set
+        /// </summary>
+        /// <param name="source">source entity set</param>
+        /// <param name="menuId">The value of menuId</param>
+        public static global::SDL.ECommerce.OData.EditMenuSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.EditMenu> source,
+            string menuId)
+        {
+            global::System.Collections.Generic.Dictionary<string, object> keys = new global::System.Collections.Generic.Dictionary<string, object>
+            {
+                { "menuId", menuId }
+            };
+            return new global::SDL.ECommerce.OData.EditMenuSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
     }
 }
