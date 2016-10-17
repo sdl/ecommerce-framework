@@ -55,7 +55,7 @@ namespace SDL.ECommerce.DXA.Controllers
             var facetParameters = new List<FacetParameter>();
 
             var queryParams = HttpContext.Request.QueryString;
-            foreach ( var key in queryParams.Keys )
+            foreach ( var key in queryParams.Keys ) // TODO: Use AllKeys here
             {
                 string paramName = key.ToString(); 
                 if ( !paramName.Equals("q") && !paramName.Equals("startIndex") )

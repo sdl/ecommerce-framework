@@ -146,6 +146,7 @@
     <Compile Include="Controllers\AbstractECommercePageController.cs" />
     <Compile Include="Controllers\CategoryPageController.cs" />
     <Compile Include="Controllers\EComWidgetController.cs" />
+    <Compile Include="Controllers\EditProxyController.cs" />
     <Compile Include="Controllers\ProductPageController.cs" />
     <Compile Include="Controllers\SearchPageController.cs" />
     <Compile Include="DXALinkResolver.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotionMegaNav.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotionMegaNav.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\EditControl.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

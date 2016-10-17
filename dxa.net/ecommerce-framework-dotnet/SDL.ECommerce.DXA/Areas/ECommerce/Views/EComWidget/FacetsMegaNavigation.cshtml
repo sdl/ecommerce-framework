@@ -31,7 +31,7 @@
                             @foreach (var facetGroup in Model.FacetGroups)
                             {
                                 <div class="col-sm-@colWidth">
-                                    <h5><i class="fa fa-cog"></i> @facetGroup.Title</h5>
+                                    <h5><i class="fa fa-cog"></i> @facetGroup.Title @Html.Partial("Partials/EditControl", facetGroup)</h5>
                                     <ul class="list-unstyled">
                                         @foreach (var facet in facetGroup.Facets)
                                         {

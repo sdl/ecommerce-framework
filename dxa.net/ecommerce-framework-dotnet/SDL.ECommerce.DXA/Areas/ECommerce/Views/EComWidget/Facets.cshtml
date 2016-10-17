@@ -4,7 +4,7 @@
 <div  @Html.DxaEntityMarkup()>
     @foreach (var facetGroup in Model.FacetGroups)
     {
-        <h5 class="facet-group">@facetGroup.Title</h5>
+        <h5 class="facet-group">@facetGroup.Title @Html.Partial("Partials/EditControl", facetGroup)</h5>
         if (facetGroup.IsCategory)
         {
             <ul class="category-facets">

@@ -3,7 +3,10 @@
 @model IContentPromotion
 
 <div>
-    <a href="@ECommerceContext.LinkResolver.GetLocationLink(Model.Location)">      
+     <div style="position: relative;">
+         @Html.Partial("Partials/EditControl", Model)
+     </div>
+     <a href="@ECommerceContext.LinkResolver.GetLocationLink(Model.Location)">      
         @if ( !String.IsNullOrEmpty(Model.ImageUrl))
         {
             <div class="hero">

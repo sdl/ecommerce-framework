@@ -1,5 +1,6 @@
 ﻿using Sdl.Web.Mvc.Configuration;
 using SDL.ECommerce.Api;
+using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.OData;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,11 @@ namespace SDL.ECommerce.DXA
             }
         }
 
+        /// <summary>
+        /// Create E-Commerce client for specified locale
+        /// </summary>
+        /// <param name="locale"></param>
+        /// <returns></returns>
         private static IECommerceClient Create(string locale)
         {
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
@@ -64,12 +70,22 @@ namespace SDL.ECommerce.DXA
             return new ECommerceClient(endpointAddress, locale);
         }
 
-
+        /// <summary>
+        /// Get request E-Commerce property
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static object Get(string key)
         {
             return HttpContext.Current == null ? null : HttpContext.Current.Items["ECOM-" + key];
         }
 
+        /// <summary>
+        /// Set request E-Commerce property
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static object Set(string key, object value)
         {
             if (HttpContext.Current != null)
@@ -79,6 +95,11 @@ namespace SDL.ECommerce.DXA
             return value;
         }
 
+        /// <summary>
+        /// Localize path
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string LocalizePath(string url)
         {
             string path = WebRequestContext.Localization.Path;
@@ -94,6 +115,21 @@ namespace SDL.ECommerce.DXA
                 }
             }
             return url;
+        }
+
+        public static bool ShowEditUrl(IEditable editableItem)
+        {
+            return WebRequestContext.IsPreview && editableItem != null && !String.IsNullOrEmpty(editableItem.EditUrl);
+        }
+
+        /// <summary>
+        /// Get edit URL for an editable item. All requests are passed through the edit proxy. 
+        /// </summary>
+        /// <param name="editableItem"></param>
+        /// <returns></returns>
+        public static string EditUrl(IEditable editableItem)
+        {
+            return "/edit-proxy" + editableItem.EditUrl;
         }
     }
 }

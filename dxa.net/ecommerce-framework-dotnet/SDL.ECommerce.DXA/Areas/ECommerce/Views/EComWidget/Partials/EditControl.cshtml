@@ -1,0 +1,5 @@
+﻿@model IEditable
+@if (ECommerceContext.ShowEditUrl(Model))
+{
+<a class="xpm-button popup-iframe" style="margin: 0px 8px;font-size: 14px;background-color: transparent;" href="@ECommerceContext.EditUrl(Model)"><i class="fa fa-pencil-square"></i></a>
+}

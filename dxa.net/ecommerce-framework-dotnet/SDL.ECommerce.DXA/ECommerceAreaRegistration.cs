@@ -71,6 +71,10 @@ namespace SDL.ECommerce.DXA
             MapRoute(context, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
 
+            // Edit Proxy route (only available for staging sites)
+            //
+            MapRoute(context, "ECommerce_EditProxy", "edit-proxy/{*path}", new { controller = "EditProxy", action = "Http" });
+
         }
 
         /// <summary>

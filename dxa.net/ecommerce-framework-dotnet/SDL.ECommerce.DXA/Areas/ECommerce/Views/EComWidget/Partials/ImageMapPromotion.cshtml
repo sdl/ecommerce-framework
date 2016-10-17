@@ -3,15 +3,15 @@
 @model IImageMapPromotion
 <div class="hero">
     <div style="position: relative;">
-        <div>
-            <img src="@Model.ImageUrl" usemap="@Model.Id">
-            <map name="@Model.Id">
-                @foreach (var contentArea in Model.ContentAreas)
-                {
-                    <area shape="rect" coords="@contentArea.X1,@contentArea.Y1,@contentArea.X2,@contentArea.Y2" href="@ECommerceContext.LinkResolver.GetLocationLink(contentArea.Location)">
-                }               
-            </map>
-        </div>
-    </div>
+        @Html.Partial("Partials/EditControl", Model)
+    </div>    
+    <img src="@Model.ImageUrl" usemap="@Model.Id">
+    <map name="@Model.Id">
+        @foreach (var contentArea in Model.ContentAreas)
+        {
+            <area shape="rect" coords="@contentArea.X1,@contentArea.Y1,@contentArea.X2,@contentArea.Y2" href="@ECommerceContext.LinkResolver.GetLocationLink(contentArea.Location)">
+        }               
+    </map>
+
 </div>
 

@@ -3,7 +3,7 @@
 @model IProductsPromotion
 <div>
     <div class="row">
-        <h3 class="promotion-title"><i class="fa fa-arrow-circle-right"></i> @Model.Title</h3>
+        <h3 class="promotion-title"><i class="fa fa-arrow-circle-right"></i> @Model.Title @Html.Partial("Partials/EditControl", Model)</h3>
     </div>
     <div class="row">
         @foreach (var product in Model.Products)
