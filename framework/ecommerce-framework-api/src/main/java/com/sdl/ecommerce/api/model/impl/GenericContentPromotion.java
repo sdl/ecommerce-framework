@@ -21,6 +21,13 @@ public class GenericContentPromotion extends GenericPromotion implements Content
         this.location = location;
     }
 
+    public GenericContentPromotion(String id, String name, String title, String text, String imageUrl, Location location, String editUrl) {
+        super(id, name, title, editUrl);
+        this.text = text;
+        this.imageUrl = imageUrl;
+        this.location = location;
+    }
+
     @Override
     public String getText() {
         return this.text;

@@ -21,12 +21,12 @@ public class ECommerceViewHelper {
     /**
      * Determine if edit controls should be shown for current E-Commerce item (e.g. facet group, promotion etc)
      *
-     * @param ecommerceItem
+     * @param editableEcommerceItem
      * @return true if edit controls can be shown, otherwise false
      */
-    public boolean showEditControls(Object ecommerceItem) {
+    public boolean showEditControls(Editable editableEcommerceItem) {
         return hasBeenInvokedViaXpm() &&
-               ecommerceItem instanceof Editable;
+               editableEcommerceItem.getEditUrl() != null;
     }
 
     /**

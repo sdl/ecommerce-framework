@@ -19,6 +19,11 @@ public class GenericProductsPromotion extends GenericPromotion implements Produc
         this.products = products;
     }
 
+    public GenericProductsPromotion(String id, String name, String title, String editUrl, List<Product> products) {
+        super(id, name, title, editUrl);
+        this.products = products;
+    }
+
     @Override
     public List<Product> getProducts() {
         return this.products;

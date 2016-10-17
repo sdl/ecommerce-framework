@@ -19,6 +19,11 @@ public class GenericImageMapPromotion extends GenericContentPromotion implements
         this.contentAreas = contentAreas;
     }
 
+    public GenericImageMapPromotion(String id, String name, String title, String imageUrl, String editUrl, List<ContentArea> contentAreas) {
+        super(id, name, title, null, imageUrl, null, editUrl);
+        this.contentAreas = contentAreas;
+    }
+
     @Override
     public List<ContentArea> getContentAreas() {
         return contentAreas;
