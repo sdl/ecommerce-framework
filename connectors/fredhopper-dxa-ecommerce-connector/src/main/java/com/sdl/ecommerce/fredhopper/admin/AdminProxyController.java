@@ -173,6 +173,10 @@ public class AdminProxyController {
             if (statusCode == HttpStatus.SC_OK) {
 
                 Header contentEncoding = method.getResponseHeader("Content-Encoding");
+                Header contentType = method.getResponseHeader("Content-Type");
+                if ( contentType != null ) {
+                    response.setContentType(contentType.getValue());
+                }
                 if (requestPath.endsWith(".fh")) {
 
                     String htmlBody;
@@ -186,12 +190,10 @@ public class AdminProxyController {
                     // Process HTML
                     //
                     htmlBody = this.processHtml(htmlBody, request);
-                    response.setContentType("text/html");
+                    //response.setContentType("text/html");
                     response.getWriter().write(htmlBody);
 
                 } else {
-                    Header contentType = method.getResponseHeader("Content-Type");
-                    response.setContentType(contentType.getValue());
                     if (contentEncoding != null && contentEncoding.getValue().equals("gzip")) {
                         if (isAjax) {
                             GZIPInputStream zipStream = new GZIPInputStream(method.getResponseBodyAsStream());
@@ -401,7 +403,11 @@ public class AdminProxyController {
      */
     protected File getLocalFilename(String fredhopperUrl) {
 
-        String filename = fredhopperUrl.replace(fredhopperBaseUrl, "").replace("/fredhopper/admin/wicket/resource", "").replace("/", "_");
+        String filename = fredhopperUrl.replace(fredhopperBaseUrl, "").
+                replace("/fredhopper/admin/wicket/resource", "").
+                replace("/", "_").
+                replace("?", "_").
+                replace("=", "_");
         return new File(StringUtils.join(new String[]{
                 webApplicationContext.getServletContext().getRealPath("/"), "BinaryData", "fredhopper", "assets", filename
         }, File.separator));
