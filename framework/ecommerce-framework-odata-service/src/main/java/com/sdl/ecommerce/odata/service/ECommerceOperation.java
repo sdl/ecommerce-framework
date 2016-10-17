@@ -13,6 +13,8 @@ import com.sdl.odata.api.service.ODataRequestContext;
  */
 public abstract class ECommerceOperation implements Operation<ODataQueryResult> {
 
+    // TODO: Refactor this to not be dependent to ODataQueryResult
+
     @Override
     public ODataQueryResult doOperation(ODataRequestContext oDataRequestContext, DataSourceFactory dataSourceFactory) throws ODataException {
 

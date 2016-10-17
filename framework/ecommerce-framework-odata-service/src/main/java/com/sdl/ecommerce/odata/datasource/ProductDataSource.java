@@ -3,6 +3,7 @@ package com.sdl.ecommerce.odata.datasource;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.ProductQueryService;
+import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.model.EntityDataModel;
 import com.sdl.odata.api.parser.ODataUri;
@@ -29,6 +30,9 @@ public class ProductDataSource implements DataSource {
     @Autowired
     private ProductCategoryService productCategoryService;
 
+    @Autowired
+    private EditService editService; // TODO: Move this to another data source?
+
     public ProductDetailService getProductDetailService() {
         return productDetailService;
     }
@@ -39,6 +43,10 @@ public class ProductDataSource implements DataSource {
 
     public ProductCategoryService getProductCategoryService() {
         return productCategoryService;
+    }
+
+    public EditService getEditService() {
+        return editService;
     }
 
     @Override

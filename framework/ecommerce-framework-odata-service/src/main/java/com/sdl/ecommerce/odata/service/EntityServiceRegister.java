@@ -54,6 +54,10 @@ public class EntityServiceRegister {
                 ProductQueryFunction.class,
                 ProductQueryFunctionImport.class,
                 ODataQueryResult.class,
+                GetInContextEditMenuFunction.class,
+                GetInContextEditMenuFunctionImport.class,
+                ODataEditMenu.class,
+                ODataMenuItem.class,
                 CreateCartFunction.class,
                 CreateCartFunctionImport.class
         ));
