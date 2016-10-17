@@ -14,7 +14,6 @@
         <c:import url="/WEB-INF/Views/ECommerce/Entity/InContextEditMenu.jsp"/>
     </c:if>
 
-
     <c:forEach var="facetGroup" items="${entity.facetGroups}">
             <h5 class="facet-group">${facetGroup.title} <c:if test="${viewHelper.showEditControls(facetGroup)}"><a class="xpm-button popup-iframe" style="margin: 0px 8px;" href="${facetGroup.editUrl}"><i class="fa fa-pencil-square"></i></a></c:if> </h5>
             <c:choose>
