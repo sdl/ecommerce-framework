@@ -116,9 +116,10 @@ public class AdminProxyController {
      * @throws IOException
      */
     protected void checkSession(HttpServletRequest request) throws IOException {
-        if ( !isInXPMSessionPreview(request) ) {
-            throw new IOException("No active XPM session found!");
-        }
+        // TODO: This has to be check in the DXA module instead
+        //if ( !isInXPMSessionPreview(request) ) {
+        //    throw new IOException("No active XPM session found!");
+        //}
         if ( this.lastAccessTime + this.sessionTimeout < System.currentTimeMillis() ) {
             login();
         }
@@ -195,7 +196,8 @@ public class AdminProxyController {
                         if (isAjax) {
                             GZIPInputStream zipStream = new GZIPInputStream(method.getResponseBodyAsStream());
                             String htmlBody = IOUtils.toString(zipStream);
-                            htmlBody = htmlBody.replaceAll("\\.jsp", ".fhjsp");
+                            htmlBody = htmlBody.replaceAll("\\.jsp", ".jspfh");  // TODO: Do we need to do this? Only probably when having the connectors co-located with DXA.Java
+                            htmlBody = htmlBody.replaceAll("src=\"../../preview/", "src=\"/preview/");
                             response.getWriter().write(htmlBody);
                         } else {
                             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

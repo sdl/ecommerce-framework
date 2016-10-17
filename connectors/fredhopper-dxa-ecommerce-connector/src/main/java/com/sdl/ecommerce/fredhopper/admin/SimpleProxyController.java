@@ -65,7 +65,7 @@ public class SimpleProxyController {
         final String requestPath = request.getRequestURI();
         LOG.info("Proxy asset: " + requestPath);
         final boolean isAjax = request.getHeader("X-Requested-With") != null;
-        String fredhopperUrl = this.fredhopperBaseUrl + requestPath.replace(".fhjsp", ".jsp") + this.getQueryString(request);
+        String fredhopperUrl = this.fredhopperBaseUrl + requestPath.replace(".jspfh", ".jsp") + this.getQueryString(request);
         GetMethod method = new GetMethod(fredhopperUrl);
 
         try {
@@ -84,9 +84,12 @@ public class SimpleProxyController {
             if (statusCode == HttpStatus.SC_OK) {
                 // TODO: Fix encoding - because it impacts some of the special characters
                 //
-                //Header contentType = method.getResponseHeader("Content-Type");
-                //response.setContentType(contentType.getValue());
+                Header contentType = method.getResponseHeader("Content-Type");
+                if ( contentType != null ) {
+                    response.setContentType(contentType.getValue());
+                }
                 IOUtils.copy(method.getResponseBodyAsStream(), response.getOutputStream());
+
                 response.flushBuffer();
             } else {
                 response.sendError(statusCode);
