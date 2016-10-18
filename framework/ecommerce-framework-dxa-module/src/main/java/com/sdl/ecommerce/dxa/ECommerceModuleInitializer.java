@@ -50,13 +50,6 @@ public class ECommerceModuleInitializer extends AbstractInitializer {
 
     @PostConstruct
     public void initialize() {
-
-        // Register additional JS to be used on pages
-        //
-        pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,
-                HtmlBuilders.element("script").withAttribute("src", "/system/assets/scripts/ecommerce-cart.js").build());
-        pluggableMarkupRegistry.registerPluggableMarkup(PluggableMarkupRegistry.MarkupType.BOTTOM_JS,
-                HtmlBuilders.element("script").withAttribute("src", "/system/assets/scripts/jquery-ui.min.js").build());
     }
 
     @Override
