@@ -1,5 +1,5 @@
 ﻿@model CartWidget
-<div class="content">
+<div class="content" @Html.DxaEntityMarkup()>
     <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> Shopping Cart</h3>
     @if (Model.Cart == null || Model.Cart.Count == 0)
     {
