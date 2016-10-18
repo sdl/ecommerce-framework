@@ -1,6 +1,7 @@
-package com.sdl.ecommerce.odata.service;
+package com.sdl.ecommerce.odata.function;
 
 import com.sdl.ecommerce.odata.model.ODataQueryResult;
+import com.sdl.ecommerce.odata.service.ODataRequestContextHolder;
 import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.model.Operation;
 import com.sdl.odata.api.processor.datasource.factory.DataSourceFactory;

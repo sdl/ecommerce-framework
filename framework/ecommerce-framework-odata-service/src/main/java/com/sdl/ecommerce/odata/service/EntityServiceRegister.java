@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.odata.service;
 
 import com.google.common.collect.Lists;
+import com.sdl.ecommerce.odata.function.*;
 import com.sdl.ecommerce.odata.model.*;
 import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.registry.ODataEdmRegistry;
@@ -31,8 +32,9 @@ public class EntityServiceRegister {
         LOG.debug("Registering example entities");
 
         oDataEdmRegistry.registerClasses(Lists.newArrayList(
+
                 // Entities & complex types
-                Cart.class,
+                //
                 ODataCategory.class,
                 ODataCategorySummary.class,
                 ODataProduct.class,
@@ -50,7 +52,11 @@ public class EntityServiceRegister {
                 ODataContentPromotion.class,
                 ODataContentArea.class,
                 ODataBreadcrumb.class,
+                ODataCart.class,
+                ODataCartItem.class,
+
                 // Functions
+                //
                 ProductQueryFunction.class,
                 ProductQueryFunctionImport.class,
                 ODataQueryResult.class,
@@ -59,7 +65,11 @@ public class EntityServiceRegister {
                 ODataEditMenu.class,
                 ODataMenuItem.class,
                 CreateCartFunction.class,
-                CreateCartFunctionImport.class
+                CreateCartFunctionImport.class,
+                AddProductToCartFunction.class,
+                AddProductToCartFunctionImport.class,
+                RemoveProductFromCartFunction.class,
+                RemoveProductFromCartFunctionImport.class
         ));
 
     }

@@ -1,4 +1,4 @@
-package com.sdl.ecommerce.odata.service;
+package com.sdl.ecommerce.odata.function;
 
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;

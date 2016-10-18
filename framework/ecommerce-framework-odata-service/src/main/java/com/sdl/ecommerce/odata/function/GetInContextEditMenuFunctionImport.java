@@ -1,4 +1,4 @@
-package com.sdl.ecommerce.odata.service;
+package com.sdl.ecommerce.odata.function;
 
 import com.sdl.odata.api.edm.annotations.EdmFunctionImport;
 
