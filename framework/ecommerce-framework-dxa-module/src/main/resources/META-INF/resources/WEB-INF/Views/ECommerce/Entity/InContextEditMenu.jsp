@@ -29,13 +29,5 @@
                 </div>
             </div>
         </div>
-        <dxa:definePluggableMarkup label="bottom-js">
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $("#page-header .page-border").css("position", "relative");
-                    $(".xpm-create-new-menu").detach().appendTo("#page-header .page-border");
-                });
-            </script>
-        </dxa:definePluggableMarkup>
     </div>
 </c:if>
