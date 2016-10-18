@@ -1,10 +1,9 @@
 package com.sdl.ecommerce.demandware;
 
-import com.sdl.ecommerce.api.CartFactory;
+import com.sdl.ecommerce.api.CartService;
 import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Cart;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import com.sdl.ecommerce.demandware.model.DemandwareCart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author nic
  */
 @Component
-public class DemandwareCartFactory implements CartFactory {
+public class DemandwareCartService implements CartService {
 
     @Autowired
     private ProductDetailService detailService;
@@ -28,5 +27,22 @@ public class DemandwareCartFactory implements CartFactory {
     @Override
     public Cart createCart() throws ECommerceException {
         return new DemandwareCart(shopClientManager.getInstance(), detailService);
+    }
+
+    // TODO: Refactor to the new cart design here
+
+    @Override
+    public Cart addProductToCart(String cartId, String productId, int quantity) throws ECommerceException {
+        return null;
+    }
+
+    @Override
+    public Cart removeProductFromCart(String cartId, String productId) throws ECommerceException {
+        return null;
+    }
+
+    @Override
+    public Cart clearCart(String cartId) throws ECommerceException {
+        return null;
     }
 }

@@ -2,7 +2,6 @@ package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.test.TestLinkResolver;
-import com.sdl.ecommerce.demandware.api.DemandwareShopClientImpl;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,7 @@ public class TestContext {
     public ProductDetailService getDetailService() { return new DemandwareDetailService(); }
 
     @Bean
-    public CartFactory getCartFactory() { return new DemandwareCartFactory(); }
+    public CartService getCartFactory() { return new DemandwareCartService(); }
 
     @Bean
     public LocalizationService getLocalizationService() { return new TestLocalizationService(); }

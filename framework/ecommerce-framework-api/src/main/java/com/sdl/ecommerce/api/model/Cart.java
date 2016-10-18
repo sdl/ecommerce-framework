@@ -30,51 +30,14 @@ public interface Cart {
     //
 
     /**
-     * Add product (quantity=1) to the cart
-     * @param productId
-     * @throws ECommerceException
-     */
-    void addProduct(String productId) throws ECommerceException;
-
-    /**
-     * Add product with specific quantity to the cart.
-     *
-     * @param productId
-     * @param quantity
-     * @throws ECommerceException
-     */
-    void addProduct(String productId, int quantity) throws ECommerceException;
-
-    /**
      * @return list of cart items added to the cart
      */
     List<CartItem> getItems();
 
     /**
-     * Remove product from cart. Matching cart item containing this product ID will be removed
-     * @param productId
-     * @throws ECommerceException
-     */
-    // TODO: Remove product or cart item?
-    void removeProduct(String productId) throws ECommerceException;
-
-    /**
      * @return total count of products in the cart.
      */
     int count();
-
-    /**
-     * Clear the cart.
-     *
-     * @throws ECommerceException
-     */
-    void clear() throws ECommerceException;
-
-    /**
-     * Refresh the cart and sync it with underlying cart representation in the E-Commerce system.
-     * @throws ECommerceException
-     */
-    void refresh() throws ECommerceException;
 
     /**
      * @return total price of everything added to the cart

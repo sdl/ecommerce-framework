@@ -30,7 +30,7 @@ public abstract class GenericTestSuite {
     protected ProductDetailService detailService;
 
     @Autowired(required = false)
-    protected CartFactory cartFactory;
+    protected CartService cartService;
 
     @Autowired(required = false)
     protected ECommerceLinkResolver linkResolver;
@@ -183,11 +183,11 @@ public abstract class GenericTestSuite {
     protected void testCart(String... productIds) throws Exception {
         LOG.info("Test cart...");
 
-        Cart cart = this.cartFactory.createCart();
+        Cart cart = this.cartService.createCart();
 
         for ( String productId : productIds ) {
             LOG.info("Adding product with ID: " + productId + " to cart...");
-            cart.addProduct(productId);
+            cart = cartService.addProductToCart(cart.getId(), productId, 1);
             this.printCartItems(cart);
         }
     }
