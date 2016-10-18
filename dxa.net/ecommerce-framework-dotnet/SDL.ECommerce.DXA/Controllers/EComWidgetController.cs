@@ -116,6 +116,10 @@ namespace SDL.ECommerce.DXA.Controller
                 //
                 queryResult = (IProductQueryResult) ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
             }
+            if (queryResult == null)
+            {
+                queryResult = GetResultFromPageTemplate();
+            }
 
 
             widget.Items = queryResult.Products.ToList();
@@ -147,6 +151,10 @@ namespace SDL.ECommerce.DXA.Controller
                 // Use category from page controller
                 //
                 queryResult = (IProductQueryResult)ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
+            }
+            if (queryResult == null)
+            {
+                queryResult = GetResultFromPageTemplate();
             }
             widget.FacetGroups = queryResult.FacetGroups.ToList();
 
@@ -218,6 +226,10 @@ namespace SDL.ECommerce.DXA.Controller
                 //
                 queryResult = (IProductQueryResult)ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
             }
+            if ( queryResult == null )
+            {
+                queryResult = GetResultFromPageTemplate();
+            }
 
             if ( queryResult != null )
             {
@@ -262,7 +274,11 @@ namespace SDL.ECommerce.DXA.Controller
                 //
                 queryResult = (IProductQueryResult)ECommerceContext.Get(ECommerceContext.QUERY_RESULT);
             }
-            
+            if (queryResult == null)
+            {
+                queryResult = GetResultFromPageTemplate();
+            }
+
             if ( queryResult != null )
             {
                 widget.Breadcrumbs = queryResult.Breadcrumbs.ToList();
@@ -335,6 +351,42 @@ namespace SDL.ECommerce.DXA.Controller
             else if ( categoryReference.CategoryRef != null )
             {
                 category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryRef.ExternalId);
+            }
+            return category;
+        }
+
+        protected IProductQueryResult GetResultFromPageTemplate()
+        {
+            String requestPath = WebRequestContext.RequestUrl;
+            if (requestPath.StartsWith(ECommerceContext.LocalizePath("/categories")))
+            {
+                var category = this.GetCategoryFromPageTemplate(requestPath);
+                Query query = new Query
+                {
+                    Category = category,
+                    Facets = ECommerceContext.Get(ECommerceContext.FACETS) as IList<FacetParameter>
+                };
+                return ECommerceContext.Client.QueryService.Query(query);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Extracts the category from the page template path.
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <returns></returns>
+        protected ICategory GetCategoryFromPageTemplate(String requestPath)
+        {
+            // Try to get query result based on the page url cat1-cat2-cat3
+            //
+            var categoryPath = requestPath.Replace(ECommerceContext.LocalizePath("/categories/"), "").Replace(".html", "").Replace("-", "/");
+            var category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryPath);
+            if (category == null)
+            {
+                // Try with category ID
+                //
+                category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryPath.Replace("/", ""));
             }
             return category;
         }
