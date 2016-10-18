@@ -1,0 +1,18 @@
+﻿@model PromotionsWidget
+<div @Html.DxaEntityMarkup()>
+    @foreach (var promotion in Model.Promotions)
+    {
+        if (promotion is IProductsPromotion)
+        {
+            @Html.Partial("Partials/ProductsPromotion", promotion, new ViewDataDictionary {  });
+        }
+        else if ( promotion is IImageMapPromotion )
+        {
+            @Html.Partial("Partials/ImageMapPromotion", promotion);
+        }
+        else if (promotion is IContentPromotion)
+        {
+            @Html.Partial("Partials/ContentPromotion", promotion);
+        }
+    }
+</div>

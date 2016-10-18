@@ -6,6 +6,7 @@
 <%@ taglib prefix="dxa" uri="http://www.sdl.com/tridion-dxa" %>
 <%@ taglib prefix="xpm" uri="http://www.sdl.com/tridion-xpm" %>
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.ProductListerWidget" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
 <div>
@@ -23,7 +24,7 @@
 
     %><div class="col-sm-6 col-md-3 lister-product-teaser">
 
-        <a href="${item.detailPageUrl}" class="lister-product-teaser-link">
+        <a href="${linkResolver.getProductDetailLink(item)}" class="lister-product-teaser-link">
             <div class="teaser">
                 <img src="${item.thumbnailUrl}" class="teaser-img loader-img"/>
                 <p class="teaser-description lister-product-name">

@@ -1,0 +1,26 @@
+﻿{
+  "ProviderId": "Microsoft.OData.ConnectedService",
+  "Version": "0.2.0",
+  "GettingStartedDocument": {
+    "Uri": "http://odata.github.io/odata.net/"
+  },
+  "ExtendedData": {
+    "EnableNamingAlias": true,
+    "IgnoreUnexpectedElementsAndAttributes": false,
+    "IncludeT4File": false,
+    "ServiceName": "E-Commerce OData Service",
+    "Endpoint": "http://preview:8097/ecommerce.svc/$metadata",
+    "EdmxVersion": {
+      "Major": 4,
+      "Minor": 0,
+      "Build": 0,
+      "Revision": 0,
+      "MajorRevision": 0,
+      "MinorRevision": 0
+    },
+    "GeneratedFileNamePrefix": "ECommerceODataService",
+    "UseNameSpacePrefix": true,
+    "NamespacePrefix": "SDL.ECommerce.OData",
+    "UseDataServiceCollection": false
+  }
+}

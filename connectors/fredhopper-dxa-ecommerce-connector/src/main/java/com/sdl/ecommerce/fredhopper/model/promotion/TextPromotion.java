@@ -19,7 +19,7 @@ public class TextPromotion extends FredhopperPromotion implements ContentPromoti
     public TextPromotion(Theme theme, FredhopperLinkManager linkManager, String editUrl, ProductCategoryService categoryService) {
         super(theme, editUrl);
         if ( theme.getStaticContent() != null && !theme.getStaticContent().getContent().isEmpty() ) {
-            this.link = this.getPromotionLink(theme.getStaticContent().getContent().get(0).getContentLink(), linkManager, categoryService);
+            this.location = this.getPromotionLocation(theme.getStaticContent().getContent().get(0).getContentLink(), linkManager, categoryService);
             this.title = theme.getStaticContent().getContent().get(0).getContentValue();
             this.line1 = theme.getStaticContent().getContent().get(1).getContentValue();
             this.line2 = theme.getStaticContent().getContent().get(2).getContentValue();

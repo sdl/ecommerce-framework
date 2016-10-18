@@ -5,6 +5,7 @@ import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.ViewType;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.QuerySuggestion;
+import com.sdl.ecommerce.api.model.impl.GenericLocation;
 import com.sdl.ecommerce.fredhopper.model.*;
 import com.sdl.ecommerce.fredhopper.model.promotion.FredhopperPromotion;
 
@@ -54,28 +55,18 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
     }
 
     @Override
-    public List<FacetGroup> getFacetGroups(String urlPrefix) {
-
-        if ( urlPrefix == null ) { urlPrefix = ""; }
-        if ( query.getViewType() == ViewType.FLYOUT ) {
-            // For flyout we need to have absolute category links
-            //
-            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix, this.category.getCategoryLink(urlPrefix), this.query.getFilterAttributes());
-        }
-        else {
-            return this.getFacetGroups(this.universe, query.getFacets(), urlPrefix, null, this.query.getFilterAttributes());
-        }
+    public List<FacetGroup> getFacetGroups() {
+        return this.getFacetGroups(this.universe, this.query.getFilterAttributes());
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
-        if ( urlPrefix == null ) { urlPrefix = ""; }
-        return this.getBreadcrumbs(this.universe, urlPrefix, rootTitle, query.getFacets());
+    public List<Breadcrumb> getBreadcrumbs() {
+        return this.getBreadcrumbs(this.universe, query.getFacets());
     }
 
     @Override
     public int getTotalCount() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getTotalItems();
         }
         else {
@@ -85,7 +76,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getCurrentSet() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getCurrentSet();
         }
         else {
@@ -95,7 +86,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getStartIndex() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getStartIndex();
         }
         else {
@@ -105,7 +96,7 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
 
     @Override
     public int getViewSize() {
-        if ( this.universe.getItemsSection() != null ) {
+        if ( this.universe.getItemsSection() != null  && this.universe.getItemsSection().getResults() != null ) {
             return this.universe.getItemsSection().getResults().getViewSize();
         }
         else {
@@ -140,14 +131,15 @@ public class FredhopperQueryResult extends FredhopperResultBase implements Query
     }
 
     @Override
-    public String getRedirectUrl() {
+    public Location getRedirectLocation() {
         if ( this.fredhopperPage.getRedirect() != null ) {
-            return this.fredhopperPage.getRedirect().getRedirectUrl();
+            return new GenericLocation(this.fredhopperPage.getRedirect().getRedirectUrl());
         }
         if ( this.fredhopperPage.getInfo().getView() == com.fredhopper.webservice.client.ViewType.DETAIL ) {
             List<Product> products = this.getProducts();
             if ( products.size() == 1 ) {
-                return products.get(0).getDetailPageUrl();
+
+                return new GenericLocation(products.get(0));
             }
         }
         return null;

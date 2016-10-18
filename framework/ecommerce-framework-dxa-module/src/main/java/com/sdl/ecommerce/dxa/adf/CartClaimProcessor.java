@@ -20,6 +20,9 @@ import java.util.Map;
  */
 public class CartClaimProcessor extends AbstractClaimProcessor {
 
+    // TODO:  Move this to a separate module. Should it be kept in the commerce service??
+    // Or just remove it???
+
     private static final Logger LOG = LoggerFactory.getLogger(CartClaimProcessor.class);
 
     static final URI SESSION_ATTRIBUTES_URI = URI.create("taf:session:attributes");

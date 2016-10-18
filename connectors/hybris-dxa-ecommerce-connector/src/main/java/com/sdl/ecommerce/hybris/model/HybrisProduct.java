@@ -74,12 +74,6 @@ public class HybrisProduct implements Product {
     }
 
     @Override
-    public String getDetailPageUrl() {
-        String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "").replace("/", "-");
-        return "/p/" + seoName + "/" + this.hybrisProduct.getCode();
-    }
-
-    @Override
     public List<Category> getCategories() {
         if ( this.categories == null ) {
             synchronized ( this ) {

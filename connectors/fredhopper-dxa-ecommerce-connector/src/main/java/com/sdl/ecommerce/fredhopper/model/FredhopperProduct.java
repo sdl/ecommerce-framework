@@ -1,10 +1,14 @@
 package com.sdl.ecommerce.fredhopper.model;
 
+import com.fredhopper.webservice.client.Attribute;
+import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
+import com.sdl.webapp.common.api.localization.Localization;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +25,12 @@ public class FredhopperProduct implements Product {
     private String id;
     private List<FacetParameter> facets;
     private Map<String,Object> attributes = new HashMap<>();
+    // TODO: Replace this with a single list of attribute values.
+    private Map<String,Attribute> fhAttributes = new HashedMap();
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
+    private LocalizationService localizationService;
 
     /**
      * Create a Fredhopper product representation. The provided model mappings are used to map Fredhopper product attributes
@@ -31,11 +38,16 @@ public class FredhopperProduct implements Product {
      * @param id
      * @param linkManager
      * @param modelMappings
+     * @param localizationService
      */
-    public FredhopperProduct(String id, FredhopperLinkManager linkManager, Map<String,String> modelMappings) {
+    public FredhopperProduct(String id,
+                             FredhopperLinkManager linkManager,
+                             Map<String,String> modelMappings,
+                             LocalizationService localizationService) {
         this.id = id;
         this.linkManager = linkManager;
         this.modelMappings = modelMappings;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -55,7 +67,16 @@ public class FredhopperProduct implements Product {
 
     @Override
     public ProductPrice getPrice() {
-        return new FredhopperProductPrice(this.getModelAttribute("price"));
+        String fredhopperAttributeName = this.modelMappings.get("price");
+        if ( fredhopperAttributeName != null ) {
+            Attribute fhPrice = this.fhAttributes.get(fredhopperAttributeName);
+            if ( fhPrice != null && !fhPrice.getValue().isEmpty() ) {
+                float price = Float.parseFloat(fhPrice.getValue().get(0).getNonMl());
+                String formattedPrice = fhPrice.getValue().get(0).getValue();
+                return new FredhopperProductPrice(price, formattedPrice);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -70,19 +91,10 @@ public class FredhopperProduct implements Product {
     @Override
     public String getPrimaryImageUrl() {
         String imageUrl = this.getModelAttribute("primaryImageUrl");
-        return this.linkManager.processImageUrl(imageUrl);
-    }
-
-    @Override
-    public String getDetailPageUrl() {
-        String name = this.getName();
-        if ( name != null ) {
-            // Generate a SEO friendly URL
-            //
-            String seoName = this.getName().toLowerCase().replace(" ", "-").replace("'", "").replace("--", "");
-            return "/p/" + seoName + "/" + this.id;
+        if ( imageUrl != null ) {
+            imageUrl = this.linkManager.processImageUrl(imageUrl);
         }
-        return "/p/" + this.id;
+        return imageUrl;
     }
 
     @Override
@@ -105,6 +117,11 @@ public class FredhopperProduct implements Product {
     @Override
     public Map<String,Object> getAttributes() {
         return this.attributes;
+    }
+
+
+    public void addFredhopperlAttribute(String name, Attribute attribute) {
+        this.fhAttributes.put(name, attribute);
     }
 
     public void setFacets(List<FacetParameter> facets) {

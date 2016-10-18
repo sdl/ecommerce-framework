@@ -7,17 +7,20 @@
     <parent>
         <groupId>com.sdl</groupId>
         <artifactId>ecommerce-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>com.sdl</groupId>
     <artifactId>ecommerce-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <modules>
         <module>ecommerce-framework-api</module>
+        <module>ecommerce-framework-odata-service</module>
+        <module>ecommerce-framework-odata-model</module>
+        <module>ecommerce-framework-odata-client</module>
         <module>ecommerce-framework-dxa-module</module>
         <module>navigation-dxa-module</module>
     </modules>

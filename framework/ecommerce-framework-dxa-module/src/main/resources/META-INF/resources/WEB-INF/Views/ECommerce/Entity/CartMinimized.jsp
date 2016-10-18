@@ -5,7 +5,7 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.CartWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 
-<div class="utility-nav cart-nav" style="margin-right: 15px;margin-top: 4px;">
+<div class="utility-nav cart-nav">
     <a href="${entity.cartPageLink}" class="btn btn-default cart-btn">
         <div class="cart-text">
             <span id="cart-amount">${entity.cartCount}</span>&nbsp;<i class="fa fa-shopping-cart"></i>

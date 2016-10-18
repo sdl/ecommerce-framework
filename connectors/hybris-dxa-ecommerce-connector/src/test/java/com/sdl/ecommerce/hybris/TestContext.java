@@ -1,7 +1,7 @@
 package com.sdl.ecommerce.hybris;
 
 import com.sdl.ecommerce.api.*;
-import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
+import com.sdl.ecommerce.api.test.TestLinkResolver;
 import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class TestContext {
     public ProductDetailService getProductDetailService() { return new HybrisDetailService(); }
 
     @Bean
-    public CartFactory getCartFactory() { return new HybrisCartFactory(); }
+    public CartService getCartFactory() { return new HybrisCartService(); }
 
     @Bean
     public HybrisClientManager getHybrisClientManager() {
@@ -44,4 +44,7 @@ public class TestContext {
         placeholderConfigurer.setLocation(new ClassPathResource("application-test.properties"));
         return placeholderConfigurer;
     }
+
+    @Bean
+    public ECommerceLinkResolver getLinkResolver() { return new TestLinkResolver(); }
 }

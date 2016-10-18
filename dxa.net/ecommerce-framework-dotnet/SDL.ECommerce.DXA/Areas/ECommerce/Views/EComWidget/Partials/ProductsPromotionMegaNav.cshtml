@@ -1,0 +1,21 @@
+﻿@model IProductsPromotion
+<div>
+    <div class="row">
+        <h5>
+            <i class="fa fa-cog"></i> @Model.Title @Model.Title @Html.Partial("Partials/EditControl", Model)
+        </h5>
+        @* Take 3 first products *@
+        @foreach (var product in Model.Products.Take(3))
+        {
+            <a href="@ECommerceContext.LinkResolver.GetProductDetailLink(product)" class="product-teaser-link" style="display: flex;">
+                <div class="col-sm-6">
+                    <img src="@product.ThumbnailUrl" width="100%" height="100%" class="teaser-img loader-img" style="margin-bottom: 2px;" />
+                </div>
+                <div class="col-sm-6 teaser-heading" style="padding-top: 4px; font-size: 12px; height:100px;">
+                    <p style="max-height: 4em; overflow: hidden;">@product.Name</p>
+                    <h4 class="teaser-heading">@product.Price.FormattedPrice</h4>
+                </div>
+            </a>
+        }
+    </div>
+</div>

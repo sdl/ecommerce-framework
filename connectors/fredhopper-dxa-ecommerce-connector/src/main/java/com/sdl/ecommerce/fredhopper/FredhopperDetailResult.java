@@ -5,6 +5,7 @@ import com.fredhopper.webservice.client.Page;
 import com.fredhopper.webservice.client.Universe;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
 import com.sdl.ecommerce.fredhopper.model.FredhopperBreadcrumb;
 import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
 
@@ -39,8 +40,8 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
     }
 
     @Override
-    public List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle) {
-        return this.getProductBreadcrumbs(this.getProductDetail(), urlPrefix, rootTitle);
+    public List<Breadcrumb> getBreadcrumbs() {
+        return this.getProductBreadcrumbs(this.getProductDetail());
     }
 
     @Override
@@ -81,17 +82,22 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
         return null;
     }
 
-    private List<Breadcrumb> getProductBreadcrumbs(Product product, String urlPrefix, String rootTitle) {
+    private List<Breadcrumb> getProductBreadcrumbs(Product product) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
 
         Category category = product.getCategories().get(0);
         while ( category != null ) {
-            breadcrumbs.add(0, new FredhopperBreadcrumb(category.getName(), category.getCategoryLink(urlPrefix), true));
+            /*
+            breadcrumbs.add(0, new FredhopperBreadcrumb(category.getName(), this.linkManager.resolveCategoryUrl(category, urlPrefix), true));
+            */
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
             category = category.getParent();
         }
+        /*
         if ( rootTitle != null ) {
             breadcrumbs.add(0, new FredhopperBreadcrumb(rootTitle, urlPrefix, true));
         }
+        */
 
         return breadcrumbs;
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+
+<!-- Parameters used by tests at runtime using Fredhopper demo shop-->
+<TestRunParameters>
+  <Parameter name="EndpointAddress" value="[Endpoint address to Fredhopper instance, e.g. http://localhost:8180/fredhopper-ws/services/FASWebService" />
+</TestRunParameters>
+
+</RunSettings>

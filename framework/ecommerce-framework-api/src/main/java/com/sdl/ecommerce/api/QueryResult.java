@@ -23,10 +23,9 @@ public interface QueryResult extends ECommerceResult {
 
     /**
      * Get a list of facet groups where links is using provided URL prefix
-     * @param urlPrefix
      * @return list of facet groups
      */
-    List<FacetGroup> getFacetGroups(String urlPrefix);
+    List<FacetGroup> getFacetGroups();
 
     /**
      * @return total number of hits in the query
@@ -66,9 +65,9 @@ public interface QueryResult extends ECommerceResult {
     QueryResult previous() throws ECommerceException;
 
     /**
-     * @return redirect URL triggered by a specific combination of search phrase, category, facet etc
+     * @return redirect location triggered by a specific combination of search phrase, category, facet etc
      */
-    String getRedirectUrl();
+    Location getRedirectLocation();
 
     /**
      * @return current query that resulted in this result

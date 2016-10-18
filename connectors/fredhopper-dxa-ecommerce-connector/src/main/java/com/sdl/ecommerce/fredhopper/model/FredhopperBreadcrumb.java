@@ -1,6 +1,9 @@
 package com.sdl.ecommerce.fredhopper.model;
 
 import com.sdl.ecommerce.api.model.Breadcrumb;
+import com.sdl.ecommerce.api.model.Category;
+import com.sdl.ecommerce.api.model.CategoryRef;
+import com.sdl.ecommerce.api.model.Facet;
 
 /**
  * FredhopperBreadcrumb
@@ -25,11 +28,19 @@ public class FredhopperBreadcrumb implements Breadcrumb {
         return title;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
     public boolean isCategory() {
         return isCategory;
+    }
+
+    // ---- Not implemented for the Fredhopper breadcrumb
+
+    @Override
+    public CategoryRef getCategoryRef() {
+        return null;
+    }
+
+    @Override
+    public Facet getFacet() {
+        return null;
     }
 }

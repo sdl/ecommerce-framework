@@ -1,0 +1,45 @@
+﻿@model NavigationSection
+
+@if ( Model.Items == null || Model.Items.Count == 0 )
+{
+    <li @Html.DxaEntityMarkup()>
+        <a href="@Model.MainItem.Link.Url" @Html.DxaPropertyMarkup(() => Model.MainItem)>@Model.MainItem.Link.LinkText</a>
+    </li>
+}
+else
+{
+    <li class="mega-nav-link" @Html.DxaEntityMarkup()>
+        <a href="@Model.MainItem.Link.Url" @Html.DxaPropertyMarkup(() => Model.MainItem)>Model.MainItem.Link.LinkText</a>
+        <div class="mega-nav">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mega-nav-content">
+                        <div class="row">
+                            @{ 
+                                var itemColumns = Model.GetItemColumns();
+                                int colCount = 1;
+                            }
+                            @foreach (var col in Model.GetItemColumns())
+                            {
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled">
+                                        @{ 
+                                            int count = 1;
+                                        }
+                                        @foreach (var item in col)
+                                        {
+                                            <li @Html.DxaPropertyMarkup(() => Model.Items, (colCount++ * count++)-1)>
+                                                <a href="@item.Link.Url">@item.Link.LinkText</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+}
+

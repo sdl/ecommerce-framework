@@ -17,11 +17,19 @@ public class GenericFacetGroup implements FacetGroup {
     private String title;
     private boolean isCategory;
     private List<Facet> facets = new ArrayList<>();
+    private String editUrl;
 
     public GenericFacetGroup(String id, String title, boolean isCategory) {
         this.id = id;
         this.title = title;
         this.isCategory = isCategory;
+    }
+
+    public GenericFacetGroup(String id, String title, boolean isCategory, String editUrl) {
+        this.id = id;
+        this.title = title;
+        this.isCategory = isCategory;
+        this.editUrl = editUrl;
     }
 
     @Override
@@ -52,5 +60,10 @@ public class GenericFacetGroup implements FacetGroup {
     @Override
     public boolean isCategory() {
         return this.isCategory;
+    }
+
+    @Override
+    public String getEditUrl() {
+        return this.editUrl;
     }
 }

@@ -13,6 +13,7 @@ import com.sdl.ecommerce.dxa.ECommerceViewHelper;
 import com.sdl.ecommerce.dxa.model.*;
 import com.sdl.webapp.common.api.WebRequestContext;
 import com.sdl.webapp.common.api.content.ContentProviderException;
+import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.EntityModel;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
@@ -27,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Widget Controller.
@@ -36,7 +39,7 @@ import java.util.List;
  * @author nic
  */
 @Controller
-@RequestMapping("/system/mvc/ECommerce/WidgetController")
+@RequestMapping("/system/mvc/ECommerce/EComWidget")
 public class WidgetController extends BaseController {
 
     @Autowired
@@ -56,6 +59,9 @@ public class WidgetController extends BaseController {
 
     @Autowired
     private WebRequestContext webRequestContext;
+
+    @Autowired
+    private ECommerceLinkResolver linkResolver;
 
     @Autowired(required = false)
     private EditService editService;
@@ -109,6 +115,7 @@ public class WidgetController extends BaseController {
         this.processListerNavigationLinks(entity, queryResult, this.getFacets(request));
 
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -123,6 +130,8 @@ public class WidgetController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "Facets/{entityId}")
     public String handleFacets(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+
+        // TODO: Generate the URLs to facets here!!!
 
         FacetsWidget entity = (FacetsWidget) this.getEntityFromRequest(request, entityId);
 
@@ -143,10 +152,11 @@ public class WidgetController extends BaseController {
             queryResult = this.getQueryResult(request);
         }
 
-        entity.setFacetGroups(queryResult.getFacetGroups(this.getUrlPrefix(request)));
+        entity.setFacetGroups(queryResult.getFacetGroups());
 
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
         this.buildInContextControls(request);
 
         final MvcData mvcData = entity.getMvcData();
@@ -180,12 +190,13 @@ public class WidgetController extends BaseController {
         else {
             result = this.getResult(request);
         }
-        entity.setBreadcrumbs(result.getBreadcrumbs(this.getUrlPrefix(request), this.getRootCategoryTitle(request)));
+        entity.setBreadcrumbs(result.getBreadcrumbs()); // this.getUrlPrefix(request), this.getRootCategoryTitle(request)));
         if ( result instanceof QueryResult ) {
             entity.setTotalItems(((QueryResult) result).getTotalCount());
         }
 
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -225,6 +236,7 @@ public class WidgetController extends BaseController {
 
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -245,7 +257,7 @@ public class WidgetController extends BaseController {
         if ( entity.getCategoryReference() != null ) {
             Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());
             if (topCategory != null) {
-                entity.getCategoryReference().setCategoryUrl(topCategory.getCategoryLink("/c")); // For flyout is the URL's always based on the category url pattern
+                entity.getCategoryReference().setCategoryUrl(this.linkResolver.getCategoryLink(topCategory)); // For flyout is the URL's always based on the category url pattern
 
                 boolean useCache = this.isSessionPreview(request) == false;
 
@@ -259,7 +271,7 @@ public class WidgetController extends BaseController {
                                     category(topCategory).
                                     viewType(ViewType.FLYOUT));
                     flyoutData = new FlyoutData();
-                    flyoutData.facetGroups = flyoutResult.getFacetGroups("/c");
+                    flyoutData.facetGroups = flyoutResult.getFacetGroups();
                     flyoutData.promotions = flyoutResult.getPromotions();
                     this.categoryDataCache.setCategoryData(topCategory, "flyout", flyoutData);
                 }
@@ -270,6 +282,7 @@ public class WidgetController extends BaseController {
         }
         request.setAttribute("entity", entity);
         request.setAttribute("viewHelper", this.viewHelper);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -326,6 +339,60 @@ public class WidgetController extends BaseController {
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
     }
+
+    /**
+     * Handle product detail for an E-Commerce ECL item.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "ProductDetailEclItem/{entityId}")
+    public String handleProductDetailEclItem(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+
+        ECommerceEclItem entity = (ECommerceEclItem) this.getEntityFromRequest(request, entityId);
+        String productId = entity.getExternalId();
+        ProductDetailResult result = this.detailService.getDetail(productId);
+
+        if (result.getProductDetail() == null) {
+            throw new ContentProviderException("No product found!");
+        }
+        request.setAttribute("entity", entity);
+        request.setAttribute("product", result.getProductDetail());
+
+        final MvcData mvcData = entity.getMvcData();
+        return resolveView(mvcData, "Entity", request);
+    }
+
+    /**
+     * Handle cart.
+     * @param request
+     * @param entityId
+     * @return view
+     * @throws ContentProviderException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "Cart/{entityId}")
+    public String handleCart(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
+
+        CartWidget entity = (CartWidget) this.getEntityFromRequest(request, entityId);
+        entity.setCart(this.getCart(request));
+        request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
+
+        final MvcData mvcData = entity.getMvcData();
+        return resolveView(mvcData, "Entity", request);
+    }
+
+    /**
+     * Get stored cart from the HTTP session.
+     *
+     * @param request
+     * @return cart
+     */
+    private Cart getCart(HttpServletRequest request) {
+        return (Cart) request.getSession().getAttribute(Cart.CART_URI.toString());
+    }
+
 
     /**
      * Get current query result from the HTTP request.
@@ -404,8 +471,10 @@ public class WidgetController extends BaseController {
         // TODO: Use thread local here to optimize the search to avoid duplicate calls...
         //
 
+        // TODO: Take localization in consideration here
+
         String requestPath = webRequestContext.getRequestPath();
-        if ( requestPath.startsWith("/categories") ) {
+        if ( requestPath.startsWith(webRequestContext.getLocalization().localizePath("/categories")) ) {
             final Category category = this.getCategoryFromPageTemplate(requestPath);
             Query query = this.queryService.newQuery();
             query.category(category);
@@ -414,8 +483,8 @@ public class WidgetController extends BaseController {
 
             return this.queryService.query(query);
         }
-        else if ( requestPath.startsWith("/products") ) {
-            String productId = requestPath.replaceFirst("\\/products\\/", "").replace(".html", "");
+        else if ( requestPath.startsWith(webRequestContext.getLocalization().localizePath("/products")) ) {
+            String productId = requestPath.replaceFirst(webRequestContext.getLocalization().localizePath("/products/"), "").replace(".html", "");
             return this.detailService.getDetail(productId);
         }
         return null;
@@ -446,7 +515,7 @@ public class WidgetController extends BaseController {
     protected Category getCategoryFromPageTemplate(String requestPath) {
         // Try to get query result based on the page url cat1-cat2-cat3
         //
-        final String categoryPath = requestPath.replaceFirst("\\/categories\\/", "").replace(".html", "").replace("-", "/");
+        final String categoryPath = requestPath.replaceFirst(webRequestContext.getLocalization().localizePath("/categories/"), "").replace(".html", "").replace("-", "/");
         Category category = this.categoryService.getCategoryByPath(categoryPath);
         if ( category == null ) {
             // Try with category ID
@@ -601,6 +670,8 @@ public class WidgetController extends BaseController {
      * @return link
      */
     protected String getFacetLink(List<FacetParameter> facets) {
+
+        // TODO: Use the link resolver here!!!!!
 
         if ( facets == null || facets.size() == 0 ) { return ""; }
         StringBuilder sb = new StringBuilder();

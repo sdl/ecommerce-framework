@@ -32,12 +32,10 @@ public class DummyCart implements Cart {
         return Integer.toString(this.hashCode());
     }
 
-    @Override
     public void addProduct(String productId) throws ECommerceException {
         this.addProduct(productId, 1);
     }
 
-    @Override
     public void addProduct(String productId, int quantity) throws ECommerceException {
 
         boolean itemAlreadyInCart = false;
@@ -60,7 +58,6 @@ public class DummyCart implements Cart {
         return this.items;
     }
 
-    @Override
     public void removeProduct(String productId) throws ECommerceException {
         for ( int i=0; i < this.items.size(); i++ ) {
             CartItem item = this.items.get(i);
@@ -80,12 +77,10 @@ public class DummyCart implements Cart {
         return count;
     }
 
-    @Override
     public void clear() throws ECommerceException {
        this.items.clear();
     }
 
-    @Override
     public void refresh() throws ECommerceException {}
 
     @Override

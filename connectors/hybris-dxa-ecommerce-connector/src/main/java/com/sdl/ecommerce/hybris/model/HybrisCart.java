@@ -23,6 +23,8 @@ import java.util.Map;
  */
 public class HybrisCart implements Cart {
 
+    // TODO: Refactor to the new cart design here!!
+
     private ProductDetailService detailService;
     private HybrisClient hybrisClient;
     private List<CartItem> items = new ArrayList<>();
@@ -48,14 +50,10 @@ public class HybrisCart implements Cart {
         return id;
     }
 
-
-    @Override
     public void addProduct(String productId) throws ECommerceException {
         this.addProduct(productId, 1);
     }
 
-
-    @Override
     public void addProduct(String productId, int quantity) throws ECommerceException {
         try {
             if ( this.sessionId == null ) {
@@ -69,7 +67,6 @@ public class HybrisCart implements Cart {
         }
     }
 
-    @Override
     public void removeProduct(String productId) throws ECommerceException {
         try {
             if ( this.sessionId == null ) {
@@ -130,7 +127,6 @@ public class HybrisCart implements Cart {
         return tax;
     }
 
-    @Override
     public void clear() throws ECommerceException {
 
         // TODO: Implement a proper clear here...
@@ -139,7 +135,6 @@ public class HybrisCart implements Cart {
         this.refresh(cart);
     }
 
-    @Override
     public void refresh() throws ECommerceException {
         if ( this.sessionId != null ) {
             com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClient.getCart(this.sessionId);

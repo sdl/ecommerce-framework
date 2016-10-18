@@ -46,18 +46,6 @@ public class DemandwareCategory implements Category {
     }
 
     @Override
-    public String getCategoryLink(String urlPrefix) {
-        String link = "";
-        Category currentCategory = this;
-        while ( currentCategory != null ) {
-            link = currentCategory.getPathName() + "/" + link;
-            currentCategory = currentCategory.getParent();
-        }
-        link = urlPrefix + "/" + link;
-        return link;
-    }
-
-    @Override
     public String getPathName() {
         if ( this.name != null ) {
             return this.name.toLowerCase().replace(" ", "_").replace("&", "and");

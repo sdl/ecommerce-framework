@@ -48,21 +48,28 @@ public class CategoryManager {
     }
 
     private Category getCategoryById(String id, List<Category> categories) {
+        LOG.debug("Getting category by ID: " + id);
+        Category foundCategory = null;
         for ( Category category : categories ) {
             if ( category.getId().equals(id) ) {
-                return category;
+                foundCategory = category;
+                break;
             }
             if ( ((FredhopperCategory)category).needsRefresh() && id.startsWith(category.getId()) ) {
                 this.loadCategories(category);
             }
             if ( category.getCategories() != null ) {
-                Category foundCategory = this.getCategoryById(id, category.getCategories());
-                if (foundCategory != null) {
-                    return foundCategory;
+                Category subCategory = this.getCategoryById(id, category.getCategories());
+                if (subCategory != null) {
+                    foundCategory = subCategory;
+                    break;
                 }
             }
         }
-        return null;
+        if ( foundCategory != null && ((FredhopperCategory) foundCategory).needsRefresh() ) {
+            this.loadCategories(foundCategory);
+        }
+        return foundCategory;
     }
 
     /**
@@ -106,7 +113,7 @@ public class CategoryManager {
         return null;
     }
 
-    private List<Category> getTopLevelCategories() {
+    public List<Category> getTopLevelCategories() {
         if ( ((FredhopperCategory)this.rootCategory).needsRefresh() ) {
             loadCategories(this.rootCategory);
         }

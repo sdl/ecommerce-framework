@@ -15,11 +15,9 @@ public interface ECommerceResult {
 
     /**
      * Get current breadcrumbs
-     * @param urlPrefix
-     * @param rootTitle
      * @return breadcrumbs
      */
-    List<Breadcrumb> getBreadcrumbs(String urlPrefix, String rootTitle);
+    List<Breadcrumb> getBreadcrumbs();
 
     /**
      * Get promotions active for current result.

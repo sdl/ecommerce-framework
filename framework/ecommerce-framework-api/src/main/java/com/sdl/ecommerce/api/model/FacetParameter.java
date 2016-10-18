@@ -16,6 +16,8 @@ public class FacetParameter {
 
     // TODO: Optimize the implementation to minimize the parsing of the facet values
 
+    // TODO: Combine this together with the Facet. This seems rather being an implementation of the facet for web implementations
+
     /**
      * Parameter type
      */
@@ -132,10 +134,22 @@ public class FacetParameter {
         return type;
     }
 
+    public static FacetParameter fromUrl(String facetUrl) {
+        StringTokenizer tokenizer = new StringTokenizer(facetUrl, "=");
+        if ( tokenizer.countTokens() < 2 ) {
+            return null;
+        }
+        String name = tokenizer.nextToken();
+        String strValue = tokenizer.nextToken();
+        return new FacetParameter(name, strValue);
+    }
+
     /**
      * Convert the facet parameter to URL format.
      * @return url fragment
      */
+    // TODO: Should this purely be part of the link resolver???
+    //
     public String toUrl() {
         return this.addValueToUrl(null);
     }

@@ -5,7 +5,7 @@ import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.RichText;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
-import com.sdl.webapp.common.api.model.entity.Image;
+import com.sdl.webapp.common.api.model.entity.MediaItem;
 
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
@@ -31,7 +31,7 @@ public class ProductDetailWidget extends AbstractEntityModel {
     private RichText description;
 
     @SemanticProperty("e:image")
-    private Image image;
+    private MediaItem image;
 
     public ECommerceProductReference getProductReference() {
         return productReference;
@@ -53,7 +53,7 @@ public class ProductDetailWidget extends AbstractEntityModel {
         return description;
     }
 
-    public Image getImage() {
+    public MediaItem getImage() {
         return image;
     }
 }

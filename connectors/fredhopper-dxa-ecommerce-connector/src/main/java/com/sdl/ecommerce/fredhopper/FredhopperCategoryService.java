@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +22,8 @@ import java.util.Map;
  */
 @Component
 public class FredhopperCategoryService implements ProductCategoryService {
+
+    // TODO: Make a generic implementation of the category service
 
     private static final Logger LOG = LoggerFactory.getLogger(FredhopperCategoryService.class);
 
@@ -42,15 +45,15 @@ public class FredhopperCategoryService implements ProductCategoryService {
      */
     private CategoryManager getCategoryManager() {
 
-        String publicationId = this.localizationService.getPublicationId();
-        CategoryManager categoryManager = categoryManagers.get(publicationId);
+        String locale = this.localizationService.getLocale();
+        CategoryManager categoryManager = categoryManagers.get(locale);
         if ( categoryManager == null ) {
             synchronized ( this ) {
                  categoryManager = new CategoryManager(this.fredhopperClient,
                                                        this.categoryExpiryTimeout,
                                                        getUniverse(localizationService),
                                                        getLocale(localizationService));
-                categoryManagers.put(publicationId, categoryManager);
+                categoryManagers.put(locale, categoryManager);
             }
         }
         return categoryManager;
@@ -66,4 +69,8 @@ public class FredhopperCategoryService implements ProductCategoryService {
         return this.getCategoryManager().getCategoryByPath(path);
     }
 
+    @Override
+    public List<Category> getTopLevelCategories() throws ECommerceException {
+        return this.getCategoryManager().getTopLevelCategories();
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using System.Text;
 using Tridion.ExternalContentLibrary.V2;
 
@@ -136,16 +138,30 @@ namespace SDL.ECommerce.Ecl
             {
                 Dictionary<string, object> metadata = new Dictionary<string, object>();
                 metadata.Add("Id", this.externalId);
-                metadata.Add("Name", this.title);
+                metadata.Add("Name", System.Security.SecurityElement.Escape(this.title));
                 this.GetMetadata(metadata);
 
                 StringBuilder metadataXml = new StringBuilder();
                 metadataXml.Append("<Metadata xmlns=\"" + EclProvider.EcommerceEclNs.NamespaceName + "\">");
                 foreach (var metadataName in metadata.Keys)
-                {
-                    metadataXml.Append("<" + metadataName + ">");
-                    metadataXml.Append(metadata[metadataName]);
-                    metadataXml.Append("</" + metadataName + ">");
+                {                  
+                    var metadataValue = metadata[metadataName];
+                    if ( metadataValue is string )
+                    {
+                        metadataXml.Append("<" + metadataName + ">");
+                        metadataXml.Append(SecurityElement.Escape(metadataValue as string));
+                        metadataXml.Append("</" + metadataName + ">");
+                    }
+                    else if ( metadataValue is IList )
+                    {
+                        foreach ( var value in metadataValue as IList<string> )
+                        {
+                            metadataXml.Append("<" + metadataName + ">");
+                            metadataXml.Append(SecurityElement.Escape(value));
+                            metadataXml.Append("</" + metadataName + ">");
+                        }
+                    }
+                                     
                 }
                 metadataXml.Append("</Metadata>");
                 return metadataXml.ToString();

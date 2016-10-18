@@ -1,11 +1,9 @@
 package com.sdl.ecommerce.dxa.controller;
 
-import com.sdl.ecommerce.api.CartFactory;
+import com.sdl.ecommerce.api.CartService;
 import com.sdl.ecommerce.api.ECommerceException;
+import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.model.Cart;
-import com.sdl.ecommerce.dxa.model.CartWidget;
-import com.sdl.webapp.common.api.content.ContentProviderException;
-import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CartController extends BaseController {
 
     @Autowired(required = false)
-    private CartFactory cartFactory;
+    private CartService cartService;
 
     /**
      * Add product to cart (AJAX request)
@@ -39,15 +37,15 @@ public class CartController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/ajax/cart/addProduct/{productId}")
     public @ResponseBody
     String addProductToCart(HttpServletRequest request, @PathVariable String productId) throws ECommerceException {
-        if ( this.cartFactory == null ) {
+        if ( this.cartService == null ) {
             return "0";
         }
         Cart cart = this.getCart(request);
         if ( cart == null ) {
-            cart = this.cartFactory.createCart();
-            this.storeCart(request, cart);
+            cart = this.cartService.createCart();
         }
-        cart.addProduct(productId);
+        this.cartService.addProductToCart(cart.getId(), productId, 1);
+        this.storeCart(request, cart);
         return Integer.toString(cart.count());
     }
 
@@ -61,34 +59,17 @@ public class CartController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/ajax/cart/removeProduct/{productId}")
     public @ResponseBody
     String removeProductToCart(HttpServletRequest request, @PathVariable String productId) throws ECommerceException {
-        if ( this.cartFactory == null ) {
+        if ( this.cartService == null ) {
             return "0";
         }
         Cart cart = this.getCart(request);
         if ( cart == null ) {
-            cart = this.cartFactory.createCart();
-            this.storeCart(request, cart);
+            cart = this.cartService.createCart();
+            return Integer.toString(cart.count());
         }
-        cart.removeProduct(productId);
+        cart = this.cartService.removeProductFromCart(cart.getId(), productId);
+        this.storeCart(request, cart);
         return Integer.toString(cart.count());
-    }
-
-    /**
-     * Handle cart.
-     * @param request
-     * @param entityId
-     * @return view
-     * @throws ContentProviderException
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/system/mvc/ECommerce/CartController/Entity/{entityId}")
-    public String handleCart(HttpServletRequest request, @PathVariable String entityId) throws ContentProviderException {
-
-        CartWidget entity = (CartWidget) this.getEntityFromRequest(request, entityId);
-        entity.setCart(this.getCart(request));
-        request.setAttribute("entity", entity);
-
-        final MvcData mvcData = entity.getMvcData();
-        return resolveView(mvcData, "Entity", request);
     }
 
     /**

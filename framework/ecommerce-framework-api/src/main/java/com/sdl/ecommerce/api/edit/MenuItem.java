@@ -5,21 +5,9 @@ package com.sdl.ecommerce.api.edit;
  *
  * @author nic
  */
-public class MenuItem {
+public interface MenuItem {
 
-    private String title;
-    private String url;
+    String getTitle();
 
-    public MenuItem(String title, String url) {
-        this.title = title;
-        this.url = url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
+    String getUrl();
 }

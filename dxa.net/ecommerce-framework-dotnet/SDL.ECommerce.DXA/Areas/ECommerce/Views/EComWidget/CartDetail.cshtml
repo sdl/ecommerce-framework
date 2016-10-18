@@ -1,0 +1,63 @@
+﻿@model CartWidget
+<div class="content" @Html.DxaEntityMarkup()>
+    <h3 style="margin-bottom: 24px;"><i class="fa fa-shopping-cart"></i> Shopping Cart</h3>
+    @if (Model.Cart == null || Model.Cart.Count == 0)
+    {
+        <div>Shopping cart is empty</div>
+    }
+    else
+    {
+        <div class="row">
+            <div>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5">Product</div>
+                            <div class="col-md-2">Quantity</div>
+                            <div class="col-md-2">Price</div>
+                        </div>
+                    </div>
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-1" style="text-align: center;">
+                                    <a href="#" class="remove-from-cart" data-product-id="@item.Product.Id"><i class="fa fa-minus-square"></i></a>
+                                </div>
+                                <div class="col-md-2">
+                                    <img src="@item.Product.ThumbnailUrl" height="100" />
+                                </div>
+                                <div class="col-md-5">
+                                    <a href="@ECommerceContext.LinkResolver.GetProductDetailLink(item.Product)"><strong>@item.Product.Name</strong></a>
+                                </div>
+                                <div class="col-md-2">
+                                    @item.Quantity
+                                </div>
+                                <div class="col-md-2">
+                                    @item.Price.FormattedPrice
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2"><strong>Total</strong></div>
+                            <div class="col-md-2">@Model.Cart.TotalPrice.FormattedPrice</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float: right;">
+                    @if (Model.CheckoutLink.Url != null)
+                    {
+                        <a class="btn btn-primary checkout-button" href="@Model.CheckoutLink.Url" @Html.DxaPropertyMarkup(() => Model.CheckoutLink)>@Model.CheckoutLink.LinkText <i class="fa fa-chevron-right"></i></a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

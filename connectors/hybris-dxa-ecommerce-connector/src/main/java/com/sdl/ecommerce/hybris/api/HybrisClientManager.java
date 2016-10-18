@@ -17,7 +17,6 @@ public class HybrisClientManager {
 
     // TODO: If any of these properties has changes through Tridion, the DXA server needs to be restarted
 
-
     @Autowired
     private LocalizationService localizationService;
 
@@ -37,7 +36,7 @@ public class HybrisClientManager {
     private Map<String, HybrisClient> clients = new HashMap<>();
 
     public HybrisClient getInstance() {
-        HybrisClient hybrisClient = this.clients.get(this.localizationService.getPublicationId());
+        HybrisClient hybrisClient = this.clients.get(this.localizationService.getLocale());
         if ( hybrisClient == null ) {
             hybrisClient = this.createClient();
         }
@@ -53,7 +52,7 @@ public class HybrisClientManager {
                                                         this.getCurrency(),
                                                         this.mediaUrlPrefix,
                                                         this.getExcludeFacets());
-        this.clients.put(this.localizationService.getPublicationId(), hybrisClient);
+        this.clients.put(this.localizationService.getLocale(), hybrisClient);
         return hybrisClient;
 
     }

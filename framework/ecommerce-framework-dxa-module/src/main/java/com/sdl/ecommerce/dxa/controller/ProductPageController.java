@@ -3,8 +3,11 @@ package com.sdl.ecommerce.dxa.controller;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.ProductDetailService;
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.*;
+
+import com.sdl.ecommerce.api.model.Category;
 import com.sdl.webapp.common.api.content.ContentProviderException;
 import com.sdl.webapp.common.api.content.PageNotFoundException;
+import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +50,11 @@ public class ProductPageController extends AbstractECommercePageController {
 
         // TODO: How to handle variants ??
 
-        // Path pattern for product detail pages: /p/[SEO name]/[second id]
-        final String requestPath = webRequestContext.getRequestPath().replaceFirst("/p", "");
+        final String requestPath = request.getRequestURI().replaceFirst("/p", "");
+        final Localization localization = webRequestContext.getLocalization();
         final String[] pathTokens = requestPath.split("/");
         final String productSeoId;
-        final String productId;
+        String productId;
         if ( pathTokens.length == 3 ) {
             productSeoId = pathTokens[1];
             productId = pathTokens[2];
@@ -62,17 +67,19 @@ public class ProductPageController extends AbstractECommercePageController {
             throw new PageNotFoundException("Invalid product detail URL.");
         }
 
-        //final Category category = fredhopperService.getCategoryByPath(requestPath);
+        // Handle some special characters
+        //
+        productId = productId.replace("__plus__", "+");
+
         //final List<FacetParameter> facets = fredhopperService.getFacetParametersFromRequestMap(request.getParameterMap());
         ProductDetailResult detailResult = this.detailService.getDetail(productId);
-
         if ( detailResult != null && detailResult.getProductDetail() != null ) {
 
             request.setAttribute(PRODUCT_ID, productId);
             request.setAttribute(PRODUCT, detailResult.getProductDetail());
             request.setAttribute(RESULT, detailResult);
-            request.setAttribute(URL_PREFIX, "/c");
-            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(productSeoId, productId));
+            request.setAttribute(URL_PREFIX, localization.localizePath("/c"));
+            final PageModel templatePage = resolveTemplatePage(request, this.getSearchPath(localization, productSeoId, productId, detailResult.getProductDetail().getCategories()));
             templatePage.setTitle(detailResult.getProductDetail().getName());
 
             final MvcData mvcData = templatePage.getMvcData();
@@ -83,23 +90,28 @@ public class ProductPageController extends AbstractECommercePageController {
 
     /**
      * Get search path for finding appropriate template page.
+     * @param localization
      * @param productSeoId
      * @param productId
      * @return search path
      */
-    protected List<String> getSearchPath(String productSeoId, String productId) {
-
-        // TODO: Can we extract the categories from the product???
+    protected List<String> getSearchPath(Localization localization, String productSeoId, String productId, List<Category> categories) {
 
         // Should we allow some alternative lookup mechanism here as well? Such as search for
 
         List<String> searchPath = new ArrayList<>();
+        String basePath = localization.localizePath("/products/");
         if ( productSeoId != null ) {
-            searchPath.add("/products/" + productSeoId);
+            searchPath.add(basePath + productSeoId);
 
         }
-        searchPath.add("/products/" + productId);
-        searchPath.add("/products/generic");
+        searchPath.add(basePath + productId);
+        if ( categories != null ) {
+            for ( Category category : categories ) {
+                searchPath.add(basePath + category.getId());
+            }
+        }
+        searchPath.add(basePath + "generic");
         return searchPath;
     }
 }

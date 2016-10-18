@@ -9,17 +9,25 @@ import com.sdl.webapp.common.api.model.entity.EclItem;
  */
 public class ECommerceEclItem extends EclItem {
 
+    // TODO: Should this be part of the DXA module instead???
+
     /**
-     * @return get external ID of the ECL item (category or product ID)
+     * @return external ID of the ECL item (category or product ID)
      */
     public String getExternalId() {
-        return (String) this.getExternalMetadata().get("Id");
+        if ( this.getExternalMetadata() != null ) {
+            return (String) this.getExternalMetadata().get("Id");
+        }
+        return this.getFileName();
     }
 
     /**
-     * @return get name used by the external system, such as category title, product name etc
+     * @return name used by the external system, such as category title, product name etc
      */
     public String getExternalName() {
-        return (String) this.getExternalMetadata().get("Name");
+        if ( this.getExternalMetadata() != null ) {
+            return (String) this.getExternalMetadata().get("Name");
+        }
+        return null;
     }
 }

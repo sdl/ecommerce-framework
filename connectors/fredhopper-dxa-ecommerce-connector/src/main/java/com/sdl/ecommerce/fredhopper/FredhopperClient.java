@@ -5,25 +5,26 @@ import com.fredhopper.lang.query.ViewType;
 import com.fredhopper.lang.query.location.Location;
 import com.fredhopper.lang.query.location.criteria.*;
 import com.fredhopper.webservice.client.*;
+import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.FacetParameter.ParameterType;
 import com.sdl.ecommerce.api.QueryResult;
+import com.sdl.ecommerce.api.model.Product;
+import com.sdl.ecommerce.api.model.impl.GenericLocation;
 import com.sdl.ecommerce.fredhopper.model.FredhopperCategory;
 import com.sdl.ecommerce.fredhopper.model.FredhopperFacet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.BindingProvider;
 import java.io.UnsupportedEncodingException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -98,9 +99,21 @@ public class FredhopperClient implements FredhopperLinkManager {
         return new FredhopperDetailResult(this.doQuery(query), this);
     }
 
-
     Page doQuery(Query query) {
-        return this.fasService.getAll(query.toQueryString());
+        return this.doQuery(query, null);
+    }
+    Page doQuery(Query query, Map<String,String> triggers) {
+        String triggerString = "";
+        if ( triggers != null && !triggers.isEmpty() ) {
+            for ( String trigger : triggers.keySet() ) {
+                try {
+                    triggerString += "&" + trigger + "=" + URLEncoder.encode(triggers.get(trigger), "UTF-8");
+                }
+                catch ( UnsupportedEncodingException e ) {}
+            }
+
+        }
+        return this.fasService.getAll(query.toQueryString() + triggerString);
     }
 
 
@@ -112,7 +125,7 @@ public class FredhopperClient implements FredhopperLinkManager {
      * @param locale
      * @return query result
      */
-    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale) {
+    public QueryResult query(com.sdl.ecommerce.api.Query eCommerceQuery, String universe, String locale, Map<String,String> triggers) {
 
         Query query = this.buildQuery(universe, locale);
         if ( eCommerceQuery.getViewType() != null ) {
@@ -129,7 +142,7 @@ public class FredhopperClient implements FredhopperLinkManager {
             query.setListStartIndex(eCommerceQuery.getStartIndex());
         }
         this.applyQueryConfiguration(query, (FredhopperQuery) eCommerceQuery);
-        return new FredhopperQueryResult(this.doQuery(query), eCommerceQuery, this);
+        return new FredhopperQueryResult(this.doQuery(query, triggers), eCommerceQuery, this);
     }
 
     // TODO: Do a chain interface here instead
@@ -383,23 +396,18 @@ public class FredhopperClient implements FredhopperLinkManager {
     /************ LINK MANAGER INTERFACE ***********************************/
 
     @Override
-    public String convertToSEOLink(String location, ProductCategoryService categoryService) {
-        if ( location.contains("%") ) { // URL encoded location string
+    public com.sdl.ecommerce.api.model.Location resolveLocation(String fhLocation, ProductCategoryService categoryService) {
+        if ( fhLocation.contains("%") ) { // URL encoded location string
             try {
-                location = URLDecoder.decode(location, "utf8");
+                fhLocation = URLDecoder.decode(fhLocation, "utf8");
             } catch ( UnsupportedEncodingException e  ) {}
         }
-        return this.convertToSEOLink(new Location(location), categoryService);
-    }
-
-    @Override
-    public String convertToSEOLink(Location location, ProductCategoryService categoryService) {
-
-        StringBuilder seoLink = new StringBuilder();
+        Location fhLocationObj = new Location(fhLocation);
 
         String leafCategoryId = null;
+        Category category = null;
         List<FacetParameter> facets = null;
-        for ( Criterion criterion : (List<Criterion>) location.getAllCriteria() ) {
+        for ( Criterion criterion : (List<Criterion>) fhLocationObj.getAllCriteria() ) {
 
             if ( criterion.getAttributeName().equals("categories") ) {
                 // Category
@@ -417,16 +425,10 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
 
         if ( leafCategoryId != null ) {
-            Category category = categoryService.getCategoryById(leafCategoryId);
-            seoLink.append(category.getCategoryLink("/c"));  // TODO: Totally encapsylate the '/c'
-        }
-        if ( facets != null ) {
-            seoLink.append(FredhopperFacet.getFacetLink(facets));
+            category = categoryService.getCategoryById(leafCategoryId);
         }
 
-
-        return seoLink.toString();
-
+        return new GenericLocation(category, facets);
     }
 
     @Override
@@ -440,5 +442,6 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
         return imageUrl;
     }
+
 }
 

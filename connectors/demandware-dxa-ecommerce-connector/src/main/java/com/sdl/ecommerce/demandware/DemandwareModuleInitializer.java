@@ -1,9 +1,7 @@
 package com.sdl.ecommerce.demandware;
 
 import com.sdl.ecommerce.api.model.ECommerceEclItem;
-import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
-import com.sdl.webapp.common.api.mapping.views.RegisteredView;
-import com.sdl.webapp.common.api.mapping.views.RegisteredViews;
+import com.sdl.webapp.common.api.mapping.views.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,8 +10,8 @@ import org.springframework.stereotype.Component;
  * @author nic
  */
 @Component
-@RegisteredViews({
-        @RegisteredView(viewName = "ExternalContentLibraryStubSchemademandware", clazz = ECommerceEclItem.class)
+@RegisteredViewModels({
+        @RegisteredViewModel(viewName = "ExternalContentLibraryStubSchemademandware", modelClass = DemandwareEclItem.class)
 })
 public class DemandwareModuleInitializer extends AbstractInitializer {
 

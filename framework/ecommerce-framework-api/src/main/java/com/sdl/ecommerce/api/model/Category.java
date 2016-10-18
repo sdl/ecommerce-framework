@@ -38,7 +38,8 @@ public interface Category {
      * @param urlPrefix
      * @return link
      */
-    String getCategoryLink(String urlPrefix);
+    // TODO: USE LINK STRATEGY HERE INSTEAD !!!
+    //String getCategoryLink(String urlPrefix);
 
     /**
      * Get the category's path name which can based on the name of the category.

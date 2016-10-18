@@ -19,18 +19,18 @@ public interface ImageMapPromotion extends ContentPromotion {
         private int y1;
         private int x2;
         private int y2;
-        private String link;
+        private Location location;
 
-        public ContentArea(int x1, int y1, int x2, int y2, String link) {
+        public ContentArea(int x1, int y1, int x2, int y2, Location location) {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
-            this.link = link;
+            this.location = location;
         }
 
-        public String getLink() {
-            return link;
+        public Location getLocation() {
+            return location;
         }
 
         public int getX1() {

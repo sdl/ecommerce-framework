@@ -45,7 +45,8 @@ namespace SDL.Hybris.Ecl
             var productCatalog = CreateProductCatalog();
             var categories = productCatalog.GetAllCategories();
             Console.WriteLine("Categories:");
-            PrintCategoryList(categories, 1);
+            //PrintCategoryList(categories, 1);
+            PrintCategoryFlatList(categories);
         }
 
         private void PrintCategoryList(ECommerce.Ecl.Category category, int level)
@@ -61,13 +62,44 @@ namespace SDL.Hybris.Ecl
             }
         }
 
+        private void PrintCategoryFlatList(ECommerce.Ecl.Category category)
+        {
+            foreach (var subcategory in category.Categories)
+            {
+              
+                Console.WriteLine(GetCategoryFlatTitle(subcategory));
+                PrintCategoryFlatList(subcategory);
+            }
+        }
+
+        private string GetCategoryFlatTitle(ECommerce.Ecl.Category category)
+        {
+            // Display the full path of the category as title
+            //
+            String categoryPath = "";
+            ECommerce.Ecl.Category currentCategory = category;
+            while (currentCategory != null)
+            {
+                if (currentCategory.Title != null)
+                {
+                    if (categoryPath.Length > 0l)
+                    {
+                        categoryPath = "->" + categoryPath;
+                    }
+                    categoryPath = currentCategory.Title + categoryPath;
+                }
+                currentCategory = currentCategory.Parent;
+            }
+            return categoryPath;
+        }
+
         [TestMethod]
         public void TestGetCategory()
         {
             var productCatalog = CreateProductCatalog();
-            var products = productCatalog.GetProducts("576", 0);
+            var result = productCatalog.GetProducts("576", 0);
             Console.WriteLine("Category products:");
-            foreach (var product in products)
+            foreach (var product in result.Products)
             {
                 Console.WriteLine(" " + product.Name + " (" + product.Id + ")");               
                 if (product.Thumbnail != null)

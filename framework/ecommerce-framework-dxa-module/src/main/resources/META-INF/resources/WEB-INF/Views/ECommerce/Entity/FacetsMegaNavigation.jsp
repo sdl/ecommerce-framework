@@ -6,6 +6,12 @@
 <jsp:useBean id="entity" type="com.sdl.ecommerce.dxa.model.FacetsWidget" scope="request"/>
 <jsp:useBean id="markup" type="com.sdl.webapp.common.markup.Markup" scope="request"/>
 <jsp:useBean id="screenWidth" type="com.sdl.webapp.common.api.ScreenWidth" scope="request"/>
+<jsp:useBean id="linkResolver" type="com.sdl.ecommerce.api.ECommerceLinkResolver" scope="request"/>
+<c:if test="${entity.categoryReference.categoryPath == 'EMPTY'}">
+    <li class="mega-nav-link">
+       <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
+    </li>
+</c:if>
 <c:if test="${entity.categoryReference.category != null && not empty entity.facetGroups}">
 <%
 
@@ -24,7 +30,7 @@
 
 %>
 <li class="mega-nav-link">
-    <a href="${entity.categoryReference.categoryUrl}">${entity.categoryReference.category.name}</a>
+    <a href="${linkResolver.getCategoryLink(entity.categoryReference.category)}">${entity.categoryReference.category.name}</a>
     <div class="mega-nav" style="width: ${navWidth}px;">
         <div class="row">
             <div class="col-sm-12">
@@ -36,7 +42,7 @@
                                 <ul class="list-unstyled">
                                     <c:forEach var="facet" items="${facetGroup.facets}">
                                         <li>
-                                            <a href="${facet.url}">${facet.title}</a>
+                                            <a href="${linkResolver.getAbsoluteFacetLink(facet, entity.categoryReference.categoryUrl)}">${facet.title}</a>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -47,6 +53,7 @@
                                 <c:if test="${status.index lt 2}">
                                     <div class="col-sm-${colWidth+colRemainder}">
                                         <c:set var="promotion" value="${promotion}" scope="request"/>
+                                        <!-- TODO: Ignore image map promotions here?? -->
                                         <c:import url="/WEB-INF/Views/ECommerce/Entity/Partials/${entity.getPromotionViewName(promotion)}-MegaNav.jsp"/>
                                     </div>
                                 </c:if>

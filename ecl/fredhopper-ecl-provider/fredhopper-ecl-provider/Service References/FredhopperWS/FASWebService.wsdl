@@ -1,0 +1,1836 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://ns.fredhopper.com/XML/output/6.1.0" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:fh="http://ns.fredhopper.com/XML/output/6.1.0" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ns.fredhopper.com/XML/output/6.1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://ns.fredhopper.com/XML/output/6.1.0" xmlns:att="attribute" elementFormDefault="qualified" targetNamespace="http://ns.fredhopper.com/XML/output/6.1.0" jaxb:version="2.0">
+      <xsd:element name="page">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Central object that contains all response information to a Fredhopper request, e.g. facets, merchandising, items and breadcrumb.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:info">
+              <xsd:annotation>
+                <xsd:documentation>
+							Data about the end user and / or Front end application that triggered the current FAS request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:redirect">
+              <xsd:annotation>
+                <xsd:documentation>
+							In the Business Manager marketers can configure that certain search terms are not searched for in the index but are directly forwarded to a specific URL. The front-end application should forward the user to the URL provided by this field.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:searchterms">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of all search terms queried by the user. This field can contain multiple search phrases in case of an advanced search, e.g. one search term that is only searched in the title of the product and another search term that is only searched in the author field. Use search profiles to use this feature. 
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:searchpass">
+              <xsd:annotation>
+                <xsd:documentation>
+							Fredhopper search tries to match first in the most specific way, e.g. phrase matching ("red shirt" finds only "red shirt" but not "red big shirt"). If no results can be found Fredhopper automatically opens up its scope, e.g. and searches (matching "red big shirt"). The searchpass element shows if a certain pass has been specified or that the automatic multi pass system has been used, in which case it will show cumulative.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:universes">
+              <xsd:annotation>
+                <xsd:documentation>
+							In case of a multi universe set up results will be listed per universe. In case of a single universe only the default universe will appear within universes.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:order" />
+            <xsd:element minOccurs="0" ref="fh:footer">
+              <xsd:annotation>
+                <xsd:documentation>
+							Contains data for logging, reporting and benchmarking.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="qid" type="xsd:string" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="order">
+        <xsd:annotation>
+          <xsd:documentation>
+				Information returned from the order.jsp. The order.jsp passes conversion data from the host application to Fredhopper reporting.
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="error">
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="missing-arguments" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="redirect">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					In the Business Manager marketers can configure that certain search terms are not searched for in the index but are directly forwarded to a specific URL. The front-end application should forward the user to the URL provided by this field.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:redirect-host">
+              <xsd:annotation>
+                <xsd:documentation>
+							The hostname to which the redirect links
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:redirect-port">
+              <xsd:annotation>
+                <xsd:documentation>
+							The port number to which the redirect links (default is port 80)
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:redirect-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							The URL to which the redirect links
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="id" type="xsd:string" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="redirect-host" type="fh:host" />
+      <xsd:element name="redirect-port" type="fh:port" />
+      <xsd:element name="redirect-url" type="xsd:anyURI" />
+      <xsd:element name="server">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains server related information
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:encoding-detect-string">
+              <xsd:annotation>
+                <xsd:documentation>
+							This element is no longer used. Previously, it was used to determine the character encoding of the response document.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:host">
+              <xsd:annotation>
+                <xsd:documentation>
+							The host name of the machine that served this FAS request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:port">
+              <xsd:annotation>
+                <xsd:documentation>
+							The port through which this FAS request was answered.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:context-root">
+              <xsd:annotation>
+                <xsd:documentation>
+							The HTTP context of FAS. This defaults to 'fredhopper'. A prefix to appear in front of fredhopper can be configured in the system settings which will be included in here as well.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:role">
+              <xsd:annotation>
+                <xsd:documentation>
+							Describes the role of the running FAS application. In the staging mode the instance contains also the Business Manager; in live mode it doesn't.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:config-dir">
+              <xsd:annotation>
+                <xsd:documentation>
+							Points to the configuration directory of the current FAS application.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:locales">
+              <xsd:annotation>
+                <xsd:documentation>
+							All locales for which FAS loaded multi-lingual product data.
+ 						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:default-universe">
+              <xsd:annotation>
+                <xsd:documentation>
+							The universe that FAS uses if no universe was specified by the request (fh_location=//UNIVERSE/locale). This may occur if the user doesn't send any parameter fh_location.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="encoding-detect-string" type="xsd:string" />
+      <xsd:element name="host" type="fh:host" />
+      <xsd:element name="port" type="fh:port" />
+      <xsd:element name="context-root" type="xsd:string" />
+      <xsd:element name="path" type="xsd:string" />
+      <xsd:element name="type" type="fh:pageType" />
+      <xsd:element name="query-string-httpencoded" type="xsd:string" />
+      <xsd:element name="url" type="xsd:string" />
+      <xsd:element name="edit-url" type="xsd:string" />
+      <xsd:element name="source-xml" type="xsd:string" />
+      <xsd:element name="role" type="fh:role" />
+      <xsd:element name="config-dir" type="xsd:string" />
+      <xsd:element name="meta">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains meta title, description and keywords
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:title">
+              <xsd:annotation>
+                <xsd:documentation>
+							the title for this page from SEO
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:description">
+              <xsd:annotation>
+                <xsd:documentation>
+							the description for this page from SEO
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:keywords">
+              <xsd:annotation>
+                <xsd:documentation>
+							the keywords for this page from SEO
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="description" type="xsd:string" />
+      <xsd:element name="keywords" type="xsd:string" />
+      <xsd:element name="searchterms">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of search terms queried by the user (only for relevant for full text search requests)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:term">
+              <xsd:annotation>
+                <xsd:documentation>
+							Search term entered by the user
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="type" type="xsd:string" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="term">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Search term entered by the user
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="profile" type="xsd:string" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchpass" type="xsd:string" />
+      <xsd:element name="universes">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Data for all universes. A universe is the collects many items of a similar type. For example one universe may contain all products and another universe may contain static documents. If a product has multiple prices (e.g. for travel or B2B) a second universe is typically used as well.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" ref="fh:universe">
+              <xsd:annotation>
+                <xsd:documentation>
+							All response data for the one universe
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="universe">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Response information per Universe
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:error">
+              <xsd:annotation>
+                <xsd:documentation>
+							Error returned after the user request, e.g. no results.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Contains the URL parameters used to get to the current FAS response.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:facetmap">
+              <xsd:annotation>
+                <xsd:documentation>
+							Facetmap contains the navigational elements for the current selection, the facets and their facet values.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:breadcrumbs">
+              <xsd:annotation>
+                <xsd:documentation>
+							Breadcrumb navigation, showing the path the user used to get at the current location.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:items-section">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of items in the lister, e.g. the Top 10 search results from the first page.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:themes">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of promotions / merchandising components within the current request
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:query-alternatives">
+              <xsd:annotation>
+                <xsd:documentation>
+							Suggestions for spell correction to the requested search term (basically 'Did you mean?' functionality). It is configurable if Fredhopper should automatically execute the search for these alternatives and / or just display the alternative suggestions only.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:display-fields">
+              <xsd:annotation>
+                <xsd:documentation>
+							The item attributes to be displayed to the user on the detail and compare pages
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:attribute-types">
+              <xsd:annotation>
+                <xsd:documentation>
+							Attribute type declarations and its Multi Lingual representation.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" />
+          <xsd:attribute default="deselected" name="type" type="fh:universeType" use="optional" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="status" type="xsd:string" />
+      <xsd:element name="error">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Error returned after the user request, e.g. zero results to a search.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="type" type="fh:errorType" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="link">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Data needed to link to a particular object
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element name="name" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+							Multi-lingual representation for the link
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:url-params">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters for the link
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:seo-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							The link in search-engine optimized form
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:value">
+              <xsd:annotation>
+                <xsd:documentation>
+							Language independent value of the attribute
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="sorted">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:int">
+                <xsd:enumeration value="0" />
+                <xsd:enumeration value="1" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute name="sort-order">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:token">
+                <xsd:enumeration value="asc" />
+                <xsd:enumeration value="desc" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute name="type" type="fh:linkType" />
+          <xsd:attribute name="nr" type="xsd:int" />
+          <xsd:attribute name="fh_secondid" type="xsd:string" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="query-alternatives">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Suggestions for spell correction to the requested search term (terms and links)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:query-suggestion">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of alternative search terms (with links)
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute default="true" name="was-executed" type="xsd:boolean" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="query-suggestion">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of alternative search terms (with links)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:value">
+              <xsd:annotation>
+                <xsd:documentation>
+							Language independent value of the attribute
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:url-params">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters for the link
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:seo-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters for the link in search-engine optimized form
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:searchterms" />
+          </xsd:sequence>
+          <xsd:attribute name="original" type="xsd:string" />
+          <xsd:attribute name="estimated-results" type="xsd:int" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="url-params" type="xsd:string" />
+      <xsd:element name="name">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					ML name of the link. This value should be used to render the link in the front-end.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="value" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:appinfo>
+                    <jaxb:property name="nonMlValue" />
+                  </xsd:appinfo>
+                </xsd:annotation>
+              </xsd:attribute>
+              <xsd:attribute name="attribute-type" type="xsd:string" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="items">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of items (e.g. products) to be displayed. It contains always only the items for the current page, e.g. if there are 300 search results the section contains only the Top-10 items.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:item">
+              <xsd:annotation>
+                <xsd:documentation>
+							One item from the result set.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="display-fields">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The attributes of an item to be displayed to the user.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:field">
+              <xsd:annotation>
+                <xsd:documentation>
+							Declaration of a display field
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="heading">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Table header (list of all attribute types that are attached to each item)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Data needed for the link that would point to a particular object in the browser
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="item">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains data for one Fredhopper item (e.g. one product)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:attribute" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Data needed for the link that would point to a particular object in the browser
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:nav-index" />
+            <xsd:element minOccurs="0" ref="fh:similar-item-fields" />
+            <xsd:element minOccurs="0" ref="fh:quantity" />
+            <xsd:element minOccurs="0" ref="fh:refdetail">
+              <xsd:annotation>
+                <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="id" type="xsd:string" />
+          <xsd:attribute name="current-rank" type="fh:posInt" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="nav-index" type="fh:nonNegInt" />
+      <xsd:element name="attribute" type="fh:attribute" />
+      <xsd:complexType name="attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:value">
+            <xsd:annotation>
+              <xsd:documentation>
+						Language independent value of the attribute. This is similar to a reference key in a relational database.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="skey" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+					Obsolete attribute, replaced by the 'name' attribute.
+				</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="basetype" type="fh:attributeTypeFormat" use="required" />
+        <xsd:attribute name="mimetype" type="xsd:string" />
+        <xsd:attribute name="isnull" type="xsd:boolean" />
+        <xsd:attribute name="ref-secondid" type="xsd:string" />
+        <xsd:attribute default="true" name="selected" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+					If "true" this contains the value of this attribut of the currently selected primary or related item. 
+					If "false" this contains values for this attribute of all available related items.
+				</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:complexType>
+      <xsd:complexType name="attributeExtended">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="fh:attribute">
+            <xsd:attribute name="location-param" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+							String to add to the location-param-prefix to obtain all items with this attribute and value.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="similar-item-fields">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="attribute" type="fh:attributeExtended" />
+          </xsd:sequence>
+          <xsd:attribute name="location-param-prefix" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation>
+						Common location prefix for all similar items. 
+						Combine this prefix with the 'location-param' attribute of the wanted attribute to obtain a full 
+						location string.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="quantity" type="fh:posInt">
+        <xsd:annotation>
+          <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="refdetail" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="attribute-types">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of all attribute types like 'color' or 'price'.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:attribute-type">
+              <xsd:annotation>
+                <xsd:documentation>
+							Declaration of an attribute type
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="attribute-type">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Declaration of an attribute type like 'color' or 'price'
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="basetype" type="fh:attributeTypeFormat" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="differs" type="fh:yesNo" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="facetmap">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Facetmap contains the navigation links (like brand facet) for the current location. All facets are relative to the current context, e.g. if the user searched for a 'shirt' the color facets would contain only values for items that match the word 'shirt'.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:filter">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of all facets like 'brand' facet or 'color' facet.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="universe" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="filter">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					A facet contains further navigation option in one data dimension, e.g. different colors for the color facet.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:title">
+              <xsd:annotation>
+                <xsd:documentation>
+							Multi-lingual name of the attribute type on which the facet relies.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:filtersection">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of all facet values in the current selection, e.g. red, blue, green for the color facet.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:url-params-base">
+              <xsd:annotation>
+                <xsd:documentation>
+							Link to the selection without the criteria with this facet in the location. Useful for building custom sets criteria with this facet attribute.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:custom-fields">
+              <xsd:annotation>
+                <xsd:documentation>
+							Custom fields attached to the facet.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Link to the facet
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="on" type="xsd:string" use="required" />
+          <xsd:attribute name="facetid" type="xsd:string" />
+          <xsd:attribute name="basetype" type="fh:attributeTypeFormat" />
+          <xsd:attribute name="show_number_values" type="fh:posInt" />
+          <xsd:attribute name="selected" type="xsd:boolean" />
+          <xsd:attribute name="type" type="xsd:string" />
+          <xsd:attribute name="display-hint" type="fh:display-hint" use="optional" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="title" type="xsd:string" />
+      <xsd:element name="url-params-base" type="xsd:string" />
+      <xsd:element name="filtersection">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					A value within the facet, e.g. 'shoes' in the category facet.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters that have to be sent to FAS to select this facet value.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:value">
+              <xsd:annotation>
+                <xsd:documentation>
+							Language independent value of the attribute, e.g. category code '3432456' for the shoe category.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="nr" type="fh:nonNegInt" use="required" />
+          <xsd:attribute name="selected" type="xsd:boolean" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="value">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Language independent value of the attribute, e.g. category code '3432456' for the shoe category.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="non-ml" type="xsd:string" />
+              <xsd:attribute name="universe-ref" type="xsd:string" />
+              <xsd:attribute name="islocale" type="xsd:boolean" use="optional" />
+              <xsd:attribute name="location-param" type="xsd:string" use="optional" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="breadcrumbs">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Breadcrumb navigation
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:crumb">
+              <xsd:annotation>
+                <xsd:documentation>
+							One crumb section in the breadcrumb
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:attribute-types">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of attributes that are shown in the breadcrumb
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="nr-of-items-in-selection" type="fh:nonNegInt" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="crumb">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					One crumb section in the breadcrumb
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:url-params">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters that have to be sent to FAS to retrieve information for the location of the crumb.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:seo-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL in a search-engine optimized form
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:name">
+              <xsd:annotation>
+                <xsd:documentation>
+							Multi-lingual representation of the crumb, e.g. if the user filtered for color=red the name would be "rot" in German.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:searchterms">
+              <xsd:annotation>
+                <xsd:documentation>
+							If the crumb represent a search from the user, searchterms contains a list of all search terms the user looked for.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:range">
+              <xsd:annotation>
+                <xsd:documentation>
+							The range selected for a navigation step.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Additional links for this crumb.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="range">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="unbounded" ref="fh:value-set">
+              <xsd:annotation>
+                <xsd:documentation>
+							The values in this range.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="invert" type="xsd:boolean" use="required">
+            <xsd:annotation>
+              <xsd:documentation>
+						If "true" this range is inverted, i.e. selects all items not fulfilling the range. 
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="value-set">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:entry">
+              <xsd:annotation>
+                <xsd:documentation>
+							A single entry in this set.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="constraint" type="fh:constraintType" use="required">
+            <xsd:annotation>
+              <xsd:documentation>
+						Use of this value-set: either "low" or "high", representing a low or high bound for the 
+						range respectively.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="aggregation" type="fh:aggregationType" use="required">
+            <xsd:annotation>
+              <xsd:documentation>
+						Type of the aggregation of the entries: "or" or "and".
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="entry">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" ref="fh:value" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:link" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="items-section">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of items (e.g. products) in the lister
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:results">
+              <xsd:annotation>
+                <xsd:documentation>
+							Defines the way the item list will be split into parts in order to be shown on the page
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:heading">
+              <xsd:annotation>
+                <xsd:documentation>
+							The table header contains all attribute types that are provided for each item.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:items">
+              <xsd:annotation>
+                <xsd:documentation>
+							All items that are on the current page of the lister.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ranking">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains the results ranking information
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:id">
+              <xsd:annotation>
+                <xsd:documentation>
+							The id of the ranking used for this result
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:sort-fields">
+              <xsd:annotation>
+                <xsd:documentation>
+							The sortfields used in this ranking
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="id" type="xsd:string" />
+      <xsd:element name="sort-attribute" type="xsd:string" />
+      <xsd:element name="sort-direction" type="fh:sort-direction" />
+      <xsd:element name="sort-fields">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains the list of sortfields
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:sort-field">
+              <xsd:annotation>
+                <xsd:documentation>
+							The sortfields used in this ranking
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sort-field">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Contains the information for a single sort field
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:sort-direction">
+              <xsd:annotation>
+                <xsd:documentation>
+							The sort direction
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:sort-attribute">
+              <xsd:annotation>
+                <xsd:documentation>
+							The sort attribute
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="results">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Provides information how the list of items will be paged.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:url-params">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters for to retrieve the current lister ignoring all paging settings.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:seo-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							URL parameters for the link in search-engine optimized form
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:ranking">
+              <xsd:annotation>
+                <xsd:documentation>
+							Information for the ranking used in the result
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="view_size" type="fh:nonNegInt" use="required" />
+          <xsd:attribute name="view_set_size" type="xsd:string" use="required" />
+          <xsd:attribute name="total_items" type="fh:nonNegInt" use="required" />
+          <xsd:attribute name="start_index" type="fh:nonNegInt" use="required" />
+          <xsd:attribute name="view_size_param" type="xsd:string" use="required" />
+          <xsd:attribute name="start_index_param" type="xsd:string" use="required" />
+          <xsd:attribute name="current_set" type="fh:nonNegInt" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="seo-url">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					URL in a search-engine friendly form, e.g. /women/shirts instead of fh_location=//shop/en_US/category&lt;{women}/category&lt;{shirts}
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="isnull" type="xsd:boolean" use="optional" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="themes">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of all promotions that apply to the current user context (catalog location, search term, user segement, time, etc.) Promotions are definied by marketeers in the Business Manager.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:theme">
+              <xsd:annotation>
+                <xsd:documentation>
+							One promotion (static advertisment text or product spot-light)
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:attribute-types">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of attributes that are provided for each item. This list can be changed in the Business Manager in System Manager &gt; Presentation &gt; Promotional Items.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="itemid" type="xsd:string" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="theme">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					One promotion (static advertisement text or product spot-light)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" ref="fh:title">
+              <xsd:annotation>
+                <xsd:documentation>
+							The title of the promotion.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:slogan">
+              <xsd:annotation>
+                <xsd:documentation>
+							The slogan of the promotion.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:custom-fields">
+              <xsd:annotation>
+                <xsd:documentation>
+							Custom fields attached to the promotion. This is typically used to flag promotions to be shown on a specific page location (e.g. upper, right, left).
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:static-content">
+              <xsd:annotation>
+                <xsd:documentation>
+							Static content provides all promotion related information for which FAS doesn't have a semantic understanding: image references, URLs and static text.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:link">
+              <xsd:annotation>
+                <xsd:documentation>
+							Data needed for the link that would point to a particular object in the browser
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:items">
+              <xsd:annotation>
+                <xsd:documentation>
+							List of items that are spotlighted by the promotion.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="id" type="xsd:string" use="required" />
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+          <xsd:attribute name="type" type="fh:themeType" use="required">
+            <xsd:annotation>
+              <xsd:documentation>This attribute always has the value 'facet' in FAS6_5_0.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="items-query" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>This attribute is never set, and only declared for compatibility with FAS6_1_0.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="slogan" type="xsd:string" />
+      <xsd:element name="static-content">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Static content provides all promotion related information for which FAS doesn't have a semantic understanding: image references, URLs and static text.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:content">
+              <xsd:annotation>
+                <xsd:documentation>
+							One content element of the content, e.g. image references, URLs or static text.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" use="optional">
+            <xsd:annotation>
+              <xsd:documentation>This attribute is never set, and only declared for compatibility with FAS6_1_0</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="type" type="fh:staticContentType" use="optional" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="content">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element ref="fh:content-value">
+              <xsd:annotation>
+                <xsd:documentation>
+							The value of this content element
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:content-link">
+              <xsd:annotation>
+                <xsd:documentation>
+							The link for this content element
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:content-area-link">
+              <xsd:annotation>
+                <xsd:documentation>
+							The content area links for this element
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="name" type="xsd:string" />
+          <xsd:attribute name="type" type="fh:staticContentType" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="content-value" type="xsd:string" />
+      <xsd:element name="content-link">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The selection link for static-content element with image type 
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexContent mixed="false">
+            <xsd:extension base="fh:contentLinkBase" />
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="content-area-link">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The selection link for content element with image-map type 
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexContent mixed="false">
+            <xsd:extension base="fh:contentLinkBase">
+              <xsd:attribute name="x1" type="fh:nonNegInt" use="required" />
+              <xsd:attribute name="y1" type="fh:nonNegInt" use="required" />
+              <xsd:attribute name="x2" type="fh:nonNegInt" use="required" />
+              <xsd:attribute name="y2" type="fh:nonNegInt" use="required" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="contentLinkBase">
+        <xsd:annotation>
+          <xsd:documentation>
+					Base type for static-content element links
+				</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleContent>
+          <xsd:extension base="xsd:string">
+            <xsd:attribute name="type" type="fh:contentLinkType" use="required" />
+            <xsd:attribute default="false" name="open-in-new-window" type="xsd:boolean" use="optional" />
+            <xsd:attribute name="alt" type="xsd:string" use="optional" />
+          </xsd:extension>
+        </xsd:simpleContent>
+      </xsd:complexType>
+      <xsd:element name="custom-fields">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					List of custom fields. Custom fields are used to tag promotions or facets, i.e. the marketeer can add in the Business Manager information that is not interpretated by FAS but just forwarded to the front-end. This is typically used to define the location where a facet has to be rendered, e.g. left or top.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:custom-field">
+              <xsd:annotation>
+                <xsd:documentation>
+							Custom field (tags to promotions and facets)
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="custom-field">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Custom field (tags to promotions and facets)
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="id" type="xsd:string" use="required" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fields">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Declaration of fields that are presented for each item
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fh:field">
+              <xsd:annotation>
+                <xsd:documentation>
+							Declaration of a field
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="field">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					A display field contains meta information about an attribute which is required to render it in the front-end.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="basetype" type="fh:attributeTypeFormat" use="required" />
+              <xsd:attribute default="false" name="reverse" type="xsd:boolean" />
+              <xsd:attribute name="skey" type="xsd:string" />
+              <xsd:attribute name="selection-criteria" type="xsd:string" />
+              <xsd:attribute name="ref-universe" type="xsd:string" />
+              <xsd:attribute default="" name="type" type="xsd:string" use="optional">
+                <xsd:annotation>
+                  <xsd:documentation>
+								The type of this field. 
+								This can be the empty string or 'selected-variant' if the field shows only
+								the value(s) of the currently selected primary or related item, or 'all-variants' if the field
+								shows value(s) of all available related items matching the current selection.
+							</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="info">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					Data about the user that triggered the current FAS request.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:session">
+              <xsd:annotation>
+                <xsd:documentation>
+							The ID identifying the current session. Although Fredhopper, as a stateless system, doesn't require the session information it adds it to the log files and can deliver it back to the front-end. The session ID is passed to FAS by the url parameter fh_session.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:user-type">
+              <xsd:annotation>
+                <xsd:documentation>
+							A string identifying the type of the current user. This is set to the fixed value "unknown" in FAS6_5_0 and later versions.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:lang">
+              <xsd:annotation>
+                <xsd:documentation>
+							The language part of the Locale for which the user sent a request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:country">
+              <xsd:annotation>
+                <xsd:documentation>
+							The country part of the Locale for which the user sent a request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:locale">
+              <xsd:annotation>
+                <xsd:documentation>
+							The Locale for which the user sent a request. The Locale is part of the URL parameter fh_location, e.g.  en_US for //catalog01/en_US.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:current-universe">
+              <xsd:annotation>
+                <xsd:documentation>
+							The universe for which the user sent a request. The universe is the first part of the URL parameter fh_location, e.g. catalog01 for //catalog01/en_US.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:view">
+              <xsd:annotation>
+                <xsd:documentation>
+							The type of the current page. 
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:mode">
+              <xsd:annotation>
+                <xsd:documentation>
+							Indicates if the page is in edit mode. Required for sample1 pages. 
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:query">
+              <xsd:annotation>
+                <xsd:documentation>
+							The URL parameter fh_location for the current request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:path">
+              <xsd:annotation>
+                <xsd:documentation>
+							The URL of the REST/XML API that was triggered for this request. For SOAP requests FAS transparently forwards requests to its REST/XML API.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:type">
+              <xsd:annotation>
+                <xsd:documentation>
+							The page template of this response document (e.g. search, index, detail). Typically the page type defines how the front-end has to render the response data. Additionally, certain business rules like promotions are depending on the page template.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:query-string-httpencoded">
+              <xsd:annotation>
+                <xsd:documentation>
+							Location query HTTP encoded
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:url">
+              <xsd:annotation>
+                <xsd:documentation>
+							The following is constructed from the page path and all the additional URL parameters from the browser request
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" ref="fh:edit-url">
+              <xsd:annotation>
+                <xsd:documentation>
+							The same URL as page-url, with additional parameters which triggers the edit mode in that page
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:source-xml">
+              <xsd:annotation>
+                <xsd:documentation>
+							The URL of the source XML page that is used to render the requested page
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:server" />
+            <xsd:element minOccurs="0" ref="fh:meta">
+              <xsd:annotation>
+                <xsd:documentation>
+							provides meta title,description and keywords from SEO
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="session" type="xsd:string" />
+      <xsd:element name="user-type" type="xsd:string" />
+      <xsd:element name="lang" type="xsd:language" />
+      <xsd:element name="country" type="xsd:language" />
+      <xsd:element name="locale">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The Locale for which the user sent a request. The Locale is part of the URL parameter fh_location, e.g. en_US for //catalog01/en_US.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="fh:localeFormat">
+              <xsd:attribute default="false" name="selected" type="xsd:boolean" />
+              <xsd:attribute name="mlvalue" type="xsd:string" use="required" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="locales">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					A list of locales
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" ref="fh:locale">
+              <xsd:annotation>
+                <xsd:documentation>
+							A locale (language_COUNTRY code)
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="current-universe" type="xsd:string" />
+      <xsd:element name="default-universe" type="xsd:string" />
+      <xsd:element name="view" type="fh:viewType" />
+      <xsd:element name="asked-xml" type="fh:yesNo" />
+      <xsd:element name="mode" type="fh:modeType" />
+      <xsd:element name="query" type="xsd:string" />
+      <xsd:element name="footer">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The footer contains data for logging and benchmarking.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:sequence>
+            <xsd:element ref="fh:process-time">
+              <xsd:annotation>
+                <xsd:documentation>
+							The time that FAS took to answer the current request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="fh:log-args">
+              <xsd:annotation>
+                <xsd:documentation>
+							Information that was appended to the biz.log file for this request.
+						</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="process-time">
+        <xsd:complexType>
+          <xsd:annotation>
+            <xsd:documentation>
+					The time that FAS took to answer the current request.
+				</xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:float">
+              <xsd:attribute name="unit" type="fh:timeUnit" use="required" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="log-args" type="xsd:string" />
+      <xsd:simpleType name="host">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()\-]+\.)*([0-9a-z][0-9a-z\-]{0,61})?[0-9a-z]\.[a-z]{2,6}|[0-9a-zA-Z_!~*'()\-]+)" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="port">
+        <xsd:restriction base="xsd:int">
+          <xsd:maxInclusive value="65535" />
+          <xsd:minInclusive value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="localeFormat">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[a-z]+(_[A-Z]+)?" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="constraintType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="low" />
+          <xsd:enumeration value="high" />
+          <xsd:enumeration value="equal" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="aggregationType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="and" />
+          <xsd:enumeration value="or" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="modeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="user" />
+          <xsd:enumeration value="selectlocation_complex" />
+          <xsd:enumeration value="selectlocation_normal" />
+          <xsd:enumeration value="selectlocation_normal_catonly" />
+          <xsd:enumeration value="select_product" />
+          <xsd:enumeration value="select_modifications" />
+          <xsd:enumeration value="select_modifications_preview" />
+          <xsd:enumeration value="edit" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="universeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="selected" />
+          <xsd:enumeration value="deselected" />
+          <xsd:enumeration value="referedto" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="pageType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="index" />
+          <xsd:enumeration value="lister" />
+          <xsd:enumeration value="detail" />
+          <xsd:enumeration value="search" />
+          <xsd:enumeration value="keeplist">
+            <xsd:annotation>
+              <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="compare" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="timeUnit">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="h" />
+          <xsd:enumeration value="m" />
+          <xsd:enumeration value="s" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="viewType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="index" />
+          <xsd:enumeration value="lister" />
+          <xsd:enumeration value="detail" />
+          <xsd:enumeration value="search" />
+          <xsd:enumeration value="keeplist">
+            <xsd:annotation>
+              <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="compare" />
+          <xsd:enumeration value="home" />
+          <xsd:enumeration value="summary" />
+          <xsd:enumeration value="redirect" />
+          <xsd:enumeration value="empty">
+            <xsd:annotation>
+              <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="attributeTypeFormat">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="int" />
+          <xsd:enumeration value="float" />
+          <xsd:enumeration value="text" />
+          <xsd:enumeration value="list" />
+          <xsd:enumeration value="set" />
+          <xsd:enumeration value="date" />
+          <xsd:enumeration value="ref" />
+          <xsd:enumeration value="intset" />
+          <xsd:enumeration value="cat" />
+          <xsd:enumeration value="asset" />
+          <xsd:enumeration value="unknown" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="role">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="live" />
+          <xsd:enumeration value="staging" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="no location and no secondid" />
+          <xsd:enumeration value="itemnotfoundlocation" />
+          <xsd:enumeration value="itemnotfound" />
+          <xsd:enumeration value="itemnotfoundlocale" />
+          <xsd:enumeration value="itemnotfounduniverse" />
+          <xsd:enumeration value="emptykeeplist">
+            <xsd:annotation>
+              <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="missing-arguments" />
+          <xsd:enumeration value="search-noresults" />
+          <xsd:enumeration value="loading" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="yesNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="yes" />
+          <xsd:enumeration value="no" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration id="next" value="next" />
+          <xsd:enumeration id="previous" value="previous" />
+          <xsd:enumeration id="lister" value="lister" />
+          <xsd:enumeration id="index" value="index" />
+          <xsd:enumeration id="search" value="search" />
+          <xsd:enumeration id="detail" value="detail" />
+          <xsd:enumeration id="keeplist" value="keeplist">
+            <xsd:annotation>
+              <xsd:documentation>Obsolete; no longer used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration id="first" value="first" />
+          <xsd:enumeration id="last" value="last" />
+          <xsd:enumeration id="more" value="more" />
+          <xsd:enumeration id="less" value="less" />
+          <xsd:enumeration id="see-all" value="see-all" />
+          <xsd:enumeration id="filtered-all" value="filtered-all" />
+          <xsd:enumeration id="lowest-category" value="lowest-category" />
+          <xsd:enumeration id="remove" value="remove">
+            <xsd:annotation>
+              <xsd:documentation>Link that removes the current element (7.2.1+)</xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="themeType">
+        <xsd:annotation>
+          <xsd:documentation>Values for Theme Type</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:normalizedString">
+          <xsd:enumeration value="facet-image" />
+          <xsd:enumeration value="facet-text" />
+          <xsd:enumeration value="facet-product" />
+          <xsd:enumeration value="facet" />
+          <xsd:enumeration value="keyword-image" />
+          <xsd:enumeration value="keyword-text" />
+          <xsd:enumeration value="keyword-product" />
+          <xsd:enumeration value="keyword" />
+          <xsd:enumeration value="item-image" />
+          <xsd:enumeration value="item-text" />
+          <xsd:enumeration value="item-product" />
+          <xsd:enumeration value="item" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="staticContentType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="text" />
+          <xsd:enumeration value="image" />
+          <xsd:enumeration value="image-map" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="contentLinkType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="url" />
+          <xsd:enumeration value="catalog" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nonNegInt">
+        <xsd:restriction base="xsd:int">
+          <xsd:minInclusive value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="posInt">
+        <xsd:restriction base="xsd:int">
+          <xsd:minExclusive value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sort-direction">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="ASC" />
+          <xsd:enumeration value="DESC" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="display-hint">
+        <xsd:list itemType="xsd:string" />
+      </xsd:simpleType>
+      <xsd:element xmlns="http://www.w3.org/2001/XMLSchema" name="getAll" type="xsd:string" />
+      <xsd:element xmlns="http://www.w3.org/2001/XMLSchema" name="fh_params" type="xsd:string" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getAllRequest">
+    <wsdl:part name="fh_params" element="fh:fh_params" />
+  </wsdl:message>
+  <wsdl:message name="getAllResponse">
+    <wsdl:part name="getAllReturn" element="fh:page" />
+  </wsdl:message>
+  <wsdl:portType name="FASWebService">
+    <wsdl:operation name="getAll">
+      <wsdl:documentation>
+				Answers requests to FAS
+			</wsdl:documentation>
+      <wsdl:input name="getAllRequest" message="fh:getAllRequest" />
+      <wsdl:output name="getAllResponse" message="fh:getAllResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FASWebServiceSoapBinding" type="fh:FASWebService">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getAll">
+      <wsdl:documentation>
+				Answers requests to FAS
+			</wsdl:documentation>
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getAllRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FASWebServiceService">
+    <wsdl:documentation>
+			WebService to Fredhopper Access Server
+		</wsdl:documentation>
+    <wsdl:port name="FASWebService" binding="fh:FASWebServiceSoapBinding">
+      <wsdlsoap:address location="http://preview:8180/fredhopper-ws/services/FASWebService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

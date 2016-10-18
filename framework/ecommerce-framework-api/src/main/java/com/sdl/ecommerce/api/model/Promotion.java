@@ -6,7 +6,7 @@ package com.sdl.ecommerce.api.model;
  *
  * @author nic
  */
-public interface Promotion {
+public interface Promotion extends Editable {
 
     /**
      * Get unique identifier of the promotion.

@@ -26,6 +26,8 @@ import java.util.Map;
  */
 public class DemandwareCart implements Cart {
 
+    // TODO: Refactor to the new cart design here!!!
+
     private DemandwareShopClient shopClient;
     private ProductDetailService detailService;
     private List<CartItem> items = new ArrayList<>();
@@ -45,13 +47,12 @@ public class DemandwareCart implements Cart {
         return this.basket != null ? this.basket.getBasket_id() : null;
     }
 
-    @Override
     public void addProduct(String productId) throws ECommerceException {
         this.addProduct(productId, 1);
     }
 
-    @Override
     public void addProduct(String productId, int quantity) throws ECommerceException {
+        // TODO: Have this kind of methods on a CartService
         this.basket = this.shopClient.addProductToBasket(basket, productId, quantity);
         this.refresh();
     }
@@ -61,7 +62,6 @@ public class DemandwareCart implements Cart {
         return this.items;
     }
 
-    @Override
     public void removeProduct(String productId) throws ECommerceException {
         for ( ProductItem productItem : this.basket.getProduct_items() ) {
             if ( productItem.getProduct_id().equals(productId) ) {
@@ -81,13 +81,14 @@ public class DemandwareCart implements Cart {
         return count;
     }
 
-    @Override
     public void clear() throws ECommerceException {
         // TODO: IMPLEMENT
     }
 
-    @Override
     synchronized public void refresh() throws ECommerceException {
+
+        // TODO: Remove this method. A new fresh cart should be returned each time
+
         this.items.clear();
         if ( basket.getProduct_items() != null ) {
             for (ProductItem productItem : basket.getProduct_items()) {

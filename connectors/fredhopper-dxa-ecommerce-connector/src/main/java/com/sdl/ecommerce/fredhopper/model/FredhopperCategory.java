@@ -67,18 +67,6 @@ public class FredhopperCategory implements Category {
         */
     }
 
-    @Override
-    public String getCategoryLink(String urlPrefix) {
-        String link = "";
-        Category currentCategory = this;
-        while ( currentCategory != null ) {
-            link = currentCategory.getPathName() + "/" + link;
-            currentCategory = currentCategory.getParent();
-        }
-        link = urlPrefix + "/" + link;
-        return link;
-    }
-
     public boolean needsRefresh() {
         return this.categories == null || this.categoriesExpiryTime < System.currentTimeMillis();
     }

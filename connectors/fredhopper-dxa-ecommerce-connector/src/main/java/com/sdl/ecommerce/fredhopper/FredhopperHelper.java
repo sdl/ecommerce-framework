@@ -3,6 +3,7 @@ package com.sdl.ecommerce.fredhopper;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.webapp.common.api.localization.Localization;
 
+import java.net.URI;
 import java.util.*;
 
 /**
@@ -40,9 +41,34 @@ public abstract class FredhopperHelper {
         return getConfigList(localizationService, "fredhopper-hiddenFacetValues");
     }
 
+    static public List<String> getAggregatedFacets(LocalizationService localizationService) {
+        return getConfigList(localizationService, "fredhopper-aggregatedFacets");
+    }
+
     // Not used right now.
     static public List<String> getFlyoutFacets(LocalizationService localizationService) {
         return getConfigList(localizationService, "fredhopper-flyoutFacets");
+    }
+
+    static public Map<String,String> getTriggers(LocalizationService localizationService) {
+        /*  TODO: FIX TRIGGER MAPPINGS TOWARDS NEW CLAIM STORE
+        String triggerMappings = localizationService.getLocalizedConfigProperty("fredhopper-triggerMappings");
+        Map<URI,Object> claims = localizationService.getAllClaims();
+        if ( triggerMappings != null && claims != null  ) {
+            Map<String,String> triggers = new HashMap<>();
+            StringTokenizer tokenizer = new StringTokenizer(triggerMappings, "=; ");
+            while ( tokenizer.hasMoreTokens() ) {
+                String claim = tokenizer.nextToken();
+                String trigger = tokenizer.nextToken();
+                Object claimValue = claims.get(URI.create(claim));
+                if ( claimValue != null ) {
+                    triggers.put(trigger, claimValue.toString());
+                }
+            }
+            return triggers;
+        }
+        */
+        return null;
     }
 
     static private List<String> getConfigList(LocalizationService localizationService, String name) {

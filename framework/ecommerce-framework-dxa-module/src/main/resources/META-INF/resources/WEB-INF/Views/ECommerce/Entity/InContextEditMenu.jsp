@@ -8,22 +8,9 @@
 <c:if test="${editMenu != null && editMenu.menuItems.size() gt 0}">
     <div>
 
-        <style type="text/css">
-
-            .xpm-create-new-menu .bootstrap-select {
-                opacity: 0.5;
-            }
-
-            .xpm-create-new-menu .bootstrap-select:hover {
-                opacity: 1.0;
-            }
-
-        </style>
-
-
         <!-- TODO: Should this also include message bar where modifications etc can be highlighted????  -->
 
-        <div class="xpm-button xpm-create-new-menu" style="position: absolute; top: -54px; left: 0px;">
+        <div class="xpm-button xpm-create-new-menu">
 
             <!-- TODO: Use standard Tridion fonts here -->
             <!-- TODO: Visualize that there is a modification active for current page -->

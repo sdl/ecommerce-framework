@@ -4,6 +4,7 @@ import com.fredhopper.webservice.client.ContentAreaLink;
 import com.fredhopper.webservice.client.Theme;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.model.ImageMapPromotion;
+import com.sdl.ecommerce.api.model.Location;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class FredhopperImageMapPromotion extends FredhopperPromotion implements 
         if ( theme.getStaticContent() != null && !theme.getStaticContent().getContent().isEmpty() ) {
             List<ContentAreaLink> areaLinks = theme.getStaticContent().getContent().get(0).getContentAreaLink();
             for ( ContentAreaLink areaLink : areaLinks ) {
-                String link = this.getPromotionLink(areaLink, linkManager, categoryService);
-                this.contentAreas.add(new ContentArea(areaLink.getX1(), areaLink.getY1(), areaLink.getX2(), areaLink.getY2(), link));
+                Location location = this.getPromotionLocation(areaLink, linkManager, categoryService);
+                this.contentAreas.add(new ContentArea(areaLink.getX1(), areaLink.getY1(), areaLink.getX2(), areaLink.getY2(), location));
             }
             this.imageUrl =  linkManager.processImageUrl(theme.getStaticContent().getContent().get(0).getContentValue());
         }

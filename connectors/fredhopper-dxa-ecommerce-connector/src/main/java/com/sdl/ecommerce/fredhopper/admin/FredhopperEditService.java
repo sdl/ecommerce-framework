@@ -5,6 +5,8 @@ import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.edit.MenuItem;
+import com.sdl.ecommerce.api.edit.impl.EditMenuImpl;
+import com.sdl.ecommerce.api.edit.impl.MenuItemImpl;
 import com.sdl.ecommerce.fredhopper.FredhopperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +51,15 @@ public class FredhopperEditService implements EditService {
         }
 
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Promotion", buildFredhopperEditUrl("campaigns.fh", location)));
-        menuItems.add(new MenuItem("Facet", buildFredhopperEditUrl("facets.fh", location)));
-        menuItems.add(new MenuItem("Modification", buildFredhopperEditUrl("modified_results.fh", location)));
-        menuItems.add(new MenuItem("Ranking", buildFredhopperEditUrl("rankings.fh", location)));
+        menuItems.add(new MenuItemImpl("Promotion", buildFredhopperEditUrl("campaigns.fh", location)));
+        menuItems.add(new MenuItemImpl("Facet", buildFredhopperEditUrl("facets.fh", location)));
+        menuItems.add(new MenuItemImpl("Modification", buildFredhopperEditUrl("modified_results.fh", location)));
+        menuItems.add(new MenuItemImpl("Ranking", buildFredhopperEditUrl("rankings.fh", location)));
         if ( query.getSearchPhrase() != null ) {
-            menuItems.add(new MenuItem("Synonyms", buildFredhopperEditUrl("search_synonyms.fh", location)));
+            menuItems.add(new MenuItemImpl("Synonyms", buildFredhopperEditUrl("search_synonyms.fh", location)));
         }
-        menuItems.add(new MenuItem("Redirect", buildFredhopperEditUrl("search_redirects.fh", location)));
-        return new EditMenu("Create New...", menuItems);
+        menuItems.add(new MenuItemImpl("Redirect", buildFredhopperEditUrl("search_redirects.fh", location)));
+        return new EditMenuImpl("Create New...", menuItems);
     }
 
     private String buildFredhopperEditUrl(String editPage, String location) {

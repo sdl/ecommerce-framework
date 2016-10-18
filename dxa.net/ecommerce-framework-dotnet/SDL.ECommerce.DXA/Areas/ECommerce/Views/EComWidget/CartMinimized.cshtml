@@ -1,0 +1,18 @@
+﻿@model CartWidget
+<div class="utility-nav cart-nav">
+    <a href="@Model.CartPageLink" class="btn btn-default cart-btn">
+        <div class="cart-text">
+            @if (Model.Cart == null)
+            {
+            <span id="cart-amount">0</span>
+            }
+            else
+            {
+                <span id="cart-amount">@Model.Cart.Count</span>
+            }
+            &nbsp;<i class="fa fa-shopping-cart"></i>
+        </div>
+    </a>
+</div>
+
+

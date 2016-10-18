@@ -1,8 +1,8 @@
 E-Commerce Framework for SDL Web
 ====================================
 
-This is framework to enable E-Commerce functionality for SDL Web.
-It will contain ECL providers and DXA modules for various E-Commerce systems.
+This is a framework to enable E-Commerce functionality for SDL Web.
+It contains ECL providers and DXA modules for various E-Commerce systems.
 
 Right now it provides connectors for:
 
@@ -18,11 +18,12 @@ Concepts
 The E-Commerce framework consists of:
 
 * Generic E-Commerce APIs for product categories, product queries, product details, cart and in-context edit controls
-* Generic DXA module consuming above E-Commerce APIs
+* Generic DXA module for Java & .NET consuming above E-Commerce APIs
 * Generic navigation DXA module for hybrid navigation support (right now only provides mega navigation)
 * A number of connectors implementing the E-Commerce APIs (Fredhopper, Hybris, Demandware)
 * Generic E-Commerce framework for ECL providers
 * A number of ECL providers for retrieving categories and products (Hybris, Demandware)
+* OData based micro service 
 
 Currently there are the following connectors implementing fully or partly the E-Commerce APIs:
 
@@ -74,16 +75,20 @@ The framework is requiring DXA 1.3 which includes support for SDL Tridion 2013 S
 The connectors to the E-Commerce systems has been verified against the following:
 
 * SDL Fredhopper 7.5.x & 8.1.x
-* Demandware OCAPI 16.1 & 16.2
+* Demandware OCAPI 16.x (verified on 16.1 and 16.2)
 * Hybris (Omni Commerce Connect) OCC v1 on hybris Commerce Suite 5.x
 
 
-Getting started
------------------
+Getting started (Java)
+------------------------
 
-To get started with the E-Commerce framework you need to do the following steps:
+For Java you can either have the connectors co-located or use the OData micro service. Below is the steps
+needed to have the connectors co-located:  
 
-1. If you have not DXA v1.3 in your repo you need to clone that first: `git clone -b release/1.3 https://github.com/sdl/dxa-web-application-java`. Then you do 'mvn install' and all DXA and needed non-public 3PPs are installed into your local Maven repository
+1. If you have not DXA webapp you can easily create one with a Maven archetype:
+    * mvn archetype:generate
+    * select dxa & v1.5.0
+    * go into the newly created directory and type: mvn install
 2. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
 3. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
 4. Compile all code and install it into your local Maven repository by using any of the following alternatives: 
@@ -91,29 +96,55 @@ To get started with the E-Commerce framework you need to do the following steps:
     * `mvn install -Pfredhopper` - compile the framework and the Fredhopper connector (make sure to install the Fredhopper client libraries first, see [Installing Fredhopper libraries](./connectors/fredhopper-dxa-ecommerce-connector/lib/README.md)
     * `mvn install -Phybris` - compile the framework and the Hybris connector
     * `mvn install -Pdemandware` - compile the framework and the Demandware connector 
-5. If you get these type of error: "[WARNING] The POM for com.tridion:cd_ambient:jar:7.1.0 is missing, no dependency information available"
-    * Go into your local Maven repository and modify the following file: ($HOME/.m2/repository/com/tridion/cd_ambient/7.1.0/_remote.repositories and make sure that it contains the following:
-    
-        ```
-        cd_ambient-7.1.0.pom>=
-        cd_ambient-7.1.0.jar>=
-        ```
-                                  
-6. Following instructions given in respective README for each connector to set it up:
+                             
+5. Following instructions given in respective README for each connector to set it up:
     * [Fredhopper](./connectors/fredhopper-dxa-ecommerce-connector/README.md)
     * [Hybris](./connectors/hybris-dxa-ecommerce-connector/README.md)
     * [Demandware](./connectors/demandware-dxa-ecommerce-connector/README.md)
-7. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
-8. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
-9. Install the CMS packages by following instructions given in: [Install CMS packages](./cms/README.md) 
-10. Publish out the settings page, HTML design + the header include page. 
-11. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
-12. Define the application properties needed for selected connectors in your web application. Refer to the README file for each connector.
-13. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
-14. In addition (optional) you can also install one of the ECL providers (Hybris or Demandware). See instructions given in:
+6. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
+7. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
+8. Setup CMS as described below
+
+Instructions for consuming the OData micro service will soon be added here.
+
+Getting Started (.NET)
+------------------------
+
+1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by doing the following:
+    * git clone -b release/1.5 https://github.com/sdl/dxa-web-application-dotnet
+    * Open the project in Visual Studio
+    * Modify the Web.config to point to your local discovery service
+    * Copy cd_ambient_conf.xml to Site/bin/config from your SDL Web 8.1.1 distribution: /Content Delivery/roles/api/rest/config/cd_ambient_conf.xml
+    * Or just follow the instructions given here: http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v5/GUID-001D829E-1141-4B18-B696-894DF27B6DA1 
+2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
+3. Compile the OData micro service by doing the following:
+    * mvn clean package -P[selected connector, e.g. 'fredhopper'] -Pmicroservice-singlejar
+4. Create an application.yml file & configure connection properties for current E-Commerce system (TODO: more info to come here)
+5. Start the OData microservice with start.bat/start.sh 
+    * You can run the microservice (Spring.Boot based) as an Unix/Linux/Windows service. For more information, please refer to:
+    http://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html 
+6. Add the VS projects under dxa.net to your Visual Studio solution
+7. Set the environment variable %DXA_SITE_DIR% to point to your DXA Site path (in visual studio or in your IIS instance) 
+8. Restart Visual studio and rebuild the solution. Verify so E-Commerce Areas and DLLs are copied to your site folder
+9. Configure E-Commerce micro service in Web.config of your site:
+   ``` 
+    !-- E-Commerce Framework -->
+    <add key="ecommerce-service-uri" value="http://localhost:8097/ecommerce.svc"/>
+    ```
+10. Setup CMS as described below    
+
+Getting Started (CMS)
+------------------------
+
+1. Install the CMS packages by following instructions given in: [Install CMS packages](./cms/README.md) 
+2. Publish out the settings page, HTML design + the header include page. 
+3. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
+4. Define the application properties needed for selected connectors in your web application. Refer to the README file for each connector.
+4. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
+5. In addition (optional) you can also install one of the ECL providers. See instructions given in:
     * [Hybris ECL](./ecl/hybris-ecl-provider/README.md)
     * [Demandware ECL](./ecl/demandware-ecl-provider/README.md) 
-
+    * [Fredhopper ECL](./ecl/fredhopper-ecl-provider/README.md)
 
 Not implemented
 -----------------
@@ -125,9 +156,9 @@ Currently the E-Commerce framework does not implement the following:
 * Improved category experience such as sorting, slider facets etc
 * Hybrid search (content/E-Commerce)
 * Search suggest
+* OAuth authentication on the E-Commerce micro service
 
-This is something to be consider in later version of the framework.  We also consider to move the E-Commerce connectors to the
-SDL Web micro service infrastructure instead so it can easily be reused for .NET web applications.
+This is something to be consider in later version of the framework. 
 
 Branching model
 ----------------

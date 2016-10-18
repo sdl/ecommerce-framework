@@ -41,17 +41,17 @@ public class HybrisCategoryService implements ProductCategoryService {
     private Map<String, CategoryManager> categoryManagers = new HashMap<>();
 
     /**
-     * Get category manager for current localizaton (site).
+     * Get category manager for current localization (site).
      * @return manager
      */
     private CategoryManager getCategoryManager() {
 
-        String publicationId = localizationService.getPublicationId();
-        CategoryManager categoryManager = categoryManagers.get(publicationId);
+        String locale = localizationService.getLocale();
+        CategoryManager categoryManager = categoryManagers.get(locale);
         if ( categoryManager == null ) {
             synchronized ( this ) {
                 categoryManager = new CategoryManager(this.hybrisClientManager.getInstance(), this.categoryExpiryTimeout, this.getCatalogBranch());
-                categoryManagers.put(publicationId, categoryManager);
+                categoryManagers.put(locale, categoryManager);
             }
         }
         return categoryManager;
@@ -71,4 +71,8 @@ public class HybrisCategoryService implements ProductCategoryService {
         return this.getCategoryManager().getCategoryByPath(path);
     }
 
+    @Override
+    public List<Category> getTopLevelCategories() throws ECommerceException {
+        return this.getCategoryManager().getTopLevelCategories();
+    }
 }

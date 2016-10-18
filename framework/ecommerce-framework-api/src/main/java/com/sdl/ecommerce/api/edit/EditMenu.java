@@ -7,22 +7,16 @@ import java.util.List;
  *
  * @author nic
  */
-public class EditMenu {
+public interface EditMenu {
 
-    private String title;
+    /**
+     * @return title
+     */
+    String getTitle();
 
-    private List<MenuItem> menuItems;
-
-    public EditMenu(String title, List<MenuItem> menuItems) {
-        this.title = title;
-        this.menuItems = menuItems;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
+    /**
+     * @return menu items
+     */
+    List<MenuItem> getMenuItems();
 
 }

@@ -99,6 +99,10 @@ public class CategoryManager {
         }
     }
 
+    List<Category> getTopLevelCategories() {
+        return this.rootCategory.getCategories();
+    }
+
     /**
      * Load all categories from Hybris
      */

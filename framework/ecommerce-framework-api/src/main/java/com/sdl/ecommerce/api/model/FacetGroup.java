@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author nic
  */
-public interface FacetGroup {
+public interface FacetGroup extends Editable {
 
     /**
      * Get unique identifier for this facet group
