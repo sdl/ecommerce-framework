@@ -1,0 +1,32 @@
+<export>
+  <organizationalItem path="/webdav/100%20Master/Building%20Blocks/Modules/E-Commerce/Admin">
+    <permissions group="Everyone">Read</permissions>
+    <permissions group="Developer">All</permissions>
+    <permissions group="Editor">None</permissions>
+    <permissions group="Site Manager">None</permissions>
+  </organizationalItem>
+  <organizationalItem path="/webdav/100%20Master/Building%20Blocks/Modules/E-Commerce/Editor">
+    <permissions group="Everyone">Read</permissions>
+    <permissions group="Developer">All</permissions>
+    <permissions group="Editor">All</permissions>
+    <permissions group="Site Manager">All</permissions>
+  </organizationalItem>
+  <organizationalItem path="/webdav/100%20Master/Building%20Blocks/Modules/E-Commerce/Site%20Manager">
+    <permissions group="Everyone">Read</permissions>
+    <permissions group="Developer">All</permissions>
+    <permissions group="Editor">None</permissions>
+    <permissions group="Site Manager">All</permissions>
+  </organizationalItem>
+  <organizationalItem path="/webdav/100%20Master/Building%20Blocks/Settings/E-Commerce/Site%20Manager">
+    <permissions group="Everyone">Read</permissions>
+    <permissions group="Developer">All</permissions>
+    <permissions group="Editor">None</permissions>
+    <permissions group="Site Manager">All</permissions>
+  </organizationalItem>
+   <organizationalItem path="/webdav/100%20Master/Building%20Blocks/Modules/Navigation/Site%20Manager">
+    <permissions group="Everyone">Read</permissions>
+    <permissions group="Developer">All</permissions>
+    <permissions group="Editor">None</permissions>
+    <permissions group="Site Manager">All</permissions>
+  </organizationalItem>
+</export>
