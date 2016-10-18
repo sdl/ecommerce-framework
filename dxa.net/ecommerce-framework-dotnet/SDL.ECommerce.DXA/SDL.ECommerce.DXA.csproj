@@ -191,6 +191,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\Partials\InContextEditMenu.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartDetail.cshtml" />
+    <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetailEclItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

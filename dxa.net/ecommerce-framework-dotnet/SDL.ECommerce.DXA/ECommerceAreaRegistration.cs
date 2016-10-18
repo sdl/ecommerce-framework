@@ -26,6 +26,7 @@ namespace SDL.ECommerce.DXA
             // Entity Views
             //
             RegisterViewModel("ProductDetail", typeof(ProductDetailWidget), "EComWidget");
+            RegisterViewModel("ProductDetailEclItem", typeof(ECommerceEclItem), "EComWidget");
             RegisterViewModel("ProductLister", typeof(ProductListerWidget), "EComWidget");
             RegisterViewModel("Facets", typeof(FacetsWidget), "EComWidget");
             RegisterViewModel("Promotions", typeof(PromotionsWidget), "EComWidget");

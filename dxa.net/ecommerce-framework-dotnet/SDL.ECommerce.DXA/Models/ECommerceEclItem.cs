@@ -1,5 +1,6 @@
 ﻿using Sdl.Web.Common.Logging;
 using Sdl.Web.Common.Models;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,6 @@ namespace SDL.ECommerce.DXA.Models
     /// <summary>
     /// E-Commerce ECL Item
     /// </summary>
-    [SemanticEntity(CoreVocabulary, "ExternalContentLibraryStubSchemafredhopper")]
-    // TODO: How do we handle mapping to other ECL schemas in a nice way?
     public class ECommerceEclItem : EclItem
     {
         /// <summary>
@@ -40,5 +39,11 @@ namespace SDL.ECommerce.DXA.Models
                 return this.GetEclExternalMetadataValue("Name") as string;
             }
         }
+
+        /// <summary>
+        /// Concrete references to products & categories consumed by ECL views
+        /// </summary>
+        public IProduct Product { get; set; }
+        public ICategory Category { get; set; }
     }
 }

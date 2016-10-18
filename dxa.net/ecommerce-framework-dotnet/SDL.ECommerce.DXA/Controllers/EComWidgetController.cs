@@ -29,7 +29,6 @@ namespace SDL.ECommerce.DXA.Controller
         /// <returns></returns>
         public ActionResult ProductDetail(EntityModel entity, int containerSize = 0)
         {
-            Log.Info("Product Detail controller action triggered.");
             SetupViewData(entity, containerSize);
 
             ProductDetailWidget widget = (ProductDetailWidget) entity;
@@ -43,7 +42,7 @@ namespace SDL.ECommerce.DXA.Controller
                 // Get product details from E-Commerce service
                 //
                 widget.Product = ECommerceContext.Client.DetailService.GetDetail(widget.ProductReference.ProductId);
-                Log.Info("Retrieved product with name: " + widget.Product.Name);
+                
                 // TODO: Add error handling when product is not found
             }
             else
@@ -57,6 +56,22 @@ namespace SDL.ECommerce.DXA.Controller
         }
 
         /// <summary>
+        /// ECL Product Detail
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="containerSize"></param>
+        /// <returns></returns>
+        public ActionResult ProductDetailEclItem(EntityModel entity, int containerSize = 0)
+        {
+            SetupViewData(entity, containerSize);
+
+            ECommerceEclItem eclItem = (ECommerceEclItem)entity;
+            eclItem.Product = ECommerceContext.Client.DetailService.GetDetail(eclItem.ExternalId);
+
+            return View(entity.MvcData.ViewName, entity);
+        }
+
+        /// <summary>
         /// Product Lister
         /// </summary>
         /// <param name="entity"></param>
@@ -64,7 +79,6 @@ namespace SDL.ECommerce.DXA.Controller
         /// <returns></returns>
         public ActionResult ProductLister(EntityModel entity, int containerSize = 0)
         {
-            Log.Info("Product lister controller action triggered.");
             SetupViewData(entity, containerSize);
 
             ProductListerWidget widget = (ProductListerWidget) entity;
