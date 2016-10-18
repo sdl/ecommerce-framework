@@ -1,4 +1,5 @@
 ﻿using Sdl.Web.Common.Models;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:checkoutLink")]
         public Link CheckoutLink { get; set; }
 
-        // TODO: Add this when Cart model is available
-        // public ICart Cart { get; set; }
+        [SemanticProperty(IgnoreMapping = true)]
+        public ICart Cart { get; set; }
     }
 }

@@ -43,6 +43,8 @@
     <Compile Include="IECommerceLinkResolver.cs" />
     <Compile Include="Model\FacetParameter.cs" />
     <Compile Include="Model\IBreadcrumb.cs" />
+    <Compile Include="Model\ICart.cs" />
+    <Compile Include="Model\ICartItem.cs" />
     <Compile Include="Model\ICategoryRef.cs" />
     <Compile Include="IECommerceClient.cs" />
     <Compile Include="Model\ICategory.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Model\Query.cs" />
     <Compile Include="Model\ViewType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ICartService.cs" />
     <Compile Include="Service\IEditService.cs" />
     <Compile Include="Service\IProductDetailService.cs" />
     <Compile Include="Service\IProductQueryService.cs" />

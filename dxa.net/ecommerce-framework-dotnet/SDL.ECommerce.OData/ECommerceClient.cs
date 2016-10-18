@@ -69,6 +69,7 @@ namespace SDL.ECommerce.OData
         private ProductCategoryService categoryService;
         private ProductQueryService queryService;
         private ProductDetailService detailService;
+        private CartService cartService;
         private EditService editService;
        
         /// <summary>
@@ -83,7 +84,7 @@ namespace SDL.ECommerce.OData
             serviceConfig.Timeout = 1000;
 
             IOAuthTokenProvider defaultTokenProvider = DiscoveryServiceProvider.DefaultTokenProvider;
-            service = new ODataV4Service(new ECommerce(serviceConfig.ServiceEndpoint), serviceConfig, defaultTokenProvider);
+            service = new ODataV4Service(new SDLECommerce(serviceConfig.ServiceEndpoint), serviceConfig, defaultTokenProvider);
 
         }
 
@@ -129,6 +130,21 @@ namespace SDL.ECommerce.OData
                     detailService = new ProductDetailService(this.service);
                 }
                 return detailService;
+            }
+        }
+
+        /// <summary>
+        /// Get cart service
+        /// </summary>
+        public ICartService CartService
+        {
+            get
+            {
+                if ( cartService == null )
+                {
+                    cartService = new CartService(this.service);
+                }
+                return cartService;
             }
         }
 

@@ -123,6 +123,25 @@ namespace SDL.ECommerce.DXA
             return WebRequestContext.IsPreview && editableItem != null && !String.IsNullOrEmpty(editableItem.EditUrl);
         }
 
+        public static ICart Cart
+        {
+            get
+            {
+                if (HttpContext.Current != null)
+                {
+                    return HttpContext.Current.Session["ECOM-Cart"] as ICart;
+                }
+                return null;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.Session["ECOM-Cart"] = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Get edit URL for an editable item. All requests are passed through the edit proxy. 
         /// </summary>
@@ -133,6 +152,9 @@ namespace SDL.ECommerce.DXA
             return "/edit-proxy" + editableItem.EditUrl;
         }
 
+        /// <summary>
+        /// Get edit menu
+        /// </summary>
         public static IEditMenu EditMenu
         {
             get

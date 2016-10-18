@@ -35,6 +35,7 @@ namespace SDL.ECommerce.DXA
             RegisterViewModel("SearchBox", typeof(SearchBox));
             RegisterViewModel("FacetsMegaNavigation", typeof(FacetsWidget), "EComWidget");
             RegisterViewModel("CartMinimized", typeof(CartWidget), "EComWidget");
+            RegisterViewModel("CartDetail", typeof(CartWidget), "EComWidget");
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
@@ -43,8 +44,6 @@ namespace SDL.ECommerce.DXA
 
             // E-Commerce Page Controllers
             //
-            // TODO: Add routes for localization here as well!!!
-
             MapRoute(context, "ECommerce_Category", "c/{*categoryUrl}", 
                 new { controller = "CategoryPage", action = "CategoryPage" });
 
@@ -70,6 +69,14 @@ namespace SDL.ECommerce.DXA
 
             MapRoute(context, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
+
+            // Cart controller
+            //
+            MapRoute(context, "ECommerce_AddToCart", "ajax/cart/addProduct/{productId}",
+                new { controller = "Cart", action = "AddProductToCart" });
+
+            MapRoute(context, "ECommerce_RemoveFromCart", "ajax/cart/removeProduct/{productId}",
+                new { controller = "Cart", action = "RemoveProductFromCart" });
 
             // Edit Proxy route (only available for staging sites)
             //

@@ -298,9 +298,7 @@ namespace SDL.ECommerce.DXA.Controller
         {
             SetupViewData(entity, containerSize);
             CartWidget widget = (CartWidget)entity;
-
-            // TODO: Resolve cart here
-
+            widget.Cart = ECommerceContext.Cart;
             return View(entity.MvcData.ViewName, entity);
         }
 

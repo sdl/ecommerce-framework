@@ -176,6 +176,21 @@ namespace SDL.ECommerce.OData
                 Console.WriteLine("  " + product.Name);
             }
         }
+        
+        [TestMethod]
+        public void TestCart()
+        {
+            Console.WriteLine("Creating cart...");        
+            var cart = ECommerceClient.CartService.CreateCart();
+            PrintCart(cart);
+            Console.WriteLine("Adding product to cart...");
+            cart = ECommerceClient.CartService.AddProductToCart(cart.Id, "008010111647", 1);
+            PrintCart(cart);
+            Console.WriteLine("Removing products from cart...");
+            cart = ECommerceClient.CartService.RemoveProductFromCart(cart.Id, "008010111647");
+            PrintCart(cart);
+
+        }
 
         [TestMethod]
         public void TestGetInContextMenu()
@@ -224,6 +239,24 @@ namespace SDL.ECommerce.OData
             foreach ( var breadcrumb in result.Breadcrumbs )
             {
                 Console.WriteLine("  Breadcrumb: " + breadcrumb.Title + " (category: " + breadcrumb.IsCategory + ")");
+            }
+        }
+
+        void PrintCart(ICart cart)
+        {
+            Console.WriteLine("  Cart Id=" + cart.Id);
+            Console.WriteLine("#########################");
+            if (cart.Items.Count > 0)
+            {
+                Console.WriteLine("Items:");
+                
+                foreach (var cartItem in cart.Items)
+                {
+                    Console.WriteLine("  " + cartItem.Product.Name + " " + cartItem.Price.FormattedPrice + " Quantity: " + cartItem.Quantity);
+                }
+                
+                Console.WriteLine("Count: " + cart.Count);
+                Console.WriteLine("Total Price: " + cart.TotalPrice.FormattedPrice);
             }
         }
     }

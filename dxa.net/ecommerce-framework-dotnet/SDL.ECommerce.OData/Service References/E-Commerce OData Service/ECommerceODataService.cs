@@ -8,20 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 10/17/2016 5:14:26 PM
+// Generation date: 10/18/2016 3:34:28 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
-    /// There are no comments for ECommerce in the schema.
+    /// There are no comments for SDLECommerce in the schema.
     /// </summary>
-    [global::Microsoft.OData.Client.OriginalNameAttribute("ECommerce")]
-    public partial class ECommerce : global::Microsoft.OData.Client.DataServiceContext
+    [global::Microsoft.OData.Client.OriginalNameAttribute("SDLECommerce")]
+    public partial class SDLECommerce : global::Microsoft.OData.Client.DataServiceContext
     {
         /// <summary>
-        /// Initialize a new ECommerce object.
+        /// Initialize a new SDLECommerce object.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public ECommerce(global::System.Uri serviceRoot) : 
+        public SDLECommerce(global::System.Uri serviceRoot) : 
                 base(serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion.V4)
         {
             this.ResolveName = new global::System.Func<global::System.Type, string>(this.ResolveNameFromType);
@@ -66,24 +66,6 @@ namespace SDL.ECommerce.OData
             return null;
         }
         /// <summary>
-        /// There are no comments for Carts in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("Carts")]
-        public global::Microsoft.OData.Client.DataServiceQuery<Cart> Carts
-        {
-            get
-            {
-                if ((this._Carts == null))
-                {
-                    this._Carts = base.CreateQuery<Cart>("Carts");
-                }
-                return this._Carts;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Microsoft.OData.Client.DataServiceQuery<Cart> _Carts;
-        /// <summary>
         /// There are no comments for Categories in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -119,6 +101,24 @@ namespace SDL.ECommerce.OData
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::Microsoft.OData.Client.DataServiceQuery<Product> _Products;
+        /// <summary>
+        /// There are no comments for Carts in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("Carts")]
+        public global::Microsoft.OData.Client.DataServiceQuery<Cart> Carts
+        {
+            get
+            {
+                if ((this._Carts == null))
+                {
+                    this._Carts = base.CreateQuery<Cart>("Carts");
+                }
+                return this._Carts;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::Microsoft.OData.Client.DataServiceQuery<Cart> _Carts;
         /// <summary>
         /// There are no comments for ProductQueryResults in the schema.
         /// </summary>
@@ -156,14 +156,6 @@ namespace SDL.ECommerce.OData
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
         private global::Microsoft.OData.Client.DataServiceQuery<EditMenu> _EditMenus;
         /// <summary>
-        /// There are no comments for Carts in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public void AddToCarts(Cart cart)
-        {
-            base.AddObject("Carts", cart);
-        }
-        /// <summary>
         /// There are no comments for Categories in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -178,6 +170,14 @@ namespace SDL.ECommerce.OData
         public void AddToProducts(Product product)
         {
             base.AddObject("Products", product);
+        }
+        /// <summary>
+        /// There are no comments for Carts in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public void AddToCarts(Cart cart)
+        {
+            base.AddObject("Carts", cart);
         }
         /// <summary>
         /// There are no comments for ProductQueryResults in the schema.
@@ -204,12 +204,6 @@ namespace SDL.ECommerce.OData
             private const string Edmx = @"<edmx:Edmx xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"" Version=""4.0"">
   <edmx:DataServices>
     <Schema xmlns=""http://docs.oasis-open.org/odata/ns/edm"" Namespace=""SDL.ECommerce"">
-      <EntityType Name=""Cart"">
-        <Key>
-          <PropertyRef Name=""id""></PropertyRef>
-        </Key>
-        <Property Name=""id"" Type=""Edm.String"" Nullable=""false""></Property>
-      </EntityType>
       <EntityType Name=""Category"">
         <Key>
           <PropertyRef Name=""id""></PropertyRef>
@@ -237,6 +231,15 @@ namespace SDL.ECommerce.OData
         <Property Name=""categories"" Type=""Collection(SDL.ECommerce.CategorySummary)"" Nullable=""true""></Property>
         <Property Name=""promotions"" Type=""Collection(SDL.ECommerce.Promotion)"" Nullable=""true""></Property>
         <Property Name=""breadcrumbs"" Type=""Collection(SDL.ECommerce.Breadcrumb)"" Nullable=""true""></Property>
+      </EntityType>
+      <EntityType Name=""Cart"">
+        <Key>
+          <PropertyRef Name=""id""></PropertyRef>
+        </Key>
+        <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""items"" Type=""Collection(SDL.ECommerce.CartItem)"" Nullable=""true""></Property>
+        <Property Name=""count"" Type=""Edm.Int32"" Nullable=""true""></Property>
+        <Property Name=""totalPrice"" Type=""SDL.ECommerce.ProductPrice"" Nullable=""true""></Property>
       </EntityType>
       <EntityType Name=""ProductQueryResult"">
         <Key>
@@ -349,17 +352,22 @@ namespace SDL.ECommerce.OData
         <Property Name=""facet"" Type=""SDL.ECommerce.Facet"" Nullable=""true""></Property>
         <Property Name=""categoryRef"" Type=""SDL.ECommerce.CategoryRef"" Nullable=""true""></Property>
       </ComplexType>
+      <ComplexType Name=""CartItem"">
+        <Property Name=""price"" Type=""SDL.ECommerce.ProductPrice"" Nullable=""true""></Property>
+        <Property Name=""product"" Type=""SDL.ECommerce.ProductSummary"" Nullable=""true""></Property>
+        <Property Name=""quantity"" Type=""Edm.Int32"" Nullable=""true""></Property>
+      </ComplexType>
       <ComplexType Name=""MenuItem"">
         <Property Name=""title"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""url"" Type=""Edm.String"" Nullable=""true""></Property>
       </ComplexType>
-      <EntityContainer Name=""ECommerce"">
-        <EntitySet Name=""Carts"" EntityType=""SDL.ECommerce.Cart""></EntitySet>
+      <EntityContainer Name=""SDLECommerce"">
         <EntitySet Name=""Categories"" EntityType=""SDL.ECommerce.Category"">
           <NavigationPropertyBinding Path=""parent"" Target=""Categories""></NavigationPropertyBinding>
           <NavigationPropertyBinding Path=""categories"" Target=""Categories""></NavigationPropertyBinding>
         </EntitySet>
         <EntitySet Name=""Products"" EntityType=""SDL.ECommerce.Product""></EntitySet>
+        <EntitySet Name=""Carts"" EntityType=""SDL.ECommerce.Cart""></EntitySet>
         <EntitySet Name=""ProductQueryResults"" EntityType=""SDL.ECommerce.ProductQueryResult""></EntitySet>
         <EntitySet Name=""EditMenus"" EntityType=""SDL.ECommerce.EditMenu""></EntitySet>
       </EntityContainer>
@@ -390,75 +398,6 @@ namespace SDL.ECommerce.OData
                 return global::System.Xml.XmlReader.Create(new global::System.IO.StringReader(edmxToParse));
             }
         }
-    }
-    /// <summary>
-    /// There are no comments for CartSingle in the schema.
-    /// </summary>
-    [global::Microsoft.OData.Client.OriginalNameAttribute("CartSingle")]
-    public partial class CartSingle : global::Microsoft.OData.Client.DataServiceQuerySingle<Cart>
-    {
-        /// <summary>
-        /// Initialize a new CartSingle object.
-        /// </summary>
-        public CartSingle(global::Microsoft.OData.Client.DataServiceContext context, string path)
-            : base(context, path) {}
-
-        /// <summary>
-        /// Initialize a new CartSingle object.
-        /// </summary>
-        public CartSingle(global::Microsoft.OData.Client.DataServiceContext context, string path, bool isComposable)
-            : base(context, path, isComposable) {}
-
-        /// <summary>
-        /// Initialize a new CartSingle object.
-        /// </summary>
-        public CartSingle(global::Microsoft.OData.Client.DataServiceQuerySingle<Cart> query)
-            : base(query) {}
-
-    }
-    /// <summary>
-    /// There are no comments for Cart in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::Microsoft.OData.Client.Key("id")]
-    [global::Microsoft.OData.Client.OriginalNameAttribute("Cart")]
-    public partial class Cart : global::Microsoft.OData.Client.BaseEntityType
-    {
-        /// <summary>
-        /// Create a new Cart object.
-        /// </summary>
-        /// <param name="ID">Initial value of Id.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public static Cart CreateCart(string ID)
-        {
-            Cart cart = new Cart();
-            cart.Id = ID;
-            return cart;
-        }
-        /// <summary>
-        /// There are no comments for Property Id in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("id")]
-        public string Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private string _Id;
-        partial void OnIdChanging(string value);
-        partial void OnIdChanged();
     }
     /// <summary>
     /// There are no comments for CategorySingle in the schema.
@@ -984,6 +923,130 @@ namespace SDL.ECommerce.OData
         private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> _Breadcrumbs = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb>();
         partial void OnBreadcrumbsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.Breadcrumb> value);
         partial void OnBreadcrumbsChanged();
+    }
+    /// <summary>
+    /// There are no comments for CartSingle in the schema.
+    /// </summary>
+    [global::Microsoft.OData.Client.OriginalNameAttribute("CartSingle")]
+    public partial class CartSingle : global::Microsoft.OData.Client.DataServiceQuerySingle<Cart>
+    {
+        /// <summary>
+        /// Initialize a new CartSingle object.
+        /// </summary>
+        public CartSingle(global::Microsoft.OData.Client.DataServiceContext context, string path)
+            : base(context, path) {}
+
+        /// <summary>
+        /// Initialize a new CartSingle object.
+        /// </summary>
+        public CartSingle(global::Microsoft.OData.Client.DataServiceContext context, string path, bool isComposable)
+            : base(context, path, isComposable) {}
+
+        /// <summary>
+        /// Initialize a new CartSingle object.
+        /// </summary>
+        public CartSingle(global::Microsoft.OData.Client.DataServiceQuerySingle<Cart> query)
+            : base(query) {}
+
+    }
+    /// <summary>
+    /// There are no comments for Cart in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::Microsoft.OData.Client.Key("id")]
+    [global::Microsoft.OData.Client.OriginalNameAttribute("Cart")]
+    public partial class Cart : global::Microsoft.OData.Client.BaseEntityType
+    {
+        /// <summary>
+        /// There are no comments for Property Id in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("id")]
+        public string Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _Id;
+        partial void OnIdChanging(string value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property Items in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("items")]
+        public global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CartItem> Items
+        {
+            get
+            {
+                return this._Items;
+            }
+            set
+            {
+                this.OnItemsChanging(value);
+                this._Items = value;
+                this.OnItemsChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CartItem> _Items = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CartItem>();
+        partial void OnItemsChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.CartItem> value);
+        partial void OnItemsChanged();
+        /// <summary>
+        /// There are no comments for Property Count in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("count")]
+        public global::System.Nullable<int> Count
+        {
+            get
+            {
+                return this._Count;
+            }
+            set
+            {
+                this.OnCountChanging(value);
+                this._Count = value;
+                this.OnCountChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Nullable<int> _Count;
+        partial void OnCountChanging(global::System.Nullable<int> value);
+        partial void OnCountChanged();
+        /// <summary>
+        /// There are no comments for Property TotalPrice in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("totalPrice")]
+        public global::SDL.ECommerce.OData.ProductPrice TotalPrice
+        {
+            get
+            {
+                return this._TotalPrice;
+            }
+            set
+            {
+                this.OnTotalPriceChanging(value);
+                this._TotalPrice = value;
+                this.OnTotalPriceChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::SDL.ECommerce.OData.ProductPrice _TotalPrice;
+        partial void OnTotalPriceChanging(global::SDL.ECommerce.OData.ProductPrice value);
+        partial void OnTotalPriceChanged();
     }
     /// <summary>
     /// There are no comments for ProductQueryResultSingle in the schema.
@@ -2725,6 +2788,79 @@ namespace SDL.ECommerce.OData
         partial void OnCategoryRefChanged();
     }
     /// <summary>
+    /// There are no comments for CartItem in the schema.
+    /// </summary>
+    [global::Microsoft.OData.Client.OriginalNameAttribute("CartItem")]
+    public partial class CartItem
+    {
+        /// <summary>
+        /// There are no comments for Property Price in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("price")]
+        public global::SDL.ECommerce.OData.ProductPrice Price
+        {
+            get
+            {
+                return this._Price;
+            }
+            set
+            {
+                this.OnPriceChanging(value);
+                this._Price = value;
+                this.OnPriceChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::SDL.ECommerce.OData.ProductPrice _Price;
+        partial void OnPriceChanging(global::SDL.ECommerce.OData.ProductPrice value);
+        partial void OnPriceChanged();
+        /// <summary>
+        /// There are no comments for Property Product in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("product")]
+        public global::SDL.ECommerce.OData.ProductSummary Product
+        {
+            get
+            {
+                return this._Product;
+            }
+            set
+            {
+                this.OnProductChanging(value);
+                this._Product = value;
+                this.OnProductChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::SDL.ECommerce.OData.ProductSummary _Product;
+        partial void OnProductChanging(global::SDL.ECommerce.OData.ProductSummary value);
+        partial void OnProductChanged();
+        /// <summary>
+        /// There are no comments for Property Quantity in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("quantity")]
+        public global::System.Nullable<int> Quantity
+        {
+            get
+            {
+                return this._Quantity;
+            }
+            set
+            {
+                this.OnQuantityChanging(value);
+                this._Quantity = value;
+                this.OnQuantityChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Nullable<int> _Quantity;
+        partial void OnQuantityChanging(global::System.Nullable<int> value);
+        partial void OnQuantityChanged();
+    }
+    /// <summary>
     /// There are no comments for MenuItem in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("MenuItem")]
@@ -2781,29 +2917,6 @@ namespace SDL.ECommerce.OData
     public static class ExtensionMethods
     {
         /// <summary>
-        /// Get an entity of type global::SDL.ECommerce.OData.Cart as global::SDL.ECommerce.OData.CartSingle specified by key from an entity set
-        /// </summary>
-        /// <param name="source">source entity set</param>
-        /// <param name="keys">dictionary with the names and values of keys</param>
-        public static global::SDL.ECommerce.OData.CartSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.Cart> source, global::System.Collections.Generic.Dictionary<string, object> keys)
-        {
-            return new global::SDL.ECommerce.OData.CartSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
-        }
-        /// <summary>
-        /// Get an entity of type global::SDL.ECommerce.OData.Cart as global::SDL.ECommerce.OData.CartSingle specified by key from an entity set
-        /// </summary>
-        /// <param name="source">source entity set</param>
-        /// <param name="id">The value of id</param>
-        public static global::SDL.ECommerce.OData.CartSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.Cart> source,
-            string id)
-        {
-            global::System.Collections.Generic.Dictionary<string, object> keys = new global::System.Collections.Generic.Dictionary<string, object>
-            {
-                { "id", id }
-            };
-            return new global::SDL.ECommerce.OData.CartSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
-        }
-        /// <summary>
         /// Get an entity of type global::SDL.ECommerce.OData.Category as global::SDL.ECommerce.OData.CategorySingle specified by key from an entity set
         /// </summary>
         /// <param name="source">source entity set</param>
@@ -2848,6 +2961,29 @@ namespace SDL.ECommerce.OData
                 { "id", id }
             };
             return new global::SDL.ECommerce.OData.ProductSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+        }
+        /// <summary>
+        /// Get an entity of type global::SDL.ECommerce.OData.Cart as global::SDL.ECommerce.OData.CartSingle specified by key from an entity set
+        /// </summary>
+        /// <param name="source">source entity set</param>
+        /// <param name="keys">dictionary with the names and values of keys</param>
+        public static global::SDL.ECommerce.OData.CartSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.Cart> source, global::System.Collections.Generic.Dictionary<string, object> keys)
+        {
+            return new global::SDL.ECommerce.OData.CartSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+        }
+        /// <summary>
+        /// Get an entity of type global::SDL.ECommerce.OData.Cart as global::SDL.ECommerce.OData.CartSingle specified by key from an entity set
+        /// </summary>
+        /// <param name="source">source entity set</param>
+        /// <param name="id">The value of id</param>
+        public static global::SDL.ECommerce.OData.CartSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::SDL.ECommerce.OData.Cart> source,
+            string id)
+        {
+            global::System.Collections.Generic.Dictionary<string, object> keys = new global::System.Collections.Generic.Dictionary<string, object>
+            {
+                { "id", id }
+            };
+            return new global::SDL.ECommerce.OData.CartSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
         /// <summary>
         /// Get an entity of type global::SDL.ECommerce.OData.ProductQueryResult as global::SDL.ECommerce.OData.ProductQueryResultSingle specified by key from an entity set

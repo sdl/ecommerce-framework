@@ -27,7 +27,7 @@ namespace SDL.ECommerce.OData
         // TODO: This should return a product detail result with promos etc
         public IProduct GetDetail(string productId)
         {
-            return ((ECommerce)this.service.Service).Products.ByKey(productId).GetValue();
+            return ((SDLECommerce)this.service.Service).Products.ByKey(productId).GetValue();
         }
     }
 }

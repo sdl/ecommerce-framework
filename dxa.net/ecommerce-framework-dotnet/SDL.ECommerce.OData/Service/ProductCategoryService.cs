@@ -57,7 +57,7 @@ namespace SDL.ECommerce.OData
             {
                 // Secondly get the category and try to fit it into the cached structure
                 //
-                category = ((ECommerce)this.service.Service).Categories.ByKey(id).GetValue();
+                category = ((SDLECommerce)this.service.Service).Categories.ByKey(id).GetValue();
                 ICategory currentParent = rootCategory;
                 var parentIds = ((Category)category).ParentIds.ToList();
 
@@ -141,11 +141,11 @@ namespace SDL.ECommerce.OData
             IList<Category> categories;
             if ( parent == rootCategory )
             {
-                categories = ((ECommerce)this.service.Service).Categories.ToList();
+                categories = ((SDLECommerce)this.service.Service).Categories.ToList();
             }
             else
             {
-                categories = ((ECommerce)this.service.Service).Categories.ByKey(parent.Id).Categories.ToList();
+                categories = ((SDLECommerce)this.service.Service).Categories.ByKey(parent.Id).Categories.ToList();
             }
             IList<ICategory> existingCategories = parent.Categories;
             IList<ICategory> newCategoryList = new List<ICategory>();
