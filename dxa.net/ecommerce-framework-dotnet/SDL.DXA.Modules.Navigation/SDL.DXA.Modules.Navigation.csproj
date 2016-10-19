@@ -175,10 +175,14 @@
   </Target>
   <Import Project="..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets" Condition="Exists('..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>EM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set)
+    <PostBuildEvent>REM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set)
+
 if defined DXA_SITE_DIR (
+
 xcopy "$(TargetDir)*Navigation*.*" "%25DXA_SITE_DIR%25\bin" /Y
+
 xcopy "$(ProjectDir)Areas" "%25DXA_SITE_DIR%25\Areas" /S /I /Y
+
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
