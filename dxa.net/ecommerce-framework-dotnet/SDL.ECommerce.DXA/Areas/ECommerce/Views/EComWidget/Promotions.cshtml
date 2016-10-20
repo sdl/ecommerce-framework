@@ -1,10 +1,10 @@
 ﻿@model PromotionsWidget
 <div @Html.DxaEntityMarkup()>
-    @foreach (var promotion in Model.Promotions)
+    @foreach (var promotion in Model.MaxPromotions != null ? Model.Promotions.Take((int) Model.MaxPromotions) : Model.Promotions)
     {
         if (promotion is IProductsPromotion)
         {
-            @Html.Partial("Partials/ProductsPromotion", promotion, new ViewDataDictionary {  });
+            @Html.Partial("Partials/ProductsPromotion", promotion);
         }
         else if ( promotion is IImageMapPromotion )
         {

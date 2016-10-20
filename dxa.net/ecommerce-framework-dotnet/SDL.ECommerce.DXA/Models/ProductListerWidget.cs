@@ -25,7 +25,5 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty(IgnoreMapping = true)]
         public ListerNavigationData NavigationData { get; set; }
 
-     
-
     }
 }

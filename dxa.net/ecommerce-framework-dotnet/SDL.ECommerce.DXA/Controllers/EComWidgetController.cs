@@ -37,7 +37,6 @@ namespace SDL.ECommerce.DXA.Controller
             {
                 // TODO: Resolve ECL reference here if any OR use product ID from page controller
 
-                // TODO: Get locale from localization here
 
                 // Get product details from E-Commerce service
                 //
@@ -85,30 +84,8 @@ namespace SDL.ECommerce.DXA.Controller
             IProductQueryResult queryResult = null;
             if ( widget.CategoryReference != null )
             {
-                string categoryId;
-                if ( widget.CategoryReference.CategoryId != null )
-                {
-                    categoryId = widget.CategoryReference.CategoryId;
-                }
-                else if ( widget.CategoryReference.CategoryPath != null )
-                {
-                    ICategory category = ECommerceContext.Client.CategoryService.GetCategoryByPath(widget.CategoryReference.CategoryPath);
-                    if ( category != null )
-                    {
-                        categoryId = category.Id;
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid category path: " + widget.CategoryReference.CategoryPath);
-                    }
-                }
-                else
-                {
-                    // Use ECL reference
-                    //
-                    categoryId = null;
-                }
-                queryResult = ECommerceContext.Client.QueryService.Query(new Query { CategoryId = categoryId });
+                var category = ResolveCategory(widget.CategoryReference);
+                queryResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category });
             }
             else
             {
@@ -120,7 +97,6 @@ namespace SDL.ECommerce.DXA.Controller
             {
                 queryResult = GetResultFromPageTemplate();
             }
-
 
             widget.Items = queryResult.Products.ToList();
             this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS));
@@ -144,7 +120,8 @@ namespace SDL.ECommerce.DXA.Controller
             IProductQueryResult queryResult = null;
             if ( widget.CategoryReference != null )
             {
-                // TODO: Use category reference to get facets
+                var category = ResolveCategory(widget.CategoryReference);
+                queryResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category });
             }
             else
             {
@@ -218,7 +195,14 @@ namespace SDL.ECommerce.DXA.Controller
             IProductQueryResult queryResult = null;
             if (widget.CategoryReference != null)
             {
-                // TODO: Use category reference to get facets
+                var query = new Query();
+                var category = ResolveCategory(widget.CategoryReference);
+                query.Category = category;
+                if ( widget.ViewType != null )
+                {
+                    query.ViewType = (Api.Model.ViewType) Enum.Parse(typeof(Api.Model.ViewType), widget.ViewType.ToUpper());
+                }
+                queryResult = ECommerceContext.Client.QueryService.Query(query);
             }
             else
             {
@@ -266,7 +250,8 @@ namespace SDL.ECommerce.DXA.Controller
             IProductQueryResult queryResult = null;
             if (widget.CategoryReference != null)
             {
-                // TODO: Use category reference to get facets
+                var category = ResolveCategory(widget.CategoryReference);
+                queryResult = ECommerceContext.Client.QueryService.Query(new Query { Category = category });
             }
             else
             {
