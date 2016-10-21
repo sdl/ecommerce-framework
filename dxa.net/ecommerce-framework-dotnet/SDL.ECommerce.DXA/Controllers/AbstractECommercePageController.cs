@@ -7,6 +7,7 @@ using Sdl.Web.Mvc.Configuration;
 using Sdl.Web.Mvc.Controllers;
 using Sdl.Web.Mvc.Formats;
 using SDL.ECommerce.Api;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,28 @@ namespace SDL.ECommerce.DXA.Controllers
             }
                
             return facetParameters;
+        }
+
+        /// <summary>
+        /// Go through all entities on the page (excluding header & footer) and check for contributions to the E-Commerce query (such as view size, filter attributes etc).
+        /// </summary>
+        /// <param name="templatePage"></param>
+        /// <param name="query"></param>
+        protected void GetQueryContributions(PageModel templatePage, Query query)
+        {
+            foreach  (var region in templatePage.Regions)
+            {
+                if (!region.Name.Equals("Header") && !region.Name.Equals("Footer"))
+                {
+                    foreach (EntityModel entity in region.Entities)
+                    {
+                        if (entity is IQueryContributor)
+                        {
+                            ((IQueryContributor) entity).ContributeToQuery(query);
+                        }
+                    }
+                }
+            }
         }
 
         protected ActionResult View(PageModel templatePage)

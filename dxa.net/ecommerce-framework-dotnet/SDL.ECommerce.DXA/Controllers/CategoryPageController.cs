@@ -34,6 +34,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 SetupViewData(templatePage);
 
                 var query = new Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
+                this.GetQueryContributions(templatePage, query);
                 var searchResult = ECommerceContext.Client.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {

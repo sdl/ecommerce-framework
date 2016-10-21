@@ -65,6 +65,7 @@ namespace SDL.ECommerce.DXA.Controllers
             // templatePage.Title = ?? TODO: What title to use for search results?
             SetupViewData(templatePage);
 
+            this.GetQueryContributions(templatePage, query);
             var searchResult = ECommerceContext.Client.QueryService.Query(query);
 
             if (searchResult.RedirectLocation != null)
