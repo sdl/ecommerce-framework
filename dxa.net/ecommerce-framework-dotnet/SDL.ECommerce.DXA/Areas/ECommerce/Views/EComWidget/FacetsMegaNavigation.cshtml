@@ -13,7 +13,7 @@
     int noOfCols = cols * colWidth;
     int colRemainder = 0;
     int navWidth = cols * 230;
-    string categoryUrl = ECommerceContext.LinkResolver.GetCategoryLink(Model.CategoryReference.Category);
+    string categoryUrl = ECommerceContext.LinkResolver.GetNonContextualCategoryLink(Model.CategoryReference.Category);
 
     if (Model.RelatedPromotions.Count > 0)
     {

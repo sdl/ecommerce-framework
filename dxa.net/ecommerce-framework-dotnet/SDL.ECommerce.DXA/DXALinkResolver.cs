@@ -47,6 +47,12 @@ namespace SDL.ECommerce.DXA
             }
         }
 
+        public string GetNonContextualCategoryLink(ICategory category)
+        {
+            var urlPrefix = ECommerceContext.LocalizePath("/c"); // Always use the category lister path  
+            return urlPrefix + GetCategoryAbsolutePath(category);
+        }
+
         public string GetCategoryLink(ICategory category)
         {
             string urlPrefix = (string) ECommerceContext.Get(ECommerceContext.URL_PREFIX);

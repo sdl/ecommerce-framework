@@ -20,6 +20,13 @@ namespace SDL.ECommerce.Api
         string GetCategoryLink(ICategory category);
 
         /// <summary>
+        /// Get a non-contextual link to category page, i.e. without based on info from page controllers etc.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        string GetNonContextualCategoryLink(ICategory category);
+
+        /// <summary>
         /// Get facet link.
         /// </summary>
         /// <param name="facet"></param>
