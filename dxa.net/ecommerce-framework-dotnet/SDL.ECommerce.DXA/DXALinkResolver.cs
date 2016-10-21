@@ -16,7 +16,7 @@ namespace SDL.ECommerce.DXA
             if ( facet.IsCategory )
             {
                 var category = ECommerceContext.Client.CategoryService.GetCategoryById(facet.Value);
-                link = this.GetCategoryLink(category);
+                link = this.GetNonContextualCategoryLink(category);
                 link += this.GetFacetLink((IList<FacetParameter>)null);
             }
             else // facet
