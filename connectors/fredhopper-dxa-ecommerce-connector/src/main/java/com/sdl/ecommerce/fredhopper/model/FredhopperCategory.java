@@ -46,7 +46,12 @@ public class FredhopperCategory implements Category {
     }
 
     static public String getPathName(String name) {
-        return name.toLowerCase().replace(" ", "_").replace("&", "and");
+        // TODO: Have a generic function for this!!
+        return name.toLowerCase().
+                replace(" ", "_").
+                replace("/", "_").
+                replace("-", "_").
+                replace("&", "and");
     }
 
     @Override
