@@ -1,7 +1,7 @@
 ﻿@model FacetsWidget
 @if (Model.CategoryReference != null && Model.CategoryReference.CategoryPath != null && Model.CategoryReference.CategoryPath.Equals("Empty"))
 {
-    <li class="mega-nav-link">
+    <li class="mega-nav-link" @Html.DxaEntityMarkup()>
         <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
     </li>
 }
@@ -20,7 +20,7 @@
         colRemainder = (12 - noOfCols);
     }
 
-    <li class="mega-nav-link">
+    <li class="mega-nav-link" @Html.DxaEntityMarkup()>
         <a href="@categoryUrl">@Model.CategoryReference.Category.Name</a>
 
         <div class="mega-nav" style="width: @(navWidth)px;">
