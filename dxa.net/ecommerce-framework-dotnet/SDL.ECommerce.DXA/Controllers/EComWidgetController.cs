@@ -35,12 +35,19 @@ namespace SDL.ECommerce.DXA.Controller
 
             if (widget.ProductReference != null)
             {
-                // TODO: Resolve ECL reference here if any OR use product ID from page controller
-
+                string productId;
+                if ( widget.ProductReference.ProductRef != null )
+                {
+                    productId = widget.ProductReference.ProductRef.ExternalId;
+                }
+                else
+                {
+                    productId = widget.ProductReference.ProductId;
+                }
 
                 // Get product details from E-Commerce service
                 //
-                widget.Product = ECommerceContext.Client.DetailService.GetDetail(widget.ProductReference.ProductId);
+                widget.Product = ECommerceContext.Client.DetailService.GetDetail(productId);
                 
                 // TODO: Add error handling when product is not found
             }
@@ -342,7 +349,7 @@ namespace SDL.ECommerce.DXA.Controller
 
         protected IProductQueryResult GetResultFromPageTemplate()
         {
-            String requestPath = WebRequestContext.RequestUrl;
+            String requestPath = HttpContext.Request.Path;
             if (requestPath.StartsWith(ECommerceContext.LocalizePath("/categories")))
             {
                 var category = this.GetCategoryFromPageTemplate(requestPath);
@@ -363,9 +370,10 @@ namespace SDL.ECommerce.DXA.Controller
         /// <returns></returns>
         protected ICategory GetCategoryFromPageTemplate(String requestPath)
         {
+            Log.Debug("Trying to extract category from page template: " + requestPath);
             // Try to get query result based on the page url cat1-cat2-cat3
             //
-            var categoryPath = requestPath.Replace(ECommerceContext.LocalizePath("/categories/"), "").Replace(".html", "").Replace("-", "/");
+            var categoryPath = "/" + requestPath.Replace(ECommerceContext.LocalizePath("/categories/"), "").Replace(".html", "").Replace("-", "/");
             var category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryPath);
             if (category == null)
             {
