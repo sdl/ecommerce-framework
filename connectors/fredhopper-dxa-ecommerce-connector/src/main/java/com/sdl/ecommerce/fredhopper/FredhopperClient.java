@@ -343,6 +343,7 @@ public class FredhopperClient implements FredhopperLinkManager {
                 for (Filtersection section : filter.getFiltersection()) {
                     categories.add(new FredhopperCategory(parent, section));
                 }
+                break;
             }
         }
         return categories;

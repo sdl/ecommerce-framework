@@ -151,16 +151,6 @@ public class CategoryManager {
         LOG.debug("Got " + categories.size() + " categories");
         List<Category> existingCategories = parent.getCategories();
 
-        // Verify so we did not get the same categories as parent structure.
-        // This happens if the category facet is set to multi-select
-        //
-        for ( Category category : categories ) {
-            if ( category.getId().equals(parent.getId()) ) {
-                categories = new ArrayList<>();
-                break;
-            }
-        }
-        //
         if ( existingCategories != null ) {
             // If a refresh -> rebuild the list and reuse items
             //

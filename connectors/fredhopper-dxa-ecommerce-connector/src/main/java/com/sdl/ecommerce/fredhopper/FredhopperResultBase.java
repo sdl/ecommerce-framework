@@ -111,6 +111,14 @@ public abstract class FredhopperResultBase {
                 else {
                     value = attribute.getValue().get(0).getValue();
                 }
+                if ( value instanceof List ) {
+                    List<String> currentValueList = (List<String>) fhItem.getAttributes().get(name);
+                    if ( currentValueList != null ) {
+                        // Merge the list
+                        //
+                        ((List<String>)value).addAll(currentValueList);
+                    }
+                }
                 fhItem.getAttributes().put(name, value);
 
                 // Save the internal representation as well.
