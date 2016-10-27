@@ -88,19 +88,13 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
     private List<Breadcrumb> getProductBreadcrumbs(Product product) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
 
-        Category category = product.getCategories().get(0);
-        while ( category != null ) {
-            /*
-            breadcrumbs.add(0, new FredhopperBreadcrumb(category.getName(), this.linkManager.resolveCategoryUrl(category, urlPrefix), true));
-            */
-            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
-            category = category.getParent();
+        if ( product.getCategories() != null && product.getCategories().size() > 0 ) {
+            Category category = product.getCategories().get(0);
+            while (category != null) {
+                breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
+                category = category.getParent();
+            }
         }
-        /*
-        if ( rootTitle != null ) {
-            breadcrumbs.add(0, new FredhopperBreadcrumb(rootTitle, urlPrefix, true));
-        }
-        */
 
         return breadcrumbs;
     }
