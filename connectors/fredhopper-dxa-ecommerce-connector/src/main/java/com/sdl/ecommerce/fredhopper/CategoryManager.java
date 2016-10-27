@@ -48,7 +48,6 @@ public class CategoryManager {
     }
 
     private Category getCategoryById(String id, List<Category> categories) {
-        LOG.debug("Getting category by ID: " + id);
         Category foundCategory = null;
         for ( Category category : categories ) {
             if ( category.getId().equals(id) ) {
@@ -125,6 +124,7 @@ public class CategoryManager {
      */
     private void readTopLevelCategories() {
 
+        LOG.debug("Reading top level categories...");
         Query query = this.fredhopperClient.buildQuery(universe, locale);
         Page page = this.fredhopperClient.doQuery(query);
         List<Category> topLevelCategories = this.fredhopperClient.getCategories(null, fredhopperClient.getUniverse(page));
@@ -148,6 +148,7 @@ public class CategoryManager {
         }
         Page page = this.fredhopperClient.doQuery(query);
         List<Category> categories = this.fredhopperClient.getCategories(parent, this.fredhopperClient.getUniverse(page));
+        LOG.debug("Got " + categories.size() + " categories");
         List<Category> existingCategories = parent.getCategories();
 
         // Verify so we did not get the same categories as parent structure.
