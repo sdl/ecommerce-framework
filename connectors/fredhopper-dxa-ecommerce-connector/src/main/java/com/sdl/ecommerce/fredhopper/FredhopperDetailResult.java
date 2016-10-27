@@ -56,7 +56,10 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
             List<String> categoryIds = (List<String>) product.getAttribute("categoryId");
             if ( categoryIds != null ) {
                 for ( String categoryId : categoryIds ) {
-                    product.getCategories().add(this.categoryService.getCategoryById(categoryId));
+                    Category category = this.categoryService.getCategoryById(categoryId);
+                    if ( category != null ) {
+                        product.getCategories().add(category);
+                    }
                 }
             }
             product.setFacets(new ArrayList<FacetParameter>());
