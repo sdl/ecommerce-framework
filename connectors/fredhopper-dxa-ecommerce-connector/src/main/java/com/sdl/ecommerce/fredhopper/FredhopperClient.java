@@ -113,6 +113,7 @@ public class FredhopperClient implements FredhopperLinkManager {
             }
 
         }
+        LOG.debug("Doing Fredhopper query: " + query.toQueryString());
         return this.fasService.getAll(query.toQueryString() + triggerString);
     }
 
