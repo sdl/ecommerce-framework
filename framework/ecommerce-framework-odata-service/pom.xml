@@ -46,6 +46,16 @@
             </dependencies>
         </profile>
         <profile>
+            <id>hybris</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>hybris-dxa-ecommerce-connector</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>dummy-cart</id>
             <dependencies>
                 <dependency>
@@ -56,12 +66,17 @@
             </dependencies>
         </profile>
         <profile>
+            <!-- TODO: Package this differently -->
             <id>microservice-singlejar</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.sdl.ecommerce.odata.service.ServiceContainer</mainClass>
+                            <layout>MODULE</layout>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -130,7 +145,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-loader</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

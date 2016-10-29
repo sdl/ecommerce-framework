@@ -46,6 +46,17 @@ public class FredhopperConnectorIT extends GenericTestSuite {
     }
 
     @Test
+    public void testPromotionsOnSpecificViewType() throws Exception {
+        Category category = this.categoryService.getCategoryByPath("/women");
+        QueryResult result = this.queryService.query(
+                this.queryService.newQuery().
+                        category(category).
+                        viewSize(10).
+                        viewType(ViewType.SUMMARY));
+        this.printPromotions(result.getPromotions());
+    }
+
+    @Test
     public void testFacets() throws Exception {
         this.testFacets("/women");
     }

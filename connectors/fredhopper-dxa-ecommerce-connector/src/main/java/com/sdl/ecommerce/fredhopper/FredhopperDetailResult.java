@@ -53,6 +53,7 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
         List<Product> products = this.getProducts(universe.getItemsSection().getItems().getItem());
         if ( products.size() > 0 ) {
             FredhopperProduct product = (FredhopperProduct) products.get(0);
+            // TODO: categoryId should also be an model attribute, right?
             List<String> categoryIds = (List<String>) product.getAttribute("categoryId");
             if ( categoryIds != null ) {
                 for ( String categoryId : categoryIds ) {

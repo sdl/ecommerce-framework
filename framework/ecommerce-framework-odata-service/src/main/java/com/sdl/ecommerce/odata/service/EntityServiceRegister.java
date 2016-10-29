@@ -29,7 +29,7 @@ public class EntityServiceRegister {
 
     @PostConstruct
     public void registerEntities() throws ODataException {
-        LOG.debug("Registering example entities");
+        LOG.debug("Registering E-Commerce entities");
 
         oDataEdmRegistry.registerClasses(Lists.newArrayList(
 

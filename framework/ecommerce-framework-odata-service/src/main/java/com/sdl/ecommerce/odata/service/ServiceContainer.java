@@ -32,27 +32,13 @@ public class ServiceContainer {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServiceContainer.class);
 
-    private static ApplicationContext applicationContext = null;
-
     public static void main(String[] args) {
 
-        String mode = args != null && args.length > 0 ? args[0] : null;
-        if (applicationContext != null && mode != null && "stop".equals(mode)) {
-            System.exit(SpringApplication.exit(applicationContext, new ExitCodeGenerator() {
-                @Override
-                public int getExitCode() {
-                    return 0;
-                }
-            }));
-            LOG.info("E-Commerce Service application container stopped.");
-        }
-        else {
-            LOG.info("Starting E-Commerce container");
-            SpringApplication springApplication = new SpringApplication(ServiceContainer.class);
-            springApplication.setShowBanner(false);
-            applicationContext = springApplication.run(args);
-            LOG.info("E-Commerce Service application container started");
-        }
+        LOG.info("Starting E-Commerce container");
+        SpringApplication springApplication = new SpringApplication(ServiceContainer.class);
+        springApplication.setShowBanner(false);
+        springApplication.run(args);
+        LOG.info("E-Commerce Service application container started");
 
     }
 

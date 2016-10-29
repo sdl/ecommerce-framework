@@ -44,7 +44,7 @@ public class CartController extends BaseController {
         if ( cart == null ) {
             cart = this.cartService.createCart();
         }
-        this.cartService.addProductToCart(cart.getId(), productId, 1);
+        cart = this.cartService.addProductToCart(cart.getId(), productId, 1);
         this.storeCart(request, cart);
         return Integer.toString(cart.count());
     }
