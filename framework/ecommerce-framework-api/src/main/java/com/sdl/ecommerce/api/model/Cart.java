@@ -25,6 +25,11 @@ public interface Cart {
      */
     String getId();
 
+    /**
+     * @return optional session identity needed to find the correct cart
+     */
+    String getSessionId();
+
     // TODO: Should this be refactored to add cart items instead???? Where there can be different sub classes to cart item
     // such as product cart item, promo code etc
     //

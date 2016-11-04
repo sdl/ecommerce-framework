@@ -7,6 +7,8 @@ package com.sdl.ecommerce.api.model;
  */
 public interface CartItem {
 
+    // TODO: Refactor this into a abstract interface where a number of cart item types can be added, such as ProductItem, PromoItem
+
     /**
      * Get the accumulated price for the cart item.
      * @return price
