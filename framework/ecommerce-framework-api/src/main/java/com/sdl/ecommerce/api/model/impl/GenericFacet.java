@@ -37,6 +37,31 @@ public class GenericFacet implements Facet {
 
     public GenericFacet(String id,
                         String title,
+                        String value,
+                        boolean isSelected,
+                        boolean isCategory,
+                        int count) {
+        this(id, title, value, isSelected, isCategory, count, FacetType.SINGLEVALUE);
+    }
+
+    public GenericFacet(String id,
+                        String title,
+                        String value,
+                        boolean isSelected,
+                        boolean isCategory,
+                        int count,
+                        FacetType type) {
+        this.id = id;
+        this.title = title;
+        this.values.add(value);
+        this.isSelected = isSelected;
+        this.isCategory = isCategory;
+        this.count = count;
+        this.type = type;
+    }
+
+    public GenericFacet(String id,
+                        String title,
                         List<String> values,
                         FacetType type,
                         boolean isSelected,
