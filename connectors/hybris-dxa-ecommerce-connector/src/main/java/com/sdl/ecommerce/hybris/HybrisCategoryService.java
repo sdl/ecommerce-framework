@@ -4,20 +4,16 @@ import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
 import com.sdl.ecommerce.hybris.api.HybrisClientManager;
-import com.sdl.ecommerce.hybris.model.HybrisCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Hybris Category Service

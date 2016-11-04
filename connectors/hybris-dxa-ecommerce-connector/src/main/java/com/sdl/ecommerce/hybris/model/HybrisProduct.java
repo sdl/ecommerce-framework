@@ -1,9 +1,6 @@
 package com.sdl.ecommerce.hybris.model;
 
-import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.ProductPrice;
+import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.hybris.api.model.Image;
 
 import java.util.ArrayList;
@@ -86,15 +83,22 @@ public class HybrisProduct implements Product {
     }
 
     @Override
-    public List<FacetParameter> getFacets() {
-        List<FacetParameter> facets = new ArrayList<>();
-        facets.add(new FacetParameter("manufacturer", this.hybrisProduct.getManufacturer()));
-        return facets;
-    }
-
-    @Override
     public Map<String, Object> getAttributes() {
         return this.hybrisProduct.getAdditionalProperties();
     }
 
+    @Override
+    public List<ProductVariant> getVariants() {
+        return null;
+    }
+
+    @Override
+    public List<ProductVariantAttribute> getVariantAttributes() {
+        return null;
+    }
+
+    @Override
+    public List<ProductVariantAttributeType> getVariantAttributeTypes() {
+        return null;
+    }
 }

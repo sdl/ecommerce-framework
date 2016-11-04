@@ -3,7 +3,6 @@ package com.sdl.ecommerce.hybris;
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.hybris.api.HybrisClientImpl;
 import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import com.sdl.ecommerce.hybris.model.HybrisProduct;
 import org.springframework.beans.factory.annotation.Autowired;

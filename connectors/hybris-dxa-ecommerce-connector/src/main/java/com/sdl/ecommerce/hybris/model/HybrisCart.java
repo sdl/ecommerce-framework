@@ -23,74 +23,18 @@ import java.util.Map;
  */
 public class HybrisCart implements Cart {
 
-    // TODO: Refactor to the new cart design here!!
 
-    private ProductDetailService detailService;
-    private HybrisClient hybrisClient;
     private List<CartItem> items = new ArrayList<>();
-    private String id;
+    private String cartId;
     private int count = 0;
     private ProductPrice totalPrice = null;
     private float shipping = 0f;
     private float tax = 0f;
-    private String sessionId = null;
     private com.sdl.ecommerce.hybris.api.model.Cart cart = null;
 
-
-    public HybrisCart(HybrisClient hybrisClient, ProductDetailService detailService) {
-        this.hybrisClient = hybrisClient;
-        this.detailService = detailService;
-        this.sessionId = this.hybrisClient.createCart();
-        this.cart = this.hybrisClient.getCart(this.sessionId);
-        this.id = this.cart.getCode();
-    }
-
-    @Override
-    public String getId() throws ECommerceException {
-        return id;
-    }
-
-    public void addProduct(String productId) throws ECommerceException {
-        this.addProduct(productId, 1);
-    }
-
-    public void addProduct(String productId, int quantity) throws ECommerceException {
-        try {
-            if ( this.sessionId == null ) {
-                this.sessionId = this.hybrisClient.createCart();
-            }
-            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClient.addItemToCart(this.sessionId, productId, quantity);
-            this.refresh(cart);
-        }
-        catch ( Exception e ) {
-            throw new ECommerceException("Could not add product to cart.", e);
-        }
-    }
-
-    public void removeProduct(String productId) throws ECommerceException {
-        try {
-            if ( this.sessionId == null ) {
-                this.sessionId = this.hybrisClient.createCart();
-            }
-            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClient.removeItemFromCart(this.sessionId, productId);
-            this.refresh(cart);
-        }
-        catch ( Exception e ) {
-            throw new ECommerceException("Could not add product to cart.", e);
-        }
-    }
-
-    synchronized private void refresh(com.sdl.ecommerce.hybris.api.model.Cart cart) throws ECommerceException {
-        this.items.clear();
-        if ( cart.getEntries() != null ) {
-            for ( Entry entry : cart.getEntries() ) {
-                ProductDetailResult productDetailResult = this.detailService.getDetail(entry.getProduct().getCode());
-                CartItem item = new GenericCartItem(productDetailResult.getProductDetail(), entry.getQuantity(), new HybrisPrice(entry.getBasePrice()));
-                this.items.add(item);
-            }
-        }
-
-        this.id = cart.getCode();
+    public HybrisCart(String cartId, com.sdl.ecommerce.hybris.api.model.Cart cart, ProductDetailService detailService) {
+        this.cartId = cartId;
+        this.cart = cart;
         this.totalPrice = new HybrisPrice(cart.getTotalPrice());
         this.shipping = 0f; // TODO: How to calculate shipping costs
         if ( cart.getTotalTax() != null ) {
@@ -100,7 +44,24 @@ public class HybrisCart implements Cart {
             this.tax = 0f;
         }
         this.count = cart.getTotalUnitCount();
-        // TODO: Add discounts as well!!!!!!
+        if ( cart.getEntries() != null ) {
+            for ( Entry entry : cart.getEntries() ) {
+                ProductDetailResult productDetailResult = detailService.getDetail(entry.getProduct().getCode());
+                CartItem item = new GenericCartItem(productDetailResult.getProductDetail(), entry.getQuantity(), new HybrisPrice(entry.getBasePrice()));
+                this.items.add(item);
+            }
+        }
+    }
+
+    @Override
+    public String getId() throws ECommerceException {
+        return this.cartId;
+    }
+
+    @Override
+    public String getSessionId() {
+        // TODO: Expose session ID here!!
+        return null;
     }
 
     @Override
@@ -127,20 +88,6 @@ public class HybrisCart implements Cart {
         return tax;
     }
 
-    public void clear() throws ECommerceException {
-
-        // TODO: Implement a proper clear here...
-        this.sessionId = this.hybrisClient.createCart();
-        com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClient.getCart(this.sessionId);
-        this.refresh(cart);
-    }
-
-    public void refresh() throws ECommerceException {
-        if ( this.sessionId != null ) {
-            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClient.getCart(this.sessionId);
-            this.refresh(cart);
-        }
-    }
 
     @Override
     public Map<URI,Object> getDataToExposeToClaimStore() throws ECommerceException {
@@ -154,7 +101,7 @@ public class HybrisCart implements Cart {
     @Override
     public String toString() {
         return "HybrisCart {" +
-                "id=" + id +
+                "id=" + cartId +
                 ", items=" + count +
                 ", totalPrice=" + totalPrice +
                 ", shipping=" + shipping +

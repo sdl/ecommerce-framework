@@ -10,6 +10,8 @@ import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabula
  *
  * @author nic
  */
+
+
 @SemanticEntity(entityName = "ExternalContentLibraryStubSchemahybris", vocabulary = SDL_CORE, prefix = "s")
 public class HybrisEclItem extends ECommerceEclItem {
 }

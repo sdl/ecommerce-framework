@@ -53,4 +53,9 @@ public class HybrisFacetGroup implements FacetGroup {
     public boolean isCategory() {
         return this.isCategory;
     }
+
+    @Override
+    public String getEditUrl() {
+        return null;
+    }
 }

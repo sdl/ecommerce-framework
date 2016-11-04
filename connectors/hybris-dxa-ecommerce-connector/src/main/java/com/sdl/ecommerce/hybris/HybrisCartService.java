@@ -8,6 +8,7 @@ import com.sdl.ecommerce.hybris.api.HybrisClientManager;
 import com.sdl.ecommerce.hybris.model.HybrisCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Hybris Cart Factory
@@ -25,23 +26,31 @@ public class HybrisCartService implements CartService {
 
     @Override
     public Cart createCart() throws ECommerceException {
-        return new HybrisCart(hybrisClientManager.getInstance(), productDetailService);
-    }
-
-    // TODO: Refactor to the new cart design here!!!
-
-    @Override
-    public Cart addProductToCart(String cartId, String productId, int quantity) throws ECommerceException {
-        return null;
+        String cartId = hybrisClientManager.getInstance().createCart();
+        com.sdl.ecommerce.hybris.api.model.Cart cart = hybrisClientManager.getInstance().getCart(cartId);
+        return new HybrisCart(cartId, cart, this.productDetailService);
     }
 
     @Override
-    public Cart removeProductFromCart(String cartId, String productId) throws ECommerceException {
-        return null;
+    public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
+        try {
+            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().addItemToCart(cartId, productId, quantity);
+            return new HybrisCart(cartId, cart, this.productDetailService);
+        }
+        catch ( Exception e ) {
+            throw new ECommerceException("Could not add product to cart.", e);
+        }
     }
 
     @Override
-    public Cart clearCart(String cartId) throws ECommerceException {
-        return null;
+    public Cart removeProductFromCart(String cartId, String sessionId, String productId) throws ECommerceException {
+        try {
+            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().removeItemFromCart(cartId, productId);
+            return new HybrisCart(cartId, cart, this.productDetailService);
+        }
+        catch ( Exception e ) {
+            throw new ECommerceException("Could not remove product to cart.", e);
+        }
     }
+
 }
