@@ -32,6 +32,11 @@ public class DummyCart implements Cart {
         return Integer.toString(this.hashCode());
     }
 
+    @Override
+    public String getSessionId() {
+        return null;
+    }
+
     public void addProduct(String productId) throws ECommerceException {
         this.addProduct(productId, 1);
     }

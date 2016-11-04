@@ -36,7 +36,7 @@ public class DummyCartService implements CartService {
     }
 
     @Override
-    public Cart addProductToCart(String cartId, String productId, int quantity) throws ECommerceException {
+    public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
         if ( cart != null ) {
             cart.addProduct(productId, quantity);
@@ -46,7 +46,7 @@ public class DummyCartService implements CartService {
     }
 
     @Override
-    public Cart removeProductFromCart(String cartId, String productId) throws ECommerceException {
+    public Cart removeProductFromCart(String cartId, String sessionId, String productId) throws ECommerceException {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
         if ( cart != null ) {
             cart.removeProduct(productId);
@@ -55,7 +55,6 @@ public class DummyCartService implements CartService {
         return null;
     }
 
-    @Override
     public Cart clearCart(String cartId) throws ECommerceException {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
         if ( cart != null ) {
