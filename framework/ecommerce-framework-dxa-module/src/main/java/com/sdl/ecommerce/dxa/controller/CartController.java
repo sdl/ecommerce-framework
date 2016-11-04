@@ -43,8 +43,9 @@ public class CartController extends BaseController {
         Cart cart = this.getCart(request);
         if ( cart == null ) {
             cart = this.cartService.createCart();
+            this.storeCart(request, cart);
         }
-        cart = this.cartService.addProductToCart(cart.getId(), productId, 1);
+        cart = this.cartService.addProductToCart(cart.getId(), cart.getSessionId(), productId, 1);
         this.storeCart(request, cart);
         return Integer.toString(cart.count());
     }
@@ -65,9 +66,10 @@ public class CartController extends BaseController {
         Cart cart = this.getCart(request);
         if ( cart == null ) {
             cart = this.cartService.createCart();
+            this.storeCart(request, cart);
             return Integer.toString(cart.count());
         }
-        cart = this.cartService.removeProductFromCart(cart.getId(), productId);
+        cart = this.cartService.removeProductFromCart(cart.getId(), cart.getSessionId(), productId);
         this.storeCart(request, cart);
         return Integer.toString(cart.count());
     }
