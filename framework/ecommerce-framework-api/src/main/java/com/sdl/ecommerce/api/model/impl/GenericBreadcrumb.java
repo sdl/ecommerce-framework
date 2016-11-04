@@ -17,13 +17,6 @@ public class GenericBreadcrumb implements Breadcrumb {
     private CategoryRef categoryRef;
     private Facet facet;
 
-    // OLD CONSTRUCTOR - TO BE REMOVED !!!
-    public GenericBreadcrumb(String title, String url, boolean isCategory) {
-        this.title = title;
-        this.url = url;
-        this.isCategory = isCategory;
-    }
-
     public GenericBreadcrumb(String title, CategoryRef categoryRef) {
         this.title = title;
         this.categoryRef = categoryRef;
