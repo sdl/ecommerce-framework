@@ -124,7 +124,7 @@ public abstract class FredhopperResultBase {
                 // Save the internal representation as well.
                 // TODO: Merge this with the generic attribute representation
                 //
-                fhItem.addFredhopperlAttribute(name, attribute);
+                fhItem.addFredhopperAttribute(name, attribute);
             }
         }
         return products;

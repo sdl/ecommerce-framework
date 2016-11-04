@@ -63,24 +63,6 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
                     }
                 }
             }
-            product.setFacets(new ArrayList<FacetParameter>());
-
-            List<Filter> facetFilters = this.getFacetFilters(universe);
-            for ( Filter filter : facetFilters ) {
-                Object facetValue = product.getAttribute(filter.getOn());
-                if ( facetValue != null ) {
-                    FacetParameter facetParameter;
-                    if ( facetValue instanceof List ) {
-                        List<String> facetValues = (List<String>) facetValue;
-                        facetParameter = new FacetParameter(filter.getOn());
-                        facetParameter.getValues().addAll(facetValues);
-                    }
-                    else {
-                        facetParameter = new FacetParameter(filter.getOn(), facetValue.toString());
-                    }
-                    product.getFacets().add(facetParameter);
-                }
-            }
             return product;
         }
         return null;

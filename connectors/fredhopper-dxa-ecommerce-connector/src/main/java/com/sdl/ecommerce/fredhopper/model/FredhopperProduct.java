@@ -2,10 +2,7 @@ package com.sdl.ecommerce.fredhopper.model;
 
 import com.fredhopper.webservice.client.Attribute;
 import com.sdl.ecommerce.api.LocalizationService;
-import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.ProductPrice;
+import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 import com.sdl.webapp.common.api.localization.Localization;
 import org.apache.commons.collections.map.HashedMap;
@@ -23,7 +20,6 @@ import java.util.Map;
 public class FredhopperProduct implements Product {
 
     private String id;
-    private List<FacetParameter> facets;
     private Map<String,Object> attributes = new HashMap<>();
     // TODO: Replace this with a single list of attribute values.
     private Map<String,Attribute> fhAttributes = new HashedMap();
@@ -110,22 +106,28 @@ public class FredhopperProduct implements Product {
     }
 
     @Override
-    public List<FacetParameter> getFacets() {
-        return facets;
-    }
-
-    @Override
     public Map<String,Object> getAttributes() {
         return this.attributes;
     }
 
 
-    public void addFredhopperlAttribute(String name, Attribute attribute) {
-        this.fhAttributes.put(name, attribute);
+    @Override
+    public List<ProductVariant> getVariants() {
+        return null;
     }
 
-    public void setFacets(List<FacetParameter> facets) {
-        this.facets = facets;
+    @Override
+    public List<ProductVariantAttribute> getVariantAttributes() {
+        return null;
+    }
+
+    @Override
+    public List<ProductVariantAttributeType> getVariantAttributeTypes() {
+        return null;
+    }
+
+    public void addFredhopperAttribute(String name, Attribute attribute) {
+        this.fhAttributes.put(name, attribute);
     }
 
     public Object getAttribute(String name) {
