@@ -54,4 +54,13 @@ public interface ECommerceLinkResolver {
      * @return link
      */
     String getProductDetailLink(Product product);
+
+    /**
+     * Get link to product detail variant page.
+     * @param product
+     * @param variantAttributeId
+     * @param  variantAttributeValueId
+     * @return link
+     */
+    String getProductDetailVariantLink(Product product, String variantAttributeId, String variantAttributeValueId);
 }

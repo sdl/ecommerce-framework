@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.FACETS;
 import static com.sdl.ecommerce.dxa.ECommerceRequestAttributes.URL_PREFIX;
@@ -129,6 +131,44 @@ public class DXALinkResolver implements ECommerceLinkResolver {
         // TODO: Add the possibility to resolve to a CMS based detail page using dynamic links
 
        return this.getProductDetailLink(product.getId(), product.getName());
+    }
+
+    @Override
+    public String getProductDetailVariantLink(Product product, String variantAttributeId, String variantAttributeValueId) {
+
+        String productId = product.getId();
+        if ( product.getVariants() != null ) {
+            Map<String, String> selectedAttributes = new HashMap<>();
+            selectedAttributes.put(variantAttributeId, variantAttributeValueId);
+            if ( product.getVariantAttributes() != null ) {
+                for (ProductVariantAttribute attribute : product.getVariantAttributes()) {
+                    if (!attribute.getId().equals(variantAttributeId)) {
+                        selectedAttributes.put(attribute.getId(), attribute.getValueId());
+                    }
+                }
+            }
+            // Get matching variant based on the selected attributes
+            //
+            for ( ProductVariant variant : product.getVariants() ) {
+                int matchingAttributes = 0;
+                for ( String selectedAttributeId : selectedAttributes.keySet() ) {
+                    String selectedAttributeValueId = selectedAttributes.get(selectedAttributeId);
+                    for ( ProductVariantAttribute attribute : variant.getAttributes() ) {
+                        if ( attribute.getId().equals(selectedAttributeId) && attribute.getValueId().equals(selectedAttributeValueId) ) {
+                            matchingAttributes++;
+                            break;
+                        }
+                    }
+                }
+                if ( matchingAttributes == selectedAttributes.size() ) {
+                    productId = variant.getId();
+                    break;
+                }
+
+            }
+        }
+
+        return this.getProductDetailLink(productId, product.getName());
     }
 
     protected String getProductDetailLink(String productId, String productName) {

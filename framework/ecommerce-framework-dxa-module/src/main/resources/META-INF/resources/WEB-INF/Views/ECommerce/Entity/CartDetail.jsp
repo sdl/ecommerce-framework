@@ -35,7 +35,12 @@
                                         <img src="${item.product.thumbnailUrl}" height="100"/>
                                     </div>
                                     <div class="col-md-5">
-                                        <a href="${linkResolver.getProductDetailLink(item.product)}"><strong>${item.product.name}</strong></a>
+                                        <a href="${linkResolver.getProductDetailLink(item.product)}"><strong>${item.product.name}</strong></a> <br/>
+                                        <c:if test="${item.product.variantAttributes != null }">
+                                            <c:forEach var="variantAttribute" items="${item.product.variantAttributes}">
+                                                ${variantAttribute.name}: ${variantAttribute.value}<br/>
+                                            </c:forEach>
+                                        </c:if>
                                     </div>
                                     <div class="col-md-2">
                                         ${item.quantity}

@@ -170,13 +170,35 @@ public abstract class GenericTestSuite {
         LOG.info("Breadcrumbs: ");
         this.printBreadcrumbs(result.getBreadcrumbs());
         this.printPromotions(result.getPromotions());
-        LOG.info("Facets: ");
-        for ( FacetParameter facet : product.getFacets() ) {
-            LOG.info(facet.getName() + " : " + facet.getValues());
-        }
         LOG.info("Attributes: ");
         for ( String attrName : product.getAttributes().keySet() ) {
             LOG.info("Name: " + attrName + " Value: " + product.getAttributes().get(attrName));
+        }
+    }
+
+    protected void testGetProductVariants(String productId) throws Exception {
+        LOG.info("Getting detail for product...");
+        ProductDetailResult result = this.detailService.getDetail(productId);
+        Product product = result.getProductDetail();
+        LOG.info("Product ID: " + product.getId());
+        LOG.info("Product Name: " + product.getName());
+        LOG.info("Product Description: " + product.getDescription());
+        if ( product.getVariantAttributes() != null ) {
+            LOG.info("Current product is an variant with current attributes:");
+            for ( ProductVariantAttribute attribute : product.getVariantAttributes() ) {
+                LOG.info("  " + attribute.getName() + " = " + attribute.getValue());
+            }
+        }
+        if ( product.getVariants() != null ) {
+            LOG.info("Variants: ");
+            for (ProductVariant variant : product.getVariants()) {
+                LOG.info("  Product Variant ID:" + variant.getId());
+                LOG.info("  Price:" + variant.getPrice());
+                LOG.info("  Attributes:");
+                for (ProductVariantAttribute attribute : variant.getAttributes()) {
+                    LOG.info("    " + attribute.getName() + " = " + attribute.getValue());
+                }
+            }
         }
     }
 
@@ -187,7 +209,7 @@ public abstract class GenericTestSuite {
 
         for ( String productId : productIds ) {
             LOG.info("Adding product with ID: " + productId + " to cart...");
-            cart = cartService.addProductToCart(cart.getId(), productId, 1);
+            cart = cartService.addProductToCart(cart.getId(), cart.getSessionId(), productId, 1);
             this.printCartItems(cart);
         }
     }

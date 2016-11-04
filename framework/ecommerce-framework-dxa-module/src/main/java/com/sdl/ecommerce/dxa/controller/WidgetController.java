@@ -335,6 +335,7 @@ public class WidgetController extends BaseController {
         }
         entity.setProduct(product);
         request.setAttribute("entity", entity);
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
@@ -359,6 +360,7 @@ public class WidgetController extends BaseController {
         }
         request.setAttribute("entity", entity);
         request.setAttribute("product", result.getProductDetail());
+        request.setAttribute("linkResolver", this.linkResolver);
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);

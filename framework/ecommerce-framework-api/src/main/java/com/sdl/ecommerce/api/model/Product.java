@@ -56,13 +56,6 @@ public interface Product {
     List<Category> getCategories();
 
     /**
-     * Get product facets.
-     * @return list of product facets
-     */
-    // TODO: Convert this to an interface instead???
-    List<FacetParameter> getFacets();
-
-    /**
      * Get all additional attributes of the product. Can for example be used in compare views etc.
      * @return list of attributes
      */
@@ -71,4 +64,23 @@ public interface Product {
     // TODO: Have an AttributeValue representation here that indicate formatted value, raw value, type, single/multi value etc?
 
     Map<String,Object> getAttributes();
+
+    /**
+     * Get product variants (if any)
+     * @return list of variants
+     */
+    List<ProductVariant> getVariants();
+
+    /**
+     * If current product is an variant this list is populated with selected variant attributes
+     * @return list of variant attributes
+     */
+    List<ProductVariantAttribute> getVariantAttributes();
+
+    /**
+     * Get all available variant attribute types for this product, e.g. color, size. The type also contain all possible values.
+     * @return list of variant attribute types
+     */
+    List<ProductVariantAttributeType> getVariantAttributeTypes();
+
 }

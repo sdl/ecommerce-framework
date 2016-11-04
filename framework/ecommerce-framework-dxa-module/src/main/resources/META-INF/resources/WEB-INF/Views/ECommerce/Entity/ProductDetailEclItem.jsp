@@ -22,6 +22,16 @@
                     <div>
                         ${product.description}
                     </div>
+                    <c:if test="${product.variants != null}">
+                        <c:forEach var="variantAttributeType" items="${product.variantAttributeTypes}">
+                            <h4>${variantAttributeType.name}</h4>
+                            <c:forEach var="valueType" items="${variantAttributeType.values}">
+                                <a class="btn ${valueType.selected?'btn-info disabled':'btn-default'}" href="${linkResolver.getProductDetailVariantLink(product, variantAttributeType.id, valueType.id)}">
+                                    ${valueType.value}
+                                </a>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
                     <h3 class="center-block" style="margin-top: 16px;">
                         ${product.price.formattedPrice}
                     </h3>
