@@ -29,7 +29,6 @@ public class DemandwareQueryResult implements QueryResult {
     private DemandwareShopClient shopClient;
     private ProductCategoryService categoryService;
     private List<String> facetIncludeList;
-    private ECommerceLinkResolver linkResolver;
 
     /**
      * Create new Demandware query result.
@@ -43,8 +42,7 @@ public class DemandwareQueryResult implements QueryResult {
                                  ProductSearchResult searchResult,
                                  DemandwareShopClient shopClient,
                                  ProductCategoryService categoryService,
-                                 List<String> facetIncludeList,
-                                 ECommerceLinkResolver linkResolver) {
+                                 List<String> facetIncludeList) {
 
         this.query = query;
         this.category = this.query.getCategory();
@@ -52,7 +50,6 @@ public class DemandwareQueryResult implements QueryResult {
         this.shopClient = shopClient;
         this.categoryService = categoryService;
         this.facetIncludeList = facetIncludeList;
-        this.linkResolver = linkResolver;
     }
 
     @Override
@@ -97,7 +94,7 @@ public class DemandwareQueryResult implements QueryResult {
                                 //
                                 continue;
                             }
-                            Facet facet = new GenericFacet(refinement.getAttribute_id(), refinementValue.getLabel(), refinementValue.getValue(), refinementValue.getHit_count(), false);
+                            Facet facet = new GenericFacet(refinement.getAttribute_id(), refinementValue.getLabel(), refinementValue.getValue(), false, true, refinementValue.getHit_count());
                             facetGroup.getFacets().add(facet);
                         }
                     }
@@ -125,7 +122,7 @@ public class DemandwareQueryResult implements QueryResult {
                             String selectedValues = this.searchResult.getSelected_refinements().get(refinement.getAttribute_id());
                             isSelected = selectedValues != null && selectedValues.contains(refinementValue.getValue());
                         }
-                        Facet facet = new GenericFacet(refinementValue.getLabel(), this.getFacetUrl(refinement.getAttribute_id(), refinementValue.getValue(), urlPrefix), refinementValue.getHit_count(), isSelected);
+                        Facet facet = new GenericFacet(refinement.getAttribute_id(), refinementValue.getLabel(), refinementValue.getValue(), isSelected, false, refinementValue.getHit_count(), Facet.FacetType.MULTISELECT);
                         facetGroup.getFacets().add(facet);
                     }
                 }
@@ -158,20 +155,15 @@ public class DemandwareQueryResult implements QueryResult {
         return null;
     }
 
-    /**
-     * Gets the facet URL based on Demandware refinement ID and value.
-     * @param refinementId
-     * @param refinementValue
-     * @param urlPrefix
-     * @return url
-     */
+    /* Old code for building facet URLs. Kept for future references
+
     protected String getFacetUrl(String refinementId, String refinementValue, String urlPrefix) {
         String facetUrlPrefix = "";
         String facetUrl = "?";
         boolean isIncludedInMultivalue = false;
         if ( this.searchResult.getSelected_refinements() != null ) {
             for (String selectedRefinement : this.searchResult.getSelected_refinements().keySet()) {
-                if (selectedRefinement.equals("cgid") /*|| selectedRefinement.equals(excludeRefinementId)*/) {
+                if (selectedRefinement.equals("cgid") ) {
                     continue;
                 }
                 String selectedRefinementValue = this.searchResult.getSelected_refinements().get(selectedRefinement);
@@ -203,12 +195,6 @@ public class DemandwareQueryResult implements QueryResult {
         return facetUrlPrefix + facetUrl;
     }
 
-    /**
-     * Get URL to remove facet.
-     * @param refinementId
-     * @param refinementValue
-     * @return url
-     */
     protected String getRemoveFacetUrl(String refinementId, String refinementValue) {
         String facetUrlPrefix = "";
         String facetUrl = "?";
@@ -247,6 +233,7 @@ public class DemandwareQueryResult implements QueryResult {
 
         return facetUrlPrefix + facetUrl;
     }
+    */
 
     @Override
     public int getTotalCount() {
@@ -278,7 +265,7 @@ public class DemandwareQueryResult implements QueryResult {
         ProductSearchResult nextResult = this.shopClient.getNext(this.searchResult);
         Query newQuery = this.query.clone();
         newQuery.startIndex(nextResult.getStart());
-        return new DemandwareQueryResult(newQuery, nextResult, this.shopClient, this.categoryService, this.facetIncludeList, this.linkResolver);
+        return new DemandwareQueryResult(newQuery, nextResult, this.shopClient, this.categoryService, this.facetIncludeList);
     }
 
     @Override
@@ -286,7 +273,7 @@ public class DemandwareQueryResult implements QueryResult {
         ProductSearchResult previousResult = this.shopClient.getPrevious(this.searchResult);
         Query newQuery = this.query.clone();
         newQuery.startIndex(previousResult.getStart());
-        return new DemandwareQueryResult(newQuery, previousResult, this.shopClient, this.categoryService, this.facetIncludeList, this.linkResolver);
+        return new DemandwareQueryResult(newQuery, previousResult, this.shopClient, this.categoryService, this.facetIncludeList);
     }
 
     @Override
@@ -299,7 +286,7 @@ public class DemandwareQueryResult implements QueryResult {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         Category category = this.category;
         while ( category != null ) {
-            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), this.linkResolver.getCategoryLink(category), true));
+            breadcrumbs.add(0, new GenericBreadcrumb(category.getName(), new CategoryRef(category)));
             category = category.getParent();
         }
         if ( this.searchResult.getSelected_refinements() != null ) {
@@ -313,7 +300,8 @@ public class DemandwareQueryResult implements QueryResult {
                         while ( tokenizer.hasMoreTokens() ) {
                             String value = tokenizer.nextToken();
                             ProductSearchRefinementValue refinementValue = this.getRefinementValue(refinement, value);
-                            breadcrumbs.add(new GenericBreadcrumb(refinementValue.getLabel(), this.getRemoveFacetUrl(refinement.getAttribute_id(), value), false));
+
+                            breadcrumbs.add(new GenericBreadcrumb(refinementValue.getLabel(), new GenericFacet(refinement.getAttribute_id(), refinement.getLabel(), value, Facet.FacetType.SINGLEVALUE)));
                         }
                     }
                 }

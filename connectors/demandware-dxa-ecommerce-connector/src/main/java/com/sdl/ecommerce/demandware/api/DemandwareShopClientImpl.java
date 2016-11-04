@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Demandware Shop Client v.16.1
+ * Demandware Shop Client v.16.8
  *
  * @author nic
  */
@@ -27,7 +27,7 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
 
     static private Log log = LogFactory.getLog(DemandwareShopClientImpl.class);
 
-    static final String BASE_URL_PATH = "/dw/shop/v16_1";
+    static final String BASE_URL_PATH = "/dw/shop/v16_8";
 
     private String shopUrl;
     private String clientId;
@@ -67,9 +67,11 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
         }
 
         Builder originHeader() {
+            /*
             if ( overriddenOrigin != null && overriddenOrigin.length() > 0 ) {
                 this.requestBuilder = requestBuilder.header("Origin", overriddenOrigin);
             }
+            */
             return this;
         }
 
@@ -241,6 +243,23 @@ public class DemandwareShopClientImpl implements DemandwareShopClient {
                 header("Authorization", authToken).
                 post(ClientResponse.class, new Basket());
         return getBasket(response, authToken);
+    }
+
+    /**
+     * Get basket
+     * @param id
+     * @return
+     * @throws ECommerceException
+     */
+    public Basket getBasket(String id, String authenticationToken) throws ECommerceException {
+        ClientResponse response =
+                new Builder(this.basketResource.path(id).getRequestBuilder()).
+                        jsonHeaders().
+                        originHeader().
+                        getRequestBuilder().
+                        header("Authorization", authenticationToken).
+                        get(ClientResponse.class);
+        return getBasket(response, authenticationToken);
     }
 
     /**

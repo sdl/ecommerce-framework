@@ -21,6 +21,14 @@ public interface DemandwareShopClient {
     Basket createBasket() throws ECommerceException;
 
     /**
+     * Get basket with a specific identity
+     * @param id
+     * @return
+     * @throws ECommerceException
+     */
+    Basket getBasket(String id, String authenticationToken) throws ECommerceException;
+
+    /**
      * Add product to basket
      * @param basket
      * @param productId

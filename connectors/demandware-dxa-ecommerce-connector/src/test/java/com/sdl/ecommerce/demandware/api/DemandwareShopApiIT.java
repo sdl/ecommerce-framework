@@ -36,7 +36,7 @@ public class DemandwareShopApiIT {
 
         log.info("Adding product to cart...");
 
-        basket = this.shopClientManager.getInstance().addProductToBasket(basket, "sanyo-dp50747", 1);
+        basket = this.shopClientManager.getInstance().addProductToBasket(basket, "013742002836", 1);
         this.printBasket(basket);
     }
 
@@ -52,7 +52,7 @@ public class DemandwareShopApiIT {
     public void testGetProduct() throws Exception {
         log.info("Test getting product...");
 
-        Product product = this.shopClientManager.getInstance().getProduct("sanyo-dp50747");
+        Product product = this.shopClientManager.getInstance().getProduct("013742002836");
         log.info("Product ID: " + product.getId() + " name: " + product.getName());
         log.info("Short description: " + product.getShort_description());
         for ( ImageGroup imageGroup : product.getImage_groups() ) {
@@ -62,6 +62,20 @@ public class DemandwareShopApiIT {
             }
         }
 
+    }
+
+    @Test
+    public void testGetProductVariations() throws Exception {
+        log.info("Test getting product variations...");
+
+        Product product = this.shopClientManager.getInstance().getProduct("701644059262");
+        log.info("Product ID: " + product.getId() + " name: " + product.getName());
+        log.info("Short description: " + product.getShort_description());
+        log.info("Variants:");
+        for ( ProductVariant variant : product.getVariants() ) {
+            log.info("  Variant ID: " + variant.getProduct_id());
+            log.info("  Price: " + variant.getPrice());
+        }
     }
 
     @Test

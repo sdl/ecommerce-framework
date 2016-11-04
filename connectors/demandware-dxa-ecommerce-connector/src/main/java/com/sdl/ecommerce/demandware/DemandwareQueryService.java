@@ -29,9 +29,6 @@ public class DemandwareQueryService implements ProductQueryService {
     @Autowired
     private LocalizationService localizationService;
 
-    @Autowired
-    private ECommerceLinkResolver linkResolver;
-
     @Override
     public Query newQuery() {
         return new DemandwareQuery();
@@ -64,7 +61,7 @@ public class DemandwareQueryService implements ProductQueryService {
         if ( query.getViewType() == ViewType.FLYOUT ) {
             facetIncludeList = this.getFlyoutFacets();
         }
-        return new DemandwareQueryResult(query, searchResult, this.shopClientManager.getInstance(), this.categoryService, facetIncludeList, this.linkResolver);
+        return new DemandwareQueryResult(query, searchResult, this.shopClientManager.getInstance(), this.categoryService, facetIncludeList);
     }
 
     /**

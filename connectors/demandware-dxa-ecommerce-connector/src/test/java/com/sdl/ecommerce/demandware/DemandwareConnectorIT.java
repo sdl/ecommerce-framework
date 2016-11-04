@@ -34,40 +34,45 @@ public class DemandwareConnectorIT extends GenericTestSuite {
 
     @Test
     public void testGetCategoryByPath() throws Exception {
-        this.testGetCategoryByPath("/womens/footwear");
+        this.testGetCategoryByPath("/womens/clothing/tops");
     }
 
     @Test
     public void testGetProductsInCategory() throws Exception {
-        this.testGetProductsInCategory("/womens/footwear");
-    }
-
-    @Test
-    public void testGetDeepCategory() throws Exception {
-        this.testGetCategoryByPath("/electronics/televisions/flat_screen");
+        this.testGetProductsInCategory("/womens/clothing/outfits");
     }
 
     @Test
     public void testSearch() throws Exception {
-        this.testSearch("sony");
+        this.testSearch("jewel");
     }
 
     @Test
     public void testSearchWithFacets() throws Exception {
 
         List<FacetParameter> facets = new ArrayList<>();
-        facets.add(new FacetParameter("brand", "Sony|Samsung"));
-        this.testSearchWithFacets("tv", facets);
+        facets.add(new FacetParameter("c_refinementColor", "Blue|Green"));
+        this.testSearchWithFacets("shirt", facets);
     }
 
     @Test
     public void testGetProductDetail() throws Exception {
-        this.testGetProductDetail("sanyo-dp50747");
+        this.testGetProductDetail("25720424");
+    }
+
+    @Test
+    public void testGetProductVariants() throws Exception {
+        LOG.info("Master product:");
+        LOG.info("###################");
+        this.testGetProductVariants("25720424");
+        LOG.info("Variant product:");
+        LOG.info("###################");
+        this.testGetProductVariants("701644132798");
     }
 
     @Test
     public void testCart() throws Exception {
-        this.testCart("sanyo-dp50747", "sanyo-dp50747");
+        this.testCart("013742002836", "013742002836");
     }
 
 }

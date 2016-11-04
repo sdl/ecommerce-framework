@@ -24,15 +24,15 @@ public class DemandwareDetailService implements ProductDetailService {
     @Autowired
     private DemandwareShopClientManager shopClientManager;
 
-    @Autowired
-    private ECommerceLinkResolver linkResolver;
-
     @Override
     public ProductDetailResult getDetail(String productId) throws ECommerceException {
 
         com.sdl.ecommerce.demandware.api.model.Product dwreProduct = this.shopClientManager.getInstance().getProduct(productId);
-        Category primaryCategory = this.categoryService.getCategoryById(dwreProduct.getPrimary_category_id());
+        Category primaryCategory = null;
+        if ( dwreProduct.getPrimary_category_id() != null ) {
+            primaryCategory = this.categoryService.getCategoryById(dwreProduct.getPrimary_category_id());
+        }
         Product product = new DemandwareProduct(primaryCategory, dwreProduct);
-        return new DemandwareDetailResult(product, linkResolver);
+        return new DemandwareDetailResult(product);
     }
 }

@@ -3,6 +3,7 @@ package com.sdl.ecommerce.demandware.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Product
@@ -22,6 +23,9 @@ public class Product extends StandardBody {
     private String short_description;
     private String long_description;
     private List<ImageGroup> image_groups;
+    private Map<String,String> variation_values;
+    private List<ProductVariant> variants;
+    private List<VariationAttribute> variation_attributes;
 
     public String getId() {
         return id;
@@ -101,5 +105,17 @@ public class Product extends StandardBody {
 
     public void setImage_groups(List<ImageGroup> image_groups) {
         this.image_groups = image_groups;
+    }
+
+    public Map<String, String> getVariation_values() {
+        return variation_values;
+    }
+
+    public List<ProductVariant> getVariants() {
+        return variants;
+    }
+
+    public List<VariationAttribute> getVariation_attributes() {
+        return variation_attributes;
     }
 }

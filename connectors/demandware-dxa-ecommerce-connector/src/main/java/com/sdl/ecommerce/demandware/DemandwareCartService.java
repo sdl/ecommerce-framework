@@ -5,6 +5,8 @@ import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Cart;
 import com.sdl.ecommerce.demandware.api.DemandwareShopClientManager;
+import com.sdl.ecommerce.demandware.api.model.Basket;
+import com.sdl.ecommerce.demandware.api.model.ProductItem;
 import com.sdl.ecommerce.demandware.model.DemandwareCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,23 +28,27 @@ public class DemandwareCartService implements CartService {
 
     @Override
     public Cart createCart() throws ECommerceException {
-        return new DemandwareCart(shopClientManager.getInstance(), detailService);
-    }
-
-    // TODO: Refactor to the new cart design here
-
-    @Override
-    public Cart addProductToCart(String cartId, String productId, int quantity) throws ECommerceException {
-        return null;
+        Basket basket = shopClientManager.getInstance().createBasket();
+        return new DemandwareCart(basket, detailService);
     }
 
     @Override
-    public Cart removeProductFromCart(String cartId, String productId) throws ECommerceException {
-        return null;
+    public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
+        Basket basket = this.shopClientManager.getInstance().getBasket(cartId, sessionId);
+        basket = this.shopClientManager.getInstance().addProductToBasket(basket, productId, quantity);
+        return new DemandwareCart(basket, detailService);
     }
 
     @Override
-    public Cart clearCart(String cartId) throws ECommerceException {
-        return null;
+    public Cart removeProductFromCart(String cartId, String sessionId, String productId) throws ECommerceException {
+        Basket basket = this.shopClientManager.getInstance().getBasket(cartId, sessionId);
+        for ( ProductItem productItem : basket.getProduct_items() ) {
+            if ( productItem.getProduct_id().equals(productId) ) {
+                basket = this.shopClientManager.getInstance().removeProductItemFromBasket(basket, productItem);
+                break;
+            }
+        }
+        return new DemandwareCart(basket, detailService);
     }
+
 }

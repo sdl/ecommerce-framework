@@ -26,7 +26,7 @@ public class DemandwareShopClientManager {
     @Value("${demandware.clientId}")
     private String clientId;
 
-    @Value("${demandware.overriddenOrigin}")
+    @Value("${demandware.overriddenOrigin:null}")
     private String overriddenOrigin = null;
 
     @Value("${demandware.trustAllSSLCerts}")
