@@ -26,16 +26,16 @@ public class HybrisCartService implements CartService {
 
     @Override
     public Cart createCart() throws ECommerceException {
-        String cartId = hybrisClientManager.getInstance().createCart();
-        com.sdl.ecommerce.hybris.api.model.Cart cart = hybrisClientManager.getInstance().getCart(cartId);
-        return new HybrisCart(cartId, cart, this.productDetailService);
+        String sessionId = hybrisClientManager.getInstance().createCart();
+        com.sdl.ecommerce.hybris.api.model.Cart cart = hybrisClientManager.getInstance().getCart(sessionId);
+        return new HybrisCart(cart, toExternalSessionId(sessionId), this.productDetailService);
     }
 
     @Override
     public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
         try {
-            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().addItemToCart(cartId, productId, quantity);
-            return new HybrisCart(cartId, cart, this.productDetailService);
+            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().addItemToCart(toHybrisSessionId(sessionId), productId, quantity);
+            return new HybrisCart(cart, sessionId, this.productDetailService);
         }
         catch ( Exception e ) {
             throw new ECommerceException("Could not add product to cart.", e);
@@ -45,12 +45,20 @@ public class HybrisCartService implements CartService {
     @Override
     public Cart removeProductFromCart(String cartId, String sessionId, String productId) throws ECommerceException {
         try {
-            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().removeItemFromCart(cartId, productId);
-            return new HybrisCart(cartId, cart, this.productDetailService);
+            com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().removeItemFromCart(toHybrisSessionId(sessionId), productId);
+            return new HybrisCart(cart, sessionId, this.productDetailService);
         }
         catch ( Exception e ) {
             throw new ECommerceException("Could not remove product to cart.", e);
         }
+    }
+
+    private String toHybrisSessionId(String sessionId) {
+        return "JSESSIONID=" + sessionId + "; Path=/rest";
+    }
+
+    private String toExternalSessionId(String sessionId) {
+        return sessionId.replace("JSESSIONID=", "").replace("; Path=/rest", "");
     }
 
 }

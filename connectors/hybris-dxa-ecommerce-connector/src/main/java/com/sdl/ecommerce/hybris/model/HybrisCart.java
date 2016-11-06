@@ -25,16 +25,16 @@ public class HybrisCart implements Cart {
 
 
     private List<CartItem> items = new ArrayList<>();
-    private String cartId;
+    private String sessionId;
     private int count = 0;
     private ProductPrice totalPrice = null;
     private float shipping = 0f;
     private float tax = 0f;
     private com.sdl.ecommerce.hybris.api.model.Cart cart = null;
 
-    public HybrisCart(String cartId, com.sdl.ecommerce.hybris.api.model.Cart cart, ProductDetailService detailService) {
-        this.cartId = cartId;
+    public HybrisCart(com.sdl.ecommerce.hybris.api.model.Cart cart, String sessionId, ProductDetailService detailService) {
         this.cart = cart;
+        this.sessionId = sessionId;
         this.totalPrice = new HybrisPrice(cart.getTotalPrice());
         this.shipping = 0f; // TODO: How to calculate shipping costs
         if ( cart.getTotalTax() != null ) {
@@ -55,13 +55,12 @@ public class HybrisCart implements Cart {
 
     @Override
     public String getId() throws ECommerceException {
-        return this.cartId;
+        return this.cart.getCode();
     }
 
     @Override
     public String getSessionId() {
-        // TODO: Expose session ID here!!
-        return null;
+        return this.sessionId;
     }
 
     @Override
@@ -101,7 +100,7 @@ public class HybrisCart implements Cart {
     @Override
     public String toString() {
         return "HybrisCart {" +
-                "id=" + cartId +
+                "id=" + cart.getCode() +
                 ", items=" + count +
                 ", totalPrice=" + totalPrice +
                 ", shipping=" + shipping +
