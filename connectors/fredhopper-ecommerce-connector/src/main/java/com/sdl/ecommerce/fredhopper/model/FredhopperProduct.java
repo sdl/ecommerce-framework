@@ -4,7 +4,6 @@ import com.fredhopper.webservice.client.Attribute;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
-import com.sdl.webapp.common.api.localization.Localization;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;

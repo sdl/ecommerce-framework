@@ -6,10 +6,8 @@ import com.sun.jersey.api.client.*;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.net.ssl.*;
@@ -25,7 +23,7 @@ import java.util.Map;
  */
 public class DemandwareShopClientImpl implements DemandwareShopClient {
 
-    static private Log log = LogFactory.getLog(DemandwareShopClientImpl.class);
+    static private Logger log = LoggerFactory.getLogger(DemandwareShopClientImpl.class);
 
     static final String BASE_URL_PATH = "/dw/shop/v16_8";
 

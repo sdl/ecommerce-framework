@@ -19,11 +19,6 @@
 
     <dependencies>
 
-        <!-- SDL Digital Experience Accelerator -->
-        <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.sdl</groupId>
@@ -56,8 +51,13 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
         </dependency>
 
         <dependency>
@@ -79,6 +79,21 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
         </dependency>
 
         <dependency>

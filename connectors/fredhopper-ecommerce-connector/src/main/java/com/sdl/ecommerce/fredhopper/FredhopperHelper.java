@@ -1,9 +1,7 @@
 package com.sdl.ecommerce.fredhopper;
 
 import com.sdl.ecommerce.api.LocalizationService;
-import com.sdl.webapp.common.api.localization.Localization;
 
-import java.net.URI;
 import java.util.*;
 
 /**
