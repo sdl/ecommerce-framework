@@ -1,6 +1,5 @@
 package com.sdl.ecommerce.dxa.model;
 
-import com.sdl.ecommerce.api.model.ECommerceEclItem;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;

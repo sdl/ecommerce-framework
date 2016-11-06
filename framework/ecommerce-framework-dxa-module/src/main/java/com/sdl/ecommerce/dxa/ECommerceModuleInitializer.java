@@ -1,13 +1,12 @@
 package com.sdl.ecommerce.dxa;
 
-import com.sdl.ecommerce.api.model.ECommerceEclItem;
+import com.sdl.ecommerce.dxa.model.ECommerceEclItem;
 import com.sdl.ecommerce.dxa.model.*;
 import com.sdl.webapp.common.api.mapping.views.AbstractInitializer;
 import com.sdl.webapp.common.api.mapping.views.ModuleInfo;
 import com.sdl.webapp.common.api.mapping.views.RegisteredViewModel;
 import com.sdl.webapp.common.api.mapping.views.RegisteredViewModels;
 import com.sdl.webapp.common.markup.PluggableMarkupRegistry;
-import com.sdl.webapp.common.markup.html.builders.HtmlBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
