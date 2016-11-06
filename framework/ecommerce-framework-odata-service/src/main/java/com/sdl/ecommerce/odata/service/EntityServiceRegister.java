@@ -54,6 +54,10 @@ public class EntityServiceRegister {
                 ODataBreadcrumb.class,
                 ODataCart.class,
                 ODataCartItem.class,
+                ODataProductVariant.class,
+                ODataProductVariantAttribute.class,
+                ODataProductVariantAttributeType.class,
+                ODataProductVariantAttributeValueType.class,
 
                 // Functions
                 //

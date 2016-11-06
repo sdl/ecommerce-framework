@@ -56,6 +56,16 @@
             </dependencies>
         </profile>
         <profile>
+            <id>demandware</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>demandware-dxa-ecommerce-connector</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>dummy-cart</id>
             <dependencies>
                 <dependency>
@@ -65,8 +75,8 @@
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
-            <!-- TODO: Package this differently -->
             <id>microservice-singlejar</id>
             <build>
                 <plugins>
@@ -75,7 +85,6 @@
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <mainClass>com.sdl.ecommerce.odata.service.ServiceContainer</mainClass>
-                            <layout>MODULE</layout>
                         </configuration>
                         <executions>
                             <execution>
@@ -170,6 +179,41 @@
                     <source>${java-version}</source>
                     <target>${java-version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <descriptor>src/main/assembly/dep.xml</descriptor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-archive</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

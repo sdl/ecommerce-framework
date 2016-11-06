@@ -30,7 +30,7 @@ public class ProductDataSource implements DataSource {
     @Autowired
     private ProductCategoryService productCategoryService;
 
-    @Autowired
+    @Autowired (required = false)
     private EditService editService; // TODO: Move this to another data source?
 
     @Autowired (required = false)

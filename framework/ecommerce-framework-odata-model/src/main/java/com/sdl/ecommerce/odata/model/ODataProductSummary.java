@@ -1,9 +1,6 @@
 package com.sdl.ecommerce.odata.model;
 
-import com.sdl.ecommerce.api.model.Category;
-import com.sdl.ecommerce.api.model.FacetParameter;
-import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.api.model.ProductPrice;
+import com.sdl.ecommerce.api.model.*;
 import com.sdl.odata.api.edm.annotations.EdmComplex;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
@@ -85,7 +82,17 @@ public class ODataProductSummary implements Product {
     }
 
     @Override
-    public List<FacetParameter> getFacets() {
+    public List<ProductVariant> getVariants() {
+        return null;
+    }
+
+    @Override
+    public List<ProductVariantAttribute> getVariantAttributes() {
+        return null;
+    }
+
+    @Override
+    public List<ProductVariantAttributeType> getVariantAttributeTypes() {
         return null;
     }
 }
