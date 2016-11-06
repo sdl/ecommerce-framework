@@ -27,6 +27,9 @@ public class ODataCart implements Cart {
     private String id;
 
     @EdmProperty
+    private String sessionId;
+
+    @EdmProperty
     private List<ODataCartItem> items;
 
     @EdmProperty
@@ -38,6 +41,7 @@ public class ODataCart implements Cart {
     public ODataCart() {}
     public ODataCart(Cart cart) {
         this.id = cart.getId();
+        this.sessionId = cart.getSessionId();
         this.items = new ArrayList<>();
         if ( cart.getItems() != null ) {
             cart.getItems().forEach(cartItem -> this.items.add(new ODataCartItem(cartItem)));
@@ -51,6 +55,11 @@ public class ODataCart implements Cart {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String getSessionId() {
+        return this.sessionId;
     }
 
     @Override

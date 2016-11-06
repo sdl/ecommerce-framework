@@ -55,6 +55,15 @@ public class ODataProduct implements Product, Serializable {
     @EdmProperty
     private List<ODataBreadcrumb> breadcrumbs = new ArrayList<>();
 
+    @EdmProperty
+    private List<ODataProductVariantAttribute> variantAttributes = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataProductVariant> variants = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataProductVariantAttributeType> variantAttributeTypes = new ArrayList<>();
+
     public ODataProduct() {}
 
     public ODataProduct(ProductDetailResult detailResult) {
@@ -71,6 +80,15 @@ public class ODataProduct implements Product, Serializable {
             for ( String name : attributes.keySet() ) {
                 this.attributes.add(new ODataProductAttribute(name, attributes.get(name)));
             }
+        }
+        if ( product.getVariantAttributes() != null ) {
+            product.getVariantAttributes().forEach(attribute -> this.variantAttributes.add(new ODataProductVariantAttribute(attribute)));
+        }
+        if ( product.getVariants() != null ) {
+            product.getVariants().forEach(variant -> this.variants.add(new ODataProductVariant(variant)));
+        }
+        if ( product.getVariantAttributeTypes() != null ) {
+            product.getVariantAttributeTypes().forEach(type -> this.variantAttributeTypes.add(new ODataProductVariantAttributeType((type))));
         }
         if ( product.getCategories() != null ) {
             product.getCategories().forEach(category -> this.categories.add(new ODataCategorySummary(category)));
@@ -119,11 +137,6 @@ public class ODataProduct implements Product, Serializable {
     }
 
     @Override
-    public List<FacetParameter> getFacets() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public Map<String, Object> getAttributes() {
         if ( this.attributeMap == null ) {
             this.attributeMap = new HashMap<>();
@@ -149,5 +162,20 @@ public class ODataProduct implements Product, Serializable {
 
     public List<Breadcrumb> getBreadcrumbs() {
         return breadcrumbs.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariant> getVariants() {
+        return this.variants.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariantAttribute> getVariantAttributes() {
+        return this.variantAttributes.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariantAttributeType> getVariantAttributeTypes() {
+        return null;
     }
 }
