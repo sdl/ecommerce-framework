@@ -40,7 +40,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>fredhopper-dxa-ecommerce-connector</artifactId>
+                    <artifactId>fredhopper-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
@@ -50,7 +50,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>hybris-dxa-ecommerce-connector</artifactId>
+                    <artifactId>hybris-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
@@ -60,7 +60,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>demandware-dxa-ecommerce-connector</artifactId>
+                    <artifactId>demandware-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
@@ -70,7 +70,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>dummy-dxa-ecommerce-connector</artifactId>
+                    <artifactId>dummy-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
