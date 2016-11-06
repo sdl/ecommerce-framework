@@ -18,18 +18,18 @@ namespace SDL.ECommerce.Api.Service
         /// <summary>
         /// Add product to cart
         /// </summary>
-        /// <param name="cartId"></param>
+        /// <param name="cart"></param>
         /// <param name="productId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        ICart AddProductToCart(string cartId, string productId, int quantity);
+        ICart AddProductToCart(ICart cart, string productId, int quantity);
 
         /// <summary>
         /// Remove product from cart
         /// </summary>
-        /// <param name="cartId"></param>
+        /// <param name="cart"
         /// <param name="productId"></param>
         /// <returns></returns>
-        ICart RemoveProductFromCart(string cartId, string productId);
+        ICart RemoveProductFromCart(ICart cart, string productId);
     }
 }

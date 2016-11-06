@@ -184,10 +184,10 @@ namespace SDL.ECommerce.OData
             var cart = ECommerceClient.CartService.CreateCart();
             PrintCart(cart);
             Console.WriteLine("Adding product to cart...");
-            cart = ECommerceClient.CartService.AddProductToCart(cart.Id, "008010111647", 1);
+            cart = ECommerceClient.CartService.AddProductToCart(cart, "008010111647", 1);
             PrintCart(cart);
             Console.WriteLine("Removing products from cart...");
-            cart = ECommerceClient.CartService.RemoveProductFromCart(cart.Id, "008010111647");
+            cart = ECommerceClient.CartService.RemoveProductFromCart(cart, "008010111647");
             PrintCart(cart);
 
         }
