@@ -1,4 +1,4 @@
-package com.sdl.ecommerce.dxa;
+package com.sdl.ecommerce.dxa.defaultviews;
 
 import com.sdl.ecommerce.dxa.model.ECommerceEclItem;
 import com.sdl.ecommerce.dxa.model.*;
@@ -43,9 +43,6 @@ import javax.annotation.PostConstruct;
 public class ECommerceModuleInitializer extends AbstractInitializer {
 
     private static final String AREA_NAME = "ECommerce";
-
-    @Autowired
-    private PluggableMarkupRegistry pluggableMarkupRegistry;
 
     @PostConstruct
     public void initialize() {
