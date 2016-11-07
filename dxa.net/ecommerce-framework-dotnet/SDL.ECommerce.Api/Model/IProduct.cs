@@ -45,19 +45,20 @@ public interface IProduct
     /// <summary>
     /// Get categories the product belong to.
     /// </summary>
-    List<ICategory> Categories { get; }
-
-    /**
-     * Get product facets.
-     * @return list of product facets
-     */
-    // TODO: Convert this to an interface instead???
-    //List<FacetParameter> Facets();
+    IList<ICategory> Categories { get; }
 
     /// <summary>
     /// Get all additional attributes of the product. Can for example be used in compare views etc.
     /// </summary>
     IDictionary<string, object> Attributes { get; }
+
+    /*
+    IList<IProductVariant> Variants { get; }
+
+    IList<IProductVariantAttribute> VariantAttributes { get; }
+
+    IList<IProductVariantAttributeType> VariantAttributeTypes { get; }
+    */
 
     /// <summary>
     /// Product breadcrumbs

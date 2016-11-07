@@ -43,7 +43,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        public List<ICategory> Categories
+        public IList<ICategory> Categories
         {
             get
             {

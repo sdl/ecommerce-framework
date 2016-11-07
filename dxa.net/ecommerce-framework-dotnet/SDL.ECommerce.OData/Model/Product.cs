@@ -77,7 +77,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        List<ICategory> IProduct.Categories
+        IList<ICategory> IProduct.Categories
         {
             get
             {
@@ -100,5 +100,6 @@ namespace SDL.ECommerce.OData
                 return this.Promotions.Select(promo => promo.ToConcretePromotion()).ToList();
             }
         }
+
     }
 }
