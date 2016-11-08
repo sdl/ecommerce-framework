@@ -16,6 +16,8 @@ public interface Product {
      */
     String getId();
 
+    // TODO: Model SKU separately? Have an Primary ID and SKU? SKU ends up in the cart... What is the url in detail pages? primary ID?
+
     /**
      * Get name of the product. This can be a localized name based on current language.
      * @return name
@@ -62,6 +64,7 @@ public interface Product {
 
     // TODO: Use Map<String,List<String>> here instead?? To make it easier to map over OData???
     // TODO: Have an AttributeValue representation here that indicate formatted value, raw value, type, single/multi value etc?
+    // TODO: Consider to use the same model as for variant attributes?
 
     Map<String,Object> getAttributes();
 

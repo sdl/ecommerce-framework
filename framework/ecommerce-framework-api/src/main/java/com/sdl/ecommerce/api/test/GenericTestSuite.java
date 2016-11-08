@@ -165,7 +165,7 @@ public abstract class GenericTestSuite {
         LOG.info("Primary Image URL: " + product.getPrimaryImageUrl());
         LOG.info("Categories: ");
         for ( Category category : product.getCategories() ) {
-            LOG.info("ID: " + category.getId() + " Name: " + category.getName() + " Parent: " + category.getParent().getName());
+            LOG.info("ID: " + category.getId() + " Name: " + category.getName());
         }
         LOG.info("Breadcrumbs: ");
         this.printBreadcrumbs(result.getBreadcrumbs());

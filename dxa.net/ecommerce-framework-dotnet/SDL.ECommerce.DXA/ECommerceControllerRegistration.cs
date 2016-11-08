@@ -71,6 +71,9 @@ namespace SDL.ECommerce.DXA
         /// <param name="defaults"></param>
         protected static void MapRoute(AreaRegistrationContext context, string name, string url, object defaults)
         {
+            // TODO: Find a better way of registering the page routes before the default DXA page route. This approach is a bit shaky sometimes.
+            // If you get problems with this approach you can consider to add above routes directly before the last page route in the Global.asax in the DXA Site project.
+            //
             var route = context.MapRoute(name, url, defaults, new[] { NAMESPACE });
             context.Routes.Remove(route);
             context.Routes.Insert(context.Routes.Count - 2, route);

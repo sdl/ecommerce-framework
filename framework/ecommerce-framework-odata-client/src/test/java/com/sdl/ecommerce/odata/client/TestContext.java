@@ -25,6 +25,11 @@ public class TestContext {
     public ProductQueryService getProductQueryService() { return new ODataProductQueryService(); }
 
     @Bean
+    public CartService getCartService() {
+        return new ODataCartService();
+    }
+
+    @Bean
     public ODataClient getODataClient() {
         return new ODataClient();
     }

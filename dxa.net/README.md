@@ -5,5 +5,6 @@ This project consists of the following:
  * SDL.ECommerce.Api - E-Commerce APIs for .NET
  * SDL.ECommerce.OData - OData client to the E-Commerce micro service
  * SDL.ECommerce.Modules.Navigation - Module for meganavigation and the possibility to do hybrid navigation
- * SDL.ECommerce.Modules.DXA - The main DXA module for E-Commerce providing an example implementation based on the generic E-Commerce APIs
+ * SDL.ECommerce.DXA - The main DXA module for E-Commerce providing generic models and controllers based on the E-Commerce APIs
+ * SDL.ECommerce.DXA.Default.Views - DXA module with default E-Commerce views based on the white label HTML design
 

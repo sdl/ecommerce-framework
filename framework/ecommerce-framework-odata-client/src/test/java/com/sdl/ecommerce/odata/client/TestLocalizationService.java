@@ -20,7 +20,7 @@ public class TestLocalizationService implements LocalizationService {
 
     @Override
     public String getLocale() {
-        return "en-GB";
+        return "en_GB";
     }
 
     @Override

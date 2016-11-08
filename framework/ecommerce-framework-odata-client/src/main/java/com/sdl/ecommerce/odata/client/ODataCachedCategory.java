@@ -1,24 +1,22 @@
-package com.sdl.ecommerce.odata.model;
+package com.sdl.ecommerce.odata.client;
 
 import com.sdl.ecommerce.api.model.Category;
+import com.sdl.ecommerce.odata.model.ODataCategory;
 import com.sdl.odata.api.edm.annotations.EdmEntity;
 import com.sdl.odata.api.edm.annotations.EdmEntitySet;
 import com.sdl.odata.api.edm.annotations.EdmNavigationProperty;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * OData Category
+ * OData Cached Category
  *
  * @author nic
  */
 @EdmEntity(name="Category", key = "id", namespace = "SDL.ECommerce")
 @EdmEntitySet(name="Categories")
-public class ODataCategory implements Category {
+public class ODataCachedCategory implements Category {
 
     @EdmProperty(name = "id", nullable = false)
     protected String id;
@@ -32,7 +30,7 @@ public class ODataCategory implements Category {
     private String path;
 
     @EdmProperty(name = "pathName")
-    private String pathName;
+    private String pathName = null;
 
     @EdmNavigationProperty(name = "parent")
     private ODataCategory parent = null;
@@ -43,34 +41,11 @@ public class ODataCategory implements Category {
     @EdmProperty(name= "parentIds")
     private List<String> parentIds = null;
 
-    public ODataCategory() {}
+    private List<Category> cachedCategories = null;
 
-    public ODataCategory(Category category) {
-        this.id = category.getId();
-        this.name = category.getName();
-        this.pathName = category.getPathName();
+    private Category cachedParent = null;
 
-        this.parentIds = new ArrayList<>();
-        Category parent = category.getParent();
-        while ( parent != null ) {
-            this.parentIds.add(0, parent.getId());
-            parent = parent.getParent();
-        }
-    }
-
-    @Override
-    public List<Category> getCategories() {
-        // follow categories is not supported by this model class, please refer to the specific category model in the OData client
-        //
-        return null;
-    }
-
-    @Override
-    public Category getParent() {
-        // Follow parent is supported by this model class, please refer to the specific category model in the OData client.
-        //
-        return this.parent;
-    }
+    private long expiryTime;
 
     @Override
     public String getId() {
@@ -82,9 +57,37 @@ public class ODataCategory implements Category {
         return this.name;
     }
 
+    @Override
+    public Category getParent() {
+        return this.cachedParent;
+    }
+
+    void setParent(Category category) {
+        this.cachedParent = category;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return this.cachedCategories;
+    }
 
     @Override
     public String getPathName() {
         return this.pathName;
     }
+
+    void setCategories(List<Category> categories, long expiryTime) {
+        this.cachedCategories = categories;
+        this.expiryTime= expiryTime;
+    }
+
+    boolean needRefresh()
+    {
+        return this.cachedCategories == null || this.expiryTime < System.currentTimeMillis();
+    }
+
+    List<String> getParentIds() {
+        return this.parentIds;
+    }
+
 }
