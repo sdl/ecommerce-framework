@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.fredhopper.model;
 
 import com.fredhopper.webservice.client.Attribute;
+import com.fredhopper.webservice.client.Item;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
@@ -18,28 +19,32 @@ import java.util.Map;
  */
 public class FredhopperProduct implements Product {
 
-    private String id;
+    private Item item;
     private Map<String,Object> attributes = new HashMap<>();
     // TODO: Replace this with a single list of attribute values.
+    // Or use the similar structure as the ProductVariantAttribute
+    //
     private Map<String,Attribute> fhAttributes = new HashedMap();
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
     private LocalizationService localizationService;
+    private List<ProductVariantAttribute> variantAttributes;
+    private List<ProductVariantAttributeType> variantAttributeTypes;
 
     /**
      * Create a Fredhopper product representation. The provided model mappings are used to map Fredhopper product attributes
      * to the standard E-Commerce Framework model
-     * @param id
+     * @param item
      * @param linkManager
      * @param modelMappings
      * @param localizationService
      */
-    public FredhopperProduct(String id,
+    public FredhopperProduct(Item item,
                              FredhopperLinkManager linkManager,
                              Map<String,String> modelMappings,
                              LocalizationService localizationService) {
-        this.id = id;
+        this.item = item;
         this.linkManager = linkManager;
         this.modelMappings = modelMappings;
         this.localizationService = localizationService;
@@ -47,7 +52,7 @@ public class FredhopperProduct implements Product {
 
     @Override
     public String getId() {
-        return id;
+        return this.item.getId();
     }
 
     @Override
@@ -117,16 +122,32 @@ public class FredhopperProduct implements Product {
 
     @Override
     public List<ProductVariantAttribute> getVariantAttributes() {
-        return null;
+        return this.variantAttributes;
     }
 
     @Override
     public List<ProductVariantAttributeType> getVariantAttributeTypes() {
-        return null;
+        return this.variantAttributeTypes;
+    }
+
+    public void setVariantAttributes(List<ProductVariantAttribute> variantAttributes) {
+        this.variantAttributes = variantAttributes;
+    }
+
+    public void setVariantAttributeTypes(List<ProductVariantAttributeType> variantAttributeTypes) {
+        this.variantAttributeTypes = variantAttributeTypes;
+    }
+
+    public Item getFredhopperItem() {
+        return this.item;
     }
 
     public void addFredhopperAttribute(String name, Attribute attribute) {
         this.fhAttributes.put(name, attribute);
+    }
+
+    public Attribute getFredhopperAttribute(String name) {
+        return this.fhAttributes.get(name);
     }
 
     public Object getAttribute(String name) {

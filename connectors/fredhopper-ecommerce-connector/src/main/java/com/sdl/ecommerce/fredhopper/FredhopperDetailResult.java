@@ -1,11 +1,12 @@
 package com.sdl.ecommerce.fredhopper;
 
-import com.fredhopper.webservice.client.Filter;
-import com.fredhopper.webservice.client.Page;
-import com.fredhopper.webservice.client.Universe;
+import com.fredhopper.webservice.client.*;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
+import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeType;
+import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeValueType;
 import com.sdl.ecommerce.fredhopper.model.FredhopperBreadcrumb;
 import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
 
@@ -63,6 +64,7 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
                     }
                 }
             }
+            this.setVariantInfo(product, universe);
             return product;
         }
         return null;
@@ -78,8 +80,43 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
                 category = category.getParent();
             }
         }
-
         return breadcrumbs;
+    }
+
+    private void setVariantInfo(FredhopperProduct product, Universe universe) {
+
+        // Get variant attribute types
+        //
+        List<ProductVariantAttributeType> attributeTypes = new ArrayList<>();
+        List<Filter> filters = this.getFacetFilters(universe);
+        for ( Filter filter : filters ) {
+            if ( filter.getOn().startsWith("variant_") ) {
+                List<ProductVariantAttributeValueType> values = new ArrayList<>();
+                for (Filtersection section : filter.getFiltersection()) {
+                   values.add(new GenericProductVariantAttributeValueType(section.getValue().getValue(), section.getLink().getName(), section.isSelected() != null ? section.isSelected() : false));
+                }
+                attributeTypes.add(new GenericProductVariantAttributeType(filter.getOn(), filter.getTitle(), values));
+            }
+        }
+        if ( attributeTypes.isEmpty() ) {
+            // Current product has no variants
+            //
+            return;
+        }
+        product.setVariantAttributeTypes(attributeTypes);
+
+        // Get current variant values
+        //
+        List<ProductVariantAttribute> variantAttributes = new ArrayList<>();
+        for ( ProductVariantAttributeType attributeType : attributeTypes ) {
+            Attribute attributeValue = product.getFredhopperAttribute(attributeType.getId());
+            if ( !attributeValue.getValue().isEmpty() ) {
+                Value value = attributeValue.getValue().get(0);
+                variantAttributes.add(new GenericProductVariantAttribute(attributeType.getId(), attributeType.getName(), value.getNonMl(), value.getValue()));
+            }
+        }
+        product.setVariantAttributes(variantAttributes);
+
     }
 
 }

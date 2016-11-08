@@ -87,6 +87,11 @@ public class FredhopperConnectorIT extends GenericTestSuite {
     }
 
     @Test
+    public void testGetProductVariants() throws Exception {
+        this.testGetProductVariants("6674147");
+    }
+
+    @Test
     public void testQueryWithRedirect() throws Exception {
         LOG.info("Querying a category & facet that only gives one product item...");
         Category category = this.categoryService.getCategoryByPath("/women/accessories");
