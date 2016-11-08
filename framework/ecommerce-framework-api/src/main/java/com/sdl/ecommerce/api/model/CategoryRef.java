@@ -26,7 +26,7 @@ public class CategoryRef {
     public static String getCategoryAbsolutePath(Category category) {
         String path = "";
         Category currentCategory = category;
-        while ( currentCategory != null ) {
+        while ( currentCategory != null && currentCategory.getPathName() != null ) {
             path = currentCategory.getPathName() + "/" + path;
             currentCategory = currentCategory.getParent();
         }
