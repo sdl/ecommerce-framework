@@ -21,3 +21,4 @@ query-lang*.jar
 ws-client-*.jar
 IKVM.*.dll
 query-lang-*.dll
+.vs/

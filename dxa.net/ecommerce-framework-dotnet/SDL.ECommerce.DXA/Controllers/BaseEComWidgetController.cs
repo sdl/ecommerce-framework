@@ -16,9 +16,9 @@ using System.Runtime.Caching;
 namespace SDL.ECommerce.DXA.Controller
 {
     /// <summary>
-    /// Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
+    /// Base Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
     /// </summary>
-    public class EComWidgetController : BaseController
+    public abstract class BaseEComWidgetController : BaseController
     {
 
         /// <summary>

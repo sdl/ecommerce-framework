@@ -146,13 +146,13 @@
     <Compile Include="Controllers\AbstractECommercePageController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryPageController.cs" />
-    <Compile Include="Controllers\EComWidgetController.cs" />
+    <Compile Include="Controllers\BaseEComWidgetController.cs" />
     <Compile Include="Controllers\EditProxyController.cs" />
     <Compile Include="Controllers\ProductPageController.cs" />
     <Compile Include="Controllers\SearchPageController.cs" />
     <Compile Include="DXALinkResolver.cs" />
     <Compile Include="ECommerceContext.cs" />
-    <Compile Include="ECommerceAreaRegistration.cs" />
+    <Compile Include="ECommerceControllerRegistration.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />
     <Compile Include="Models\CartWidget.cs" />
     <Compile Include="Models\ECommerceCategoryReference.cs" />
@@ -168,30 +168,9 @@
     <Compile Include="Models\SearchFeedbackWidget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\ECommerce\Views\web.config" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetail.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductLister.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Facets.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Breadcrumb.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Promotions.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ImageMapPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\DetailBreadcrumb.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\SearchFeedback.cshtml" />
-    <Content Include="Areas\ECommerce\Views\Entity\SearchBox.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\FacetsMegaNavigation.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotionMegaNav.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotionMegaNav.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\EditControl.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\InContextEditMenu.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\CartDetail.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetailEclItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -199,9 +178,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SDL.ECommerce.Api\SDL.ECommerce.Api.csproj">
       <Project>{1030d0f7-9334-4864-b495-540e3ad7928c}</Project>
@@ -223,16 +200,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51714</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51714/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
@@ -252,8 +220,6 @@
 if defined DXA_SITE_DIR (
 
 xcopy "$(TargetDir)SDL.ECommerce*.*" "%25DXA_SITE_DIR%25\bin" /Y
-
-xcopy "$(ProjectDir)Areas" "%25DXA_SITE_DIR%25\Areas" /S /I /Y
 
 )</PostBuildEvent>
   </PropertyGroup>
