@@ -200,6 +200,26 @@ public abstract class GenericTestSuite {
                 }
             }
         }
+        else if ( product.getVariantAttributes() != null ) {
+            LOG.info("Variant attributes: ");
+            for ( ProductVariantAttribute attribute : product.getVariantAttributes() ) {
+                LOG.info("  Attribute ID: " + attribute.getId());
+                LOG.info("  Attribute Name: " + attribute.getName());
+                LOG.info("  Attribute Value ID: " + attribute.getValueId());
+                LOG.info("  Attribute Value: " + attribute.getValue());
+                LOG.info("      ---");
+            }
+        }
+        if ( product.getVariantAttributeTypes() != null ) {
+            LOG.info("Variant attribute types:");
+            for ( ProductVariantAttributeType attributeType : product.getVariantAttributeTypes() ) {
+                LOG.info("  Attribute Type: " + attributeType.getId() + " Name: " + attributeType.getName());
+                LOG.info("  Values:");
+                for ( ProductVariantAttributeValueType valueType : attributeType.getValues() ) {
+                    LOG.info("    ID: " + valueType.getId() + " Value: " + valueType.getValue() + " Selected: " + valueType.isSelected());
+                }
+            }
+        }
     }
 
     protected void testCart(String... productIds) throws Exception {
