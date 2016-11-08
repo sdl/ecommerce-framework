@@ -5,9 +5,7 @@ import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.ProductDetailService;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.impl.GenericProductDetailResult;
-import com.sdl.ecommerce.odata.model.ODataProduct;
-import com.sdl.ecommerce.odata.model.ODataProductAttribute;
-import com.sdl.ecommerce.odata.model.ODataProductPrice;
+import com.sdl.ecommerce.odata.model.*;
 import com.sdl.odata.client.BasicODataClientQuery;
 import com.sdl.odata.client.api.ODataClientQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,10 @@ public class ODataProductDetailService implements ProductDetailService {
         this.odataClient.registerModelClass(ODataProduct.class);
         this.odataClient.registerModelClass(ODataProductPrice.class);
         this.odataClient.registerModelClass(ODataProductAttribute.class);
+        this.odataClient.registerModelClass( ODataProductVariant.class);
+        this.odataClient.registerModelClass(ODataProductVariantAttribute.class);
+        this.odataClient.registerModelClass(ODataProductVariantAttributeType.class);
+        this.odataClient.registerModelClass(ODataProductVariantAttributeValueType.class);
     }
 
     @Override

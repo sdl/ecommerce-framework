@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * ODataProductVariantAttributeType
+ * OData ProductVariantAttributeType
  *
  * @author nic
  */

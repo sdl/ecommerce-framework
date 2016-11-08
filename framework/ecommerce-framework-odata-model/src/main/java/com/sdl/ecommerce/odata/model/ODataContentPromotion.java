@@ -6,6 +6,7 @@ import com.sdl.ecommerce.api.model.Location;
 import com.sdl.odata.api.edm.annotations.EdmComplex;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,7 @@ public class ODataContentPromotion {
         if ( contentPromotion.getLocation() != null ) {
             this.location = new ODataLocation(contentPromotion.getLocation());
         }
+        this.contentAreas = new ArrayList<>();
         if ( contentPromotion instanceof ImageMapPromotion ) {
             ImageMapPromotion imageMapPromotion = (ImageMapPromotion) contentPromotion;
             if ( imageMapPromotion.getContentAreas() != null ) {

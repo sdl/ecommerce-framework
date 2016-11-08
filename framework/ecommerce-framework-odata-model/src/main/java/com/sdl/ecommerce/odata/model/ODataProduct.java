@@ -157,7 +157,7 @@ public class ODataProduct implements Product, Serializable {
     }
 
     public List<Promotion> getPromotions() {
-        return promotions.stream().collect(Collectors.toList());
+        return this.promotions.stream().map(promotion -> promotion.toPromotion()).collect(Collectors.toList());
     }
 
     public List<Breadcrumb> getBreadcrumbs() {
@@ -176,6 +176,6 @@ public class ODataProduct implements Product, Serializable {
 
     @Override
     public List<ProductVariantAttributeType> getVariantAttributeTypes() {
-        return null;
+        return this.variantAttributeTypes.stream().collect(Collectors.toList());
     }
 }
