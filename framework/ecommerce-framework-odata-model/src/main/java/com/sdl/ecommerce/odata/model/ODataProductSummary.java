@@ -20,6 +20,9 @@ public class ODataProductSummary implements Product {
     private String id;
 
     @EdmProperty
+    private String variantId;
+
+    @EdmProperty
     private String name;
 
     @EdmProperty
@@ -32,6 +35,7 @@ public class ODataProductSummary implements Product {
     public ODataProductSummary() {}
     public ODataProductSummary(Product product) {
         this.id = product.getId();
+        this.variantId = product.getVariantId();
         this.name = product.getName();
         if ( product.getPrice() != null ) {
             this.price = new ODataProductPrice(product.getPrice());
@@ -45,7 +49,7 @@ public class ODataProductSummary implements Product {
     }
 
     @Override
-    public String getVariantId() { return null; }
+    public String getVariantId() { return this.variantId; }
 
     @Override
     public String getName() {
