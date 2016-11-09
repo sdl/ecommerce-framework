@@ -130,7 +130,15 @@ public class DXALinkResolver implements ECommerceLinkResolver {
 
         // TODO: Add the possibility to resolve to a CMS based detail page using dynamic links
 
-       return this.getProductDetailLink(product.getId(), product.getName());
+        String productId;
+        if ( product.getVariantId() != null ) {
+            productId = product.getVariantId();
+        }
+        else {
+            productId = product.getId();
+        }
+
+       return this.getProductDetailLink(productId, product.getName());
     }
 
     @Override
