@@ -68,26 +68,6 @@ localization:
       demandware-locale: [Locale to be used towards Demandware]
       demandware-currency: [Currency]
     "[locale 2]":
-      # Fredhopper
-      #
-      fredhopper-universe:
-      fredhopper-locale:
-      fredhopper-productModelMappings:
-      fredhopper-triggerMappings:
-      # Hybris
-      #
-      hybris-siteId:
-      hybris-activeServiceCatalog:
-      hybris-catalogBranch:
-      hybris-language:
-      hybris-currency:
-      hybris-excludeFacets:
-      hybris-flyoutFacets:
-      # Demandware
-      #
-      demandware-flyoutFacets:
-      demandware-siteId:
-      demandware-locale:
-      demandware-currency:
+      ...
 
 

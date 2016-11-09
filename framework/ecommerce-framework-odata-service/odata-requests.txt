@@ -1,6 +1,5 @@
-
-
-E-Commerce OData Links:
+Example OData request
+========================
 
 http://localhost:8097/ecommerce.svc/Categories('catalog01_18661_17627')
 
@@ -11,6 +10,7 @@ http://localhost:8097/ecommerce.svc/Categories('catalog01_18661')
 http://localhost:8097/ecommerce.svc/Categories('catalog01_18661')/categories
 
 http://localhost:8097/ecommerce.svc/Products('008010111647')
+http://localhost:8097/ecommerce.svc/ProductVariant(productId='008010111647',variantAttributes='color=1993')
 
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery%28categoryId%3D%27catalog01_18661%27%29
 
@@ -22,17 +22,3 @@ http://localhost:8097/ecommerce.svc/en_GB/ProductQuery(searchPhrase='women watch
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery(searchPhrase='red', facets='brand=adidas')
 http://localhost:8097/ecommerce.svc/en_GB/ProductQuery(facets='spotlight=new&brand=adidas&price=10.0-20.0')
 
-Localizations:
-
-There a number of properties that are under localization control from CMS
-
-Properties per locale:
-    universe
-
-http://localhost:8097/ecommerce.svc/Locale('en_GB')/Products('008010111647')
-
-        OR
-
-http://localhost:8097/ecommerce.svc/en_GB/Products('008010111647')
-
-http://localhost:8097/ecommerce.svc/Categories('catalog01_18661')?$filter=locale eq 'en-GB'
