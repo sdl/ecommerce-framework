@@ -92,6 +92,7 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
         List<ProductVariantAttributeType> attributeTypes = new ArrayList<>();
         List<Filter> filters = this.getFacetFilters(universe);
         for ( Filter filter : filters ) {
+            // TODO: Have the variant prefixes configurable
             if ( filter.getOn().startsWith("variant_") ) {
                 List<ProductVariantAttributeValueType> values = new ArrayList<>();
                 for (Filtersection section : filter.getFiltersection()) {
