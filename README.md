@@ -13,6 +13,14 @@ Right now it provides connectors for:
 The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.0) using DXA 1.5.
 Support for DXA 1.6 will be released soon as an intermediate release.
 
+New functionality in the v1.1 version:
+* E-Commerce connectors decoupled into a separate OData based micro service
+* DXA modules for .NET providing the same functionality as the Java DXA modules
+* Support for product variants
+* Fredhopper ECL connector
+* Support for latest Demandware version (v16.8)
+* Separation of DXA module into two parts: one generic (controllers & models) and one example module (example HTML views)
+
 Concepts
 ---------
 
@@ -50,7 +58,7 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
 
 * E-Com driven navigation items (in mega navigation). Can be mixed with content driven navigation items.
 * Widgets for:
-    * Product Listers
+    * Product Listers for presenting products in category and search result pages
     * Facets 
     * Breadcrumbs
     * Promotions
@@ -66,7 +74,7 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
 * ADF claim processor for carts (so cart data can be exposed to for example SmartTarget)
 * Localization support, i.e. the different language, currency and catalog mappings per publication
 
-In addition there is a DXA module with a set of views implementing the default E-Commerce templates. The views are
+In addition there is a DXA module with a set of HTML views (in JSP or Razor) implementing the default E-Commerce templates. The views are
 based on the White Label HTML design.
 
 The ECL providers allows easy access to categories and products which makes it easy to associate references in for example the different E-Commerce widgets (listers, facets etc). 
@@ -106,7 +114,10 @@ needed to have the connectors co-located:
     * [Fredhopper](./connectors/fredhopper-ecommerce-connector/README.md)
     * [Hybris](./connectors/hybris-ecommerce-connector/README.md)
     * [Demandware](./connectors/demandware-ecommerce-connector/README.md)
-6. Add dependencies to the framework modules (ecommerce-framework-api, ecommerce-framework-dxa-module, navigation-dxa-module) in the POM.xml of your DXA web application
+6. Add dependencies to the following framework modules in the POM.xml of your DXA web application:
+    * ecommerce-framework-dxa-module
+    * ecommerce-framework-dxa-module-example-views (optional)
+    * navigation-dxa-module) 
 7. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
 8. Setup CMS as described below
 
@@ -128,6 +139,7 @@ Follow the below steps to setup the the OData micro service (which can be run on
 Getting Started (.NET)
 ------------------------
 
+Follow the below steps to setup the .NET version of the E-Commerce DXA modules: 
 1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by doing the following:
     * git clone -b release/1.5 https://github.com/sdl/dxa-web-application-dotnet
     * Open the project in Visual Studio
@@ -145,6 +157,8 @@ Getting Started (.NET)
     <add key="ecommerce-service-uri" value="http://localhost:8097/ecommerce.svc"/>
     ```
 10. Setup CMS as described below    
+
+An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md).
 
 Getting Started (CMS)
 ------------------------
