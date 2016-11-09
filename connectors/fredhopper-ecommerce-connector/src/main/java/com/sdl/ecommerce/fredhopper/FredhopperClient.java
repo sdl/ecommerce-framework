@@ -110,7 +110,11 @@ public class FredhopperClient implements FredhopperLinkManager {
         if ( variantAttributes != null ) {
             for ( String variantAttributeId : variantAttributes.keySet() ) {
                 String variantAttributeValue = variantAttributes.get(variantAttributeId);
-                query.getLocation().addCriterion(new SingleValuedCriterion(variantAttributeId, variantAttributeValue));
+
+                com.fredhopper.lang.query.location.criteria.ValueSet valueSet = new com.fredhopper.lang.query.location.criteria.ValueSet(com.fredhopper.lang.query.location.criteria.ValueSet.AggregationType.OR);
+                valueSet.add(variantAttributeValue);
+                query.getLocation().addCriterion(new MultiValuedCriterion(variantAttributeId, valueSet, null, false));
+                //query.getLocation().addCriterion(new SingleValuedCriterion(variantAttributeId, variantAttributeValue));
             }
         }
         query.addSecondId(productId);
