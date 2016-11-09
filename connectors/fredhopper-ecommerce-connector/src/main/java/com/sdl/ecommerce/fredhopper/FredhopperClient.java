@@ -93,7 +93,26 @@ public class FredhopperClient implements FredhopperLinkManager {
      * @return
      */
     public ProductDetailResult getDetail(String productId, String universe, String locale) {
+        return this.getDetail(productId, universe, locale, null);
+    }
+
+    /**
+     * Get product detail using variant attributes.
+     *
+     * @param productId
+     * @param universe
+     * @param locale
+     * @param variantAttributes
+     * @return
+     */
+    public ProductDetailResult getDetail(String productId, String universe, String locale, Map<String,String> variantAttributes) {
         Query query = this.buildQuery(universe, locale);
+        if ( variantAttributes != null ) {
+            for ( String variantAttributeId : variantAttributes.keySet() ) {
+                String variantAttributeValue = variantAttributes.get(variantAttributeId);
+                query.getLocation().addCriterion(new SingleValuedCriterion(variantAttributeId, variantAttributeValue));
+            }
+        }
         query.addSecondId(productId);
         query.setView(ViewType.DETAIL);
         return new FredhopperDetailResult(this.doQuery(query), this);

@@ -8,6 +8,8 @@ import com.sdl.ecommerce.hybris.model.HybrisProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * Hybris Detail Service
  *
@@ -28,6 +30,11 @@ public class HybrisDetailService implements ProductDetailService {
         com.sdl.ecommerce.hybris.api.model.Product hybrisProduct = this.hybrisClientManager.getInstance().getProduct(productId);
         Product product = this.getProductDetail(hybrisProduct);
         return new HybrisDetailResult(product);
+    }
+
+    @Override
+    public ProductDetailResult getDetail(String productId, Map<String, String> variantAttributes) throws ECommerceException {
+        return this.getDetail(productId);
     }
 
     /**

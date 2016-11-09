@@ -23,22 +23,52 @@ fredhopper:
     mappings: #http://demo.fredhopper.com/images=/fredhopper-images
 
 
+hybris:
+  url: http://localhost:9001/rest/v1/
+  username: admin
+  password: nimda
+  mediaUrlPrefix: http://localhost:9001 # TODO: How to handle URL prefixes? Should those be proxied????
+  categoryExpiryTimeout: 6000000
+
+
+demandware:
+  url: http://abuijen01-inside-eu01-dw.demandware.net/s/
+  clientId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  categoryExpiryTimeout: 600000
+  trustAllSSLCerts: true
+
 # Localization properties
 #
 localization:
   defaultLocale: en_GB
   locales:
     "en-US":
+      # Fredhopper
       fredhopper-universe: catalog01
       fredhopper-locale: en_GB
       fredhopper-productModelMappings: "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl"
       fredhopper-triggerMappings: "taf:claim:segment=fh_keyword"
     "en_GB":
+      # Fredhopper
       fredhopper-universe: catalog01
       fredhopper-locale: en_GB
       fredhopper-productModelMappings: "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl"
       fredhopper-triggerMappings: "taf:claim:segment=fh_keyword"
+      # Hybris
+      hybris-siteId: apparel-uk
+      hybris-activeServiceCatalog: /catalogs/apparelProductCatalog/Online
+      hybris-catalogBranch: /categories
+      hybris-language: en
+      hybris-currency: GBP
+      hybris-excludeFacets: availableInStores,collection,gender
+      hybris-flyoutFacets: brand
+      # Demandware
+      demandware-flyoutFacets: brand,price
+      demandware-siteId: Sites-ab16_8SG-Site
+      demandware-locale: default
+      demandware-currency: GBP
     "sv_SE":
+      # Fredhopper
       fredhopper-universe: catalog01
       fredhopper-locale: en_GB
       fredhopper-productModelMappings: name=name;description=description;price=price_se;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl"
