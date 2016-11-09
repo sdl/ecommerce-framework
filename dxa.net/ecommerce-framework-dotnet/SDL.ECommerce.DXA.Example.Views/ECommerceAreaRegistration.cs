@@ -2,7 +2,7 @@
 using SDL.ECommerce.DXA.Models;
 using System.Web.Mvc;
 
-namespace SDL.ECommerce.DXA.Default.Views
+namespace SDL.ECommerce.DXA.Example.Views
 {
     public class ECommerceAreaRegistration : BaseAreaRegistration
     {

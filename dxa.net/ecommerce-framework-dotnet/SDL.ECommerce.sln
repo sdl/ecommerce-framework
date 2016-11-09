@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.DXA", "SDL.EC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.DXA.Modules.Navigation", "SDL.DXA.Modules.Navigation\SDL.DXA.Modules.Navigation.csproj", "{B343E828-A29F-4C6A-B9E4-B510719E77F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.DXA.Default.Views", "SDL.ECommerce.DXA.Default.Views\SDL.ECommerce.DXA.Default.Views.csproj", "{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.DXA.Example.Views", "SDL.ECommerce.DXA.Example.Views\SDL.ECommerce.DXA.Example.Views.csproj", "{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
