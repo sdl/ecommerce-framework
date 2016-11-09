@@ -16,6 +16,22 @@
                     <div>
                         @Model.Product.Description
                     </div>
+
+                    @if (Model.Product.VariantAttributeTypes != null)
+                    {
+                        foreach (var variantAttributeType in Model.Product.VariantAttributeTypes)
+                        {
+                            <h4>@variantAttributeType.Name</h4>
+                            foreach (var valueType in variantAttributeType.Values)
+                            {
+                                <a class="btn @(valueType.IsSelected ? "btn-info disabled" : "btn-default")" style="margin-bottom: 4px;"
+                                   href="@ECommerceContext.LinkResolver.GetProductDetailVariantLink(Model.Product, variantAttributeType.Id, valueType.Id)">
+                                    @valueType.Value
+                                </a>
+                            }
+                        }
+                    }
+
                     <h3 class="center-block" style="margin-top: 16px;">
                         @Model.Product.Price.FormattedPrice
                     </h3>

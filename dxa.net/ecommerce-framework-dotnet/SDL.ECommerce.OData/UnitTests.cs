@@ -142,6 +142,7 @@ namespace SDL.ECommerce.OData
             var product = ECommerceClient.DetailService.GetDetail("008010111647");
             Console.WriteLine("  Product: " + product.Id);
             Console.WriteLine("#########################");
+            Console.WriteLine("Variant ID: " + product.VariantId);
             Console.WriteLine("Name: " + product.Name);
             Console.WriteLine("Description: " + product.Description);
             Console.WriteLine("Price: " + product.Price);

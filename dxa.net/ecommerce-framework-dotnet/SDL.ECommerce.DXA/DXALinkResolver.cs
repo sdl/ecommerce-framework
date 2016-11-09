@@ -144,8 +144,16 @@ namespace SDL.ECommerce.DXA
         public string GetProductDetailLink(IProduct product)
         {
             // TODO: Add support to resolve to dynamic links if product page is CMS made
-
-            return GetProductDetailLink(product.Id, product.Name);
+            string productId;
+            if ( product.VariantId != null )
+            {
+                productId = product.VariantId;
+            }
+            else
+            {
+                productId = product.Id;
+            }
+            return GetProductDetailLink(productId, product.Name);
         }
 
         protected string GetProductDetailLink(string productId, string productName)
@@ -170,6 +178,99 @@ namespace SDL.ECommerce.DXA
             }
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
+
+        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
+        {
+
+            String productId = product.Id;
+
+            // Approach one: Use product variant model (if available)
+            //
+            if (product.Variants != null && product.Variants.Count > 0)
+            {
+
+                var selectedAttributes = new Dictionary<string, string>();
+                selectedAttributes.Add(variantAttributeId, variantAttributeValueId);
+                if (product.VariantAttributes != null)
+                {
+                    foreach (var attribute in product.VariantAttributes)
+                    {
+                        if (!attribute.Id.Equals(variantAttributeId))
+                        {
+                            selectedAttributes.Add(attribute.Id, attribute.ValueId);
+                        }
+                    }
+                }
+
+                // Get matching variant based on the selected attributes
+                //
+                foreach (var variant in product.Variants)
+                {
+                    int matchingAttributes = 0;
+                    foreach (String selectedAttributeId in selectedAttributes.Keys)
+                    {
+                        String selectedAttributeValueId = selectedAttributes[selectedAttributeId];
+                        foreach (var attribute in variant.Attributes)
+                        {
+                            if (attribute.Id.Equals(selectedAttributeId) && attribute.ValueId.Equals(selectedAttributeValueId))
+                            {
+                                matchingAttributes++;
+                                break;
+                            }
+                        }
+                    }
+                    if (matchingAttributes == selectedAttributes.Count)
+                    {
+                        productId = variant.Id;
+                        break;
+                    }
+                }
+            }
+            // Approach two: Use variant attribute types (if available)
+            //
+            else if (product.VariantAttributeTypes != null && product.VariantAttributes != null)
+            {
+
+                var selectedAttributes = new Dictionary<string,string>();
+                selectedAttributes.Add(variantAttributeId, variantAttributeValueId);
+                foreach (var attributeType in product.VariantAttributeTypes)
+                {
+                    if (!attributeType.Id.Equals(variantAttributeId))
+                    {
+                        foreach (var valueType in attributeType.Values)
+                        {
+                            if (valueType.IsSelected)
+                            {
+                                selectedAttributes.Add(attributeType.Id, valueType.Id);
+                            }
+                        }
+                    }
+                }
+
+                // Use the selected attributes to build a URL with the variant attributes as query parameters
+                //
+                String link = this.GetProductDetailLink(productId, product.Name);
+                bool firstAttribute = true;
+                foreach (var selectedAttributeId in selectedAttributes.Keys)
+                {
+                    if (firstAttribute)
+                    {
+                        link += "?";
+                        firstAttribute = false;
+                    }
+                    else
+                    {
+                        link += "&";
+                    }
+                    link += selectedAttributeId + "=" + selectedAttributes[selectedAttributeId];
+                }
+                return link;
+            }
+
+
+            return this.GetProductDetailLink(productId, product.Name);
+        }
+
 
         protected string GetCategoryAbsolutePath(ICategory category)
         {

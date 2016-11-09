@@ -121,7 +121,7 @@ namespace SDL.ECommerce.DXA.Controllers
             {
                 // TODO: Have the possiblity to have a E-Commerce specific 404 page for categories and products
                 //
-                string notFoundPageUrl = WebRequestContext.Localization.Path + "/error-404";
+                string notFoundPageUrl = ECommerceContext.LocalizePath("/error-404");
 
                 PageModel pageModel;
                 try
@@ -137,7 +137,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 SetupViewData(pageModel);
                 ViewModel model = EnrichModel(pageModel) ?? pageModel;
                 Response.StatusCode = 404;
-                return View(model.MvcData.ViewName, model);
+                return View(pageModel);
             }
         }
 

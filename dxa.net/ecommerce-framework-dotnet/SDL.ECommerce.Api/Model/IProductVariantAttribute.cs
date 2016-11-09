@@ -14,6 +14,6 @@ namespace SDL.ECommerce.Api.Model
 
         string ValueId { get; }
 
-        string value { get; }
+        string Value { get; }
     }
 }

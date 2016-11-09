@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 11/6/2016 4:43:21 PM
+// Generation date: 11/9/2016 12:56:17 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -212,7 +212,6 @@ namespace SDL.ECommerce.OData
         <Property Name=""name"" Type=""Edm.String"" Nullable=""false""></Property>
         <Property Name=""path"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""pathName"" Type=""Edm.String"" Nullable=""true""></Property>
-        <Property Name=""locale"" Type=""Edm.String"" Nullable=""true""></Property>
         <NavigationProperty Name=""parent"" Type=""SDL.ECommerce.Category"" Nullable=""true""></NavigationProperty>
         <NavigationProperty Name=""categories"" Type=""Collection(SDL.ECommerce.Category)"" Nullable=""true""></NavigationProperty>
         <Property Name=""parentIds"" Type=""Collection(Edm.String)"" Nullable=""true""></Property>
@@ -222,6 +221,7 @@ namespace SDL.ECommerce.OData
           <PropertyRef Name=""id""></PropertyRef>
         </Key>
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""variantId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""name"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""description"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""price"" Type=""SDL.ECommerce.ProductPrice"" Nullable=""true""></Property>
@@ -276,6 +276,7 @@ namespace SDL.ECommerce.OData
       </ComplexType>
       <ComplexType Name=""ProductSummary"">
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""variantId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""name"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""price"" Type=""SDL.ECommerce.ProductPrice"" Nullable=""true""></Property>
         <Property Name=""thumbnailUrl"" Type=""Edm.String"" Nullable=""true""></Property>
@@ -605,28 +606,6 @@ namespace SDL.ECommerce.OData
         partial void OnPathNameChanging(string value);
         partial void OnPathNameChanged();
         /// <summary>
-        /// There are no comments for Property Locale in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        [global::Microsoft.OData.Client.OriginalNameAttribute("locale")]
-        public string Locale
-        {
-            get
-            {
-                return this._Locale;
-            }
-            set
-            {
-                this.OnLocaleChanging(value);
-                this._Locale = value;
-                this.OnLocaleChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private string _Locale;
-        partial void OnLocaleChanging(string value);
-        partial void OnLocaleChanged();
-        /// <summary>
         /// There are no comments for Property ParentIds in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -750,6 +729,28 @@ namespace SDL.ECommerce.OData
         private string _Id;
         partial void OnIdChanging(string value);
         partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property VariantId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("variantId")]
+        public string VariantId
+        {
+            get
+            {
+                return this._VariantId;
+            }
+            set
+            {
+                this.OnVariantIdChanging(value);
+                this._VariantId = value;
+                this.OnVariantIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _VariantId;
+        partial void OnVariantIdChanging(string value);
+        partial void OnVariantIdChanged();
         /// <summary>
         /// There are no comments for Property Name in the schema.
         /// </summary>
@@ -1642,6 +1643,28 @@ namespace SDL.ECommerce.OData
         private string _Id;
         partial void OnIdChanging(string value);
         partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property VariantId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("variantId")]
+        public string VariantId
+        {
+            get
+            {
+                return this._VariantId;
+            }
+            set
+            {
+                this.OnVariantIdChanging(value);
+                this._VariantId = value;
+                this.OnVariantIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _VariantId;
+        partial void OnVariantIdChanging(string value);
+        partial void OnVariantIdChanged();
         /// <summary>
         /// There are no comments for Property Name in the schema.
         /// </summary>

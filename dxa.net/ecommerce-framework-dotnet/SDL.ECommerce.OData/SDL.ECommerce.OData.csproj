@@ -104,6 +104,10 @@
     <Compile Include="Model\ProductQueryResult.cs" />
     <Compile Include="Model\ProductRef.cs" />
     <Compile Include="Model\ProductSummary.cs" />
+    <Compile Include="Model\ProductVariant.cs" />
+    <Compile Include="Model\ProductVariantAttribute.cs" />
+    <Compile Include="Model\ProductVariantAttributeType.cs" />
+    <Compile Include="Model\ProductVariantAttributeValueType.cs" />
     <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\QuerySuggestion.cs" />
     <Compile Include="Service\CartService.cs" />

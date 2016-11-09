@@ -20,6 +20,11 @@ namespace SDL.ECommerce.DXA.Controllers
         public ActionResult CategoryPage(string categoryUrl)
         {
             Log.Info("Entering category page controller with URL: " + categoryUrl);
+            
+            if ( String.IsNullOrEmpty(categoryUrl) )
+            {
+                categoryUrl = "/";
+            }
 
             // Get facets
             //
@@ -49,6 +54,7 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             else
             {
+                Log.Warn("Category page with URL: /" + categoryUrl + " does not exists.");
                 return NotFound();
             }
 

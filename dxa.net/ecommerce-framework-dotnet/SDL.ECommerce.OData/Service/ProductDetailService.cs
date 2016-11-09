@@ -1,4 +1,5 @@
-﻿using Sdl.Web.Delivery.Service;
+﻿using Microsoft.OData.Client;
+using Sdl.Web.Delivery.Service;
 using SDL.ECommerce.Api.Service;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,54 @@ namespace SDL.ECommerce.OData
             this.service = service;
         }
 
-        // TODO: This should return a product detail result with promos etc
         public IProduct GetDetail(string productId)
         {
-            return ((SDLECommerce)this.service.Service).Products.ByKey(productId).GetValue();
+            try
+            {
+                return ((SDLECommerce)this.service.Service).Products.ByKey(productId).GetValue();
+            }
+            catch (DataServiceQueryException)
+            {
+                return null;
+            }
+        }
+
+        public IProduct GetDetail(string productId, Dictionary<string, string> variantAttributes)
+        {
+            ODataV4ClientFunction func = new ODataV4ClientFunction("ProductVariant");
+            func.AllowCaching = false;
+            func.WithParam("productId", productId);
+            if ( variantAttributes != null )
+            {
+                var variantAttributesStr = new StringBuilder();
+                bool firstParam = true;
+                foreach ( var attributeId in variantAttributes.Keys )
+                {
+                    if ( firstParam )
+                    {
+                        firstParam = false;
+                    }
+                    else
+                    {
+                        variantAttributesStr.Append("&");
+                    }
+                    variantAttributesStr.Append(attributeId + "=" + variantAttributes[attributeId]);
+                }
+                func.WithParam("variantAttributes", variantAttributesStr.ToString());
+            }
+
+            try
+            {
+                return Enumerable.FirstOrDefault<Product>(this.service.Execute<Product>(func));
+            }
+            catch (InvalidResourceException)
+            {
+                return null;
+            }
+            catch (DataServiceQueryException)
+            {
+                return null;
+            }
         }
     }
 }

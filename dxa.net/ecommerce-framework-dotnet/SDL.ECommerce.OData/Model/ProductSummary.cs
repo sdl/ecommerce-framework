@@ -66,5 +66,29 @@ namespace SDL.ECommerce.OData
                 throw new NotImplementedException();
             }
         }
+
+        public IList<IProductVariant> Variants
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IProductVariantAttribute> VariantAttributes
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IProductVariantAttributeType> VariantAttributeTypes
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

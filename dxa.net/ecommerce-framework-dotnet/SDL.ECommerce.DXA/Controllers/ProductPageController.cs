@@ -40,8 +40,27 @@ namespace SDL.ECommerce.DXA.Controllers
                 Log.Warn("Invalid product URL: " + productUrl);
                 return NotFound();
             }
-            
-            var product = ECommerceContext.Client.DetailService.GetDetail(productId);
+
+            IProduct product = null;
+            var queryParams = HttpContext.Request.QueryString;
+            if ( queryParams.Count > 0 )
+            {
+                // Get variant attributes from the query string
+                //
+                var variantAttributes = new Dictionary<string, string>();
+                foreach (var key in queryParams.Keys)
+                {
+                    string attributeId = key.ToString();
+                    string attributeValue = queryParams[attributeId];
+                    variantAttributes.Add(attributeId, attributeValue); 
+                }
+                product = ECommerceContext.Client.DetailService.GetDetail(productId, variantAttributes);
+            }
+
+            if (product == null)
+            {
+                product = ECommerceContext.Client.DetailService.GetDetail(productId);
+            }
             if ( product == null )
             {
                 Log.Info("Product not found: " + productId);

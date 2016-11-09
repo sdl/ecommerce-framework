@@ -101,6 +101,10 @@ namespace SDL.ECommerce.OData
         /// <returns></returns>
         public ICategory GetCategoryByPath(string path)
         {
+            if ( String.IsNullOrEmpty(path) || path.Equals("/") )
+            {
+                return rootCategory;
+            }
             var tokens = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             ICategory category = null;
             int index = 0;

@@ -101,5 +101,28 @@ namespace SDL.ECommerce.OData
             }
         }
 
+        IList<IProductVariant> IProduct.Variants
+        {
+            get
+            {
+                return this.Variants.Cast<IProductVariant>().ToList();
+            }
+        }
+
+        IList<IProductVariantAttribute> IProduct.VariantAttributes
+        {
+            get
+            {
+                return this.VariantAttributes.Cast<IProductVariantAttribute>().ToList();
+            }
+        }
+
+        IList<IProductVariantAttributeType> IProduct.VariantAttributeTypes
+        {
+            get
+            {
+                return this.VariantAttributeTypes.Cast<IProductVariantAttributeType>().ToList();
+            }
+        }
     }
 }
