@@ -152,11 +152,13 @@ Follow the below steps to setup the .NET version of the E-Commerce DXA modules:
     * Alternatively you can include all E-Commerce VB projects into your site solution.
 5. Restart Visual studio and rebuild the solution. Verify so E-Commerce Areas and DLLs are copied to your site folder
 6. Configure E-Commerce micro service in Web.config of your site:
+
    ``` 
     !-- E-Commerce Framework -->
     <add key="ecommerce-service-uri" value="http://localhost:8097/ecommerce.svc"/>
-    ```
-10. Setup CMS as described below    
+   ```
+
+7. Setup CMS as described below    
 
 An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md).
 
