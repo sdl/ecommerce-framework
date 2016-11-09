@@ -51,21 +51,23 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
     }
 
     private Product getProductDetail(Universe universe) {
-        List<Product> products = this.getProducts(universe.getItemsSection().getItems().getItem());
-        if ( products.size() > 0 ) {
-            FredhopperProduct product = (FredhopperProduct) products.get(0);
-            // TODO: categoryId should also be an model attribute, right?
-            List<String> categoryIds = (List<String>) product.getAttribute("categoryId");
-            if ( categoryIds != null ) {
-                for ( String categoryId : categoryIds ) {
-                    Category category = this.categoryService.getCategoryById(categoryId);
-                    if ( category != null ) {
-                        product.getCategories().add(category);
+        if ( universe.getItemsSection() != null && universe.getItemsSection().getItems() != null ) {
+            List<Product> products = this.getProducts(universe.getItemsSection().getItems().getItem());
+            if (products.size() > 0) {
+                FredhopperProduct product = (FredhopperProduct) products.get(0);
+                // TODO: categoryId should also be an model attribute, right?
+                List<String> categoryIds = (List<String>) product.getAttribute("categoryId");
+                if (categoryIds != null) {
+                    for (String categoryId : categoryIds) {
+                        Category category = this.categoryService.getCategoryById(categoryId);
+                        if (category != null) {
+                            product.getCategories().add(category);
+                        }
                     }
                 }
+                this.setVariantInfo(product, universe);
+                return product;
             }
-            this.setVariantInfo(product, universe);
-            return product;
         }
         return null;
     }
