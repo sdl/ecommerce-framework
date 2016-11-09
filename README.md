@@ -6,7 +6,7 @@ It contains ECL providers and DXA modules for various E-Commerce systems.
 
 Right now it provides connectors for:
 
-* Fredhopper (http://www.sdl.com/cxc/digital-experience/ecommerce-optimization/fredhopper.html)
+* Fredhopper (http://www.fredhopper.com)
 * SAP Hybris (http://www.hybris.com)
 * Salesforce Commerce Cloud (Demandware) (http://www.demandware.com)
 
@@ -14,7 +14,8 @@ The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.
 Support for DXA 1.6 will be released soon as an intermediate release.
 
 New functionality in the v1.1 version:
-* E-Commerce connectors decoupled into a separate OData based micro service
+* New OData based micro service for E-Commerce including clients for Java and .NET
+* Decoupled E-Commerce connectors, either they can be plugged into the micro service or they can be co-located in DXA (java only)
 * DXA modules for .NET providing the same functionality as the Java DXA modules
 * Support for product variants
 * Fredhopper ECL connector
@@ -31,6 +32,7 @@ The E-Commerce framework consists of:
 * DXA module with example views using the white label design
 * Generic navigation DXA module for hybrid navigation support (right now only provides mega navigation)
 * A number of connectors implementing the E-Commerce APIs (Fredhopper, Hybris, Demandware)
+* OData based micro service for the E-Commerce APIs using the same setup as the standard SDL Web micro services
 * Generic E-Commerce framework for ECL providers
 * A number of ECL providers for retrieving categories and products (Hybris, Demandware)
 * OData based micro service 
@@ -185,6 +187,7 @@ Currently the E-Commerce framework does not implement the following:
 * Hybrid search (content/E-Commerce)
 * Search suggest
 * OAuth authentication on the E-Commerce micro service
+* Generic ECL provider using the OData micro service (to minimize the integration points)
 
 This is something to be consider in later version of the framework. 
 
