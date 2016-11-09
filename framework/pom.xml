@@ -22,7 +22,7 @@
         <module>ecommerce-framework-odata-model</module>
         <module>ecommerce-framework-odata-client</module>
         <module>ecommerce-framework-dxa-module</module>
-        <module>ecommerce-framework-dxa-module-default-views</module>
+        <module>ecommerce-framework-dxa-module-example-views</module>
         <module>navigation-dxa-module</module>
     </modules>
 
