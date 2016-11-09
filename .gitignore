@@ -16,6 +16,7 @@ TestResults
 eclprovider.runsettings
 odata-client.runsettings
 application-test.properties
+application-local.yml
 ImportExport/
 Tridion.ExternalContentLibrary*.dll
 query-lang*.jar
