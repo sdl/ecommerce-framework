@@ -73,7 +73,9 @@ public class EntityServiceRegister {
                 AddProductToCartFunction.class,
                 AddProductToCartFunctionImport.class,
                 RemoveProductFromCartFunction.class,
-                RemoveProductFromCartFunctionImport.class
+                RemoveProductFromCartFunctionImport.class,
+                ProductVariantFunction.class,
+                ProductVariantFunctionImport.class
         ));
 
     }

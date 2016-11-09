@@ -9,6 +9,8 @@ import com.sdl.ecommerce.demandware.model.DemandwareProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * Demandware Detail Service.
  * Get product details from Demandware.
@@ -34,5 +36,10 @@ public class DemandwareDetailService implements ProductDetailService {
         }
         Product product = new DemandwareProduct(primaryCategory, dwreProduct);
         return new DemandwareDetailResult(product);
+    }
+
+    @Override
+    public ProductDetailResult getDetail(String productId, Map<String, String> variantAttributes) throws ECommerceException {
+        return this.getDetail(productId);
     }
 }

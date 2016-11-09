@@ -9,9 +9,10 @@ The Demandware connector implements the following E-Commerce Framework capabilit
 * Product Lister
 * Breadcrumb
 * Product Detail
+* Product Variants
 * Cart
 
-The connector has been verified against Demandware OCAPI 16.1 and 16.2
+The connector has been verified against Demandware OCAPI 16.8
 
 Configuration
 ---------------
