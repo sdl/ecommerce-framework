@@ -52,7 +52,7 @@
                         </c:choose>
                     </div>
 
-                    <c:if test="${entity.product.variants != null}">
+                    <c:if test="${entity.product.variantAttributeTypes != null}">
                        <c:forEach var="variantAttributeType" items="${entity.product.variantAttributeTypes}">
                            <h4>${variantAttributeType.name}</h4>
                            <c:forEach var="valueType" items="${variantAttributeType.values}">

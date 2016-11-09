@@ -22,7 +22,7 @@
                     <div>
                         ${product.description}
                     </div>
-                    <c:if test="${product.variants != null}">
+                    <c:if test="${product.variantAttributeTypes != null}">
                         <c:forEach var="variantAttributeType" items="${product.variantAttributeTypes}">
                             <h4>${variantAttributeType.name}</h4>
                             <c:forEach var="valueType" items="${variantAttributeType.values}">
