@@ -9,15 +9,22 @@ using System.Threading.Tasks;
 
 namespace SDL.ECommerce.OData
 {
+    /// <summary>
+    /// OData Client integration tests. The tests is baed on an OData micro service instance having
+    /// the Fredhopper connector installed using the standard Fredhopper demo dataset.
+    /// </summary>
     [TestClass]
-    public class UnitTests
+    public class IntegrationTests
     {
+        public TestContext TestContext { get; set; }
 
         protected ECommerceClient ECommerceClient
         {
             get
             {
-                return new ECommerceClient("http://preview:8097/ecommerce.svc", "en-US");
+                var endpointAddress = TestContext.Properties["EndpointAddress"] as string;
+                var locale = TestContext.Properties["Locale"] as string;
+                return new ECommerceClient(endpointAddress, locale);
             }
         }
 
