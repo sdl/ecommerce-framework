@@ -10,6 +10,8 @@ import com.sdl.webapp.common.api.content.PageNotFoundException;
 import com.sdl.webapp.common.api.localization.Localization;
 import com.sdl.webapp.common.api.model.MvcData;
 import com.sdl.webapp.common.api.model.PageModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Product Page Controller
@@ -35,6 +37,8 @@ import java.util.List;
 @RequestMapping("/p")
 public class ProductPageController extends AbstractECommercePageController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProductPageController.class);
+
     @Autowired
     private ProductDetailService detailService;
 
@@ -47,8 +51,6 @@ public class ProductPageController extends AbstractECommercePageController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.TEXT_HTML_VALUE})
     public String handleProductDetailPage(HttpServletRequest request, HttpServletResponse response) throws ContentProviderException {
-
-        // TODO: How to handle variants ??
 
         final String requestPath = request.getRequestURI().replaceFirst("/p", "");
         final Localization localization = webRequestContext.getLocalization();
@@ -71,8 +73,22 @@ public class ProductPageController extends AbstractECommercePageController {
         //
         productId = productId.replace("__plus__", "+");
 
-        //final List<FacetParameter> facets = fredhopperService.getFacetParametersFromRequestMap(request.getParameterMap());
-        ProductDetailResult detailResult = this.detailService.getDetail(productId);
+        // Get variant attributes
+        //
+        Map<String,String> variantAttributes = new HashMap<>();
+        Map<String, String[]> requestParameters = request.getParameterMap();
+        for ( String parameterName : requestParameters.keySet() ) {
+            variantAttributes.put(parameterName, requestParameters.get(parameterName)[0]);
+        }
+
+        ProductDetailResult detailResult = this.detailService.getDetail(productId, variantAttributes);
+        if ( detailResult.getProductDetail() == null ) {
+            LOG.warn("Could not find product variant page. Falling back on the main product page");
+
+            // Fallback on the product ID without variant attributes
+            //
+            detailResult = this.detailService.getDetail(productId);
+        }
         if ( detailResult != null && detailResult.getProductDetail() != null ) {
 
             request.setAttribute(PRODUCT_ID, productId);

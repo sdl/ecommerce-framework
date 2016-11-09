@@ -137,7 +137,9 @@ public class DXALinkResolver implements ECommerceLinkResolver {
     public String getProductDetailVariantLink(Product product, String variantAttributeId, String variantAttributeValueId) {
 
         String productId = product.getId();
-        if ( product.getVariantAttributes() != null ) {
+
+        if ( product.getVariants() != null && product.getVariants().size() > 0 ) {
+
             Map<String, String> selectedAttributes = new HashMap<>();
             selectedAttributes.put(variantAttributeId, variantAttributeValueId);
             if ( product.getVariantAttributes() != null ) {
@@ -147,43 +149,57 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                     }
                 }
             }
-            if ( product.getVariants() != null ) {
-                // Get matching variant based on the selected attributes
-                //
-                for (ProductVariant variant : product.getVariants()) {
-                    int matchingAttributes = 0;
-                    for (String selectedAttributeId : selectedAttributes.keySet()) {
-                        String selectedAttributeValueId = selectedAttributes.get(selectedAttributeId);
-                        for (ProductVariantAttribute attribute : variant.getAttributes()) {
-                            if (attribute.getId().equals(selectedAttributeId) && attribute.getValueId().equals(selectedAttributeValueId)) {
-                                matchingAttributes++;
-                                break;
-                            }
+
+            // Get matching variant based on the selected attributes
+            //
+            for (ProductVariant variant : product.getVariants()) {
+                int matchingAttributes = 0;
+                for (String selectedAttributeId : selectedAttributes.keySet()) {
+                    String selectedAttributeValueId = selectedAttributes.get(selectedAttributeId);
+                    for (ProductVariantAttribute attribute : variant.getAttributes()) {
+                        if (attribute.getId().equals(selectedAttributeId) && attribute.getValueId().equals(selectedAttributeValueId)) {
+                            matchingAttributes++;
+                            break;
                         }
                     }
-                    if (matchingAttributes == selectedAttributes.size()) {
-                        productId = variant.getId();
-                        break;
-                    }
                 }
-            }
-            else if ( !selectedAttributes.isEmpty() ){
-                // Use the selected attributes to build a URL with the variant attributes as query parameters
-                //
-                String link = this.getProductDetailLink(productId, product.getName());
-                boolean firstAttribute = true;
-                for ( String selectedAttributeId : selectedAttributes.keySet() ) {
-                    if ( firstAttribute ) {
-                        link += "?";
-                        firstAttribute = false;
-                    }
-                    else {
-                        link += "&";
-                    }
-                    link += selectedAttributeId + "=" + selectedAttributes.get(selectedAttributeId);
+                if (matchingAttributes == selectedAttributes.size()) {
+                    productId = variant.getId();
+                    break;
                 }
             }
         }
+        else if ( product.getVariantAttributeTypes() != null && product.getVariantAttributes() != null ) {
+
+            Map<String, String> selectedAttributes = new HashMap<>();
+            selectedAttributes.put(variantAttributeId, variantAttributeValueId);
+            for ( ProductVariantAttributeType attributeType : product.getVariantAttributeTypes() ) {
+                if ( !attributeType.getId().equals(variantAttributeId) ) {
+                    for ( ProductVariantAttributeValueType valueType : attributeType.getValues() ) {
+                        if ( valueType.isSelected() ) {
+                            selectedAttributes.put(attributeType.getId(), valueType.getId());
+                        }
+                    }
+                }
+            }
+
+            // Use the selected attributes to build a URL with the variant attributes as query parameters
+            //
+            String link = this.getProductDetailLink(productId, product.getName());
+            boolean firstAttribute = true;
+            for ( String selectedAttributeId : selectedAttributes.keySet() ) {
+                if ( firstAttribute ) {
+                    link += "?";
+                    firstAttribute = false;
+                }
+                else {
+                    link += "&";
+                }
+                link += selectedAttributeId + "=" + selectedAttributes.get(selectedAttributeId);
+            }
+            return link;
+        }
+
 
         return this.getProductDetailLink(productId, product.getName());
     }

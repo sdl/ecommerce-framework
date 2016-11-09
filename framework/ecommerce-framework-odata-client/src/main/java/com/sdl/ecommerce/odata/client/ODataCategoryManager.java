@@ -48,6 +48,11 @@ public class ODataCategoryManager {
             // Secondly get the category and try to fit it into the cached structure
             //
             category = this.loadCategoryById(id);
+            if ( category == null ) {
+                // Product category was not found
+                //
+                return null;
+            }
             Category currentParent = rootCategory;
             List<String> parentIds = ((ODataCachedCategory)category).getParentIds();
 

@@ -36,6 +36,11 @@ public class ODataClientIT extends GenericTestSuite {
     }
 
     @Test
+    public void testGetNotfoundCategory() throws Exception {
+        this.testGetNotFoundProductDetail("NOT_EXISTING_CATEGORY");
+    }
+
+    @Test
     public void testGetTopLevelCategories() throws Exception {
         List<Category> categories = this.categoryService.getTopLevelCategories();
         LOG.info("Top level categories:");
@@ -47,6 +52,11 @@ public class ODataClientIT extends GenericTestSuite {
     @Test
     public void testGetProductDetail() throws Exception {
         this.testGetProductDetail("008010231960");
+    }
+
+    @Test
+    public void testNotFoundProductDetail() throws Exception {
+        this.testGetNotFoundProductDetail("NON_EXISTING_PRODUCT");
     }
 
     @Test

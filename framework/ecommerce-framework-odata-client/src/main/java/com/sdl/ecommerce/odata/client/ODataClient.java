@@ -1,9 +1,15 @@
 package com.sdl.ecommerce.odata.client;
 
+import com.sdl.ecommerce.api.ECommerceException;
 import com.sdl.ecommerce.api.LocalizationService;
+import com.sdl.odata.api.ODataRuntimeException;
 import com.sdl.odata.client.*;
 import com.sdl.odata.client.api.ODataClientComponentsProvider;
 import com.sdl.odata.client.api.ODataClientQuery;
+import com.sdl.odata.client.api.exception.ODataClientHttpError;
+import com.sdl.odata.client.api.exception.ODataClientRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,6 +23,8 @@ import java.util.*;
  */
 @Component
 public class ODataClient {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ODataClient.class);
 
     @Value("${ecommerce.odata.serviceUri}")
     private String serviceUri = "http://localhost:8097/ecommerce.svc";
@@ -90,7 +98,7 @@ public class ODataClient {
      * @param query
      * @return entity
      */
-    public Object getEntity(ODataClientQuery query) {
+    public Object getEntity(ODataClientQuery query) throws ECommerceException {
         if ( query instanceof ECommerceODataClientQuery ) {
             if ( ( (ECommerceODataClientQuery) query).getSelectedProperty() != null ) {
                 return this.getClientWithNoEncoding().getEntity(Collections.<String, String>emptyMap(), query);
@@ -99,7 +107,21 @@ public class ODataClient {
         /*else if ( query instanceof AbstractODataFunctionClientQuery ) {
             return this.getClientWithNoEncoding().getEntity(Collections.emptyMap(), query);
         } */
-        return this.getClient().getEntity(Collections.<String, String>emptyMap(), query);
+
+        try {
+            return this.getClient().getEntity(Collections.<String, String>emptyMap(), query);
+        }
+        catch ( ODataClientHttpError e ) {
+            if (e.getHttpCode() == 404) {
+                LOG.error("Entity not found.", e);
+                return null;
+            }
+            throw new ECommerceException("OData HTTP Exception.", e);
+        }
+        catch ( ODataClientRuntimeException e ) {
+            LOG.error("OData exception.", e);
+            throw new ECommerceException("OData Exception.", e);
+        }
     }
 
     /**
@@ -107,8 +129,21 @@ public class ODataClient {
      * @param query
      * @return entities
      */
-    public List<?> getEntities(ODataClientQuery query) {
-        return this.getClient().getEntities(Collections.<String, String>emptyMap(), query);
+    public List<?> getEntities(ODataClientQuery query) throws ECommerceException {
+        try {
+            return this.getClient().getEntities(Collections.<String, String>emptyMap(), query);
+        }
+        catch ( ODataClientHttpError e ) {
+            if ( e.getHttpCode() == 404 ) {
+                LOG.warn("Entities not found. Return empty list.");
+                return Collections.emptyList();
+            }
+            throw new ECommerceException("OData HTTP Exception.", e);
+        }
+        catch ( ODataClientRuntimeException e ) {
+            LOG.error("OData exception.", e);
+            throw new ECommerceException("OData Exception.", e);
+        }
     }
 
 }
