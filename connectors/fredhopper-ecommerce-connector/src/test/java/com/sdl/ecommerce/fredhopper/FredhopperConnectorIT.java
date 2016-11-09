@@ -86,9 +86,16 @@ public class FredhopperConnectorIT extends GenericTestSuite {
         this.testGetProductDetail("008010231960");
     }
 
+    /*
     @Test
     public void testGetProductVariants() throws Exception {
         this.testGetProductVariants("6674147");
+    }
+    */
+
+    @Test
+    public void testGetProductDetailViaVariantId() throws Exception {
+        this.testGetProductDetail("0080102319");
     }
 
     @Test

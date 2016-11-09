@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.View;
 import javax.xml.ws.BindingProvider;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -118,6 +119,13 @@ public class FredhopperClient implements FredhopperLinkManager {
             }
         }
         query.addSecondId(productId);
+        query.setView(ViewType.DETAIL);
+        return new FredhopperDetailResult(this.doQuery(query), this);
+    }
+
+    public ProductDetailResult getDetailViaAttribute(String attributeId, String attributeValue, String universe, String locale) {
+        Query query = this.buildQuery(universe, locale);
+        query.getLocation().addCriterion(new SingleValuedCriterion(attributeId, attributeValue));
         query.setView(ViewType.DETAIL);
         return new FredhopperDetailResult(this.doQuery(query), this);
     }

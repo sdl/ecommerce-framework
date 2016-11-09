@@ -56,7 +56,7 @@
                        <c:forEach var="variantAttributeType" items="${entity.product.variantAttributeTypes}">
                            <h4>${variantAttributeType.name}</h4>
                            <c:forEach var="valueType" items="${variantAttributeType.values}">
-                               <a class="btn ${valueType.selected?'btn-info disabled':'btn-default'}" href="${linkResolver.getProductDetailVariantLink(entity.product, variantAttributeType.id, valueType.id)}">
+                               <a class="btn ${valueType.selected?'btn-info disabled':'btn-default'}" style="margin-bottom: 4px;" href="${linkResolver.getProductDetailVariantLink(entity.product, variantAttributeType.id, valueType.id)}">
                                     ${valueType.value}
                                </a>
                            </c:forEach>
@@ -69,7 +69,7 @@
 
                 </div>
                 <div class="product-add-to-cart">
-                    <a class="btn btn-primary add-to-cart-button" data-product-id="${entity.product.id}"><dxa:resource key="e-commerce.addToCartLabel"/> <i
+                    <a class="btn btn-primary add-to-cart-button" data-product-id="${entity.product.variantId != null ? entity.product.variantId : entity.product.id}"><dxa:resource key="e-commerce.addToCartLabel"/> <i
                             class="fa fa-cart-plus"></i></a>
                 </div>
             </div>

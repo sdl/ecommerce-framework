@@ -16,7 +16,12 @@ public interface Product {
      */
     String getId();
 
-    // TODO: Model SKU separately? Have an Primary ID and SKU? SKU ends up in the cart... What is the url in detail pages? primary ID?
+    /**
+     * Get product variant ID. If NULL no variant ID is available for current product.
+     * Variant ID is normally referencing to a concrete product selection with a particular color, size etc.
+     * @return variant id
+     */
+    String getVariantId();
 
     /**
      * Get name of the product. This can be a localized name based on current language.

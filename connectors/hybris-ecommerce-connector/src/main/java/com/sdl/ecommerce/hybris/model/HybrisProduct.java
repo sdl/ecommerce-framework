@@ -31,6 +31,11 @@ public class HybrisProduct implements Product {
     }
 
     @Override
+    public String getVariantId() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return this.hybrisProduct.getName();
     }

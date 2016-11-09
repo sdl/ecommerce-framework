@@ -44,6 +44,19 @@ public abstract class GenericTestSuite {
         printCategories(category.getCategories());
     }
 
+    protected void testGetNotFoundCategoryById(String categoryId) throws Exception {
+
+        Category category = this.categoryService.getCategoryById(categoryId);
+        if ( category == null ) {
+            LOG.info("Category was not found.");
+        }
+        else {
+            // Replace with assert
+            //
+            throw new Exception("Category was found! Should not happen!");
+        }
+    }
+
     protected void testGetCategoryByPath(String categoryPath) throws Exception {
         Category category = this.categoryService.getCategoryByPath(categoryPath);
         LOG.info("Category ID: " + category.getId() + ", Name: " + category.getName());
@@ -164,15 +177,30 @@ public abstract class GenericTestSuite {
         LOG.info("Detail Page URL:" + this.linkResolver.getProductDetailLink(product));
         LOG.info("Primary Image URL: " + product.getPrimaryImageUrl());
         LOG.info("Categories: ");
-        for ( Category category : product.getCategories() ) {
+        for (Category category : product.getCategories()) {
             LOG.info("ID: " + category.getId() + " Name: " + category.getName());
         }
         LOG.info("Breadcrumbs: ");
         this.printBreadcrumbs(result.getBreadcrumbs());
         this.printPromotions(result.getPromotions());
         LOG.info("Attributes: ");
-        for ( String attrName : product.getAttributes().keySet() ) {
+        for (String attrName : product.getAttributes().keySet()) {
             LOG.info("Name: " + attrName + " Value: " + product.getAttributes().get(attrName));
+        }
+
+    }
+
+    protected void testGetNotFoundProductDetail(String productId) throws Exception {
+        LOG.info("Getting detail for product...");
+        ProductDetailResult result = this.detailService.getDetail(productId);
+        Product product = result.getProductDetail();
+        if ( product == null ) {
+            LOG.info("Product not found!");
+        }
+        else {
+            // Replace with assert
+            //
+            throw new Exception("Product was found! Should not happen!");
         }
     }
 

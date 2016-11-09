@@ -34,7 +34,7 @@ public class TestLocalizationService implements LocalizationService {
             return locale;
         }
         else if ( name.equals("fredhopper-productModelMappings") ) {
-            return "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl";
+            return "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl;variantId=style_number";
         }
         else if ( name.equals("fredhopper-triggerMappings") ) {
             return "taf:claim:segment=fh_keyword";

@@ -132,6 +132,11 @@ public class DemandwareProduct implements Product {
     }
 
     @Override
+    public String getVariantId() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }

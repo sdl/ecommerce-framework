@@ -1,6 +1,8 @@
 package com.sdl.ecommerce.fredhopper;
 
 import com.sdl.ecommerce.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,12 +11,14 @@ import java.util.Map;
 import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 
 /**
- * FredhopperDetailService
+ * Fredhopper Detail Service
  *
  * @author nic
  */
 @Component
 public class FredhopperDetailService implements ProductDetailService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FredhopperDetailService.class);
 
     @Autowired
     private ProductCategoryService categoryService;
@@ -31,6 +35,22 @@ public class FredhopperDetailService implements ProductDetailService {
                                                                      getUniverse(localizationService),
                                                                      getLocale(localizationService));
         this.injectServices(result);
+        if ( result.getProductDetail() == null ) {
+
+            // Fallback on variant ID
+            //
+            Map<String,String> modelMappings = getProductModelMappings(localizationService);
+            String variantId = modelMappings.get("variantId");
+            if ( variantId != null ) {
+                LOG.debug("Falling back on detail variant ID...");
+                result = this.fredhopperClient.getDetailViaAttribute(variantId,
+                                                                     productId,
+                                                                    getUniverse(localizationService),
+                                                                    getLocale(localizationService));
+                this.injectServices(result);
+            }
+        }
+
         return result;
     }
 

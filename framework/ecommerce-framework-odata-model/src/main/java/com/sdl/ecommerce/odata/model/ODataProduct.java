@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 @EdmEntitySet(name="Products")
 public class ODataProduct implements Product, Serializable {
 
-    // TODO: Should breadcrumbs, promotions etc be part of this entity????
-
-    // TODO: Should this be called ProductDetail instead and be a complex type???
-
     @EdmProperty
     private String id;
+
+    @EdmProperty
+    private String variantId;
 
     @EdmProperty
     private String name;
@@ -69,6 +68,7 @@ public class ODataProduct implements Product, Serializable {
     public ODataProduct(ProductDetailResult detailResult) {
         Product product = detailResult.getProductDetail();
         this.id = product.getId();
+        this.variantId = product.getVariantId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = new ODataProductPrice(product.getPrice());
@@ -104,6 +104,11 @@ public class ODataProduct implements Product, Serializable {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String getVariantId() {
+        return this.variantId;
     }
 
     @Override

@@ -56,6 +56,11 @@ public class FredhopperProduct implements Product {
     }
 
     @Override
+    public String getVariantId() {
+        return this.getModelAttribute("variantId", true);
+    }
+
+    @Override
     public String getName() {
         return this.getModelAttribute("name");
     }
@@ -154,7 +159,12 @@ public class FredhopperProduct implements Product {
         return this.attributes.get(name);
     }
 
+
     private String getModelAttribute(String name) {
+        return this.getModelAttribute(name, false);
+    }
+
+    private String getModelAttribute(String name, boolean singleValue) {
         String fredhopperAttribute = this.modelMappings.get(name);
         Object fredhopperValue = null;
         String fredhopperStringValue = null;
@@ -166,6 +176,11 @@ public class FredhopperProduct implements Product {
             else if ( fredhopperValue instanceof List ) {
                 List<String> list = (List<String>) fredhopperValue;
                 if ( list.size() > 0 ) {
+                    if ( list.size() > 1 && singleValue ) {
+                        // When having a list of values when expecting one single value
+                        //
+                        return null;
+                    }
                     fredhopperStringValue = list.get(0); // TODO: What to select if there is multiple values here?
                 }
             }
