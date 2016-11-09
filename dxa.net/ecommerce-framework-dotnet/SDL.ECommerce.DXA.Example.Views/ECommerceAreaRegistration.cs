@@ -20,7 +20,7 @@ namespace SDL.ECommerce.DXA.Example.Views
 
             // Register the different E-Commerce controllers
             //
-            ECommerceControllerRegistration.RegisterControllers(context);
+            ECommerceControllerRegistration.RegisterControllers(context.Routes);
         }
 
         protected override void RegisterAllViewModels()

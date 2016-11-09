@@ -8,6 +8,7 @@ using SDL.ECommerce.DXA.Models;
 using Sdl.Web.Common.Logging;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web;
 
 namespace SDL.ECommerce.DXA
 {
@@ -16,48 +17,49 @@ namespace SDL.ECommerce.DXA
        
         const string NAMESPACE = "SDL.ECommerce.DXA.Controllers";
 
-        public static void RegisterControllers(AreaRegistrationContext context)
+        public static void RegisterControllers(RouteCollection routes)
         {
-          
+            Log.Info("Registering E-Commerce Controllers...");
+
             // E-Commerce Page Controllers
             //
-            MapRoute(context, "ECommerce_Category", "c/{*categoryUrl}", 
+            MapRoute(routes, "ECommerce_Category", "c/{*categoryUrl}", 
                 new { controller = "CategoryPage", action = "CategoryPage" });
 
-            MapRoute(context, "ECommerce_Page", "p/{*productUrl}",
+            MapRoute(routes, "ECommerce_Page", "p/{*productUrl}",
                 new { controller = "ProductPage", action = "ProductPage" });
 
-            MapRoute(context, "ECommerce_Search", "search/_redirect",
-               new { controller = "SearchPage", action = "Search" });
-
-            MapRoute(context, "ECommerce_SearchPage", "search/{searchPhrase}/{*categoryUrl}",
+            MapRoute(routes, "ECommerce_SearchPage", "search/{searchPhrase}/{*categoryUrl}",
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
+
+            MapRoute(routes, "ECommerce_Search", "search/_redirect",
+               new { controller = "SearchPage", action = "Search" });
 
             // Localization routes
             //
-            MapRoute(context, "ECommerce_Category_Loc", "{localization}/c/{*categoryUrl}",
+            MapRoute(routes, "ECommerce_Category_Loc", "{localization}/c/{*categoryUrl}",
                 new { controller = "CategoryPage", action = "CategoryPage" });
 
-            MapRoute(context, "ECommerce_Page", "{localization}/p/{*productUrl}",
+            MapRoute(routes, "ECommerce_Page", "{localization}/p/{*productUrl}",
                 new { controller = "ProductPage", action = "ProductPage" });
 
-            MapRoute(context, "ECommerce_Search", "{localization}/search/_redirect",
-               new { controller = "SearchPage", action = "Search" });
-
-            MapRoute(context, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
+            MapRoute(routes, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
                 new { controller = "SearchPage", action = "SearchCategoryPage" });
+
+            MapRoute(routes, "ECommerce_Search", "{localization}/search/_redirect",
+               new { controller = "SearchPage", action = "Search" });
 
             // Cart controller
             //
-            MapRoute(context, "ECommerce_AddToCart", "ajax/cart/addProduct/{productId}",
+            MapRoute(routes, "ECommerce_AddToCart", "ajax/cart/addProduct/{productId}",
                 new { controller = "Cart", action = "AddProductToCart" });
 
-            MapRoute(context, "ECommerce_RemoveFromCart", "ajax/cart/removeProduct/{productId}",
+            MapRoute(routes, "ECommerce_RemoveFromCart", "ajax/cart/removeProduct/{productId}",
                 new { controller = "Cart", action = "RemoveProductFromCart" });
 
             // Edit Proxy route (only available for staging sites)
             //
-            MapRoute(context, "ECommerce_EditProxy", "edit-proxy/{*path}", new { controller = "EditProxy", action = "Http" });
+            MapRoute(routes, "ECommerce_EditProxy", "edit-proxy/{*path}", new { controller = "EditProxy", action = "Http" });   
 
         }
 
@@ -69,14 +71,28 @@ namespace SDL.ECommerce.DXA
         /// <param name="name"></param>
         /// <param name="url"></param>
         /// <param name="defaults"></param>
-        protected static void MapRoute(AreaRegistrationContext context, string name, string url, object defaults)
+        protected static void MapRoute(RouteCollection routes, string name, string url, object defaults)
         {
-            // TODO: Find a better way of registering the page routes before the default DXA page route. This approach is a bit shaky sometimes.
-            // If you get problems with this approach you can consider to add above routes directly before the last page route in the Global.asax in the DXA Site project.
-            //
-            var route = context.MapRoute(name, url, defaults, new[] { NAMESPACE });
-            context.Routes.Remove(route);
-            context.Routes.Insert(context.Routes.Count - 2, route);
+            Route route = new Route(url, new MvcRouteHandler())
+            {
+                Defaults = CreateRouteValueDictionary(defaults),
+                DataTokens = new RouteValueDictionary()
+                {
+                    { "Namespaces", NAMESPACE}
+                }
+            };
+            routes.Insert(0, route);
+        }
+
+        private static RouteValueDictionary CreateRouteValueDictionary(object values)
+        {
+            var dictionary = values as IDictionary<string, object>;
+            if (dictionary != null)
+            {
+                return new RouteValueDictionary(dictionary);
+            }
+
+            return new RouteValueDictionary(values);
         }
 
     }
