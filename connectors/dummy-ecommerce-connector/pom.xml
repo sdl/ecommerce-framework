@@ -15,18 +15,6 @@
 
     <dependencies>
 
-        <!-- SDL Digital Experience Accelerator -->
-        <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-api</artifactId>
-        </dependency>
-
-        <!-- TODO: TO BE REMOVED -->
-        <dependency>
-            <groupId>com.sdl.dxa</groupId>
-            <artifactId>dxa-common-impl</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.sdl</groupId>
             <artifactId>ecommerce-framework-api</artifactId>
