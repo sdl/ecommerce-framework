@@ -43,51 +43,6 @@
         <module>connectors</module>
     </modules>
 
-    <!--
-
-      Prepared for different profiles for SDL Tridion 2013 SP1 and SDL Web 8.
-      Right now it is not needed to separate them as you can compile against the SDL Tridion 2013 SP1 BOM
-      and it still will work on SDL Web 8.
-
-
-    <profiles>
-        <profile>
-            <id>sdlweb8</id>
-            <properties>
-                <java-version>1.8</java-version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sdl.dxa</groupId>
-                        <artifactId>dxa-bom-web8</artifactId>
-                        <version>${dxa.version}</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-        <profile>
-            <id>sdltridion2013sp1</id>
-            <properties>
-                <java-version>1.7</java-version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sdl.dxa</groupId>
-                        <artifactId>dxa-bom-2013sp1</artifactId>
-                        <version>${dxa.version}</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-    </profiles>
-    -->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -121,15 +76,6 @@
             <dependency>
                 <groupId>com.sdl.dxa</groupId>
                 <artifactId>dxa-bom</artifactId>
-                <version>${dxa.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- NEEDED??? -->
-            <dependency>
-                <groupId>com.sdl.dxa</groupId>
-                <artifactId>dxa-bom-2013sp1</artifactId>
                 <version>${dxa.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
