@@ -20,7 +20,10 @@
         <prudent>true</prudent>
     </appender>
 
-    <root level="INFO">
+    <!-- Loggers -->
+    <logger name="com.sdl" level="${log.level}"/>
+
+    <root level="ERROR">
         <appender-ref ref="rollingLog"/>
     </root>
 </configuration>
