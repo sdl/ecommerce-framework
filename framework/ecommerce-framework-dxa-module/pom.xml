@@ -28,11 +28,6 @@
             <artifactId>dxa-common-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.tridion</groupId>
-            <artifactId>cd_ambient</artifactId>
-        </dependency>
-
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -44,23 +39,5 @@
         </dependency>
 
     </dependencies>
-
-    <!--  Prepared for SDL Web 8 profile
-    <profiles>
-        <profile>
-            <id>sdlweb8</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sdl.web</groupId>
-                    <artifactId>web-ambient-api</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.tridion</groupId>
-                    <artifactId>cd_common_util</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-    -->
 
 </project>

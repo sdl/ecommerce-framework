@@ -73,7 +73,6 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
     * No 1:1 mapping between a page and a Tridion page. Tridion instead manage a set of template pages which are used for the different category/detail pages
     * The experience of those template pages can be overridden. The controllers uses a search pattern to find the best match template page for a certain category/detail pages
 * Some widgets can be placed outside the control of the category/detail controllers such as facets, promotions and listers. The actual category & view type can be configured on widget level through either category paths or ECL links. This allows easy creating of campaign/landing pages etc.
-* ADF claim processor for carts (so cart data can be exposed to for example SmartTarget)
 * Localization support, i.e. the different language, currency and catalog mappings per publication
 
 In addition there is a DXA module with a set of HTML views (in JSP or Razor) implementing the default E-Commerce templates. The views are
