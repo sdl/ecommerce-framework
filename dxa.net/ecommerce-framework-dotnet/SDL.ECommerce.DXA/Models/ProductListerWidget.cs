@@ -26,7 +26,7 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty(IgnoreMapping = true)]
         public ListerNavigationData NavigationData { get; set; }
 
-        public void ContributeToQuery(Query query)
+        public void ContributeToQuery(Api.Model.Query query)
         {
             if ( ViewSize != null )
             {

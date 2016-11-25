@@ -19,6 +19,6 @@ namespace SDL.DXA.Modules.Navigation.Models
         public RichText Text { get; set; }
 
         [SemanticProperty("e:image")]
-        public Image Image { get; set; }
+        public MediaItem Image { get; set; }
     }
 }

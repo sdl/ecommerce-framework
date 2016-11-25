@@ -16,6 +16,9 @@ using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    /// <summary>
+    /// Abstract base class for all E-Commerce page controllers
+    /// </summary>
     public abstract class AbstractECommercePageController : BaseController
     {
 
@@ -42,7 +45,7 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             if (templatePage != null)
             {
-                //enrichRequest(request, templatePage, localization);
+                WebRequestContext.PageModel = templatePage;
             }
             return templatePage;
         }
@@ -75,7 +78,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// </summary>
         /// <param name="templatePage"></param>
         /// <param name="query"></param>
-        protected void GetQueryContributions(PageModel templatePage, Query query)
+        protected void GetQueryContributions(PageModel templatePage, Api.Model.Query query)
         {
             foreach  (var region in templatePage.Regions)
             {

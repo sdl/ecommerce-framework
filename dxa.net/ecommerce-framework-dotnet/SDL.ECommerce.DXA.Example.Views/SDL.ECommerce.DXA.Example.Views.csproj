@@ -48,14 +48,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Sdl.Web.Common">
-      <HintPath>..\..\..\..\dxa-web-application-dotnet\packages\Sdl.Dxa.Framework.Web8.1.5.0\lib\net452\Sdl.Web.Common.dll</HintPath>
+    <Reference Include="Sdl.Web.Common, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.6.0\lib\net452\Sdl.Web.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Sdl.Web.Common.Models">
       <HintPath>..\..\..\..\dxa-web-application-dotnet\packages\Sdl.Dxa.Framework.Web8.1.5.0\lib\net452\Sdl.Web.Common.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Sdl.Web.Mvc">
-      <HintPath>..\..\..\..\dxa-web-application-dotnet\packages\Sdl.Dxa.Framework.Web8.1.5.0\lib\net452\Sdl.Web.Mvc.dll</HintPath>
+    <Reference Include="Sdl.Web.Mvc, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.6.0\lib\net452\Sdl.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -99,7 +101,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\ECommerce\Views\EComWidget\Breadcrumb.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartDetail.cshtml" />
     <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
@@ -169,6 +173,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>REM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set)
@@ -181,6 +186,7 @@ xcopy "$(ProjectDir)Areas" "%25DXA_SITE_DIR%25\Areas" /S /I /Y
 
 )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets" Condition="Exists('..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
