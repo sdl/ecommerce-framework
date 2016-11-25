@@ -10,8 +10,7 @@ Right now it provides connectors for:
 * SAP Hybris (http://www.hybris.com)
 * Salesforce Commerce Cloud (Demandware) (http://www.demandware.com)
 
-The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.0) using DXA 1.5.
-Support for DXA 1.6 will be released soon as an intermediate release.
+The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.0) using DXA 1.6.
 
 New functionality in the v1.1 version:
 * New OData based micro service for E-Commerce including clients for Java and .NET
@@ -21,6 +20,7 @@ New functionality in the v1.1 version:
 * Fredhopper ECL connector
 * Support for latest Demandware version (v16.8)
 * Separation of DXA module into two parts: one generic (controllers & models) and one example module (example HTML views)
+* Supports DXA 1.6
 
 Concepts
 ---------
@@ -84,7 +84,7 @@ In addition the ECL provider gives the possibility to drag & drop categories & p
 Prerequisites
 ----------------
 
-The framework requires DXA 1.5 which includes support for SDL Tridion 2013 SP1 and SDL Web 8.
+The framework requires DXA 1.6 which includes support for SDL Tridion 2013 SP1 and SDL Web 8.
 
 The connectors to the E-Commerce systems has been verified against the following:
 
@@ -101,7 +101,7 @@ needed to have the connectors co-located:
 
 1. If you have not DXA webapp you can easily create one with a Maven archetype:
     * mvn archetype:generate
-    * select dxa & v1.5.0
+    * select dxa & v1.6.0
     * go into the newly created directory and type: mvn install
 2. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
 3. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
@@ -141,16 +141,10 @@ Getting Started (.NET)
 ------------------------
 
 Follow the below steps to setup the .NET version of the E-Commerce DXA modules: 
-1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by doing the following:
-    * git clone -b release/1.5 https://github.com/sdl/dxa-web-application-dotnet
-    * Open the project in Visual Studio
-    * Modify the Web.config to point to your local discovery service
-    * Copy cd_ambient_conf.xml to Site/bin/config from your SDL Web 8.1.1 distribution: /Content Delivery/roles/api/rest/config/cd_ambient_conf.xml
-    * Or just follow the instructions given here: http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v5/GUID-001D829E-1141-4B18-B696-894DF27B6DA1 
+1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by following the instructions given here: http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v6/GUID-001D829E-1141-4B18-B696-894DF27B6DA1
 2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
-3. Add the VS projects under dxa.net to your Visual Studio solution
+3. Either open up the solution dxa.net/SDL.ECommerce.sln or add the VS projects under dxa.net to your Visual Studio solution
 4. Set the environment variable %DXA_SITE_DIR% to point to your DXA Site path (in visual studio or in your IIS instance) 
-    * Alternatively you can include all E-Commerce VB projects into your site solution.
 5. Restart Visual studio and rebuild the solution. Verify so E-Commerce Areas and DLLs are copied to your site folder
 6. Configure E-Commerce micro service in Web.config of your site:
 

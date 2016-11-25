@@ -4,8 +4,8 @@ import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticEntity;
 import com.sdl.webapp.common.api.mapping.semantic.annotations.SemanticProperty;
 import com.sdl.webapp.common.api.model.RichText;
 import com.sdl.webapp.common.api.model.entity.AbstractEntityModel;
-import com.sdl.webapp.common.api.model.entity.Image;
 import com.sdl.webapp.common.api.model.entity.Link;
+import com.sdl.webapp.common.api.model.entity.MediaItem;
 
 import static com.sdl.webapp.common.api.mapping.semantic.config.SemanticVocabulary.SDL_CORE;
 
@@ -24,7 +24,7 @@ public class NavigationItem extends AbstractEntityModel {
     private RichText text;
 
     @SemanticProperty("e:image")
-    private Image image;
+    private MediaItem image;
 
     public Link getLink() {
         return link;
@@ -34,7 +34,7 @@ public class NavigationItem extends AbstractEntityModel {
         return text;
     }
 
-    public Image getImage() {
+    public MediaItem getImage() {
         return image;
     }
 }

@@ -19,6 +19,10 @@ import com.sdl.webapp.common.api.model.PageModel;
 import com.sdl.webapp.common.api.model.RegionModel;
 import com.sdl.webapp.common.controller.BaseController;
 import static com.sdl.webapp.common.controller.RequestAttributeNames.PAGE_MODEL;
+
+import com.sdl.webapp.common.controller.exception.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +41,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/system/mvc/ECommerce/EComWidget")
 public class WidgetController extends BaseController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WidgetController.class);
 
     @Autowired
     private ProductCategoryService categoryService;
@@ -379,6 +385,21 @@ public class WidgetController extends BaseController {
 
         final MvcData mvcData = entity.getMvcData();
         return resolveView(mvcData, "Entity", request);
+    }
+
+    /**
+     * Get the entity from the request
+     * @param request
+     * @param entityId
+     * @return
+     */
+    protected EntityModel getEntityFromRequest(HttpServletRequest request, String entityId) {
+        final EntityModel entity = (EntityModel) request.getAttribute("_entity_");
+        if (entity == null) {
+            LOG.error("Entity not found in request: {}", entityId);
+            throw new NotFoundException("Entity not found in request: " + entityId);
+        }
+        return entity;
     }
 
     /**
