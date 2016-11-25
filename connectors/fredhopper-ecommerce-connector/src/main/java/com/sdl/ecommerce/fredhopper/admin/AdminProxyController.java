@@ -120,6 +120,8 @@ public class AdminProxyController {
         //if ( !isInXPMSessionPreview(request) ) {
         //    throw new IOException("No active XPM session found!");
         //}
+
+        // TODO: Check if no admin credential -> Give an error
         if ( this.lastAccessTime + this.sessionTimeout < System.currentTimeMillis() ) {
             login();
         }
