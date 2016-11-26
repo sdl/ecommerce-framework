@@ -41,6 +41,7 @@
     <modules>
         <module>framework</module>
         <module>connectors</module>
+        <module>dxa.java</module>
     </modules>
 
     <properties>
@@ -49,6 +50,7 @@
         <java-version>1.7</java-version>
 
         <dxa.version>1.6.0</dxa.version>
+        <dxa-release-branch>1.6</dxa-release-branch>
 
         <!-- Servlet and JSP APIs -->
         <servlet-api-version>3.1.0</servlet-api-version>
@@ -63,10 +65,25 @@
 
         <!-- SDL OData -->
         <!-- Version used by DXA -->
+        <!--
         <odata.version>2.0.5</odata.version>
+        -->
         <!-- Latest version -->
-        <!--odata.version>2.1.1</odata.version-->
+        <odata.version>2.1.1</odata.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>github-project-repo</id>
+            <url>
+                https://raw.githubusercontent.com/sdl/dxa-web-application-java/${dxa-release-branch}/local-project-repo
+            </url>
+        </repository>
+        <repository>
+            <id>local-project-repo</id>
+            <url>file:///${project.basedir}/../local-project-repo</url>
+        </repository>
+    </repositories>
 
     <!-- Dependency management -->
     <dependencyManagement>
@@ -76,6 +93,14 @@
             <dependency>
                 <groupId>com.sdl.dxa</groupId>
                 <artifactId>dxa-bom</artifactId>
+                <version>${dxa.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sdl.dxa.modules</groupId>
+                <artifactId>dxa-bom-modules</artifactId>
                 <version>${dxa.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
