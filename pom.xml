@@ -74,10 +74,6 @@
                 https://raw.githubusercontent.com/sdl/dxa-web-application-java/${dxa-release-branch}/local-project-repo
             </url>
         </repository>
-        <repository>
-            <id>local-project-repo</id>
-            <url>file:///${project.basedir}/../local-project-repo</url>
-        </repository>
 
     </repositories>
 
@@ -89,14 +85,6 @@
             <dependency>
                 <groupId>com.sdl.dxa</groupId>
                 <artifactId>dxa-bom</artifactId>
-                <version>${dxa.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.sdl.dxa.modules</groupId>
-                <artifactId>dxa-bom-modules</artifactId>
                 <version>${dxa.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
