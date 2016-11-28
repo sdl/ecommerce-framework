@@ -20,6 +20,16 @@
 
     <profiles>
         <profile>
+            <id>odata-client</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>ecommerce-framework-odata-client</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>fredhopper</id>
             <dependencies>
                 <dependency>
@@ -78,6 +88,7 @@
         <dependency>
             <groupId>com.sdl.dxa.modules</groupId>
             <artifactId>dxa-module-core</artifactId>
+            <version>${dxa.version}</version>
         </dependency>
 
         <dependency>

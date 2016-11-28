@@ -64,11 +64,6 @@
         <jackson-version>2.4.3</jackson-version>
 
         <!-- SDL OData -->
-        <!-- Version used by DXA -->
-        <!--
-        <odata.version>2.0.5</odata.version>
-        -->
-        <!-- Latest version -->
         <odata.version>2.1.1</odata.version>
     </properties>
 
@@ -83,6 +78,7 @@
             <id>local-project-repo</id>
             <url>file:///${project.basedir}/../local-project-repo</url>
         </repository>
+
     </repositories>
 
     <!-- Dependency management -->
