@@ -5,6 +5,7 @@ There are a number of CMS packages that can be installed in SDL Tridion 2013 SP1
 The following packages are provided:
 
 * ECommerceModules_v1.1.0.zip - Contains for E-Commerce and Navigation modules + modified version of the HTML white label design
+* ECommerceWhiteLabelDesign_v1.1.0.zip - Contains additions to the DXA white label design for the E-Commerce Framework
 * ECommerceContentStructure_v1.1.0.zip - E-Commerce content types and page types, base content structure
 * ECommercePageStructure_v1.1.0.zip - E-Commerce page structure
 * FredhopperExampleContent_v1.1.0.zip - Example content for Fredhopper (optional)
@@ -24,6 +25,7 @@ The CMS import script is generic and is used for all packages. The syntax for ca
 To setup CMS data the packages needs to be imported in the following order:
 
 1. Setup modules: `.\cms-import.ps1 -moduleZip ECommerceModules_v1.1.0.zip`
+2. Install updated white label design: `.\cms-import.ps1 -moduleZip ECommerceWhiteLabelDesign_v1.1.0.zip`
 2. Setup content structure: `.\cms-import.ps1 -moduleZip ECommerceContentStructure_v1.1.0.zip`
 3. Setup page structure: `.\cms-import.ps1 -moduleZip ECommercePageStructure_v1.1.0.zip`
 3. Optional setup example content for the current E-Commerce system:
