@@ -17,7 +17,7 @@ New functionality in the v1.1 version:
 * Decoupled E-Commerce connectors, either they can be plugged into the micro service or they can be co-located in DXA (java only)
 * DXA modules for .NET providing the same functionality as the Java DXA modules
 * Support for product variants
-* Fredhopper ECL connector
+* ECL connector for Fredhopper
 * Support for latest Demandware version (v16.8)
 * Separation of DXA module into two parts: one generic (controllers & models) and one example module (example HTML views)
 * Supports DXA 1.6
@@ -96,31 +96,20 @@ The connectors to the E-Commerce systems has been verified against the following
 Getting started (Java)
 ------------------------
 
-For Java you can either have the connectors co-located or use the OData micro service. Below is the steps
-needed to have the connectors co-located:  
+For Java you can either have the connectors co-located or use the OData micro service. There is an example webapp for the white label design available to be able to get started quickly.
+To setup the example webapp you need to do the following:
 
-1. If you have not DXA webapp you can easily create one with a Maven archetype:
-    * mvn archetype:generate
-    * select dxa & v1.6.0
-    * go into the newly created directory and type: mvn install
-2. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
-3. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
-4. Compile all code and install it into your local Maven repository by using any of the following alternatives: 
-    * `mvn install -Pall-connectors` - compile the framework and all available connectors
-    * `mvn install -Pfredhopper` - compile the framework and the Fredhopper connector (make sure to install the Fredhopper client libraries first, see [Installing Fredhopper libraries](./connectors/fredhopper-dxa-ecommerce-connector/lib/README.md)
-    * `mvn install -Phybris` - compile the framework and the Hybris connector
-    * `mvn install -Pdemandware` - compile the framework and the Demandware connector 
-                             
-5. Following instructions given in respective README for each connector to set it up:
+1. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
+2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
+3. Configure the dxa.properties (under ecommerce-framework-example-webapp/src/main/resources) for selected connector. Following instructions given in respective README for each connector to set it up:
     * [Fredhopper](./connectors/fredhopper-ecommerce-connector/README.md)
     * [Hybris](./connectors/hybris-ecommerce-connector/README.md)
-    * [Demandware](./connectors/demandware-ecommerce-connector/README.md)
-6. Add dependencies to the following framework modules in the POM.xml of your DXA web application:
-    * ecommerce-framework-dxa-module
-    * ecommerce-framework-dxa-module-example-views (optional)
-    * navigation-dxa-module) 
-7. In addition add dependencies to the selected connector(s) in your webapp's POM.xml
-8. Setup CMS as described below
+    * [Demandware](./connectors/demandware-ecommerce-connector/README.md)   
+4. Compile the code and package a WAR file by doing the following:
+    * mvn package -Pexample-webapp -P[connector #1] -P[connector #2] ... , e.g. `mvn package -Pexample-webapp -Pfredhopper` (generates webapp with the Fredhopper connector)
+    * If using the OData micro service, use the following: `mvn package -Pexample-webapp -Podata-client`
+5. Deploy the generated WAR to your JEE application server/servlet container. Make sure the webapp runs as the root webapp.
+6. Setup CMS as described below
 
 
 Getting Started with the OData micro service
@@ -132,7 +121,10 @@ Follow the below steps to setup the the OData micro service (which can be run on
 2. Compile and package the OData micro service by doing the following in the project root:
      * mvn clean package -P[selected connector, e.g. 'fredhopper', 'hybris', or 'demandware']
 3. Unzip the generated 'ecommerce-framework-odata-service-1.1.0-install.zip' file in an appropiate directory on your target environment
-4. Configure the connector and locale settings in the config/application.yml file. Some examples are given in the file.
+4. Configure the connector and locale settings in the config/application.yml file. Some examples are given in the file. For more information about the connector settings, please refer to:
+    * [Fredhopper](./connectors/fredhopper-ecommerce-connector/README.md)
+    * [Hybris](./connectors/hybris-ecommerce-connector/README.md)
+    * [Demandware](./connectors/demandware-ecommerce-connector/README.md)  
 5. The service can be started by using the bin/start.sh or bin/start.ps1 scripts. If using Windows you can install the micro service as a Windows service by running the 'installService.ps1' script.
     * For more information about different deployment options, see [Installing Spring Boot applications](http://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html) 
 6. Verify that the service up & running by typing the following in your browser: http://[server name]:8097/ecommerce.svc/Categories. It should list all top level categories in the current E-Commerce system.
@@ -155,7 +147,7 @@ Follow the below steps to setup the .NET version of the E-Commerce DXA modules:
 
 7. Setup CMS as described below    
 
-An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md).
+An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md)
 
 Getting Started (CMS)
 ------------------------
@@ -163,17 +155,19 @@ Getting Started (CMS)
 1. Install the CMS packages by following instructions given in: [Install CMS packages](./cms/README.md) 
 2. Publish out the settings page, HTML design + the header include page. 
 3. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
-4. Define the application properties needed for selected connectors in your web application. Refer to the README file for each connector.
-4. Start up the server and verify that the E-Commerce main categories are visible in the mega navigation
+4. If needed adjust the localization properties for the selected connector (under Building Blocks/Settings/E-Commerce/Site Manager)
+    * This is only needed when running the connector co-located in DXA webapp (DXA.Java only)
+4. Start up your DXA web application and verify that the E-Commerce main categories are visible in the mega navigation
 5. In addition (optional) you can also install one of the ECL providers. See instructions given in:
     * [Hybris ECL](./ecl/hybris-ecl-provider/README.md)
     * [Demandware ECL](./ecl/demandware-ecl-provider/README.md) 
     * [Fredhopper ECL](./ecl/fredhopper-ecl-provider/README.md)
 
-Not implemented
------------------
 
-Currently the E-Commerce framework does not implement the following:
+Future enhancements
+---------------------
+
+Below are some enhancements to be consider in future versions:
 
 * Support for checkouts
 * Improved category experience such as sorting, slider facets etc
@@ -181,8 +175,8 @@ Currently the E-Commerce framework does not implement the following:
 * Search suggest
 * OAuth authentication on the E-Commerce micro service
 * Generic ECL provider using the OData micro service (to minimize the integration points)
+* Available as NuGet packages/Maven central artifacts
 
-This is something to be consider in later version of the framework. 
 
 Branching model
 ----------------

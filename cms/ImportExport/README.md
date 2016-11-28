@@ -10,9 +10,13 @@ The following DLLs/config are needed to invoke the cms-import.ps1 script:
 * Tridion.ContentManager.ImportExport.Client.dll.config
 * Tridion.ContentManager.ImportExport.Common.dll
 
-They can copied to this directory from the DXA 1.5 distribution (located in 'ImportExport'-directory). 
-The DXA1.5 can be downloaded here: 
-https://community.sdl.com/developers/tridion_developer/m/mediagallery/1241
+They can copied to this directory from the DXA 1.6 distribution (located in 'ImportExport'-directory). 
+The DXA1.6 can be downloaded here: 
+
+* DXA.Java:
+    - https://community.sdl.com/solutions/content-management/tridion/tridion-developer/m/mediagallery/1241
+* DXA.Net:
+    - https://community.sdl.com/solutions/content-management/tridion/tridion-developer/m/mediagallery/852
 
 
 

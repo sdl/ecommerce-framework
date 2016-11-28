@@ -10,6 +10,7 @@ The Fredhopper connector implements the following capabilities of the E-Commerce
 * Breadcrumb
 * Promotions (product, image maps and content promotions)
 * Product Detail
+* Product Variants
 * Search Spell Feedback
 * XPM In-Context Edit controls for facets and promotions
 * XPM controls on category pages to create new facets, promotions, modifications, rankings, redirects and search synonyms
