@@ -8,6 +8,7 @@ import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.ODataNotImplementedException;
 import com.sdl.odata.api.edm.annotations.EdmFunction;
 import com.sdl.odata.api.edm.annotations.EdmParameter;
+import com.sdl.odata.api.edm.annotations.EdmProperty;
 import com.sdl.odata.api.edm.annotations.EdmReturnType;
 import com.sdl.odata.api.edm.model.Operation;
 import com.sdl.odata.api.processor.datasource.factory.DataSourceFactory;
@@ -31,6 +32,9 @@ public class AddProductToCartFunction implements Operation<ODataCart> {
     @EdmParameter(nullable = false)
     private String cartId;
 
+    @EdmParameter(nullable = true)
+    private String sessionId;
+
     @EdmParameter(nullable = false)
     private String productId;
 
@@ -45,7 +49,7 @@ public class AddProductToCartFunction implements Operation<ODataCart> {
             if ( quantity == null ) {
                 quantity = 1;
             }
-            Cart cart = cartService.addProductToCart(cartId, productId, quantity);
+            Cart cart = cartService.addProductToCart(cartId, sessionId, productId, quantity);
             return new ODataCart(cart);
         }
         throw new ODataNotImplementedException("No cart service found!");

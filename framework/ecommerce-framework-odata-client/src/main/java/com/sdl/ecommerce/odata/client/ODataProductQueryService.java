@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * ODataProductQueryService
+ * OData Product Query Service
  *
  * @author nic
  */
@@ -71,6 +71,18 @@ public class ODataProductQueryService implements ProductQueryService {
                 }
             }
             queryBuilder = queryBuilder.withFunctionParameter("facets", "'" + facetsString + "'");
+        }
+        if (  query.getStartIndex() != 0 )
+        {
+            queryBuilder = queryBuilder.withFunctionParameter("startIndex", Integer.toString(query.getStartIndex()));
+        }
+        if ( query.getViewSize() != 0 )
+        {
+            queryBuilder = queryBuilder.withFunctionParameter("viewSize", Integer.toString(query.getViewSize()));
+        }
+        if ( query.getViewType() != null )
+        {
+            queryBuilder = queryBuilder.withFunctionParameter("viewType", "'" + query.getViewType() + "'");
         }
 
         ODataClientQuery oDataQuery = queryBuilder.build();

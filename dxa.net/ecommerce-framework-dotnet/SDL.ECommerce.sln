@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.DXA", "SDL.EC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.DXA.Modules.Navigation", "SDL.DXA.Modules.Navigation\SDL.DXA.Modules.Navigation.csproj", "{B343E828-A29F-4C6A-B9E4-B510719E77F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.DXA.Example.Views", "SDL.ECommerce.DXA.Example.Views\SDL.ECommerce.DXA.Example.Views.csproj", "{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B343E828-A29F-4C6A-B9E4-B510719E77F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B343E828-A29F-4C6A-B9E4-B510719E77F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B343E828-A29F-4C6A-B9E4-B510719E77F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4ACD1A5-74BE-4375-A4CC-14529FFAB92D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

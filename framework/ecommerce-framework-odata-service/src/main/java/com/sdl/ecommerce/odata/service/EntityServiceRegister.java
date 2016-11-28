@@ -29,7 +29,7 @@ public class EntityServiceRegister {
 
     @PostConstruct
     public void registerEntities() throws ODataException {
-        LOG.debug("Registering example entities");
+        LOG.debug("Registering E-Commerce entities");
 
         oDataEdmRegistry.registerClasses(Lists.newArrayList(
 
@@ -54,6 +54,10 @@ public class EntityServiceRegister {
                 ODataBreadcrumb.class,
                 ODataCart.class,
                 ODataCartItem.class,
+                ODataProductVariant.class,
+                ODataProductVariantAttribute.class,
+                ODataProductVariantAttributeType.class,
+                ODataProductVariantAttributeValueType.class,
 
                 // Functions
                 //
@@ -69,7 +73,9 @@ public class EntityServiceRegister {
                 AddProductToCartFunction.class,
                 AddProductToCartFunctionImport.class,
                 RemoveProductFromCartFunction.class,
-                RemoveProductFromCartFunctionImport.class
+                RemoveProductFromCartFunctionImport.class,
+                ProductVariantFunction.class,
+                ProductVariantFunctionImport.class
         ));
 
     }

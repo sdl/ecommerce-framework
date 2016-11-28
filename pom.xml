@@ -41,59 +41,16 @@
     <modules>
         <module>framework</module>
         <module>connectors</module>
+        <module>dxa.java</module>
     </modules>
-
-    <!--
-
-      Prepared for different profiles for SDL Tridion 2013 SP1 and SDL Web 8.
-      Right now it is not needed to separate them as you can compile against the SDL Tridion 2013 SP1 BOM
-      and it still will work on SDL Web 8.
-
-
-    <profiles>
-        <profile>
-            <id>sdlweb8</id>
-            <properties>
-                <java-version>1.8</java-version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sdl.dxa</groupId>
-                        <artifactId>dxa-bom-web8</artifactId>
-                        <version>${dxa.version}</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-        <profile>
-            <id>sdltridion2013sp1</id>
-            <properties>
-                <java-version>1.7</java-version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sdl.dxa</groupId>
-                        <artifactId>dxa-bom-2013sp1</artifactId>
-                        <version>${dxa.version}</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-    </profiles>
-    -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java-version>1.7</java-version>
 
-        <dxa.version>1.5.0</dxa.version>
+        <dxa.version>1.6.0</dxa.version>
+        <dxa-release-branch>1.6</dxa-release-branch>
 
         <!-- Servlet and JSP APIs -->
         <servlet-api-version>3.1.0</servlet-api-version>
@@ -107,11 +64,18 @@
         <jackson-version>2.4.3</jackson-version>
 
         <!-- SDL OData -->
-        <!-- Version used by DXA -->
-        <odata.version>2.0.5</odata.version>
-        <!-- Latest version -->
-        <!--odata.version>2.1.1</odata.version-->
+        <odata.version>2.1.1</odata.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>github-project-repo</id>
+            <url>
+                https://raw.githubusercontent.com/sdl/dxa-web-application-java/${dxa-release-branch}/local-project-repo
+            </url>
+        </repository>
+
+    </repositories>
 
     <!-- Dependency management -->
     <dependencyManagement>
@@ -121,15 +85,6 @@
             <dependency>
                 <groupId>com.sdl.dxa</groupId>
                 <artifactId>dxa-bom</artifactId>
-                <version>${dxa.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- NEEDED??? -->
-            <dependency>
-                <groupId>com.sdl.dxa</groupId>
-                <artifactId>dxa-bom-2013sp1</artifactId>
                 <version>${dxa.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -183,6 +138,12 @@
                 <artifactId>commons-httpclient</artifactId>
                 <version>3.1</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>1.7.16</version>
             </dependency>
 
             <!-- For future use

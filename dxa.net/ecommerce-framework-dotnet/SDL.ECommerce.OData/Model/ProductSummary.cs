@@ -43,7 +43,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        public List<ICategory> Categories
+        public IList<ICategory> Categories
         {
             get
             {
@@ -60,6 +60,30 @@ namespace SDL.ECommerce.OData
         }
 
         public IList<IPromotion> Promotions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IProductVariant> Variants
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IProductVariantAttribute> VariantAttributes
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IList<IProductVariantAttributeType> VariantAttributeTypes
         {
             get
             {

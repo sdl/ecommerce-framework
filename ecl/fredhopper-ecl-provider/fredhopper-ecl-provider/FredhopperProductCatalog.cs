@@ -219,6 +219,7 @@ namespace SDL.Fredhopper.Ecl
 
         }
 
+        // TODO: Do we need this function or is it just on badly configured Fredhopper instances we get an issue with this?
         private bool CategoryAlreadyExistInStructure(Category parentCategory, string categoryId)
         {
             if (parentCategory.CategoryId != null && parentCategory.CategoryId.Equals(categoryId))

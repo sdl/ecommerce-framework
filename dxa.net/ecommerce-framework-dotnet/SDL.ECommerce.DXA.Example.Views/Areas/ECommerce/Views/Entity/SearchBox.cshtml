@@ -1,0 +1,10 @@
+﻿@using SDL.ECommerce.DXA
+@model SearchBox
+<div @Html.DxaEntityMarkup()>
+    <form class="navbar-form navbar-right navbar-search" action="@ECommerceContext.LocalizePath("/search/_redirect")" method="get">
+        <div class="form-group search-box">
+            <i class="fa fa-search" />
+            <input name="q" type="text" class="form-control" autocomplete="off" placeholder="@Html.Resource("e-commerce.searchPlaceholderText")" value="@ECommerceContext.Get(ECommerceContext.SEARCH_PHRASE)" />
+        </div>
+    </form>
+</div>

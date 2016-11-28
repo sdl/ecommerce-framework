@@ -40,7 +40,27 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>fredhopper-dxa-ecommerce-connector</artifactId>
+                    <artifactId>fredhopper-ecommerce-connector</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>hybris</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>hybris-ecommerce-connector</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>demandware</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sdl</groupId>
+                    <artifactId>demandware-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
@@ -50,11 +70,12 @@
             <dependencies>
                 <dependency>
                     <groupId>com.sdl</groupId>
-                    <artifactId>dummy-dxa-ecommerce-connector</artifactId>
+                    <artifactId>dummy-ecommerce-connector</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
             <id>microservice-singlejar</id>
             <build>
@@ -62,6 +83,9 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.sdl.ecommerce.odata.service.ServiceContainer</mainClass>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -128,6 +152,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-loader</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
@@ -150,6 +179,41 @@
                     <source>${java-version}</source>
                     <target>${java-version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <descriptor>src/main/assembly/dep.xml</descriptor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-archive</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -80,12 +80,12 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sdl.Web.Common, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.5.0\lib\net452\Sdl.Web.Common.dll</HintPath>
+    <Reference Include="Sdl.Web.Common, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.6.0\lib\net452\Sdl.Web.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sdl.Web.Mvc, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.5.0\lib\net452\Sdl.Web.Mvc.dll</HintPath>
+    <Reference Include="Sdl.Web.Mvc, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Dxa.Framework.Web8.1.6.0\lib\net452\Sdl.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
@@ -146,13 +146,13 @@
     <Compile Include="Controllers\AbstractECommercePageController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryPageController.cs" />
-    <Compile Include="Controllers\EComWidgetController.cs" />
+    <Compile Include="Controllers\BaseEComWidgetController.cs" />
     <Compile Include="Controllers\EditProxyController.cs" />
     <Compile Include="Controllers\ProductPageController.cs" />
     <Compile Include="Controllers\SearchPageController.cs" />
     <Compile Include="DXALinkResolver.cs" />
     <Compile Include="ECommerceContext.cs" />
-    <Compile Include="ECommerceAreaRegistration.cs" />
+    <Compile Include="ECommerceControllerRegistration.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />
     <Compile Include="Models\CartWidget.cs" />
     <Compile Include="Models\ECommerceCategoryReference.cs" />
@@ -168,30 +168,9 @@
     <Compile Include="Models\SearchFeedbackWidget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\ECommerce\Views\web.config" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetail.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductLister.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Facets.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Breadcrumb.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Promotions.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ImageMapPromotion.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\DetailBreadcrumb.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\SearchFeedback.cshtml" />
-    <Content Include="Areas\ECommerce\Views\Entity\SearchBox.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\FacetsMegaNavigation.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ContentPromotionMegaNav.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\ProductsPromotionMegaNav.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\EditControl.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\Partials\InContextEditMenu.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\CartMinimized.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\CartDetail.cshtml" />
-    <Content Include="Areas\ECommerce\Views\EComWidget\ProductDetailEclItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -199,9 +178,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SDL.ECommerce.Api\SDL.ECommerce.Api.csproj">
       <Project>{1030d0f7-9334-4864-b495-540e3ad7928c}</Project>
@@ -223,16 +200,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51714</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51714/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
@@ -243,16 +211,18 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets'))" />
+    <Error Condition="!Exists('..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets'))" />
   </Target>
-  <Import Project="..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets" Condition="Exists('..\packages\Sdl.Dxa.Framework.Web8.1.5.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" />
   <PropertyGroup>
     <PostBuildEvent>REM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set)
+
 if defined DXA_SITE_DIR (
+
 xcopy "$(TargetDir)SDL.ECommerce*.*" "%25DXA_SITE_DIR%25\bin" /Y
-xcopy "$(ProjectDir)Areas" "%25DXA_SITE_DIR%25\Areas" /S /I /Y
+
 )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets" Condition="Exists('..\packages\Sdl.Dxa.Framework.Web8.1.6.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

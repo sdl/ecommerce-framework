@@ -9,6 +9,7 @@ import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.model.EntityDataModel;
 import com.sdl.odata.api.parser.ODataUri;
 import com.sdl.odata.api.processor.datasource.DataSource;
+import com.sdl.odata.api.processor.datasource.TransactionalDataSource;
 import com.sdl.odata.api.processor.link.ODataLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ public class ProductDataSource implements DataSource {
     @Autowired
     private ProductCategoryService productCategoryService;
 
-    @Autowired
+    @Autowired (required = false)
     private EditService editService; // TODO: Move this to another data source?
 
     @Autowired (required = false)
@@ -81,10 +82,9 @@ public class ProductDataSource implements DataSource {
 
     }
 
-    /* OData v2.1.0
     @Override
     public TransactionalDataSource startTransaction() {
         return null;
     }
-    */
+
 }

@@ -7,6 +7,7 @@ using Sdl.Web.Mvc.Configuration;
 using Sdl.Web.Mvc.Controllers;
 using Sdl.Web.Mvc.Formats;
 using SDL.ECommerce.Api;
+using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    /// <summary>
+    /// Abstract base class for all E-Commerce page controllers
+    /// </summary>
     public abstract class AbstractECommercePageController : BaseController
     {
 
@@ -41,7 +45,7 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             if (templatePage != null)
             {
-                //enrichRequest(request, templatePage, localization);
+                WebRequestContext.PageModel = templatePage;
             }
             return templatePage;
         }
@@ -67,6 +71,28 @@ namespace SDL.ECommerce.DXA.Controllers
             }
                
             return facetParameters;
+        }
+
+        /// <summary>
+        /// Go through all entities on the page (excluding header & footer) and check for contributions to the E-Commerce query (such as view size, filter attributes etc).
+        /// </summary>
+        /// <param name="templatePage"></param>
+        /// <param name="query"></param>
+        protected void GetQueryContributions(PageModel templatePage, Api.Model.Query query)
+        {
+            foreach  (var region in templatePage.Regions)
+            {
+                if (!region.Name.Equals("Header") && !region.Name.Equals("Footer"))
+                {
+                    foreach (EntityModel entity in region.Entities)
+                    {
+                        if (entity is IQueryContributor)
+                        {
+                            ((IQueryContributor) entity).ContributeToQuery(query);
+                        }
+                    }
+                }
+            }
         }
 
         protected ActionResult View(PageModel templatePage)
@@ -98,7 +124,7 @@ namespace SDL.ECommerce.DXA.Controllers
             {
                 // TODO: Have the possiblity to have a E-Commerce specific 404 page for categories and products
                 //
-                string notFoundPageUrl = WebRequestContext.Localization.Path + "/error-404";
+                string notFoundPageUrl = ECommerceContext.LocalizePath("/error-404");
 
                 PageModel pageModel;
                 try
@@ -114,7 +140,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 SetupViewData(pageModel);
                 ViewModel model = EnrichModel(pageModel) ?? pageModel;
                 Response.StatusCode = 404;
-                return View(model.MvcData.ViewName, model);
+                return View(pageModel);
             }
         }
 

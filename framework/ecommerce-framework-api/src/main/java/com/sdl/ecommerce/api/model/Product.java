@@ -17,6 +17,13 @@ public interface Product {
     String getId();
 
     /**
+     * Get product variant ID. If NULL no variant ID is available for current product.
+     * Variant ID is normally referencing to a concrete product selection with a particular color, size etc.
+     * @return variant id
+     */
+    String getVariantId();
+
+    /**
      * Get name of the product. This can be a localized name based on current language.
      * @return name
      */
@@ -56,19 +63,32 @@ public interface Product {
     List<Category> getCategories();
 
     /**
-     * Get product facets.
-     * @return list of product facets
-     */
-    // TODO: Convert this to an interface instead???
-    List<FacetParameter> getFacets();
-
-    /**
      * Get all additional attributes of the product. Can for example be used in compare views etc.
      * @return list of attributes
      */
 
     // TODO: Use Map<String,List<String>> here instead?? To make it easier to map over OData???
     // TODO: Have an AttributeValue representation here that indicate formatted value, raw value, type, single/multi value etc?
+    // TODO: Consider to use the same model as for variant attributes?
 
     Map<String,Object> getAttributes();
+
+    /**
+     * Get product variants (if any)
+     * @return list of variants
+     */
+    List<ProductVariant> getVariants();
+
+    /**
+     * If current product is an variant this list is populated with selected variant attributes
+     * @return list of variant attributes
+     */
+    List<ProductVariantAttribute> getVariantAttributes();
+
+    /**
+     * Get all available variant attribute types for this product, e.g. color, size. The type also contain all possible values.
+     * @return list of variant attribute types
+     */
+    List<ProductVariantAttributeType> getVariantAttributeTypes();
+
 }

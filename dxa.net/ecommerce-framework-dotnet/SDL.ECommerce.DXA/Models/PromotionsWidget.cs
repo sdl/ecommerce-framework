@@ -20,7 +20,7 @@ namespace SDL.ECommerce.DXA.Models
         public string ViewType { get; set; }
 
         [SemanticProperty("e:maxPromotions")]
-        public int MaxPromotions { get; set; }
+        public int? MaxPromotions { get; set; }
 
         [SemanticProperty(IgnoreMapping = true)]
         public IList<IPromotion> Promotions { get; set; }

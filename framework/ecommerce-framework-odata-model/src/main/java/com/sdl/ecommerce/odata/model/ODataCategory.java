@@ -34,9 +34,6 @@ public class ODataCategory implements Category {
     @EdmProperty(name = "pathName")
     private String pathName;
 
-    @EdmProperty(name = "locale")
-    private String locale;  //????
-
     @EdmNavigationProperty(name = "parent")
     private ODataCategory parent = null;
 
@@ -45,8 +42,6 @@ public class ODataCategory implements Category {
 
     @EdmProperty(name= "parentIds")
     private List<String> parentIds = null;
-
-    private NavigationPropertyResolver navigationPropertyResolver = null;
 
     public ODataCategory() {}
 
@@ -63,24 +58,17 @@ public class ODataCategory implements Category {
         }
     }
 
-    public void setNavigationPropertyResolver(NavigationPropertyResolver navigationPropertyResolver) {
-        this.navigationPropertyResolver = navigationPropertyResolver;
-    }
-
     @Override
     public List<Category> getCategories() {
-        if ( this.categories == null && this.navigationPropertyResolver != null ) {
-            this.categories = (List<ODataCategory>) this.navigationPropertyResolver.resolve(this.id, "categories");
-        }
-        return this.categories.stream().collect(Collectors.toList());
+        // follow categories is not supported by this model class, please refer to the specific category model in the OData client
+        //
+        return null;
     }
 
     @Override
     public Category getParent() {
-        // TODO: What happens if category does not have a parent???
-        if ( this.parent == null && this.navigationPropertyResolver != null ) {
-            this.parent = (ODataCategory) this.navigationPropertyResolver.resolve(this.id, "parent");
-        }
+        // Follow parent is supported by this model class, please refer to the specific category model in the OData client.
+        //
         return this.parent;
     }
 

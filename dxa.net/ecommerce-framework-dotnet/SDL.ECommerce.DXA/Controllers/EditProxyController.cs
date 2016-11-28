@@ -48,7 +48,7 @@ namespace SDL.ECommerce.DXA.Controllers
                         req.Headers.Add(headerName, HttpContext.Request.Headers[headerName]);
                         Log.Info("Setting header: " + headerName + " = " + HttpContext.Request.Headers[headerName]);
                     }
-                    catch (ArgumentException e) { }
+                    catch (ArgumentException) { }
                 }          
             }         
 

@@ -24,7 +24,7 @@ namespace SDL.ECommerce.DXA.Controllers
             {
                 cart = ECommerceContext.Client.CartService.CreateCart();
             }
-            cart = ECommerceContext.Client.CartService.AddProductToCart(cart.Id, productId, 1);
+            cart = ECommerceContext.Client.CartService.AddProductToCart(cart, productId, 1);
             ECommerceContext.Cart = cart;
             return Content(cart.Count.ToString());
         }
@@ -43,7 +43,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 cart = ECommerceContext.Client.CartService.CreateCart();
                 return Content("0");
             }
-            cart = ECommerceContext.Client.CartService.RemoveProductFromCart(cart.Id, productId);
+            cart = ECommerceContext.Client.CartService.RemoveProductFromCart(cart, productId);
             ECommerceContext.Cart = cart;
             return Content(cart.Count.ToString());
         }

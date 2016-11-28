@@ -26,8 +26,18 @@ public class ODataClientIT extends GenericTestSuite {
     private static final Logger LOG = LoggerFactory.getLogger(ODataClientIT.class);
 
     @Test
-    public void testGetCategory() throws Exception {
+    public void testGetCategoryById() throws Exception {
+        this.testGetCategoryById("catalog01_18661_18682");
+    }
+
+    @Test
+    public void testGetCategoryByPath() throws Exception {
         this.testGetCategoryByPath("/women");
+    }
+
+    @Test
+    public void testGetNotfoundCategory() throws Exception {
+        this.testGetNotFoundProductDetail("NOT_EXISTING_CATEGORY");
     }
 
     @Test
@@ -41,7 +51,12 @@ public class ODataClientIT extends GenericTestSuite {
 
     @Test
     public void testGetProductDetail() throws Exception {
-        this.testGetProductDetail("008010111647");
+        this.testGetProductDetail("008010231960");
+    }
+
+    @Test
+    public void testNotFoundProductDetail() throws Exception {
+        this.testGetNotFoundProductDetail("NON_EXISTING_PRODUCT");
     }
 
     @Test
@@ -64,6 +79,11 @@ public class ODataClientIT extends GenericTestSuite {
     @Test
     public void testPromotions() throws Exception {
         this.testPromotions("/women");
+    }
+
+    @Test
+    public void testCart() throws Exception {
+        this.testCart("008010231960");
     }
 
 }

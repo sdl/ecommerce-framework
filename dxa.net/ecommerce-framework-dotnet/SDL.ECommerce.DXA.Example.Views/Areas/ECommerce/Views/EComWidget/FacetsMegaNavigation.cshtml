@@ -1,0 +1,74 @@
+﻿@model FacetsWidget
+@if (Model.CategoryReference != null && Model.CategoryReference.CategoryPath != null && Model.CategoryReference.CategoryPath.Equals("Empty"))
+{
+    <li class="mega-nav-link" @Html.DxaEntityMarkup()>
+        <a href="" style="pointer-events: none;">&lt;EMPTY&gt;</a>
+    </li>
+}
+@if (Model.CategoryReference != null && Model.CategoryReference.Category != null && Model.FacetGroups != null && Model.FacetGroups.Count > 0)
+{
+
+    int cols = Model.FacetGroups.Count + (Model.RelatedPromotions.Count > 0 ? 1 : 0);
+    int colWidth = 12 / cols;
+    int noOfCols = cols * colWidth;
+    int colRemainder = 0;
+    int navWidth = cols * 230;
+    string categoryUrl = ECommerceContext.LinkResolver.GetNonContextualCategoryLink(Model.CategoryReference.Category);
+
+    if (Model.RelatedPromotions.Count > 0)
+    {
+        colRemainder = (12 - noOfCols);
+    }
+
+    <li class="mega-nav-link" @Html.DxaEntityMarkup()>
+        <a href="@categoryUrl">@Model.CategoryReference.Category.Name</a>
+
+        <div class="mega-nav" style="width: @(navWidth)px;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="mega-nav-content">
+                        <div class="row">
+                            @foreach (var facetGroup in Model.FacetGroups)
+                            {
+                                <div class="col-sm-@colWidth">
+                                    <h5><i class="fa fa-cog"></i> @facetGroup.Title @Html.Partial("Partials/EditControl", facetGroup)</h5>
+                                    <ul class="list-unstyled">
+                                        @foreach (var facet in facetGroup.Facets)
+                                        {
+                                            <li>
+                                                <a href="@ECommerceContext.LinkResolver.GetAbsoluteFacetLink(facet, categoryUrl)">@facet.Title</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            @if (Model.RelatedPromotions.Count > 0)
+                            {
+                                // TODO: Should we limit to only one promotion in the meganav?
+                                foreach (var promotion in Model.RelatedPromotions )
+                                {                      
+                                    <div class="col-sm-@(colWidth+colRemainder)">
+                                        @if (promotion is IProductsPromotion)
+                                        {
+                                            @Html.Partial("Partials/ProductsPromotionMegaNav", promotion);
+                                        }
+                                        else if ( promotion is IImageMapPromotion )
+                                        {
+                                            // Image maps does not work in the meganav so ignore them for now...
+                                        }
+                                        else if (promotion is IContentPromotion)
+                                        {
+                                            @Html.Partial("Partials/ContentPromotionMegaNav", promotion);
+                                        }
+                          
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </li>
+}

@@ -44,6 +44,19 @@ public abstract class GenericTestSuite {
         printCategories(category.getCategories());
     }
 
+    protected void testGetNotFoundCategoryById(String categoryId) throws Exception {
+
+        Category category = this.categoryService.getCategoryById(categoryId);
+        if ( category == null ) {
+            LOG.info("Category was not found.");
+        }
+        else {
+            // Replace with assert
+            //
+            throw new Exception("Category was found! Should not happen!");
+        }
+    }
+
     protected void testGetCategoryByPath(String categoryPath) throws Exception {
         Category category = this.categoryService.getCategoryByPath(categoryPath);
         LOG.info("Category ID: " + category.getId() + ", Name: " + category.getName());
@@ -164,19 +177,76 @@ public abstract class GenericTestSuite {
         LOG.info("Detail Page URL:" + this.linkResolver.getProductDetailLink(product));
         LOG.info("Primary Image URL: " + product.getPrimaryImageUrl());
         LOG.info("Categories: ");
-        for ( Category category : product.getCategories() ) {
-            LOG.info("ID: " + category.getId() + " Name: " + category.getName() + " Parent: " + category.getParent().getName());
+        for (Category category : product.getCategories()) {
+            LOG.info("ID: " + category.getId() + " Name: " + category.getName());
         }
         LOG.info("Breadcrumbs: ");
         this.printBreadcrumbs(result.getBreadcrumbs());
         this.printPromotions(result.getPromotions());
-        LOG.info("Facets: ");
-        for ( FacetParameter facet : product.getFacets() ) {
-            LOG.info(facet.getName() + " : " + facet.getValues());
-        }
         LOG.info("Attributes: ");
-        for ( String attrName : product.getAttributes().keySet() ) {
+        for (String attrName : product.getAttributes().keySet()) {
             LOG.info("Name: " + attrName + " Value: " + product.getAttributes().get(attrName));
+        }
+
+    }
+
+    protected void testGetNotFoundProductDetail(String productId) throws Exception {
+        LOG.info("Getting detail for product...");
+        ProductDetailResult result = this.detailService.getDetail(productId);
+        Product product = result.getProductDetail();
+        if ( product == null ) {
+            LOG.info("Product not found!");
+        }
+        else {
+            // Replace with assert
+            //
+            throw new Exception("Product was found! Should not happen!");
+        }
+    }
+
+    protected void testGetProductVariants(String productId) throws Exception {
+        LOG.info("Getting detail for product...");
+        ProductDetailResult result = this.detailService.getDetail(productId);
+        Product product = result.getProductDetail();
+        LOG.info("Product ID: " + product.getId());
+        LOG.info("Product Name: " + product.getName());
+        LOG.info("Product Description: " + product.getDescription());
+        if ( product.getVariantAttributes() != null ) {
+            LOG.info("Current product is an variant with current attributes:");
+            for ( ProductVariantAttribute attribute : product.getVariantAttributes() ) {
+                LOG.info("  " + attribute.getName() + " = " + attribute.getValue());
+            }
+        }
+        if ( product.getVariants() != null ) {
+            LOG.info("Variants: ");
+            for (ProductVariant variant : product.getVariants()) {
+                LOG.info("  Product Variant ID:" + variant.getId());
+                LOG.info("  Price:" + variant.getPrice());
+                LOG.info("  Attributes:");
+                for (ProductVariantAttribute attribute : variant.getAttributes()) {
+                    LOG.info("    " + attribute.getName() + " = " + attribute.getValue());
+                }
+            }
+        }
+        else if ( product.getVariantAttributes() != null ) {
+            LOG.info("Variant attributes: ");
+            for ( ProductVariantAttribute attribute : product.getVariantAttributes() ) {
+                LOG.info("  Attribute ID: " + attribute.getId());
+                LOG.info("  Attribute Name: " + attribute.getName());
+                LOG.info("  Attribute Value ID: " + attribute.getValueId());
+                LOG.info("  Attribute Value: " + attribute.getValue());
+                LOG.info("      ---");
+            }
+        }
+        if ( product.getVariantAttributeTypes() != null ) {
+            LOG.info("Variant attribute types:");
+            for ( ProductVariantAttributeType attributeType : product.getVariantAttributeTypes() ) {
+                LOG.info("  Attribute Type: " + attributeType.getId() + " Name: " + attributeType.getName());
+                LOG.info("  Values:");
+                for ( ProductVariantAttributeValueType valueType : attributeType.getValues() ) {
+                    LOG.info("    ID: " + valueType.getId() + " Value: " + valueType.getValue() + " Selected: " + valueType.isSelected());
+                }
+            }
         }
     }
 
@@ -187,7 +257,7 @@ public abstract class GenericTestSuite {
 
         for ( String productId : productIds ) {
             LOG.info("Adding product with ID: " + productId + " to cart...");
-            cart = cartService.addProductToCart(cart.getId(), productId, 1);
+            cart = cartService.addProductToCart(cart.getId(), cart.getSessionId(), productId, 1);
             this.printCartItems(cart);
         }
     }

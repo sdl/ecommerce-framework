@@ -17,34 +17,34 @@
     <version>1.1.0</version>
 
     <modules>
-        <module>dummy-dxa-ecommerce-connector</module>
+        <module>dummy-ecommerce-connector</module>
     </modules>
 
     <profiles>
         <profile>
             <id>all-connectors</id>
             <modules>
-                <module>fredhopper-dxa-ecommerce-connector</module>
-                <module>hybris-dxa-ecommerce-connector</module>
-                <module>demandware-dxa-ecommerce-connector</module>
+                <module>fredhopper-ecommerce-connector</module>
+                <module>hybris-ecommerce-connector</module>
+                <module>demandware-ecommerce-connector</module>
             </modules>
         </profile>
         <profile>
             <id>fredhopper</id>
             <modules>
-                <module>fredhopper-dxa-ecommerce-connector</module>
+                <module>fredhopper-ecommerce-connector</module>
             </modules>
         </profile>
         <profile>
             <id>hybris</id>
             <modules>
-                <module>hybris-dxa-ecommerce-connector</module>
+                <module>hybris-ecommerce-connector</module>
             </modules>
         </profile>
         <profile>
             <id>demandware</id>
             <modules>
-                <module>demandware-dxa-ecommerce-connector</module>
+                <module>demandware-ecommerce-connector</module>
             </modules>
         </profile>
     </profiles>

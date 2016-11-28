@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 @EdmEntitySet(name="Products")
 public class ODataProduct implements Product, Serializable {
 
-    // TODO: Should breadcrumbs, promotions etc be part of this entity????
-
-    // TODO: Should this be called ProductDetail instead and be a complex type???
-
     @EdmProperty
     private String id;
+
+    @EdmProperty
+    private String variantId;
 
     @EdmProperty
     private String name;
@@ -55,11 +54,21 @@ public class ODataProduct implements Product, Serializable {
     @EdmProperty
     private List<ODataBreadcrumb> breadcrumbs = new ArrayList<>();
 
+    @EdmProperty
+    private List<ODataProductVariantAttribute> variantAttributes = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataProductVariant> variants = new ArrayList<>();
+
+    @EdmProperty
+    private List<ODataProductVariantAttributeType> variantAttributeTypes = new ArrayList<>();
+
     public ODataProduct() {}
 
     public ODataProduct(ProductDetailResult detailResult) {
         Product product = detailResult.getProductDetail();
         this.id = product.getId();
+        this.variantId = product.getVariantId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = new ODataProductPrice(product.getPrice());
@@ -71,6 +80,15 @@ public class ODataProduct implements Product, Serializable {
             for ( String name : attributes.keySet() ) {
                 this.attributes.add(new ODataProductAttribute(name, attributes.get(name)));
             }
+        }
+        if ( product.getVariantAttributes() != null ) {
+            product.getVariantAttributes().forEach(attribute -> this.variantAttributes.add(new ODataProductVariantAttribute(attribute)));
+        }
+        if ( product.getVariants() != null ) {
+            product.getVariants().forEach(variant -> this.variants.add(new ODataProductVariant(variant)));
+        }
+        if ( product.getVariantAttributeTypes() != null ) {
+            product.getVariantAttributeTypes().forEach(type -> this.variantAttributeTypes.add(new ODataProductVariantAttributeType((type))));
         }
         if ( product.getCategories() != null ) {
             product.getCategories().forEach(category -> this.categories.add(new ODataCategorySummary(category)));
@@ -86,6 +104,11 @@ public class ODataProduct implements Product, Serializable {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String getVariantId() {
+        return this.variantId;
     }
 
     @Override
@@ -119,11 +142,6 @@ public class ODataProduct implements Product, Serializable {
     }
 
     @Override
-    public List<FacetParameter> getFacets() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public Map<String, Object> getAttributes() {
         if ( this.attributeMap == null ) {
             this.attributeMap = new HashMap<>();
@@ -144,10 +162,25 @@ public class ODataProduct implements Product, Serializable {
     }
 
     public List<Promotion> getPromotions() {
-        return promotions.stream().collect(Collectors.toList());
+        return this.promotions.stream().map(promotion -> promotion.toPromotion()).collect(Collectors.toList());
     }
 
     public List<Breadcrumb> getBreadcrumbs() {
         return breadcrumbs.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariant> getVariants() {
+        return this.variants.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariantAttribute> getVariantAttributes() {
+        return this.variantAttributes.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductVariantAttributeType> getVariantAttributeTypes() {
+        return this.variantAttributeTypes.stream().collect(Collectors.toList());
     }
 }

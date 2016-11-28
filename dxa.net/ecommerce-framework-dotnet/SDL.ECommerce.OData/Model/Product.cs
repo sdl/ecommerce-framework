@@ -77,7 +77,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        List<ICategory> IProduct.Categories
+        IList<ICategory> IProduct.Categories
         {
             get
             {
@@ -98,6 +98,30 @@ namespace SDL.ECommerce.OData
             get
             {
                 return this.Promotions.Select(promo => promo.ToConcretePromotion()).ToList();
+            }
+        }
+
+        IList<IProductVariant> IProduct.Variants
+        {
+            get
+            {
+                return this.Variants.Cast<IProductVariant>().ToList();
+            }
+        }
+
+        IList<IProductVariantAttribute> IProduct.VariantAttributes
+        {
+            get
+            {
+                return this.VariantAttributes.Cast<IProductVariantAttribute>().ToList();
+            }
+        }
+
+        IList<IProductVariantAttributeType> IProduct.VariantAttributeTypes
+        {
+            get
+            {
+                return this.VariantAttributeTypes.Cast<IProductVariantAttributeType>().ToList();
             }
         }
     }

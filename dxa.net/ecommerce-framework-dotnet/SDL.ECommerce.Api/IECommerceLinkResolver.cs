@@ -20,6 +20,13 @@ namespace SDL.ECommerce.Api
         string GetCategoryLink(ICategory category);
 
         /// <summary>
+        /// Get a non-contextual link to category page, i.e. without based on info from page controllers etc.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        string GetNonContextualCategoryLink(ICategory category);
+
+        /// <summary>
         /// Get facet link.
         /// </summary>
         /// <param name="facet"></param>
@@ -61,6 +68,15 @@ namespace SDL.ECommerce.Api
         /// <param name="product"></param>
         /// <returns></returns>
         string GetProductDetailLink(IProduct product);
+
+        /// <summary>
+        /// Get link to product variant page using specified variant attribute
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="variantAttributeId"></param>
+        /// <param name="variantAttributeValueId"></param>
+        /// <returns></returns>
+        string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId);
 
     }
 }

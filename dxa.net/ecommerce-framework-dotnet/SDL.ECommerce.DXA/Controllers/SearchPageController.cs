@@ -42,13 +42,13 @@ namespace SDL.ECommerce.DXA.Controllers
 
             // Build query
             //
-            Query query;
+            Api.Model.Query query;
             if ( categoryUrl != null )
             {
                 var category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryUrl);
                 if (category != null)
                 {
-                    query = new Query { SearchPhrase = searchPhrase, Category = category, Facets = facets, StartIndex = GetStartIndex() };
+                    query = new Api.Model.Query { SearchPhrase = searchPhrase, Category = category, Facets = facets, StartIndex = GetStartIndex() };
                     ECommerceContext.Set(ECommerceContext.CATEGORY, category);
                 }
                 else
@@ -58,13 +58,14 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             else
             {
-                query = new Query { SearchPhrase = searchPhrase, Facets = facets, StartIndex = GetStartIndex() };
+                query = new Api.Model.Query { SearchPhrase = searchPhrase, Facets = facets, StartIndex = GetStartIndex() };
             } 
             
             templatePage = this.ResolveTemplatePage(this.GetSearchPath());
             // templatePage.Title = ?? TODO: What title to use for search results?
             SetupViewData(templatePage);
 
+            this.GetQueryContributions(templatePage, query);
             var searchResult = ECommerceContext.Client.QueryService.Query(query);
 
             if (searchResult.RedirectLocation != null)
