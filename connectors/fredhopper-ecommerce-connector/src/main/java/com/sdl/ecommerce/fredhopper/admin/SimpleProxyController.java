@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,24 +32,28 @@ public class SimpleProxyController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleProxyController.class);
 
-    @Value("${fredhopper.adminserver.url}")
+    @Value("${fredhopper.adminserver.url:#{null}}")
     private String fredhopperBaseUrl = "http://localhost:8180";
-    @Value("${fredhopper.access.username}")
+    @Value("${fredhopper.access.username:#{null}}")
     private String accessUsername = null;
-    @Value("${fredhopper.access.password}")
+    @Value("${fredhopper.access.password:#{null}}")
     private String accessPassword = null;
+
+    private boolean isInitialized = false;
 
     private HttpClient client;
 
     @PostConstruct
     public void initialize() throws IOException {
 
-        MultiThreadedHttpConnectionManager connectionManager =
-                new MultiThreadedHttpConnectionManager();
-        this.client = new HttpClient(connectionManager);
-        if ( this.accessUsername != null && !this.accessUsername.isEmpty() ) {
-            Credentials credentials = new UsernamePasswordCredentials(this.accessUsername, this.accessPassword);
-            client.getState().setCredentials(AuthScope.ANY, credentials);
+        if ( StringUtils.isNotEmpty(fredhopperBaseUrl) ) {
+            MultiThreadedHttpConnectionManager connectionManager =
+                    new MultiThreadedHttpConnectionManager();
+            this.client = new HttpClient(connectionManager);
+            if (this.accessUsername != null && !this.accessUsername.isEmpty()) {
+                Credentials credentials = new UsernamePasswordCredentials(this.accessUsername, this.accessPassword);
+                client.getState().setCredentials(AuthScope.ANY, credentials);
+            }
         }
     }
 
@@ -61,6 +66,11 @@ public class SimpleProxyController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        if ( !isInitialized ) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         final String requestPath = request.getRequestURI();
         LOG.info("Proxy asset: " + requestPath);

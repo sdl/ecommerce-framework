@@ -56,21 +56,22 @@ public class AdminProxyController {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Value("${fredhopper.adminserver.url}")
+    @Value("${fredhopper.adminserver.url:#{null}}")
     private String fredhopperBaseUrl = "http://localhost:8180";
 
-    @Value("${fredhopper.access.username}")
+    @Value("${fredhopper.access.username:#{null}")
     private String accessUsername = null;
-    @Value("${fredhopper.access.password}")
+    @Value("${fredhopper.access.password:#{null}}")
     private String accessPassword = null;
 
-    @Value("${fredhopper.admin.username}")
+    @Value("${fredhopper.admin.username:#{null}}")
     private String username;
-    @Value("${fredhopper.admin.password}")
+    @Value("${fredhopper.admin.password:#{null}}")
     private String password;
 
     private long sessionTimeout = 1 * 60 * 1000; // TODO: Have configurable
     private long lastAccessTime;
+    private boolean isInitialized = false;
 
     private HttpClient client;
     private MultiThreadedHttpConnectionManager connectionManager;
@@ -78,17 +79,20 @@ public class AdminProxyController {
     @PostConstruct
     public void initialize() throws IOException {
 
-        this.fredhopperAdminUrl = this.fredhopperBaseUrl + ADMIN_URL;
-        this.connectionManager =
-                new MultiThreadedHttpConnectionManager();
-        this.client = new HttpClient(connectionManager);
+        if ( StringUtils.isNotEmpty(this.fredhopperBaseUrl) ) {
+            this.fredhopperAdminUrl = this.fredhopperBaseUrl + ADMIN_URL;
+            this.connectionManager =
+                    new MultiThreadedHttpConnectionManager();
+            this.client = new HttpClient(connectionManager);
 
-        if ( this.accessUsername != null && !this.accessUsername.isEmpty() ) {
-            Credentials credentials = new UsernamePasswordCredentials(this.accessUsername, this.accessPassword);
-            client.getState().setCredentials(AuthScope.ANY, credentials);
+            if (this.accessUsername != null && !this.accessUsername.isEmpty()) {
+                Credentials credentials = new UsernamePasswordCredentials(this.accessUsername, this.accessPassword);
+                client.getState().setCredentials(AuthScope.ANY, credentials);
+            }
+            this.login();
+            this.lastAccessTime = System.currentTimeMillis();
+            this.isInitialized = true;
         }
-        this.login();
-        this.lastAccessTime = System.currentTimeMillis();
     }
 
     /**
@@ -115,16 +119,23 @@ public class AdminProxyController {
      * @param request
      * @throws IOException
      */
-    protected void checkSession(HttpServletRequest request) throws IOException {
+    protected boolean checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // TODO: This has to be check in the DXA module instead
         //if ( !isInXPMSessionPreview(request) ) {
         //    throw new IOException("No active XPM session found!");
         //}
 
+        if ( !isInitialized ) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
+
         // TODO: Check if no admin credential -> Give an error
         if ( this.lastAccessTime + this.sessionTimeout < System.currentTimeMillis() ) {
             login();
         }
+
+        return true;
     }
 
     protected boolean isInXPMSessionPreview(HttpServletRequest request) {
@@ -141,7 +152,10 @@ public class AdminProxyController {
     @RequestMapping(method = RequestMethod.GET, value = "/**", produces = {MediaType.ALL_VALUE})
     public void proxyAssets(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        this.checkSession(request);
+        boolean sessionOk = this.checkSession(request, response);
+        if ( !sessionOk ) {
+            return;
+        }
 
         LOG.debug("Proxy request: " + request.getRequestURI());
 
@@ -243,7 +257,10 @@ public class AdminProxyController {
     @RequestMapping(method = RequestMethod.POST, value = "/**", produces = {MediaType.ALL_VALUE})
     public void postHtml(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        this.checkSession(request);
+        boolean sessionOk = this.checkSession(request, response);
+        if ( !sessionOk ) {
+            return;
+        }
 
         LOG.debug("Proxy POST request: " + request.getRequestURI());
 
