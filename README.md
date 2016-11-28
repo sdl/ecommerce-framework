@@ -10,7 +10,7 @@ Right now it provides connectors for:
 * SAP Hybris (http://www.hybris.com)
 * Salesforce Commerce Cloud (Demandware) (http://www.demandware.com)
 
-The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.0) using DXA 1.6.
+The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.1) using DXA 1.6.
 
 New functionality in the v1.1 version:
 * New OData based micro service for E-Commerce including clients for Java and .NET
@@ -70,13 +70,12 @@ The generic DXA module that consume the E-Commerce APIs. It contains right now t
     * Search spelling feedback
     * Cart (minimised in the header + detail)
 * Page controllers for category and detail pages for SEO friendly pages
-    * No 1:1 mapping between a page and a Tridion page. Tridion instead manage a set of template pages which are used for the different category/detail pages
+    * No 1:1 mapping is required  between a lister/detail page and a Tridion page. Tridion instead manage a set of template pages which are used for the different category/detail pages
     * The experience of those template pages can be overridden. The controllers uses a search pattern to find the best match template page for a certain category/detail pages
 * Some widgets can be placed outside the control of the category/detail controllers such as facets, promotions and listers. The actual category & view type can be configured on widget level through either category paths or ECL links. This allows easy creating of campaign/landing pages etc.
 * Localization support, i.e. the different language, currency and catalog mappings per publication
 
-In addition there is a DXA module with a set of HTML views (in JSP or Razor) implementing the default E-Commerce templates. The views are
-based on the White Label HTML design.
+In addition there is a DXA module with a set of HTML views (in JSP or Razor) implementing the default E-Commerce templates. The views are based on the DXA White Label HTML design.
 
 The ECL providers allows easy access to categories and products which makes it easy to associate references in for example the different E-Commerce widgets (listers, facets etc). 
 In addition the ECL provider gives the possibility to drag & drop categories & products directly on pages as well. This allows the possibility to do both E-Commerce 1:1 (i.e. one Tridion page per category/product) and rule based (through the controllers).
@@ -156,7 +155,7 @@ Getting Started (CMS)
 2. Publish out the settings page, HTML design + the header include page. 
 3. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
 4. If needed adjust the localization properties for the selected connector (under Building Blocks/Settings/E-Commerce/Site Manager)
-    * This is only needed when running the connector co-located in DXA webapp (DXA.Java only)
+    * This is only needed when running the connector co-located in the DXA webapp (DXA.Java only)
 4. Start up your DXA web application and verify that the E-Commerce main categories are visible in the mega navigation
 5. In addition (optional) you can also install one of the ECL providers. See instructions given in:
     * [Hybris ECL](./ecl/hybris-ecl-provider/README.md)
