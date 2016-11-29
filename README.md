@@ -119,6 +119,7 @@ Getting Started (.NET)
 ------------------------
 
 The .NET version of the E-Commerce DXA modules requires the OData micro service. Follow the below steps to setup the modules: 
+
 1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by following the instructions given here: [Installing the web application (.NET)](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v6/GUID-8633F5AE-8472-4D53-AD38-A7A33DD1F5A3)
 2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
 3. Either open up the solution dxa.net/SDL.ECommerce.sln or add the VS projects under dxa.net to your Visual Studio solution
