@@ -97,18 +97,43 @@ Getting started (Java)
 
 For Java you can either have the connectors co-located or use the OData micro service. There is an example webapp for the white label design available to be able to get started quickly.
 To setup the example webapp you need to do the following:
-
-1. If you have not setup DXA in the CMS, please follow the following instructions: [Installing Digital Experience Accelerator](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v3/GUID-8E88E5AF-4552-40F0-8DB2-FBDBDBA41A11) 
-2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
-3. Configure the dxa.properties (under ecommerce-framework-example-webapp/src/main/resources) for selected connector. Following instructions given in respective README for each connector to set it up:
+ 
+1. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
+2. Configure the dxa.properties (under ecommerce-framework-example-webapp/src/main/resources) for selected connector. Following instructions given in respective README for each connector to set it up:
     * [Fredhopper](./connectors/fredhopper-ecommerce-connector/README.md)
     * [Hybris](./connectors/hybris-ecommerce-connector/README.md)
     * [Demandware](./connectors/demandware-ecommerce-connector/README.md)   
-4. Compile the code and package a WAR file by doing the following:
-    * mvn package -Pexample-webapp -P[connector #1] -P[connector #2] ... , e.g. `mvn package -Pexample-webapp -Pfredhopper` (generates webapp with the Fredhopper connector)
+3. Compile the code and package a WAR file by doing the following in the root of the project: 
+
+    ```
+    mvn package -Pexample-webapp -P[connector #1] -P[connector #2] ...
+    ```
+ 
+    * Example: Compiles the webapp with the Fredhopper connector:  `mvn package -Pexample-webapp -Pfredhopper` 
     * If using the OData micro service, use the following: `mvn package -Pexample-webapp -Podata-client`
-5. Deploy the generated WAR to your JEE application server/servlet container. Make sure the webapp runs as the root webapp.
-6. Setup CMS as described below
+4. Deploy the generated WAR to your JEE application server/servlet container. Make sure the webapp runs as the root webapp.
+5. Setup CMS as described below
+
+
+Getting Started (.NET)
+------------------------
+
+The .NET version of the E-Commerce DXA modules requires the OData micro service. Follow the below steps to setup the modules: 
+1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by following the instructions given here: [Installing the web application (.NET)](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v6/GUID-8633F5AE-8472-4D53-AD38-A7A33DD1F5A3)
+2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
+3. Either open up the solution dxa.net/SDL.ECommerce.sln or add the VS projects under dxa.net to your Visual Studio solution
+4. Set the environment variable %DXA_SITE_DIR% to point to your DXA Site path (in visual studio or in your IIS instance) 
+5. Restart Visual studio and rebuild the solution. Verify so E-Commerce Areas and DLLs are copied to your site folder
+6. Configure E-Commerce micro service in Web.config of your site:
+
+   ``` 
+    !-- E-Commerce Framework -->
+    <add key="ecommerce-service-uri" value="http://localhost:8097/ecommerce.svc"/>
+   ```
+
+7. Setup CMS as described below    
+
+An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md)
 
 
 Getting Started with the OData micro service
@@ -128,29 +153,11 @@ Follow the below steps to setup the the OData micro service (which can be run on
     * For more information about different deployment options, see [Installing Spring Boot applications](http://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html) 
 6. Verify that the service up & running by typing the following in your browser: http://[server name]:8097/ecommerce.svc/Categories. It should list all top level categories in the current E-Commerce system.
 
-Getting Started (.NET)
-------------------------
-
-Follow the below steps to setup the .NET version of the E-Commerce DXA modules: 
-1. If you do not have a DXA.NET setup (for SDL Web 8) you can easily do this by following the instructions given here: http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v6/GUID-001D829E-1141-4B18-B696-894DF27B6DA1
-2. Clone this repository: `git clone https://github.com/sdl/ecommerce-framework`
-3. Either open up the solution dxa.net/SDL.ECommerce.sln or add the VS projects under dxa.net to your Visual Studio solution
-4. Set the environment variable %DXA_SITE_DIR% to point to your DXA Site path (in visual studio or in your IIS instance) 
-5. Restart Visual studio and rebuild the solution. Verify so E-Commerce Areas and DLLs are copied to your site folder
-6. Configure E-Commerce micro service in Web.config of your site:
-
-   ``` 
-    !-- E-Commerce Framework -->
-    <add key="ecommerce-service-uri" value="http://localhost:8097/ecommerce.svc"/>
-   ```
-
-7. Setup CMS as described below    
-
-An overview of the different .NET projects are given here: [E-Commerce DXA.NET](./dxa.net/README.md)
 
 Getting Started (CMS)
 ------------------------
 
+1. If you have not installed DXA in SDL Web CMS, you can follow the instructions given here: [Importing the DXA Publications into Content Manager](http://docs.sdl.com/LiveContent/content/en-US/SDL%20DXA-v6/GUID-EDB49D8A-DCC3-45E7-B809-6A8B377C4FEA) 
 1. Install the CMS packages by following instructions given in: [Install CMS packages](./cms/README.md) 
 2. Publish out the settings page, HTML design + the header include page. 
 3. Publish out pages under 'Categories' and 'Products'. And the 'Cart' and 'Search Results' pages.
@@ -170,6 +177,7 @@ Below are some enhancements to be consider in future versions:
 
 * Support for checkouts
 * Improved category experience such as sorting, slider facets etc
+* Improved cart model with support for promo codes etc
 * Hybrid search (content/E-Commerce)
 * Search suggest
 * OAuth authentication on the E-Commerce micro service
