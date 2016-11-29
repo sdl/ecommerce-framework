@@ -4,7 +4,7 @@ Install CMS modules and example content
 There are a number of CMS packages that can be installed in SDL Tridion 2013 SP1/SDL Web 8.
 The following packages are provided:
 
-* ECommerceModules_v1.1.0.zip - Contains for E-Commerce and Navigation modules + modified version of the HTML white label design
+* ECommerceModules_v1.1.0.zip - Contains for E-Commerce and Navigation modules
 * ECommerceWhiteLabelDesign_v1.1.0.zip - Contains additions to the DXA white label design for the E-Commerce Framework
 * ECommerceContentStructure_v1.1.0.zip - E-Commerce content types and page types, base content structure
 * ECommercePageStructure_v1.1.0.zip - E-Commerce page structure
