@@ -1,9 +1,7 @@
 ﻿using SDL.ECommerce.Api.Service;
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using SDL.ECommerce.Api.Model;
 using Sdl.Web.Delivery.Service;
 

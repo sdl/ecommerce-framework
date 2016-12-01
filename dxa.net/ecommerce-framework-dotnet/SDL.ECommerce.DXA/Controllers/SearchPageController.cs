@@ -1,10 +1,7 @@
 ﻿using Sdl.Web.Common.Logging;
 using Sdl.Web.Common.Models;
-using SDL.ECommerce.Api.Model;
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA.Controllers

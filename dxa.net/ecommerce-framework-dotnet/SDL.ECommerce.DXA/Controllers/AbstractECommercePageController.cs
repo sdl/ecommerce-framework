@@ -1,6 +1,4 @@
 ﻿using Sdl.Web.Common;
-using Sdl.Web.Common.Configuration;
-using Sdl.Web.Common.Interfaces;
 using Sdl.Web.Common.Logging;
 using Sdl.Web.Common.Models;
 using Sdl.Web.Mvc.Configuration;
@@ -10,7 +8,6 @@ using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
