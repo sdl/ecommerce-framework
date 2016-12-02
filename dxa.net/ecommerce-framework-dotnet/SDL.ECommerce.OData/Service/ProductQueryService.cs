@@ -12,13 +12,13 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductQueryService : IProductQueryService
     {
-        private ODataV4Service service;
+        private IODataV4Service service;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductQueryService(ODataV4Service service)
+        internal ProductQueryService(IODataV4Service service)
         {
             this.service = service;
         }

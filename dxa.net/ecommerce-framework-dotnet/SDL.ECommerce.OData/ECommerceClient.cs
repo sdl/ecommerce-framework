@@ -6,6 +6,8 @@ using System;
 
 namespace SDL.ECommerce.OData
 {
+    using Microsoft.OData.Client;
+
     // Temporary solution for the client config
     // TODO: Use the standard approach
     //
@@ -61,7 +63,8 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ECommerceClient : IECommerceClient
     {
-        private ODataV4Service service;
+        private IODataV4Service odataService;
+        private IECommerceServiceContext ecommerceService;
         private ProductCategoryService categoryService;
         private ProductQueryService queryService;
         private ProductDetailService detailService;
@@ -80,8 +83,8 @@ namespace SDL.ECommerce.OData
             serviceConfig.Timeout = 1000;
 
             IOAuthTokenProvider defaultTokenProvider = DiscoveryServiceProvider.DefaultTokenProvider;
-            service = new ODataV4Service(new SDLECommerce(serviceConfig.ServiceEndpoint), serviceConfig, defaultTokenProvider);
-
+            this.ecommerceService = new SDLECommerce(serviceConfig.ServiceEndpoint);
+            this.odataService = new ODataV4Service((DataServiceContext)this.ecommerceService, serviceConfig, defaultTokenProvider);
         }
 
         /// <summary>
@@ -93,7 +96,7 @@ namespace SDL.ECommerce.OData
             {
                 if (categoryService == null)
                 {
-                    categoryService = new ProductCategoryService(this.service);
+                    categoryService = new ProductCategoryService(this.odataService, this.ecommerceService);
                 }
                 return categoryService;
             }
@@ -108,7 +111,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( queryService == null )
                 {
-                    queryService = new ProductQueryService(this.service);
+                    queryService = new ProductQueryService(this.odataService);
                 }
                 return queryService;
             }
@@ -123,7 +126,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( detailService == null )
                 {
-                    detailService = new ProductDetailService(this.service);
+                    detailService = new ProductDetailService(this.odataService, this.ecommerceService);
                 }
                 return detailService;
             }
@@ -138,7 +141,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( cartService == null )
                 {
-                    cartService = new CartService(this.service);
+                    cartService = new CartService(this.odataService);
                 }
                 return cartService;
             }
@@ -153,7 +156,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( editService == null )
                 {
-                    editService = new EditService(this.service);
+                    editService = new EditService(this.odataService);
                 }
                 return editService;
             }

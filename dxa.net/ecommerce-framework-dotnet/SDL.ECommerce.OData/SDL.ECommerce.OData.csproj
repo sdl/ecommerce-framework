@@ -110,6 +110,8 @@
     <Compile Include="Model\ProductVariantAttributeValueType.cs" />
     <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\QuerySuggestion.cs" />
+    <Compile Include="Service References\E-Commerce OData Service\IECommerceServiceContext.cs" />
+    <Compile Include="Service References\E-Commerce OData Service\SDLECommerce.cs" />
     <Compile Include="Service\CartService.cs" />
     <Compile Include="Service\EditService.cs" />
     <Compile Include="Service\ProductCategoryService.cs" />
