@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sdl.Web.Mvc.Configuration;
-using SDL.ECommerce.DXA.Models;
+﻿using System.Collections.Generic;
+
 using Sdl.Web.Common.Logging;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web;
 
 namespace SDL.ECommerce.DXA
 {

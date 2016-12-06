@@ -1,9 +1,7 @@
 ﻿using SDL.ECommerce.Api.Service;
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using SDL.ECommerce.Api.Model;
 using Sdl.Web.Delivery.Service;
 
@@ -11,9 +9,9 @@ namespace SDL.ECommerce.OData
 {
     public class CartService : ICartService
     {
-        private ODataV4Service service;
+        private IODataV4Service service;
 
-        internal CartService(ODataV4Service service)
+        internal CartService(IODataV4Service service)
         {
             this.service = service;
         }

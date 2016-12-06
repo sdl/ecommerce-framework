@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SDL.ECommerce.Api;
+
 using SDL.ECommerce.Api.Model;
 
 /**

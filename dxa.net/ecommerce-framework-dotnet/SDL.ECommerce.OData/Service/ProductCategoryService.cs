@@ -1,11 +1,9 @@
-﻿using Sdl.Web.Delivery.Service;
-using SDL.ECommerce.Api.Model;
+﻿using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Api.Service;
+using Sdl.Web.Delivery.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.OData
 {
@@ -15,7 +13,8 @@ namespace SDL.ECommerce.OData
     /// TODO: Implement an interface here
     public class ProductCategoryService : IProductCategoryService
     {
-        private ODataV4Service service;
+        private IODataV4Service service;
+        private IECommerceServiceContext sdlECommerce;
 
         private int categoryExpiryTimeout = 3600000; // TODO: Have this configurable
         private ICategory rootCategory = new Category();
@@ -24,9 +23,10 @@ namespace SDL.ECommerce.OData
         /// Constructor (only availably internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductCategoryService(ODataV4Service service)
+        internal ProductCategoryService(IODataV4Service service, IECommerceServiceContext sdlECommerce)
         {
             this.service = service;
+            this.sdlECommerce = sdlECommerce;
             this.GetTopLevelCategories();
         }
 
@@ -57,7 +57,7 @@ namespace SDL.ECommerce.OData
             {
                 // Secondly get the category and try to fit it into the cached structure
                 //
-                category = ((SDLECommerce)this.service.Service).Categories.ByKey(id).GetValue();
+                category = this.sdlECommerce.Categories.ByKey(id).GetValue();
                 ICategory currentParent = rootCategory;
                 var parentIds = ((Category)category).ParentIds.ToList();
 
@@ -145,11 +145,11 @@ namespace SDL.ECommerce.OData
             IList<Category> categories;
             if ( parent == rootCategory )
             {
-                categories = ((SDLECommerce)this.service.Service).Categories.ToList();
+                categories = this.sdlECommerce.Categories.ToList();
             }
             else
             {
-                categories = ((SDLECommerce)this.service.Service).Categories.ByKey(parent.Id).Categories.ToList();
+                categories = this.sdlECommerce.Categories.ByKey(parent.Id).Categories.ToList();
             }
             IList<ICategory> existingCategories = parent.Categories;
             IList<ICategory> newCategoryList = new List<ICategory>();

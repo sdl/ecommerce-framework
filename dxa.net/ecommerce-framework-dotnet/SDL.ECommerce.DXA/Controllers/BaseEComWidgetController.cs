@@ -4,12 +4,9 @@ using Sdl.Web.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using SDL.ECommerce.DXA.Models;
 using SDL.ECommerce.Api;
-using Sdl.Web.Mvc.Configuration;
 using SDL.ECommerce.Api.Model;
 using System.Runtime.Caching;
 

@@ -1,11 +1,9 @@
 ﻿using Sdl.Web.Delivery.Service;
 using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Api.Service;
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.OData
 {
@@ -14,13 +12,13 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductQueryService : IProductQueryService
     {
-        private ODataV4Service service;
+        private IODataV4Service service;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductQueryService(ODataV4Service service)
+        internal ProductQueryService(IODataV4Service service)
         {
             this.service = service;
         }

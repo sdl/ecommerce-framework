@@ -1,11 +1,10 @@
 ﻿using Microsoft.OData.Client;
 using Sdl.Web.Delivery.Service;
 using SDL.ECommerce.Api.Service;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.OData
 {
@@ -14,22 +13,24 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductDetailService : IProductDetailService
     {
-        private ODataV4Service service;
+        private IODataV4Service service;
+        private IECommerceServiceContext sdlECommerce;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductDetailService(ODataV4Service service)
+        internal ProductDetailService(IODataV4Service service, IECommerceServiceContext sdlECommerce)
         {
             this.service = service;
+            this.sdlECommerce = sdlECommerce;
         }
 
         public IProduct GetDetail(string productId)
         {
             try
             {
-                return ((SDLECommerce)this.service.Service).Products.ByKey(productId).GetValue();
+                return this.sdlECommerce.Products.ByKey(productId).GetValue();
             }
             catch (DataServiceQueryException)
             {
