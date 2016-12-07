@@ -1,6 +1,5 @@
 ﻿using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Api.Service;
-using Sdl.Web.Delivery.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
