@@ -13,24 +13,22 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductDetailService : IProductDetailService
     {
-        private IODataV4Service service;
-        private IECommerceServiceContext sdlECommerce;
+        private IECommerceODataV4Service service;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductDetailService(IODataV4Service service, IECommerceServiceContext sdlECommerce)
+        internal ProductDetailService(IECommerceODataV4Service service)
         {
             this.service = service;
-            this.sdlECommerce = sdlECommerce;
         }
 
         public IProduct GetDetail(string productId)
         {
             try
             {
-                return this.sdlECommerce.Products.ByKey(productId).GetValue();
+                return this.service.Products.ByKey(productId).GetValue();
             }
             catch (DataServiceQueryException)
             {

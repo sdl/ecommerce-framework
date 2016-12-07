@@ -9,13 +9,13 @@ namespace SDL.ECommerce.OData
 {
     public class EditService : IEditService
     {
-        private IODataV4Service service;
+        private IECommerceODataV4Service service;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal EditService(IODataV4Service service)
+        internal EditService(IECommerceODataV4Service service)
         {
             this.service = service;
         }

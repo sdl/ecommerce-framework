@@ -15,13 +15,13 @@ namespace SDL.ECommerce.OData
     /// There are no comments for SDLECommerce in the schema.
     /// </summary>
     [global::Microsoft.OData.Client.OriginalNameAttribute("SDLECommerce")]
-    public partial class SDLECommerce : global::Microsoft.OData.Client.DataServiceContext
+    public partial class ECommerceODataService : global::Microsoft.OData.Client.DataServiceContext
     {
         /// <summary>
         /// Initialize a new SDLECommerce object.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public SDLECommerce(global::System.Uri serviceRoot) : 
+        public ECommerceODataService(global::System.Uri serviceRoot) : 
                 base(serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion.V4)
         {
             this.ResolveName = new global::System.Func<global::System.Type, string>(this.ResolveNameFromType);
