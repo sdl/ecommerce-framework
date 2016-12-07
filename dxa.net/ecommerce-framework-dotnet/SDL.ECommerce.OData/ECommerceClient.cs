@@ -65,11 +65,11 @@ namespace SDL.ECommerce.OData
     {
         private IODataV4Service odataService;
         private IECommerceServiceContext ecommerceService;
-        private ProductCategoryService categoryService;
-        private ProductQueryService queryService;
-        private ProductDetailService detailService;
-        private CartService cartService;
-        private EditService editService;
+        private IProductCategoryService categoryService;
+        private IProductQueryService queryService;
+        private IProductDetailService detailService;
+        private ICartService cartService;
+        private IEditService editService;
        
         /// <summary>
         /// Constructor
