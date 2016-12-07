@@ -193,12 +193,7 @@ namespace SDL.ECommerce.OData
 
         private T Resolve<T>()
         {
-            if (dependencies == null)
-            {
-                return default(T);
-            }
-
-            var dependency = dependencies(typeof(T));
+            var dependency = dependencies?.Invoke(typeof(T));
 
             if (dependency == null)
             {
