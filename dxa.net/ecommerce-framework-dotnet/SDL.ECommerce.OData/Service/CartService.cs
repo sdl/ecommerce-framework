@@ -9,9 +9,9 @@ namespace SDL.ECommerce.OData
 {
     public class CartService : ICartService
     {
-        private IODataV4Service service;
+        private IECommerceODataV4Service service;
 
-        internal CartService(IODataV4Service service)
+        internal CartService(IECommerceODataV4Service service)
         {
             this.service = service;
         }

@@ -6,8 +6,6 @@ using System;
 
 namespace SDL.ECommerce.OData
 {
-    using Microsoft.OData.Client;
-
     // Temporary solution for the client config
     // TODO: Use the standard approach
     //
@@ -63,8 +61,7 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ECommerceClient : IECommerceClient
     {
-        private IODataV4Service odataService;
-        private IECommerceServiceContext ecommerceService;
+        private IECommerceODataV4Service odataService;
         private IProductCategoryService categoryService;
         private IProductQueryService queryService;
         private IProductDetailService detailService;
@@ -83,8 +80,7 @@ namespace SDL.ECommerce.OData
             serviceConfig.Timeout = 1000;
 
             IOAuthTokenProvider defaultTokenProvider = DiscoveryServiceProvider.DefaultTokenProvider;
-            this.ecommerceService = new SDLECommerce(serviceConfig.ServiceEndpoint);
-            this.odataService = new ODataV4Service((DataServiceContext)this.ecommerceService, serviceConfig, defaultTokenProvider);
+            this.odataService = new ECommerceODataV4Service(new ECommerceODataService(serviceConfig.ServiceEndpoint), serviceConfig, defaultTokenProvider);
         }
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace SDL.ECommerce.OData
             {
                 if (categoryService == null)
                 {
-                    categoryService = new ProductCategoryService(this.odataService, this.ecommerceService);
+                    categoryService = new ProductCategoryService(this.odataService);
                 }
                 return categoryService;
             }
@@ -126,7 +122,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( detailService == null )
                 {
-                    detailService = new ProductDetailService(this.odataService, this.ecommerceService);
+                    detailService = new ProductDetailService(this.odataService);
                 }
                 return detailService;
             }

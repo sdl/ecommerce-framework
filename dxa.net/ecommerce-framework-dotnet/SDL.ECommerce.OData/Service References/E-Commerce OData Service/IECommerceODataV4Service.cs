@@ -1,6 +1,8 @@
-﻿namespace SDL.ECommerce.OData
+﻿using Sdl.Web.Delivery.Service;
+
+namespace SDL.ECommerce.OData
 {
-    public interface IECommerceServiceContext
+    public interface IECommerceODataV4Service : IODataV4Service
     {
         Microsoft.OData.Client.DataServiceQuery<Category> Categories { get; }
         Microsoft.OData.Client.DataServiceQuery<Product> Products { get; }
