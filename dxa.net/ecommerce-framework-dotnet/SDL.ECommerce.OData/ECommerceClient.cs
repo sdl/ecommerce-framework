@@ -61,6 +61,7 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ECommerceClient : IECommerceClient
     {
+        private readonly IServiceConfiguration serviceConfiguration;
         private IECommerceODataV4Service odataService;
         private IProductCategoryService categoryService;
         private IProductQueryService queryService;
@@ -73,16 +74,15 @@ namespace SDL.ECommerce.OData
         /// </summary>
         /// <param name="endpointAddress"></param>
         /// <param name="locale"></param>
-        public ECommerceClient(String endpointAddress, String locale)
+        public ECommerceClient(string endpointAddress, string locale)
         {
-            var serviceConfig = new SimpleServiceConfiguration();
-            serviceConfig.ServiceEndpoint = new Uri(endpointAddress + "/" + locale);
-            serviceConfig.Timeout = 1000;
-
-            IOAuthTokenProvider defaultTokenProvider = DiscoveryServiceProvider.DefaultTokenProvider;
-            this.odataService = new ECommerceODataV4Service(new ECommerceODataService(serviceConfig.ServiceEndpoint), serviceConfig, defaultTokenProvider);
+            this.serviceConfiguration = new SimpleServiceConfiguration
+                                            {
+                                                ServiceEndpoint = new Uri(endpointAddress + "/" + locale),
+                                                Timeout = 1000
+                                            };
         }
-
+        
         /// <summary>
         /// Get category service
         /// </summary>
@@ -92,7 +92,7 @@ namespace SDL.ECommerce.OData
             {
                 if (categoryService == null)
                 {
-                    categoryService = new ProductCategoryService(this.odataService);
+                    categoryService = new ProductCategoryService(ODataV4Service);
                 }
                 return categoryService;
             }
@@ -107,7 +107,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( queryService == null )
                 {
-                    queryService = new ProductQueryService(this.odataService);
+                    queryService = new ProductQueryService(ODataV4Service);
                 }
                 return queryService;
             }
@@ -122,7 +122,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( detailService == null )
                 {
-                    detailService = new ProductDetailService(this.odataService);
+                    detailService = new ProductDetailService(ODataV4Service);
                 }
                 return detailService;
             }
@@ -137,7 +137,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( cartService == null )
                 {
-                    cartService = new CartService(this.odataService);
+                    cartService = new CartService(ODataV4Service);
                 }
                 return cartService;
             }
@@ -152,9 +152,29 @@ namespace SDL.ECommerce.OData
             {
                 if ( editService == null )
                 {
-                    editService = new EditService(this.odataService);
+                    editService = new EditService(ODataV4Service);
                 }
                 return editService;
+            }
+        }
+
+        private IOAuthTokenProvider TokenProvider
+        {
+            get
+            {
+                return DiscoveryServiceProvider.DefaultTokenProvider;
+            }
+        }
+        
+        private IECommerceODataV4Service ODataV4Service
+        {
+            get
+            {
+                if (odataService == null)
+                {
+                    odataService = new ECommerceODataV4Service(new ECommerceODataService(serviceConfiguration.ServiceEndpoint), serviceConfiguration, TokenProvider);
+                }
+                return odataService;
             }
         }
     }
