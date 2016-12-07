@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 
-namespace SDL.ECommerce.Api
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using SDL.ECommerce.Api;
+
+namespace SDL.ECommerce.UnitTests.Api
 {
     [TestClass]
     public class UnitTests
