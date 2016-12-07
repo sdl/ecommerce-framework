@@ -1,11 +1,14 @@
 ﻿using Sdl.Web.Mvc.Configuration;
+
 using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.OData;
+
 using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA
 {
@@ -65,7 +68,7 @@ namespace SDL.ECommerce.DXA
         {
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
             // TODO: Get token service data here as well
-            return new ECommerceClient(endpointAddress, locale);
+            return new ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
         }
 
         /// <summary>
