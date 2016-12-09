@@ -153,6 +153,7 @@
     <Compile Include="DXALinkResolver.cs" />
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceControllerRegistration.cs" />
+    <Compile Include="Providers\DependencyResolverProvider.cs" />
     <Compile Include="Servants\HttpContextServant.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />
     <Compile Include="Models\CartWidget.cs" />
