@@ -45,6 +45,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -72,15 +73,23 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Api\UnitTests.cs" />
+    <Compile Include="Dxa\Helpers\HttpContextServant_Test.cs" />
+    <Compile Include="MultipleAssertTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDL.ECommerce.Api\SDL.ECommerce.Api.csproj">
       <Project>{1030d0f7-9334-4864-b495-540e3ad7928c}</Project>
       <Name>SDL.ECommerce.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SDL.ECommerce.DXA\SDL.ECommerce.DXA.csproj">
+      <Project>{1d5a79d3-8870-410d-99fd-5d54601e19b5}</Project>
+      <Name>SDL.ECommerce.DXA</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
