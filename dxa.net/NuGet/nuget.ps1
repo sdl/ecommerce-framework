@@ -2,7 +2,7 @@
 .SYNOPSIS
    Create NuGet packages for ECommerce DXA.NET
 .EXAMPLE
-   .\nuget.ps1 -outputDirectory "c:\nuget" -dxaVersion "1.2.3" -exampleViewsVersion "1.0.1" -Verbose
+   .\nuget.ps1 -outputDirectory "c:\nuget" -dxaVersion "1.2.3" -exampleViewsVersion "1.0.1" -modulesNavigationVersion "1.0.0" -Verbose
 #>
 
 Param(
@@ -12,8 +12,11 @@ Param(
     [Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.Dxa version.")]
     [string]$dxaVersion = "0.0.1",
 
-    [Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.ExampleViews version.")]
-    [string]$exampleViewsVersion = "0.0.1"
+    [Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.Example.Views version.")]
+    [string]$exampleViewsVersion = "0.0.1",
+
+    [Parameter(Mandatory=$false, HelpMessage="Sdl.Dxa.Modules.Navigation version.")]
+    [string]$modulesNavigationVersion = "0.0.1"
 )
 
 $basePath = "..\ecommerce-framework-dotnet"
@@ -31,4 +34,5 @@ if ($nuGetPackage -eq $null) {
 $nuGetFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "packages") -Filter "nuget.exe" -Recurse | Where-Object { !$_PSIsContainer } | Select-Object -First 1
 
 & $nuGetFile.FullName pack 'Sdl.ECommerce.Dxa.nuspec' -version $dxaVersion -basepath $basePath -outputdirectory $outputDirectory
-& $nuGetFile.FullName pack 'Sdl.ECommerce.ExampleViews.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
+& $nuGetFile.FullName pack 'Sdl.ECommerce.Example.Views.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
+& $nuGetFile.FullName pack 'Sdl.Dxa.Modules.Navigation.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
