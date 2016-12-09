@@ -8,6 +8,10 @@ using SDL.ECommerce.Api.Model;
 
 using Sdl.Web.Common.Models;
 
+using SDL.ECommerce.Api;
+
+using SDL.ECommerce.DXA.Servants;
+
 namespace SDL.ECommerce.DXA.Controllers
 {
     /// <summary>
@@ -15,6 +19,24 @@ namespace SDL.ECommerce.DXA.Controllers
     /// </summary>
     public class CategoryPageController : AbstractECommercePageController
     {
+        private readonly IECommerceClient _eCommerceClient;
+
+        private readonly IECommerceLinkResolver _linkResolver;
+
+        private readonly IHttpContextServant _httpContextServant;
+
+        public CategoryPageController()
+            : this(ECommerceContext.Client, new DXALinkResolver(), new HttpContextServant())
+        {
+        }
+
+        internal CategoryPageController(IECommerceClient eCommerceClient, IECommerceLinkResolver linkResolver, IHttpContextServant httpContextServant)
+        {
+            _eCommerceClient = eCommerceClient;
+            _linkResolver = linkResolver;
+            _httpContextServant = httpContextServant;
+        }
+
         public ActionResult CategoryPage(string categoryUrl)
         {
             Log.Info("Entering category page controller with URL: " + categoryUrl);
@@ -24,12 +46,10 @@ namespace SDL.ECommerce.DXA.Controllers
                 categoryUrl = "/";
             }
 
-            // Get facets
-            //
-            var facets = GetFacetParametersFromRequest();
+            var facets = _httpContextServant.GetFacetParametersFromRequest(HttpContext);
 
             PageModel templatePage = null;
-            var category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryUrl);
+            var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
             if ( category != null )
             {
                 templatePage = this.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category));
@@ -38,10 +58,10 @@ namespace SDL.ECommerce.DXA.Controllers
 
                 var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
                 this.GetQueryContributions(templatePage, query);
-                var searchResult = ECommerceContext.Client.QueryService.Query(query);
+                var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {
-                    return Redirect(ECommerceContext.LinkResolver.GetLocationLink(searchResult.RedirectLocation));
+                    return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
                 }
 
                 ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);

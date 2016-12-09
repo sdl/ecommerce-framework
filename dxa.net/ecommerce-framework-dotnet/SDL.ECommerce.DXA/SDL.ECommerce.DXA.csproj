@@ -153,6 +153,7 @@
     <Compile Include="DXALinkResolver.cs" />
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceControllerRegistration.cs" />
+    <Compile Include="Servants\HttpContextServant.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />
     <Compile Include="Models\CartWidget.cs" />
     <Compile Include="Models\ECommerceCategoryReference.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Models\SearchBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SearchFeedbackWidget.cs" />
+    <Compile Include="Servants\IHttpContextServant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
