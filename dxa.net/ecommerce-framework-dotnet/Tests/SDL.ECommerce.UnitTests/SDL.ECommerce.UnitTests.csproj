@@ -73,6 +73,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Api\UnitTests.cs" />
+    <Compile Include="Dxa\Factories\DependencyFactory_Test.cs" />
     <Compile Include="Dxa\Providers\DependencyResolverProvider_Test.cs" />
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
     <Compile Include="MultipleAssertTest.cs" />
