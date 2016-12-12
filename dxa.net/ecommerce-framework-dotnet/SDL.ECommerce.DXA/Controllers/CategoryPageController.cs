@@ -11,6 +11,7 @@ using Sdl.Web.Common.Models;
 using SDL.ECommerce.Api;
 
 using SDL.ECommerce.DXA.Servants;
+using SDL.ECommerce.DXA.Factories;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
@@ -26,11 +27,17 @@ namespace SDL.ECommerce.DXA.Controllers
         private readonly IHttpContextServant _httpContextServant;
 
         public CategoryPageController()
-            : this(ECommerceContext.Client, new DXALinkResolver(), new HttpContextServant())
+            : this(
+                  DependencyFactory.Current.Resolve<IECommerceClient>(), 
+                  DependencyFactory.Current.Resolve<IECommerceLinkResolver>(), 
+                  DependencyFactory.Current.Resolve<IHttpContextServant>())
         {
         }
 
-        internal CategoryPageController(IECommerceClient eCommerceClient, IECommerceLinkResolver linkResolver, IHttpContextServant httpContextServant)
+        internal CategoryPageController(
+            IECommerceClient eCommerceClient, 
+            IECommerceLinkResolver linkResolver, 
+            IHttpContextServant httpContextServant)
         {
             _eCommerceClient = eCommerceClient;
             _linkResolver = linkResolver;
