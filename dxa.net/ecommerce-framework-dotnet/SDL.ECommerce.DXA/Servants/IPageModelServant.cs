@@ -8,7 +8,7 @@
 
     public interface IPageModelServant
     {
-        PageModel ResolveTemplatePage(IEnumerable<string> searchPath, IContentProvider contentProvider, Localization localization);
+        PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider, Localization localization);
 
         void SetTemplatePage(PageModel model);
     }

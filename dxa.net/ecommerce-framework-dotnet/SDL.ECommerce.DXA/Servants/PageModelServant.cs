@@ -11,24 +11,27 @@
 
     public class PageModelServant : IPageModelServant
     {
-        public PageModel ResolveTemplatePage(IEnumerable<string> searchPath, IContentProvider contentProvider, Localization localization)
+        public PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider, Localization localization)
         {
-            PageModel templatePage = null;
-            foreach (var templatePagePath in searchPath)
+            PageModel model = null;
+
+            foreach (var urlSegment in urlSegments)
             {
                 try
                 {
-                    Log.Info("Trying to find page template: " + templatePagePath);
-                    templatePage = contentProvider.GetPageModel(templatePagePath, localization);
+                    Log.Info("Trying to find page template: " + urlSegment);
+
+                    model = contentProvider.GetPageModel(urlSegment, localization);
                 }
                 catch (DxaItemNotFoundException) { }
-                if (templatePage != null)
+
+                if (model != null)
                 {
                     break;
                 }
             }
 
-            return templatePage;
+            return model;
         }
 
         public void SetTemplatePage(PageModel model)
