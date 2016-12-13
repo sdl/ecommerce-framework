@@ -20,7 +20,8 @@
                                    {
                                            { typeof(IECommerceClient), new Lazy<IECommerceClient>(() => ECommerceContext.Client) },
                                            { typeof(IECommerceLinkResolver), new Lazy<IECommerceLinkResolver>(() => TryResolveDependency<IECommerceLinkResolver>() ?? new DXALinkResolver()) },
-                                           { typeof(IHttpContextServant), new Lazy<IHttpContextServant>(() => TryResolveDependency<IHttpContextServant>() ?? new HttpContextServant()) }
+                                           { typeof(IHttpContextServant), new Lazy<IHttpContextServant>(() => TryResolveDependency<IHttpContextServant>() ?? new HttpContextServant()) },
+                                           { typeof(IPageModelServant), new Lazy<IPageModelServant>(() => TryResolveDependency<IPageModelServant>() ?? new PageModelServant()) }
                                    };
 
             var dependency = dependencies[typeof(T)];

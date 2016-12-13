@@ -15,6 +15,8 @@ using SDL.ECommerce.DXA.Factories;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    using Sdl.Web.Mvc.Configuration;
+
     /// <summary>
     /// E-Commerce Category Page Controller
     /// </summary>
@@ -26,22 +28,27 @@ namespace SDL.ECommerce.DXA.Controllers
 
         private readonly IHttpContextServant _httpContextServant;
 
+        private readonly IPageModelServant _pageModelServant;
+
         public CategoryPageController()
             : this(
                   DependencyFactory.Current.Resolve<IECommerceClient>(), 
                   DependencyFactory.Current.Resolve<IECommerceLinkResolver>(), 
-                  DependencyFactory.Current.Resolve<IHttpContextServant>())
+                  DependencyFactory.Current.Resolve<IHttpContextServant>(),
+                  DependencyFactory.Current.Resolve<IPageModelServant>())
         {
         }
 
         internal CategoryPageController(
             IECommerceClient eCommerceClient, 
             IECommerceLinkResolver linkResolver, 
-            IHttpContextServant httpContextServant)
+            IHttpContextServant httpContextServant,
+            IPageModelServant pageModelServant)
         {
             _eCommerceClient = eCommerceClient;
             _linkResolver = linkResolver;
             _httpContextServant = httpContextServant;
+            _pageModelServant = pageModelServant;
         }
 
         public ActionResult CategoryPage(string categoryUrl)
@@ -59,7 +66,7 @@ namespace SDL.ECommerce.DXA.Controllers
             var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
             if ( category != null )
             {
-                templatePage = this.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category));
+                templatePage = _pageModelServant.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category), ContentProvider, WebRequestContext.Localization);
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
