@@ -26,6 +26,7 @@ query-lang-*.dll
 .vs/
 
 dxa.net/ecommerce-framework-dotnet/_ReSharper.Caches/
+*.DotSettings
 dxa.net/Nuget/packages
 
 # NCrunch
