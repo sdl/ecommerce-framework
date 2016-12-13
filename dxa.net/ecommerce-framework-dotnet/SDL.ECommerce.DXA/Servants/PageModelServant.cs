@@ -9,6 +9,8 @@
     using Sdl.Web.Common.Models;
     using Sdl.Web.Mvc.Configuration;
 
+    using SDL.ECommerce.Api.Model;
+
     public class PageModelServant : IPageModelServant
     {
         public PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider, Localization localization)
@@ -39,6 +41,23 @@
             if (model != null)
             {
                 WebRequestContext.PageModel = model;
+            }
+        }
+
+        public void GetQueryContributions(PageModel templatePage, Api.Model.Query query)
+        {
+            foreach (var region in templatePage.Regions)
+            {
+                if (!region.Name.Equals("Header") && !region.Name.Equals("Footer"))
+                {
+                    foreach (EntityModel entity in region.Entities)
+                    {
+                        if (entity is IQueryContributor)
+                        {
+                            ((IQueryContributor)entity).ContributeToQuery(query);
+                        }
+                    }
+                }
             }
         }
     }

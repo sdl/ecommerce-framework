@@ -1,5 +1,6 @@
 ﻿namespace SDL.ECommerce.UnitTests.Dxa.Servants
 {
+    using System;
     using System.Linq;
     using System.Web;
 
@@ -15,9 +16,12 @@
     using Sdl.Web.Common.Interfaces;
     using Sdl.Web.Common.Models;
 
+    using SDL.ECommerce.Api.Model;
     using SDL.ECommerce.DXA.Servants;
 
     using Xunit;
+
+    using Query = SDL.ECommerce.Api.Model.Query;
 
     public class PageModelServant_Test : Test<PageModelServant>
     {
@@ -92,6 +96,63 @@
 
                     Assert.Equal(model, HttpContext.Current.Items["PageModel"]);
                 }
+            }
+        }
+
+        public class WhenGettingQueryContributions : MultipleAssertTest<PageModelServant_Test>
+        {
+            private readonly Query _query;
+
+            public WhenGettingQueryContributions()
+            {
+                _query = Fixture.Create<Query>();
+            }
+            
+            [InlineData("Header", 0)]
+            [InlineData("Footer", 0)]
+            [InlineData(null, 1)]
+            [Theory]
+            public void AndRegionArePassed(string regionName, int receiveCount)
+            {
+                var setup = SetupEntity(regionName ?? Fixture.Create<string>());
+
+                Parent.SUT.GetQueryContributions(setup.Item1, _query);
+
+                setup.Item2.Received(receiveCount).ContributeToQuery(_query);
+            }
+
+            [InlineData("Header", 0, null, 1)]
+            [InlineData(null, 1, "Header", 0)]
+            [InlineData(null, 1, null, 1)]
+            [Theory]
+            public void AndMultipleIQueryContributorArePassed(string firstRegionName, int firstRegionReceiveCount, string secondRegionName, int secondRegionReceiveCount)
+            {
+                var setup = SetupEntity(firstRegionName ?? Fixture.Create<string>());
+
+                var firstContributor = setup.Item2;
+
+                setup = SetupEntity(secondRegionName ?? Fixture.Create<string>(), setup.Item1);
+
+                Parent.SUT.GetQueryContributions(setup.Item1, _query);
+
+                firstContributor.Received(firstRegionReceiveCount).ContributeToQuery(_query);
+
+                setup.Item2.Received(secondRegionReceiveCount).ContributeToQuery(_query);
+            }
+
+            private Tuple<PageModel, IQueryContributor> SetupEntity(string regionName, PageModel pageModel = null)
+            {
+                var region = new RegionModel(regionName);
+
+                var contributor = Substitute.For<EntityModel, IQueryContributor>();
+                
+                region.Entities.Add(contributor);
+
+                var model = pageModel ?? new PageModel(Fixture.Create<string>());
+
+                model.Regions.Add(region);
+
+                return new Tuple<PageModel, IQueryContributor>(model, contributor as IQueryContributor);
             }
         }
     }
