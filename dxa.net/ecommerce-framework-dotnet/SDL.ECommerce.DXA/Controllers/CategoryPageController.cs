@@ -67,6 +67,7 @@ namespace SDL.ECommerce.DXA.Controllers
             if ( category != null )
             {
                 templatePage = _pageModelServant.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category), ContentProvider, WebRequestContext.Localization);
+                _pageModelServant.SetTemplatePage(templatePage);
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
