@@ -8,5 +8,7 @@ namespace SDL.ECommerce.DXA.Servants
     public interface IHttpContextServant
     {
         IList<FacetParameter> GetFacetParametersFromRequest(HttpContextBase httpContext);
+
+        int GetStartIndex(HttpContextBase httpContext);
     }
 }
