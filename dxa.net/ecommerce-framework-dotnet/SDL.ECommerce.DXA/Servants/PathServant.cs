@@ -9,27 +9,43 @@
 
     public class PathServant
     {
+        private const string CATEGORIES = "/categories/";
+
+        private const string GENERIC = "generic";
+
+        private const string CATEGORY_PATH_SEPARATOR = "-";
+
         public IEnumerable<string> GetSearchPath(string url, ICategory category, Localization localization)
         {
-            var searchPath = new List<string>();
+            var searchPaths = new List<string>();
 
-            var basePath = ECommerceContext.LocalizePath("/categories/", localization);
+            var basePath = ECommerceContext.LocalizePath(CATEGORIES, localization);
+
             var categoryPath = basePath;
+
             var currentCategory = category;
+
             while (currentCategory != null)
             {
-                searchPath.Add(categoryPath + currentCategory.Id);
+                searchPaths.Add(categoryPath + currentCategory.Id);
+
                 currentCategory = currentCategory.Parent;
             }
-            var urlTokens = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var urlTokens = url.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
             foreach (var token in urlTokens)
             {
                 categoryPath += token;
-                searchPath.Insert(0, categoryPath);
-                categoryPath += "-";
+
+                searchPaths.Insert(0, categoryPath);
+
+                categoryPath += CATEGORY_PATH_SEPARATOR;
             }
-            searchPath.Add(basePath + "generic");
-            return searchPath;
+
+            searchPaths.Add(basePath + GENERIC);
+
+            return searchPaths;
         }
     }
 }
