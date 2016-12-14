@@ -30,12 +30,15 @@ namespace SDL.ECommerce.DXA.Controllers
 
         private readonly IPageModelServant _pageModelServant;
 
+        private readonly IPathServant _pathServant;
+
         public CategoryPageController()
             : this(
                   DependencyFactory.Current.Resolve<IECommerceClient>(), 
                   DependencyFactory.Current.Resolve<IECommerceLinkResolver>(), 
                   DependencyFactory.Current.Resolve<IHttpContextServant>(),
-                  DependencyFactory.Current.Resolve<IPageModelServant>())
+                  DependencyFactory.Current.Resolve<IPageModelServant>(),
+                  DependencyFactory.Current.Resolve<IPathServant>())
         {
         }
 
@@ -43,12 +46,14 @@ namespace SDL.ECommerce.DXA.Controllers
             IECommerceClient eCommerceClient, 
             IECommerceLinkResolver linkResolver, 
             IHttpContextServant httpContextServant,
-            IPageModelServant pageModelServant)
+            IPageModelServant pageModelServant,
+            IPathServant pathServant)
         {
             _eCommerceClient = eCommerceClient;
             _linkResolver = linkResolver;
             _httpContextServant = httpContextServant;
             _pageModelServant = pageModelServant;
+            _pathServant = pathServant;
         }
 
         public ActionResult CategoryPage(string categoryUrl)
@@ -66,13 +71,13 @@ namespace SDL.ECommerce.DXA.Controllers
             var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
             if ( category != null )
             {
-                templatePage = _pageModelServant.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category), ContentProvider, WebRequestContext.Localization);
+                templatePage = _pageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
                 _pageModelServant.SetTemplatePage(templatePage);
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
                 var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
-                this.GetQueryContributions(templatePage, query);
+                _pageModelServant.GetQueryContributions(templatePage, query);
                 var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {

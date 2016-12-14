@@ -7,7 +7,7 @@
 
     using SDL.ECommerce.Api.Model;
 
-    public class PathServant
+    public class PathServant : IPathServant
     {
         private const string CATEGORIES = "/categories/";
 

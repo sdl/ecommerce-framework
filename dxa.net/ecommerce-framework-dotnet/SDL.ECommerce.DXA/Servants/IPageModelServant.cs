@@ -11,5 +11,7 @@
         PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider, Localization localization);
 
         void SetTemplatePage(PageModel model);
+
+        void GetQueryContributions(PageModel templatePage, Api.Model.Query query);
     }
 }
