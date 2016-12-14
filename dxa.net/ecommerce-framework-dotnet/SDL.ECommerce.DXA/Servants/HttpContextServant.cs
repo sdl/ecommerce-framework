@@ -6,11 +6,13 @@ using SDL.ECommerce.Api;
 
 namespace SDL.ECommerce.DXA.Servants
 {
-    using System;
-
     public class HttpContextServant : IHttpContextServant
     {
-        private readonly string[] _excludedParameters = { "q", "startIndex" };
+        private const string STARTINDEX_KEY = "startIndex";
+
+        private const string QUERY_KEY = "q";
+
+        private readonly string[] _excludedParameters = { QUERY_KEY, STARTINDEX_KEY };
 
         public IList<FacetParameter> GetFacetParametersFromRequest(HttpContextBase httpContext)
         {
@@ -30,12 +32,15 @@ namespace SDL.ECommerce.DXA.Servants
 
         public int GetStartIndex(HttpContextBase httpContext)
         {
-            int startIndex = 0;
-            var startIndexStr = httpContext.Request.QueryString["startIndex"];
-            if (startIndexStr != null)
+            var startIndex = 0;
+
+            var startIndexParameter = httpContext.Request.QueryString[STARTINDEX_KEY];
+
+            if (startIndexParameter != null)
             {
-                int.TryParse(startIndexStr, out startIndex);
+                int.TryParse(startIndexParameter, out startIndex);
             }
+
             return startIndex;
         }
     }
