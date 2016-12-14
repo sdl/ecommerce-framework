@@ -6,6 +6,8 @@ using SDL.ECommerce.Api;
 
 namespace SDL.ECommerce.DXA.Servants
 {
+    using System;
+
     public class HttpContextServant : IHttpContextServant
     {
         private readonly string[] _excludedParameters = { "q", "startIndex" };
@@ -24,6 +26,17 @@ namespace SDL.ECommerce.DXA.Servants
             }
 
             return facetParameters;
+        }
+
+        public int GetStartIndex(HttpContextBase httpContext)
+        {
+            int startIndex = 0;
+            var startIndexStr = httpContext.Request.QueryString["startIndex"];
+            if (startIndexStr != null)
+            {
+                startIndex = Int32.Parse(startIndexStr);
+            }
+            return startIndex;
         }
     }
 }

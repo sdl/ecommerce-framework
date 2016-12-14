@@ -4,7 +4,7 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Web;
-
+    
     using NSubstitute;
 
     using Ploeh.AutoFixture;
@@ -14,7 +14,7 @@
 
     using Xunit;
 
-    public class HttpContextServant_Test : Test
+    public class HttpContextServant_Test : Test<HttpContextServant>
     {
         private readonly IEnumerable<KeyValuePair<string, string>> _parameters;
 
@@ -42,9 +42,7 @@
 
             public WhenGettingFacetParameters()
             {
-                var servant = Fixture.Create<HttpContextServant>();
-
-                _result = servant.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -76,17 +74,15 @@
             }
         }
 
-        public class WhenHavingQAsParameter : MultipleAssertTest<HttpContextServant_Test>
+        public class WhenGettingFacetParametersAndHasQAsParameter : MultipleAssertTest<HttpContextServant_Test>
         {
             private readonly IList<FacetParameter> _result;
 
-            public WhenHavingQAsParameter()
+            public WhenGettingFacetParametersAndHasQAsParameter()
             {
-                var servant = Fixture.Create<HttpContextServant>();
-
                 Parent._context.Request.QueryString.Add("q", Fixture.Create<string>());
 
-                _result = servant.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -102,17 +98,15 @@
             }
         }
 
-        public class WhenHavingStartIndexAsParameter : MultipleAssertTest<HttpContextServant_Test>
+        public class WhenGettingFacetParametersAndHasStartIndexAsParameter : MultipleAssertTest<HttpContextServant_Test>
         {
             private readonly IList<FacetParameter> _result;
 
-            public WhenHavingStartIndexAsParameter()
+            public WhenGettingFacetParametersAndHasStartIndexAsParameter()
             {
-                var servant = Fixture.Create<HttpContextServant>();
-
                 Parent._context.Request.QueryString.Add("startIndex", Fixture.Create<string>());
 
-                _result = servant.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -125,6 +119,29 @@
             public void QShouldNotBeAFacetName()
             {
                 Assert.False(_result.Any(f => f.Name == "startIndex"));
+            }
+        }
+
+        public class WhenGettingStartIndex : MultipleAssertTest<HttpContextServant_Test>
+        {
+            [Fact]
+            public void WhenNoStartIndexExist_Then0ShouldBeReturned()
+            {
+                var result = Parent.SUT.GetStartIndex(Parent._context);
+
+                Assert.Equal(0, result);
+            }
+
+            [Fact]
+            public void WhenStartIndexIsInteger_ThenTheGivenIntegerShouldBeReturned()
+            {
+                var number = Fixture.Create<int>();
+
+                Parent._context.Request.QueryString.Add("startIndex", number.ToString());
+
+                var result = Parent.SUT.GetStartIndex(Parent._context);
+
+                Assert.Equal(number, result);
             }
         }
     }
