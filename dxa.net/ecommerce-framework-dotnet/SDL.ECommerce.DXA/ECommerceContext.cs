@@ -12,6 +12,8 @@ using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA
 {
+    using Sdl.Web.Common.Configuration;
+
     /// <summary>
     /// E-Commerce Context
     /// </summary>
@@ -104,6 +106,23 @@ namespace SDL.ECommerce.DXA
         public static string LocalizePath(string url)
         {
             string path = WebRequestContext.Localization.Path;
+            if (!String.IsNullOrEmpty(path))
+            {
+                if (path.EndsWith("/"))
+                {
+                    url = path + (url.StartsWith("/") ? url.Substring(1) : url);
+                }
+                else
+                {
+                    url = path + (url.StartsWith("/") ? url : '/' + url);
+                }
+            }
+            return url;
+        }
+
+        public static string LocalizePath(string url, Localization localization)
+        {
+            string path = localization.Path;
             if (!String.IsNullOrEmpty(path))
             {
                 if (path.EndsWith("/"))

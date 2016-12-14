@@ -188,6 +188,7 @@
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
     <Compile Include="Dxa\Servants\PageModelServant_Test.cs" />
     <Compile Include="Customizations\Sdl\SdlCustomizations.cs" />
+    <Compile Include="Dxa\Servants\PathServant_Test.cs" />
     <Compile Include="MultipleAssertTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
