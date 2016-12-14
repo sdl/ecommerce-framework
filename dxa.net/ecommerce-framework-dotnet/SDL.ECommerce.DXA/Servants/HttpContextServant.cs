@@ -34,7 +34,7 @@ namespace SDL.ECommerce.DXA.Servants
             var startIndexStr = httpContext.Request.QueryString["startIndex"];
             if (startIndexStr != null)
             {
-                startIndex = Int32.Parse(startIndexStr);
+                int.TryParse(startIndexStr, out startIndex);
             }
             return startIndex;
         }

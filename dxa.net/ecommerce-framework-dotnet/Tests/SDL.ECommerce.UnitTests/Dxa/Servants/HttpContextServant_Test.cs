@@ -143,6 +143,16 @@
 
                 Assert.Equal(number, result);
             }
+
+            [Fact]
+            public void WhenStartIndexIsNotAnInteger_Then0ShouldBeReturned()
+            {
+                Parent._context.Request.QueryString.Add("startIndex", Fixture.Create<string>());
+
+                var result = Parent.SUT.GetStartIndex(Parent._context);
+
+                Assert.Equal(0, result);
+            }
         }
     }
 }
