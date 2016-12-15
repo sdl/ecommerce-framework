@@ -36,13 +36,11 @@
             _localization = Fixture.Create<Localization>();
         }
 
-        public class WhenCallingCategoryPageWithUrl : MultipleAssertTest<CategoryPageController_Test>
+        public class WhenCallingCategoryPageWithValidUrl : MultipleAssertTest<CategoryPageController_Test>
         {
             private readonly PageModel _pageModel;
 
             private readonly IDictionary _httpContextItems;
-
-            private readonly ActionResult _result;
 
             private readonly PageModel _resultModel;
 
@@ -50,7 +48,7 @@
             
             private readonly IList<FacetParameter> _parameters;
             
-            public WhenCallingCategoryPageWithUrl()
+            public WhenCallingCategoryPageWithValidUrl()
             {
                 Fixture.Freeze<IECommerceClient>()
                        .QueryService.Query(Arg.Any<ECommerce.Api.Model.Query>())
@@ -70,9 +68,9 @@
                     {
                         var controller = Fixture.Create<CategoryPageController>();
 
-                        _result = controller.CategoryPage(Parent._url);
+                        var result = controller.CategoryPage(Parent._url);
 
-                        _resultModel = ((ViewResult)_result).Model as PageModel;
+                        _resultModel = ((ViewResult)result).Model as PageModel;
                     }
                     
                     _httpContextItems = HttpContext.Current.Items;
