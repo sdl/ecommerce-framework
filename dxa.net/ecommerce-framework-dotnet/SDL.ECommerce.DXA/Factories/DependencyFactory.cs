@@ -18,7 +18,7 @@
         {
             var dependencies = new Dictionary<Type, object>
                                    {
-                                           { typeof(IECommerceClient), new Lazy<IECommerceClient>(() => ECommerceContext.Client) },
+                                           { typeof(IECommerceClient), new Lazy<IECommerceClient>(() => TryResolveDependency<IECommerceClient>() ?? ECommerceContext.Client) },
                                            { typeof(IECommerceLinkResolver), new Lazy<IECommerceLinkResolver>(() => TryResolveDependency<IECommerceLinkResolver>() ?? new DXALinkResolver()) },
                                            { typeof(IHttpContextServant), new Lazy<IHttpContextServant>(() => TryResolveDependency<IHttpContextServant>() ?? new HttpContextServant()) },
                                            { typeof(IPageModelServant), new Lazy<IPageModelServant>(() => TryResolveDependency<IPageModelServant>() ?? new PageModelServant()) },
