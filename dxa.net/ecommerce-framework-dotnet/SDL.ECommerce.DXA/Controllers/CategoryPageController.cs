@@ -1,5 +1,4 @@
-﻿
-namespace SDL.ECommerce.DXA.Controllers
+﻿namespace SDL.ECommerce.DXA.Controllers
 {
     using Sdl.Web.Common.Logging;
     using Sdl.Web.Mvc.Configuration;
