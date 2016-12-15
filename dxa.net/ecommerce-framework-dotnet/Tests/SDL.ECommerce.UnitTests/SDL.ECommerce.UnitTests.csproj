@@ -185,6 +185,7 @@
     <Compile Include="Customizations\Sdl\LocalizationCustomization.cs" />
     <Compile Include="Customizations\Sdl\PageModelCustomization.cs" />
     <Compile Include="DependencyTestProvider.cs" />
+    <Compile Include="Dxa\Controllers\CategoryPageController_Test.cs" />
     <Compile Include="Dxa\Factories\DependencyFactory_Test.cs" />
     <Compile Include="Dxa\Providers\DependencyResolverProvider_Test.cs" />
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
