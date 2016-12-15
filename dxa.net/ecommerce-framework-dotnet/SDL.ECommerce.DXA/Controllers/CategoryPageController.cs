@@ -1,21 +1,17 @@
-﻿using Sdl.Web.Common.Logging;
-
-using System.Web.Mvc;
-using System;
-using System.Collections.Generic;
-
-using SDL.ECommerce.Api.Model;
-
-using Sdl.Web.Common.Models;
-
-using SDL.ECommerce.Api;
-
-using SDL.ECommerce.DXA.Servants;
-using SDL.ECommerce.DXA.Factories;
-
+﻿
 namespace SDL.ECommerce.DXA.Controllers
 {
+    using Sdl.Web.Common.Logging;
     using Sdl.Web.Mvc.Configuration;
+
+    using System.Web.Mvc;
+    using System;
+
+    using Sdl.Web.Common.Models;
+
+    using SDL.ECommerce.Api;
+    using SDL.ECommerce.DXA.Servants;
+    using SDL.ECommerce.DXA.Factories;
 
     /// <summary>
     /// E-Commerce Category Page Controller
@@ -33,27 +29,12 @@ namespace SDL.ECommerce.DXA.Controllers
         private readonly IPathServant _pathServant;
 
         public CategoryPageController()
-            : this(
-                  DependencyFactory.Current.Resolve<IECommerceClient>(), 
-                  DependencyFactory.Current.Resolve<IECommerceLinkResolver>(), 
-                  DependencyFactory.Current.Resolve<IHttpContextServant>(),
-                  DependencyFactory.Current.Resolve<IPageModelServant>(),
-                  DependencyFactory.Current.Resolve<IPathServant>())
         {
-        }
-
-        internal CategoryPageController(
-            IECommerceClient eCommerceClient, 
-            IECommerceLinkResolver linkResolver, 
-            IHttpContextServant httpContextServant,
-            IPageModelServant pageModelServant,
-            IPathServant pathServant)
-        {
-            _eCommerceClient = eCommerceClient;
-            _linkResolver = linkResolver;
-            _httpContextServant = httpContextServant;
-            _pageModelServant = pageModelServant;
-            _pathServant = pathServant;
+            _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
+            _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+            _httpContextServant = DependencyFactory.Current.Resolve<IHttpContextServant>();
+            _pageModelServant = DependencyFactory.Current.Resolve<IPageModelServant>();
+            _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
         }
 
         public ActionResult CategoryPage(string categoryUrl)
