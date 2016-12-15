@@ -181,6 +181,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Api\UnitTests.cs" />
+    <Compile Include="Customizations\MvcCustomization.cs" />
     <Compile Include="Customizations\Sdl\LocalizationCustomization.cs" />
     <Compile Include="Customizations\Sdl\PageModelCustomization.cs" />
     <Compile Include="Dxa\Factories\DependencyFactory_Test.cs" />
