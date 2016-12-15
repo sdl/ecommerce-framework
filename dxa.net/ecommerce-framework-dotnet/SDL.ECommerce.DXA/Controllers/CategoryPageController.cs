@@ -9,6 +9,7 @@
     using Sdl.Web.Common.Models;
 
     using SDL.ECommerce.Api;
+    using SDL.ECommerce.Api.Model;
     using SDL.ECommerce.DXA.Servants;
     using SDL.ECommerce.DXA.Factories;
 
@@ -61,7 +62,7 @@
                 var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {
-                    return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
+                   return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
                 }
 
                 ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);

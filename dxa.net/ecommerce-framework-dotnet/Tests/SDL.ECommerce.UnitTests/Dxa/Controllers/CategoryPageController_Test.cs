@@ -2,7 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
@@ -45,9 +44,9 @@
             private readonly PageModel _resultModel;
 
             private readonly ICategory _category;
-            
+
             private readonly IList<FacetParameter> _parameters;
-            
+
             public WhenCallingCategoryPageWithValidUrl()
             {
                 Fixture.Freeze<IECommerceClient>()
@@ -72,7 +71,7 @@
 
                         _resultModel = ((ViewResult)result).Model as PageModel;
                     }
-                    
+
                     _httpContextItems = HttpContext.Current.Items;
                 }
 
@@ -177,6 +176,80 @@
                 Fixture.GetStub<IECommerceClient>()
                        .Received()
                        .QueryService.Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
+            }
+        }
+
+        public class WhenCallingCategoryPageWithEmptyUrl : MultipleAssertTest<CategoryPageController_Test>
+        {
+            public WhenCallingCategoryPageWithEmptyUrl()
+            {
+                Fixture.Freeze<IECommerceClient>()
+                       .QueryService.Query(Arg.Any<ECommerce.Api.Model.Query>())
+                       .RedirectLocation.Returns((ILocation)null);
+
+                Fixture.Freeze<IPageModelServant>()
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .Returns(Fixture.Create<PageModel>());
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    using (new DependencyTestProvider(Fixture))
+                    {
+                        Fixture.Create<CategoryPageController>()
+                               .CategoryPage(null);
+                    }
+                }
+            }
+
+            [Fact]
+            public void TheCategoryUrlShouldBeChangedToSingleSlash()
+            {
+                Fixture.GetStub<IPathServant>()
+                       .Received(1)
+                       .GetSearchPath("/", Arg.Any<ICategory>(), Parent._localization);
+            }
+        }
+
+        public class WhenCallingCategoryPageAndSearchResultIsRedirect : MultipleAssertTest<CategoryPageController_Test>
+        {
+            private readonly ActionResult _result;
+
+            public WhenCallingCategoryPageAndSearchResultIsRedirect()
+            {
+                Fixture.Freeze<IPageModelServant>()
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .Returns(Fixture.Create<PageModel>());
+
+                Fixture.Freeze<IECommerceLinkResolver>()
+                       .GetLocationLink(Fixture.Freeze<IECommerceClient>()
+                                               .QueryService.Query(Arg.Any<ECommerce.Api.Model.Query>())
+                                               .RedirectLocation)
+                       .Returns("http://localhost:1234");
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    using (new DependencyTestProvider(Fixture))
+                    {
+                        _result = Fixture.Create<CategoryPageController>()
+                               .CategoryPage(Fixture.Create<string>());
+                    }
+                }
+            }
+
+            [Fact]
+            public void TheResultIsARedirectResult()
+            {
+                Assert.IsType<RedirectResult>(_result);
+            }
+
+            [Fact]
+            public void TheRedirectUrlShouldBeTheOneSetByTheLinkResolver()
+            {
+                Assert.Equal("http://localhost:1234", ((RedirectResult)_result).Url);
             }
         }
     }
