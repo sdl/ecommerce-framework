@@ -76,7 +76,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
-                var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
+                var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = _httpContextServant.GetStartIndex(HttpContext) };
                 _pageModelServant.GetQueryContributions(templatePage, query);
                 var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
@@ -98,35 +98,5 @@ namespace SDL.ECommerce.DXA.Controllers
 
             return View(templatePage);
         }
-
-        /// <summary>
-        /// Get search path to find an appropriate CMS template page for current category.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="category"></param>
-        /// <returns></returns>
-        protected IList<string> GetSearchPath(string url, ICategory category)
-        {
-            var searchPath = new List<string>();
-
-            var basePath = ECommerceContext.LocalizePath("/categories/");
-            var categoryPath = basePath;
-            var currentCategory = category;
-            while ( currentCategory != null)
-            {
-                searchPath.Add(categoryPath + currentCategory.Id);
-                currentCategory = currentCategory.Parent;
-            }
-            var urlTokens = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach ( var token in urlTokens )
-            {
-                categoryPath += token;
-                searchPath.Insert(0, categoryPath);
-                categoryPath += "-";
-            }
-            searchPath.Add(basePath + "generic");
-            return searchPath;
-        }
-
     }
 }
