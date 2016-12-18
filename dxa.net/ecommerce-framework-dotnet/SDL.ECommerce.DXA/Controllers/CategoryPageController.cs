@@ -1,20 +1,18 @@
-﻿using Sdl.Web.Common.Logging;
-
-using System.Web.Mvc;
-using System;
-using System.Collections.Generic;
-
-using SDL.ECommerce.Api.Model;
-
-using Sdl.Web.Common.Models;
-
-using SDL.ECommerce.Api;
-
-using SDL.ECommerce.DXA.Servants;
-using SDL.ECommerce.DXA.Factories;
-
-namespace SDL.ECommerce.DXA.Controllers
+﻿namespace SDL.ECommerce.DXA.Controllers
 {
+    using Sdl.Web.Common.Logging;
+    using Sdl.Web.Mvc.Configuration;
+
+    using System.Web.Mvc;
+    using System;
+
+    using Sdl.Web.Common.Models;
+
+    using SDL.ECommerce.Api;
+    using SDL.ECommerce.Api.Model;
+    using SDL.ECommerce.DXA.Servants;
+    using SDL.ECommerce.DXA.Factories;
+
     /// <summary>
     /// E-Commerce Category Page Controller
     /// </summary>
@@ -26,22 +24,17 @@ namespace SDL.ECommerce.DXA.Controllers
 
         private readonly IHttpContextServant _httpContextServant;
 
-        public CategoryPageController()
-            : this(
-                  DependencyFactory.Current.Resolve<IECommerceClient>(), 
-                  DependencyFactory.Current.Resolve<IECommerceLinkResolver>(), 
-                  DependencyFactory.Current.Resolve<IHttpContextServant>())
-        {
-        }
+        private readonly IPageModelServant _pageModelServant;
 
-        internal CategoryPageController(
-            IECommerceClient eCommerceClient, 
-            IECommerceLinkResolver linkResolver, 
-            IHttpContextServant httpContextServant)
+        private readonly IPathServant _pathServant;
+
+        public CategoryPageController()
         {
-            _eCommerceClient = eCommerceClient;
-            _linkResolver = linkResolver;
-            _httpContextServant = httpContextServant;
+            _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
+            _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+            _httpContextServant = DependencyFactory.Current.Resolve<IHttpContextServant>();
+            _pageModelServant = DependencyFactory.Current.Resolve<IPageModelServant>();
+            _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
         }
 
         public ActionResult CategoryPage(string categoryUrl)
@@ -59,16 +52,17 @@ namespace SDL.ECommerce.DXA.Controllers
             var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
             if ( category != null )
             {
-                templatePage = this.ResolveTemplatePage(this.GetSearchPath(categoryUrl, category));
+                templatePage = _pageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
+                _pageModelServant.SetTemplatePage(templatePage);
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
-                var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = GetStartIndex() };
-                this.GetQueryContributions(templatePage, query);
+                var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = _httpContextServant.GetStartIndex(HttpContext) };
+                _pageModelServant.GetQueryContributions(templatePage, query);
                 var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {
-                    return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
+                   return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
                 }
 
                 ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);
@@ -85,35 +79,5 @@ namespace SDL.ECommerce.DXA.Controllers
 
             return View(templatePage);
         }
-
-        /// <summary>
-        /// Get search path to find an appropriate CMS template page for current category.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="category"></param>
-        /// <returns></returns>
-        protected IList<string> GetSearchPath(string url, ICategory category)
-        {
-            var searchPath = new List<string>();
-
-            var basePath = ECommerceContext.LocalizePath("/categories/");
-            var categoryPath = basePath;
-            var currentCategory = category;
-            while ( currentCategory != null)
-            {
-                searchPath.Add(categoryPath + currentCategory.Id);
-                currentCategory = currentCategory.Parent;
-            }
-            var urlTokens = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach ( var token in urlTokens )
-            {
-                categoryPath += token;
-                searchPath.Insert(0, categoryPath);
-                categoryPath += "-";
-            }
-            searchPath.Add(basePath + "generic");
-            return searchPath;
-        }
-
     }
 }

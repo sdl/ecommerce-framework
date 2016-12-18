@@ -8,7 +8,11 @@ namespace SDL.ECommerce.DXA.Servants
 {
     public class HttpContextServant : IHttpContextServant
     {
-        private readonly string[] _excludedParameters = { "q", "startIndex" };
+        private const string STARTINDEX_KEY = "startIndex";
+
+        private const string QUERY_KEY = "q";
+
+        private readonly string[] _excludedParameters = { QUERY_KEY, STARTINDEX_KEY };
 
         public IList<FacetParameter> GetFacetParametersFromRequest(HttpContextBase httpContext)
         {
@@ -24,6 +28,20 @@ namespace SDL.ECommerce.DXA.Servants
             }
 
             return facetParameters;
+        }
+
+        public int GetStartIndex(HttpContextBase httpContext)
+        {
+            var startIndex = 0;
+
+            var startIndexParameter = httpContext.Request.QueryString[STARTINDEX_KEY];
+
+            if (startIndexParameter != null)
+            {
+                int.TryParse(startIndexParameter, out startIndex);
+            }
+
+            return startIndex;
         }
     }
 }

@@ -170,6 +170,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SearchFeedbackWidget.cs" />
     <Compile Include="Servants\IHttpContextServant.cs" />
+    <Compile Include="Servants\IPageModelServant.cs" />
+    <Compile Include="Servants\IPathServant.cs" />
+    <Compile Include="Servants\PageModelServant.cs" />
+    <Compile Include="Servants\PathServant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
