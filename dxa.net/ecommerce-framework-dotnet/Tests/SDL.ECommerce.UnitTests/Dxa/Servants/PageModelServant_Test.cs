@@ -155,5 +155,92 @@
                 return new Tuple<PageModel, IQueryContributor>(model, contributor as IQueryContributor);
             }
         }
+
+        public class WhenGettingNotFoundPageDataAndPageExists : MultipleAssertTest<PageModelServant_Test>
+        {
+            private readonly PageModel _result;
+
+            private readonly PageModel _model;
+
+            public WhenGettingNotFoundPageDataAndPageExists()
+            {
+                _model = Fixture.Create<PageModel>();
+
+                var contentProvider = Fixture.Freeze<IContentProvider>();
+
+                contentProvider.GetPageModel(Arg.Any<string>(), Arg.Any<Localization>())
+                               .Returns(_model);
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    _result = Parent.SUT.GetNotFoundPageModel(contentProvider);
+                }
+            }
+
+            [Fact]
+            public void ThenTheModelShouldBeReturned()
+            {
+                Assert.Equal(_model, _result);
+            }
+
+            [Fact]
+            public void ThenTheUrlShouldBeLocalized()
+            {
+                Fixture.GetStub<IContentProvider>()
+                       .Received(1)
+                       .GetPageModel($"{Parent._localization.Path}/error-404", Parent._localization);
+            }
+        }
+
+        public class WhenGettingNotFoundPageDataAndPageDoesNotExists : MultipleAssertTest<PageModelServant_Test>
+        {
+            private readonly DxaItemNotFoundException _exception;
+
+            private readonly Exception _result;
+
+            public WhenGettingNotFoundPageDataAndPageDoesNotExists()
+            {
+                var contentProvider = Fixture.Freeze<IContentProvider>();
+
+                _exception = Fixture.Create<DxaItemNotFoundException>();
+
+                contentProvider.GetPageModel(Arg.Any<string>(), Arg.Any<Localization>())
+                               .Throws(_exception);
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    try
+                    {
+                        Parent.SUT.GetNotFoundPageModel(contentProvider);
+                    }
+                    catch (Exception ex)
+                    {
+                        _result = ex;
+                    }
+                }
+            }
+
+            [Fact]
+            public void ThenAHttpExceptionShouldBeThrown()
+            {
+                Assert.IsType<HttpException>(_result);
+            }
+
+            [Fact]
+            public void ThenExceptionCodeShouldBe404()
+            {
+                Assert.Equal(404, ((HttpException)_result).GetHttpCode());
+            }
+
+            [Fact]
+            public void ThenTheExcepotionMessageShouldBePassed()
+            {
+                Assert.Equal(_exception.Message, _result.Message);
+            }
+        }
     }
 }
