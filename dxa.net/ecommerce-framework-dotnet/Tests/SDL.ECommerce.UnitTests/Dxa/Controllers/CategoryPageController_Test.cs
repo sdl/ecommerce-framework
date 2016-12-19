@@ -58,7 +58,7 @@
                 _pageModel = Fixture.Create<PageModel>();
 
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(_pageModel);
 
                 using (new FakeHttpContext())
@@ -196,7 +196,7 @@
                        .RedirectLocation.Returns((ILocation)null);
 
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(Fixture.Create<PageModel>());
 
                 using (new FakeHttpContext())
@@ -227,7 +227,7 @@
             public WhenCallingCategoryPageAndSearchResultIsRedirect()
             {
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(Fixture.Create<PageModel>());
 
                 Fixture.Freeze<IECommerceLinkResolver>()

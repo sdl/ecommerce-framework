@@ -45,7 +45,7 @@
                 contentProvider.GetPageModel(Arg.Any<string>(), Parent._localization)
                                .Throws(new DxaItemNotFoundException(Fixture.Create<string>()));
 
-                _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider, Parent._localization);
+                _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider);
             }
 
             [Fact]
@@ -73,7 +73,12 @@
                                                   .First(), Parent._localization)
                                .Returns(_model);
 
-                _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider, Parent._localization);
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider);
+                }
             }
 
             [Fact]

@@ -4,7 +4,6 @@
     using System.Web;
 
     using Sdl.Web.Common;
-    using Sdl.Web.Common.Configuration;
     using Sdl.Web.Common.Interfaces;
     using Sdl.Web.Common.Logging;
     using Sdl.Web.Common.Models;
@@ -14,7 +13,7 @@
 
     public class PageModelServant : IPageModelServant
     {
-        public PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider, Localization localization)
+        public PageModel ResolveTemplatePage(IEnumerable<string> urlSegments, IContentProvider contentProvider)
         {
             PageModel model = null;
 
@@ -24,7 +23,7 @@
                 {
                     Log.Info("Trying to find page template: " + urlSegment);
 
-                    model = contentProvider.GetPageModel(urlSegment, localization);
+                    model = contentProvider.GetPageModel(urlSegment, WebRequestContext.Localization);
                 }
                 catch (DxaItemNotFoundException) { }
 
