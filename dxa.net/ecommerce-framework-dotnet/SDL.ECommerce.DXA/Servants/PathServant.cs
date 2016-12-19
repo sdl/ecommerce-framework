@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
 
-    using Sdl.Web.Common.Configuration;
-
     using SDL.ECommerce.Api.Model;
 
     public class PathServant : IPathServant
@@ -15,11 +13,11 @@
 
         private const string CATEGORY_PATH_SEPARATOR = "-";
 
-        public IEnumerable<string> GetSearchPath(string url, ICategory category, Localization localization)
+        public IEnumerable<string> GetSearchPath(string url, ICategory category)
         {
             var searchPaths = new List<string>();
 
-            var basePath = ECommerceContext.LocalizePath(CATEGORIES, localization);
+            var basePath = ECommerceContext.LocalizePath(CATEGORIES);
 
             var categoryPath = basePath;
 

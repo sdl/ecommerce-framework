@@ -139,7 +139,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath(Parent._url, Arg.Any<ICategory>(), Arg.Any<Localization>());
+                       .GetSearchPath(Parent._url, Arg.Any<ICategory>());
             }
 
             [Fact]
@@ -147,7 +147,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath(Arg.Any<string>(), _category, Arg.Any<Localization>());
+                       .GetSearchPath(Arg.Any<string>(), _category);
             }
 
             [Fact]
@@ -216,7 +216,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath("/", Arg.Any<ICategory>(), Parent._localization);
+                       .GetSearchPath("/", Arg.Any<ICategory>());
             }
         }
 

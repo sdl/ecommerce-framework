@@ -1,6 +1,9 @@
 ﻿namespace SDL.ECommerce.UnitTests.Dxa.Servants
 {
     using System.Linq;
+    using System.Web;
+
+    using FakeHttpContext;
 
     using NSubstitute;
 
@@ -51,8 +54,13 @@
                 _category.Parent.Id.Returns(Fixture.Create<string>());
 
                 _category.Parent.Parent.Returns(default(ICategory));
-                
-                _result = Parent.SUT.GetSearchPath(Parent._url, _category, Parent._localization).ToArray();
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    _result = Parent.SUT.GetSearchPath(Parent._url, _category)
+                                    .ToArray();
+                }
             }
 
             [Fact]

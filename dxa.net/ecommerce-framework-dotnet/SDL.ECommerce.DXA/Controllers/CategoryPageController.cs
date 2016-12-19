@@ -47,7 +47,7 @@
 
             if (category != null)
             {
-                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
+                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category), ContentProvider, WebRequestContext.Localization);
 
                 PageModelServant.SetTemplatePage(templatePage);
 
