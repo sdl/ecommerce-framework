@@ -9,7 +9,6 @@
     using Sdl.Web.Common.Models;
 
     using SDL.ECommerce.Api;
-    using SDL.ECommerce.Api.Model;
     using SDL.ECommerce.DXA.Servants;
     using SDL.ECommerce.DXA.Factories;
 
@@ -24,8 +23,6 @@
 
         private readonly IHttpContextServant _httpContextServant;
 
-        private readonly IPageModelServant _pageModelServant;
-
         private readonly IPathServant _pathServant;
 
         public CategoryPageController()
@@ -33,7 +30,6 @@
             _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
             _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
             _httpContextServant = DependencyFactory.Current.Resolve<IHttpContextServant>();
-            _pageModelServant = DependencyFactory.Current.Resolve<IPageModelServant>();
             _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
         }
 
@@ -52,13 +48,13 @@
             var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
             if ( category != null )
             {
-                templatePage = _pageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
-                _pageModelServant.SetTemplatePage(templatePage);
+                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
+                PageModelServant.SetTemplatePage(templatePage);
                 templatePage.Title = category.Name;
                 SetupViewData(templatePage);
 
                 var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = _httpContextServant.GetStartIndex(HttpContext) };
-                _pageModelServant.GetQueryContributions(templatePage, query);
+                PageModelServant.GetQueryContributions(templatePage, query);
                 var searchResult = _eCommerceClient.QueryService.Query(query);
                 if ( searchResult.RedirectLocation != null )
                 {
