@@ -45,7 +45,7 @@
                 contentProvider.GetPageModel(Arg.Any<string>(), Parent._localization)
                                .Throws(new DxaItemNotFoundException(Fixture.Create<string>()));
 
-                _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider);
+                _result = Parent.SUT.Value.ResolveTemplatePage(paths, contentProvider);
             }
 
             [Fact]
@@ -77,7 +77,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.ResolveTemplatePage(paths, contentProvider);
+                    _result = Parent.SUT.Value.ResolveTemplatePage(paths, contentProvider);
                 }
             }
 
@@ -97,7 +97,7 @@
 
                 using (new FakeHttpContext())
                 {
-                    Parent.SUT.SetTemplatePage(model);
+                    Parent.SUT.Value.SetTemplatePage(model);
 
                     Assert.Equal(model, HttpContext.Current.Items["PageModel"]);
                 }
@@ -121,7 +121,7 @@
             {
                 var setup = SetupEntity(regionName ?? Fixture.Create<string>());
 
-                Parent.SUT.GetQueryContributions(setup.Item1, _query);
+                Parent.SUT.Value.GetQueryContributions(setup.Item1, _query);
 
                 setup.Item2.Received(receiveCount).ContributeToQuery(_query);
             }
@@ -138,7 +138,7 @@
 
                 setup = SetupEntity(secondRegionName ?? Fixture.Create<string>(), setup.Item1);
 
-                Parent.SUT.GetQueryContributions(setup.Item1, _query);
+                Parent.SUT.Value.GetQueryContributions(setup.Item1, _query);
 
                 firstContributor.Received(firstRegionReceiveCount).ContributeToQuery(_query);
 
@@ -180,7 +180,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.GetNotFoundPageModel(contentProvider);
+                    _result = Parent.SUT.Value.GetNotFoundPageModel(contentProvider);
                 }
             }
 
@@ -220,7 +220,7 @@
 
                     try
                     {
-                        Parent.SUT.GetNotFoundPageModel(contentProvider);
+                        Parent.SUT.Value.GetNotFoundPageModel(contentProvider);
                     }
                     catch (Exception ex)
                     {

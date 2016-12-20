@@ -1,5 +1,7 @@
 ﻿namespace SDL.ECommerce.UnitTests
 {
+    using System;
+
     using Ploeh.AutoFixture;
     using Ploeh.AutoFixture.AutoNSubstitute;
 
@@ -20,11 +22,11 @@
 
     public abstract class Test<T> : Test
     {
-        public T SUT { get; }
+        public Lazy<T> SUT { get; }
 
         protected Test()
         {
-            SUT = Fixture.Create<T>();
+            SUT = new Lazy<T>(() => Fixture.Create<T>());
         }
     }
 }

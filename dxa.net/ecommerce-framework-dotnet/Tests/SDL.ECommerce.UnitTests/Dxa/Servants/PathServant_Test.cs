@@ -58,7 +58,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.GetSearchPath(Parent._url, _category)
+                    _result = Parent.SUT.Value.GetSearchPath(Parent._url, _category)
                                     .ToArray();
                 }
             }

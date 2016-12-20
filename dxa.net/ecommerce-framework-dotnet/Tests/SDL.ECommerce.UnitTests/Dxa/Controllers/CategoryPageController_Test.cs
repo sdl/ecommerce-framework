@@ -22,7 +22,7 @@
 
     using Xunit;
     
-    public class CategoryPageController_Test : Test
+    public class CategoryPageController_Test : Test<CategoryPageController>
     {
         private readonly string _url;
 
@@ -242,8 +242,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _result = Fixture.Create<CategoryPageController>()
-                               .CategoryPage(Fixture.Create<string>());
+                        _result = Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
