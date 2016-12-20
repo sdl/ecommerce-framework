@@ -47,6 +47,8 @@
 
             private readonly IList<FacetParameter> _parameters;
 
+            private readonly CategoryPageController _controller;
+
             public WhenCallingCategoryPageWithValidUrl()
             {
                 Fixture.Freeze<IECommerceClient>()
@@ -65,9 +67,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        var controller = Fixture.Create<CategoryPageController>();
+                        _controller = Fixture.Create<CategoryPageController>();
 
-                        var result = controller.CategoryPage(Parent._url);
+                        var result = _controller.CategoryPage(Parent._url);
 
                         _resultModel = ((ViewResult)result).Model as PageModel;
                     }
@@ -177,6 +179,12 @@
                        .Received()
                        .QueryService.Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
             }
+
+            [Fact]
+            public void ControllerRouteValueShouldBePage()
+            {
+                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+            }
         }
 
         public class WhenCallingCategoryPageWithEmptyUrl : MultipleAssertTest<CategoryPageController_Test>
@@ -250,6 +258,50 @@
             public void TheRedirectUrlShouldBeTheOneSetByTheLinkResolver()
             {
                 Assert.Equal("http://localhost:1234", ((RedirectResult)_result).Url);
+            }
+        }
+
+        public class WhenCallingCategoryPageAndCategoryDoNotExist : MultipleAssertTest<CategoryPageController_Test>
+        {
+            private readonly ActionResult _result;
+
+            private readonly CategoryPageController _controller;
+
+            public WhenCallingCategoryPageAndCategoryDoNotExist()
+            {
+                Fixture.Freeze<IECommerceClient>()
+                       .CategoryService.GetCategoryByPath(Arg.Any<string>())
+                       .Returns((ICategory)null);
+
+                var model = Fixture.Create<PageModel>();
+
+                Fixture.Freeze<IPageModelServant>()
+                       .GetNotFoundPageModel(Arg.Any<IContentProvider>())
+                       .Returns(model);
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    using (new DependencyTestProvider(Fixture))
+                    {
+                        _controller = Fixture.Create<CategoryPageController>();
+
+                        _result = _controller.CategoryPage(Fixture.Create<string>());
+                    }
+                }
+            }
+
+            [Fact]
+            public void TheStatusCodeIs404()
+            {
+                Assert.Equal(404, _controller.Response.StatusCode);
+            }
+
+            [Fact]
+            public void ControllerRouteValueShouldBePage()
+            {
+                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
             }
         }
     }

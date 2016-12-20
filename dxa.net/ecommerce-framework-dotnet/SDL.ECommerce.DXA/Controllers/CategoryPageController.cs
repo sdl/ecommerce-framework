@@ -4,12 +4,10 @@
     using Sdl.Web.Mvc.Configuration;
 
     using System.Web.Mvc;
-    using System;
 
     using Sdl.Web.Common.Models;
 
     using SDL.ECommerce.Api;
-    using SDL.ECommerce.Api.Model;
     using SDL.ECommerce.DXA.Servants;
     using SDL.ECommerce.DXA.Factories;
 
@@ -24,8 +22,6 @@
 
         private readonly IHttpContextServant _httpContextServant;
 
-        private readonly IPageModelServant _pageModelServant;
-
         private readonly IPathServant _pathServant;
 
         public CategoryPageController()
@@ -33,33 +29,43 @@
             _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
             _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
             _httpContextServant = DependencyFactory.Current.Resolve<IHttpContextServant>();
-            _pageModelServant = DependencyFactory.Current.Resolve<IPageModelServant>();
             _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
         }
 
         public ActionResult CategoryPage(string categoryUrl)
         {
             Log.Info("Entering category page controller with URL: " + categoryUrl);
-            
-            if ( String.IsNullOrEmpty(categoryUrl) )
+
+            if (string.IsNullOrEmpty(categoryUrl))
             {
                 categoryUrl = "/";
             }
+            
+            PageModel templatePage;
 
-            var facets = _httpContextServant.GetFacetParametersFromRequest(HttpContext);
-
-            PageModel templatePage = null;
             var category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryUrl);
-            if ( category != null )
+
+            if (category != null)
             {
-                templatePage = _pageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
-                _pageModelServant.SetTemplatePage(templatePage);
+                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
+
+                PageModelServant.SetTemplatePage(templatePage);
+
                 templatePage.Title = category.Name;
+
                 SetupViewData(templatePage);
 
-                var query = new Api.Model.Query { Category = category, Facets = facets, StartIndex = _httpContextServant.GetStartIndex(HttpContext) };
-                _pageModelServant.GetQueryContributions(templatePage, query);
+                var facets = _httpContextServant.GetFacetParametersFromRequest(HttpContext);
+                var query = new Api.Model.Query
+                                {
+                                    Category = category,
+                                    Facets = facets,
+                                    StartIndex = _httpContextServant.GetStartIndex(HttpContext)
+                                };
+
+                PageModelServant.GetQueryContributions(templatePage, query);
                 var searchResult = _eCommerceClient.QueryService.Query(query);
+
                 if ( searchResult.RedirectLocation != null )
                 {
                    return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
@@ -74,6 +80,7 @@
             else
             {
                 Log.Warn("Category page with URL: /" + categoryUrl + " does not exists.");
+
                 return NotFound();
             }
 

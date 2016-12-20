@@ -1,6 +1,7 @@
 ﻿namespace SDL.ECommerce.DXA.Servants
 {
     using System.Collections.Generic;
+    using System.Web;
 
     using Sdl.Web.Common;
     using Sdl.Web.Common.Configuration;
@@ -59,6 +60,26 @@
                     }
                 }
             }
+        }
+
+        public PageModel GetNotFoundPageModel(IContentProvider contentProvider)
+        {
+            // TODO: Have the possiblity to have a E-Commerce specific 404 page for categories and products
+            //
+            string notFoundPageUrl = ECommerceContext.LocalizePath("/error-404");
+
+            PageModel pageModel;
+            try
+            {
+                pageModel = contentProvider.GetPageModel(notFoundPageUrl, WebRequestContext.Localization);
+            }
+            catch (DxaItemNotFoundException ex)
+            {
+                Log.Error(ex);
+                throw new HttpException(404, ex.Message);
+            }
+
+            return pageModel;
         }
     }
 }
