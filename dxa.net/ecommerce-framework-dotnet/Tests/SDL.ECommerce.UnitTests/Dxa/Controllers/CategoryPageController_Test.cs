@@ -46,9 +46,7 @@
             private readonly ICategory _category;
 
             private readonly IList<FacetParameter> _parameters;
-
-            private readonly CategoryPageController _controller;
-
+            
             public WhenCallingCategoryPageWithValidUrl()
             {
                 Fixture.Freeze<IECommerceClient>()
@@ -67,9 +65,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _controller = Fixture.Create<CategoryPageController>();
-
-                        var result = _controller.CategoryPage(Parent._url);
+                        var result = Parent.SUT.Value.CategoryPage(Parent._url);
 
                         _resultModel = ((ViewResult)result).Model as PageModel;
                     }
@@ -183,7 +179,7 @@
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
             }
         }
 
@@ -205,8 +201,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Fixture.Create<CategoryPageController>()
-                               .CategoryPage(null);
+                        Parent.SUT.Value.CategoryPage(null);
                     }
                 }
             }
@@ -262,10 +257,6 @@
 
         public class WhenCallingCategoryPageAndCategoryDoNotExist : MultipleAssertTest<CategoryPageController_Test>
         {
-            private readonly ActionResult _result;
-
-            private readonly CategoryPageController _controller;
-
             public WhenCallingCategoryPageAndCategoryDoNotExist()
             {
                 Fixture.Freeze<IECommerceClient>()
@@ -284,9 +275,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _controller = Fixture.Create<CategoryPageController>();
-
-                        _result = _controller.CategoryPage(Fixture.Create<string>());
+                        Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
@@ -294,13 +283,13 @@
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, _controller.Response.StatusCode);
+                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
             }
         }
     }

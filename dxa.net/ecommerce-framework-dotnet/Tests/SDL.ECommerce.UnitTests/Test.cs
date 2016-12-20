@@ -23,10 +23,10 @@
     public abstract class Test<T> : Test
     {
         public Lazy<T> SUT { get; }
-
+        
         protected Test()
         {
-            SUT = new Lazy<T>(() => Fixture.Create<T>());
+            SUT = new Lazy<T>(() => Fixture.Freeze<T>());
         }
     }
 }
