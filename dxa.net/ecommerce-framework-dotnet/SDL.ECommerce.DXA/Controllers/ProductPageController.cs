@@ -5,6 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using SDL.ECommerce.Api;
+using SDL.ECommerce.DXA.Factories;
+using SDL.ECommerce.DXA.Servants;
+
 namespace SDL.ECommerce.DXA.Controllers
 {
     /// <summary>
@@ -12,6 +16,16 @@ namespace SDL.ECommerce.DXA.Controllers
     /// </summary>
     public class ProductPageController : AbstractECommercePageController
     {
+        private readonly IECommerceClient _eCommerceClient;
+
+        private readonly IPathServant _pathServant;
+
+        public ProductPageController()
+        {
+            _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
+            _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
+        }
+
         /// <summary>
         /// Product Page controller action.
         /// Finds the product and resolve correct template page for displaying the product.
@@ -52,19 +66,19 @@ namespace SDL.ECommerce.DXA.Controllers
                     string attributeValue = queryParams[attributeId];
                     variantAttributes.Add(attributeId, attributeValue); 
                 }
-                product = ECommerceContext.Client.DetailService.GetDetail(productId, variantAttributes);
+                product = _eCommerceClient.DetailService.GetDetail(productId, variantAttributes);
             }
 
             if (product == null)
             {
-                product = ECommerceContext.Client.DetailService.GetDetail(productId);
+                product = _eCommerceClient.DetailService.GetDetail(productId);
             }
             if ( product == null )
             {
                 Log.Info("Product not found: " + productId);
                 return NotFound();
             }
-            PageModel templatePage = this.ResolveTemplatePage(this.GetSearchPath(productSeoId, product));
+            PageModel templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(productSeoId, product), ContentProvider);
             if ( templatePage == null )
             {
                 Log.Error("Product template page could not be found for product URL: " + productUrl);

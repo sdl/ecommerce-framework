@@ -7,5 +7,7 @@ namespace SDL.ECommerce.DXA.Servants
     public interface IPathServant
     {
         IEnumerable<string> GetSearchPath(string url, ICategory category);
+
+        IEnumerable<string> GetSearchPath(string productSeoId, IProduct product);
     }
 }
