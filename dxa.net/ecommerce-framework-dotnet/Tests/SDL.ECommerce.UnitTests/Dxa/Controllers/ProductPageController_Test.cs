@@ -66,16 +66,12 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    ProductPageController controller;
-
                     using (new DependencyTestProvider(Fixture))
                     {
-                        controller = Parent.SUT.Value;
-                    }
+                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
 
-                    controller.Request.QueryString.Returns(new NameValueCollection());
-                        
-                    _result = controller.ProductPage(Parent._url.OneLevel) as ViewResult;
+                        _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel) as ViewResult;
+                    }
 
                     _httpContextItems = HttpContext.Current.Items;
                 }
@@ -124,16 +120,12 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    ProductPageController controller;
-
                     using (new DependencyTestProvider(Fixture))
                     {
-                        controller = Parent.SUT.Value;
+                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+
+                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
                     }
-
-                    controller.Request.QueryString.Returns(new NameValueCollection());
-
-                    controller.ProductPage(Parent._url.OneLevel);
                 }
             }
 
@@ -162,16 +154,12 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    ProductPageController controller;
-
                     using (new DependencyTestProvider(Fixture))
                     {
-                        controller = Parent.SUT.Value;
+                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+
+                        Parent.SUT.Value.ProductPage(Parent._url.TwoLevels);
                     }
-
-                    controller.Request.QueryString.Returns(new NameValueCollection());
-
-                    controller.ProductPage(Parent._url.TwoLevels);
                 }
             }
 
@@ -210,16 +198,12 @@
                        .GetNotFoundPageModel(Arg.Any<IContentProvider>())
                        .Returns(_errorModel);
 
-                ProductPageController controller;
-
                 using (new DependencyTestProvider(Fixture))
                 {
-                    controller = Parent.SUT.Value;
+                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+
+                    _result = Parent.SUT.Value.ProductPage(string.Empty);
                 }
-
-                controller.Request.QueryString.Returns(new NameValueCollection());
-
-                _result = controller.ProductPage(string.Empty);
             }
 
             [Fact]
@@ -275,17 +259,13 @@
                 using (new FakeHttpContext())
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
-                    
-                    ProductPageController controller;
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        controller = Parent.SUT.Value;
+                        Parent.SUT.Value.Request.QueryString.Returns(collection);
+
+                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
                     }
-
-                    controller.Request.QueryString.Returns(collection);
-
-                    controller.ProductPage(Parent._url.OneLevel);
                 }
             }
 
