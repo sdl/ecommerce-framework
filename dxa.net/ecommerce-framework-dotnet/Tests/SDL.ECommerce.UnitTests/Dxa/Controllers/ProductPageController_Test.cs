@@ -294,6 +294,154 @@
             {
                 Assert.Equal(_queryStringParameters, _attributesUsed);
             }
+
+            [Fact]
+            public void ThenNoAttemtToGetProductWithoutVariantAttributesShouldBeMade()
+            {
+                Fixture.GetStub<IECommerceClient>()
+                       .DetailService.GetDetail(Parent._url.OneLevel)
+                       .DidNotReceive();
+            }
+        }
+
+        public class WhenCallingProductWithQueryStringParametersButNoProductIsFound : MultipleAssertTest<ProductPageController_Test>
+        {
+            public WhenCallingProductWithQueryStringParametersButNoProductIsFound()
+            {
+                Fixture.Freeze<IPageModelServant>()
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
+                       .Returns(Fixture.Create<PageModel>());
+
+                Fixture.Freeze<IECommerceClient>()
+                       .DetailService.GetDetail(Arg.Any<string>(), Arg.Any<IDictionary<string, string>>())
+                       .Returns((IProduct)null);
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    using (new DependencyTestProvider(Fixture))
+                    {
+                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+
+                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                    }
+                }
+            }
+            
+            [Fact]
+            public void ThenAnAttemtToGetProductAnyVariantAttributesShouldBeMade()
+            {
+                Fixture.GetStub<IECommerceClient>()
+                       .DetailService.GetDetail(Parent._url.OneLevel)
+                       .Received(1);
+            }
+        }
+
+        public class WhenCallingProductWithAValidUrlAndNoProductExist : MultipleAssertTest<ProductPageController_Test>
+        {
+            private readonly ActionResult _result;
+
+            private readonly PageModel _errorModel;
+
+            public WhenCallingProductWithAValidUrlAndNoProductExist()
+            {
+                Fixture.Freeze<IECommerceClient>()
+                       .DetailService.GetDetail(Arg.Any<string>(), Arg.Any<IDictionary<string, string>>())
+                       .Returns((IProduct)null);
+
+                Fixture.Freeze<IECommerceClient>()
+                       .DetailService.GetDetail(Arg.Any<string>())
+                       .Returns((IProduct)null);
+
+                _errorModel = Fixture.Create<PageModel>();
+
+                Fixture.Freeze<IPageModelServant>()
+                       .GetNotFoundPageModel(Arg.Any<IContentProvider>())
+                       .Returns(_errorModel);
+
+                using (new DependencyTestProvider(Fixture))
+                {
+                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
+
+                    _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                }
+            }
+
+            [Fact]
+            public void TheStatusCodeIs404()
+            {
+                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+            }
+
+            [Fact]
+            public void ControllerRouteValueShouldBePage()
+            {
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+            }
+
+            [Fact]
+            public void TheResultIsOfTypeViewResult()
+            {
+                Assert.IsType<ViewResult>(_result);
+            }
+
+            [Fact]
+            public void TheErrorMethodIsReturned()
+            {
+                Assert.Equal(_errorModel, ((ViewResult)_result).Model);
+            }
+        }
+
+        public class WhenCallingProductWithAValidUrlAndNoTemplatePageExist : MultipleAssertTest<ProductPageController_Test>
+        {
+            private readonly ActionResult _result;
+
+            private readonly PageModel _errorModel;
+
+            public WhenCallingProductWithAValidUrlAndNoTemplatePageExist()
+            {
+                Fixture.Freeze<IPageModelServant>()
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
+                       .Returns((PageModel)null);
+
+                _errorModel = Fixture.Create<PageModel>();
+
+                Fixture.Freeze<IPageModelServant>()
+                       .GetNotFoundPageModel(Arg.Any<IContentProvider>())
+                       .Returns(_errorModel);
+
+                using (new DependencyTestProvider(Fixture))
+                {
+                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
+
+                    _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                }
+            }
+
+            [Fact]
+            public void TheStatusCodeIs404()
+            {
+                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+            }
+
+            [Fact]
+            public void ControllerRouteValueShouldBePage()
+            {
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+            }
+
+            [Fact]
+            public void TheResultIsOfTypeViewResult()
+            {
+                Assert.IsType<ViewResult>(_result);
+            }
+
+            [Fact]
+            public void TheErrorMethodIsReturned()
+            {
+                Assert.Equal(_errorModel, ((ViewResult)_result).Model);
+            }
         }
     }
 }
