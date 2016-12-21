@@ -2,22 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using SDL.ECommerce.Api.Model;
 
     public class PathServant : IPathServant
     {
-        private const string CATEGORIES = "/categories/";
+        private const string CATEGORIES_PATH = "/categories/";
 
-        private const string GENERIC = "generic";
+        private const string PRODUCTS_PATH = "/products/";
+
+        private const string GENERIC_PATH = "generic";
 
         private const string CATEGORY_PATH_SEPARATOR = "-";
-
+        
         public IEnumerable<string> GetSearchPath(string url, ICategory category)
         {
             var searchPaths = new List<string>();
 
-            var basePath = ECommerceContext.LocalizePath(CATEGORIES);
+            var basePath = ECommerceContext.LocalizePath(CATEGORIES_PATH);
 
             var categoryPath = basePath;
 
@@ -41,7 +44,7 @@
                 categoryPath += CATEGORY_PATH_SEPARATOR;
             }
 
-            searchPaths.Add(basePath + GENERIC);
+            searchPaths.Add(basePath + GENERIC_PATH);
 
             return searchPaths;
         }
@@ -49,32 +52,22 @@
         public IEnumerable<string> GetSearchPath(string productSeoId, IProduct product)
         {
             var searchPath = new List<string>();
-            var basePath = ECommerceContext.LocalizePath("/products/");
 
-            // SEO id
-            //
+            var basePath = ECommerceContext.LocalizePath(PRODUCTS_PATH);
+
             if (productSeoId != null)
             {
                 searchPath.Add(basePath + productSeoId);
             }
 
-            // Product ID
-            //
             searchPath.Add(basePath + product.Id);
 
-            // Product Categories
-            //
             if (product.Categories != null)
             {
-                foreach (var category in product.Categories)
-                {
-                    searchPath.Add(basePath + category.Id);
-                }
+                searchPath.AddRange(product.Categories.Select(category => basePath + category.Id));
             }
 
-            // Generic fallback product look&feel
-            //
-            searchPath.Add(basePath + "generic");
+            searchPath.Add(basePath + GENERIC_PATH);
 
             return searchPath;
         }
