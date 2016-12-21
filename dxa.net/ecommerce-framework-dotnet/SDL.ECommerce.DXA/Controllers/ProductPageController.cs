@@ -11,8 +11,6 @@ using SDL.ECommerce.DXA.Servants;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
-    using System.Linq;
-
     /// <summary>
     /// E-Commerce Product Page Controller
     /// </summary>
@@ -36,38 +34,46 @@ namespace SDL.ECommerce.DXA.Controllers
         /// <returns></returns>
         public ActionResult ProductPage(string productUrl)
         {
-            var pathTokens = productUrl.Split( new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var pathTokens = productUrl.Split( new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             string productSeoId;
-            String productId;
+            string productId;
+
             if (pathTokens.Length == 2)
             {
                 productSeoId = pathTokens[0];
+
                 productId = pathTokens[1];
             }
             else if (pathTokens.Length == 1)
             {
                 productSeoId = null;
+
                 productId = pathTokens[0];
             }
             else
             {
                 Log.Warn("Invalid product URL: " + productUrl);
+
                 return NotFound();
             }
 
             IProduct product = null;
             var queryParams = HttpContext.Request.QueryString;
-            if ( queryParams.Count > 0 )
+
+            if (queryParams.Count > 0)
             {
                 // Get variant attributes from the query string
                 //
                 var variantAttributes = new Dictionary<string, string>();
+
                 foreach (var key in queryParams.Keys)
                 {
                     string attributeId = key.ToString();
                     string attributeValue = queryParams[attributeId];
+
                     variantAttributes.Add(attributeId, attributeValue); 
                 }
+
                 product = _eCommerceClient.DetailService.GetDetail(productId, variantAttributes);
             }
 
@@ -75,15 +81,20 @@ namespace SDL.ECommerce.DXA.Controllers
             {
                 product = _eCommerceClient.DetailService.GetDetail(productId);
             }
+
             if ( product == null )
             {
                 Log.Info("Product not found: " + productId);
+
                 return NotFound();
             }
+
             PageModel templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(productSeoId, product), ContentProvider);
+
             if ( templatePage == null )
             {
                 Log.Error("Product template page could not be found for product URL: " + productUrl);
+
                 return NotFound();
             }
 
@@ -91,7 +102,6 @@ namespace SDL.ECommerce.DXA.Controllers
             ECommerceContext.Set(ECommerceContext.PRODUCT, product);
             ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
             return View(templatePage);
-
         }
     }
 }
