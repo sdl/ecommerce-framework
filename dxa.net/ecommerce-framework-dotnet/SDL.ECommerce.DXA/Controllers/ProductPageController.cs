@@ -91,44 +91,5 @@ namespace SDL.ECommerce.DXA.Controllers
             return View(templatePage);
 
         }
-
-        /// <summary>
-        /// Get search path to find an appropriate CMS template page for current product.
-        /// </summary>
-        /// <param name="productSeoId"></param>
-        /// <param name="product"></param>
-        /// <returns></returns>
-        protected IList<string> GetSearchPath(string productSeoId, IProduct product)
-        {
-            var searchPath = new List<string>();
-            var basePath = ECommerceContext.LocalizePath("/products/");
-
-            // SEO id
-            //
-            if (productSeoId != null)
-            {
-                searchPath.Add(basePath + productSeoId);
-            }
-
-            // Product ID
-            //
-            searchPath.Add(basePath + product.Id);
-            
-            // Product Categories
-            //
-            if (product.Categories != null)
-            {
-                foreach (var category in product.Categories)
-                {
-                    searchPath.Add(basePath + category.Id);
-                }
-            }
-            
-            // Generic fallback product look&feel
-            //
-            searchPath.Add(basePath + "generic");
-
-            return searchPath;
-        }
     }
 }
