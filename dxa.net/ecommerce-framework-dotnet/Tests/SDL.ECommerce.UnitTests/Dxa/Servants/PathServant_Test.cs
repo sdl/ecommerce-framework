@@ -267,5 +267,38 @@
                 return $"{Parent._localization.Path}/products/";
             }
         }
+
+        public class WhenGettingSearchPathForProductWithoutProductSeoId : MultipleAssertTest<PathServant_Test>
+        {
+            private readonly IProduct _product;
+
+            private readonly string[] _result;
+
+            public WhenGettingSearchPathForProductWithoutProductSeoId()
+            {
+                _product = Fixture.Create<IProduct>();
+
+                _product.Id.Returns(Fixture.Create<string>());
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+
+                    _result = Parent.SUT.Value.GetSearchPath(string.Empty, _product)
+                                    .ToArray();
+                }
+            }
+
+            [Fact]
+            public void NoPathWithOnlyBasePathShouldBeReturned()
+            {
+                Assert.DoesNotContain($"{GetBasePath()}", _result);
+            }
+
+            private string GetBasePath()
+            {
+                return $"{Parent._localization.Path}/products/";
+            }
+        }
     }
 }

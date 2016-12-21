@@ -55,7 +55,7 @@
 
             var basePath = ECommerceContext.LocalizePath(PRODUCTS_PATH);
 
-            if (productSeoId != null)
+            if (!string.IsNullOrEmpty(productSeoId))
             {
                 searchPath.Add(basePath + productSeoId);
             }
