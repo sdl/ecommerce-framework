@@ -2,7 +2,6 @@
 using Sdl.Web.Common.Models;
 
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 using SDL.ECommerce.Api;
@@ -11,6 +10,8 @@ using SDL.ECommerce.DXA.Servants;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    using System.Linq;
+
     /// <summary>
     /// E-Commerce Product Page Controller
     /// </summary>
@@ -62,17 +63,7 @@ namespace SDL.ECommerce.DXA.Controllers
 
             if (queryParams.Count > 0)
             {
-                // Get variant attributes from the query string
-                //
-                var variantAttributes = new Dictionary<string, string>();
-
-                foreach (var key in queryParams.Keys)
-                {
-                    string attributeId = key.ToString();
-                    string attributeValue = queryParams[attributeId];
-
-                    variantAttributes.Add(attributeId, attributeValue); 
-                }
+                var variantAttributes = queryParams.AllKeys.ToDictionary(k => k, k => queryParams[k]);
 
                 product = _eCommerceClient.DetailService.GetDetail(productId, variantAttributes);
             }
