@@ -266,6 +266,8 @@
             private readonly ActionResult _result;
 
             private readonly CategoryPageController _controller;
+            
+            private readonly PageModel _errorModel;
 
             public WhenCallingCategoryPageAndCategoryDoNotExist()
             {
@@ -273,11 +275,11 @@
                        .CategoryService.GetCategoryByPath(Arg.Any<string>())
                        .Returns((ICategory)null);
 
-                var model = Fixture.Create<PageModel>();
+                _errorModel = Fixture.Create<PageModel>();
 
                 Fixture.Freeze<IPageModelServant>()
                        .GetNotFoundPageModel(Arg.Any<IContentProvider>())
-                       .Returns(model);
+                       .Returns(_errorModel);
 
                 using (new FakeHttpContext())
                 {
@@ -302,6 +304,18 @@
             public void ControllerRouteValueShouldBePage()
             {
                 Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+            }
+
+            [Fact]
+            public void TheResultIsOfTypeViewResult()
+            {
+                Assert.IsType<ViewResult>(_result);
+            }
+
+            [Fact]
+            public void TheErrorMethodIsReturned()
+            {
+                Assert.Equal(_errorModel, ((ViewResult)_result).Model);
             }
         }
     }
