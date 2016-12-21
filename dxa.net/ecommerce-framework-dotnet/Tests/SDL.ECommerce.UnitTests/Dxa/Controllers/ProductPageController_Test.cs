@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
@@ -243,6 +244,55 @@
             public void TheErrorMethodIsReturned()
             {
                 Assert.Equal(_errorModel, ((ViewResult)_result).Model);
+            }
+        }
+
+        public class WhenCallingProductWithQueryStringParameters : MultipleAssertTest<ProductPageController_Test>
+        {
+            private readonly KeyValuePair<string, string>[] _queryStringParameters;
+
+            private IDictionary<string, string>_attributesUsed;
+
+            public WhenCallingProductWithQueryStringParameters()
+            {
+                Fixture.Freeze<IPageModelServant>()
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
+                       .Returns(Fixture.Create<PageModel>());
+
+                Fixture.Freeze<IECommerceClient>()
+                       .DetailService.GetDetail(Arg.Any<string>(), Arg.Do<IDictionary<string, string>>(dictionary => _attributesUsed = dictionary));
+
+                _queryStringParameters = Fixture.CreateMany<KeyValuePair<string, string>>(2)
+                                .ToArray();
+
+                var collection = new NameValueCollection();
+
+                foreach (var queryStringParameter in _queryStringParameters)
+                {
+                    collection.Add(queryStringParameter.Key, queryStringParameter.Value);
+                }
+
+                using (new FakeHttpContext())
+                {
+                    HttpContext.Current.Items.Add("Localization", Parent._localization);
+                    
+                    ProductPageController controller;
+
+                    using (new DependencyTestProvider(Fixture))
+                    {
+                        controller = Parent.SUT.Value;
+                    }
+
+                    controller.Request.QueryString.Returns(collection);
+
+                    controller.ProductPage(Parent._url.OneLevel);
+                }
+            }
+
+            [Fact]
+            public void TheQueryStringParametersIsPassedWhenGettingAProduct()
+            {
+                Assert.Equal(_queryStringParameters, _attributesUsed);
             }
         }
     }

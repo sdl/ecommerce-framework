@@ -11,6 +11,8 @@ using SDL.ECommerce.DXA.Servants;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
+    using System.Linq;
+
     /// <summary>
     /// E-Commerce Product Page Controller
     /// </summary>
