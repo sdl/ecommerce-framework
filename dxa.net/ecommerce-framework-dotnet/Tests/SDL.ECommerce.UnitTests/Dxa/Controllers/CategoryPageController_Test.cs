@@ -61,6 +61,14 @@
                        .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
                        .Returns(_pageModel);
 
+                _category = Fixture.Create<ICategory>();
+
+                _category.Name.Returns(Fixture.Create<string>());
+
+                Fixture.GetStub<IECommerceClient>()
+                       .CategoryService.GetCategoryByPath(Parent._url)
+                       .Returns(_category);
+
                 using (new FakeHttpContext())
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
@@ -76,9 +84,6 @@
 
                     _httpContextItems = HttpContext.Current.Items;
                 }
-
-                _category = Fixture.GetStub<IECommerceClient>()
-                                   .CategoryService.GetCategoryByPath(Parent._url);
 
                 _parameters = Fixture.GetStub<IHttpContextServant>()
                                         .GetFacetParametersFromRequest(Arg.Any<HttpContextBase>());
