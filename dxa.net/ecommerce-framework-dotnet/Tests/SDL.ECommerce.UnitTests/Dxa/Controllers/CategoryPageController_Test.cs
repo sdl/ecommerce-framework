@@ -262,10 +262,7 @@
 
         public class WhenCallingCategoryPageAndCategoryDoNotExist : MultipleAssertTest<CategoryPageController_Test>
         {
-
             private readonly ActionResult _result;
-
-            private readonly CategoryPageController _controller;
             
             private readonly PageModel _errorModel;
 
@@ -287,7 +284,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
+                        _result = Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
