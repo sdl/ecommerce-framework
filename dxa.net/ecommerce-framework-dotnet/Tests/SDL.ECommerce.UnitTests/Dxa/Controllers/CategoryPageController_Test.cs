@@ -181,8 +181,8 @@
             public void QueryIsCalledWithTheCreatedQuery()
             {
                 Fixture.GetStub<IECommerceClient>()
-                       .Received()
-                       .QueryService.Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
+                       .QueryService.Received(1)
+                       .Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
             }
 
             [Fact]
