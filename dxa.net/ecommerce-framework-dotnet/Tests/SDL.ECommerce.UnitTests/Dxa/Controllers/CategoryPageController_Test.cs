@@ -61,6 +61,14 @@
                        .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
                        .Returns(_pageModel);
 
+                _category = Fixture.Create<ICategory>();
+
+                _category.Name.Returns(Fixture.Create<string>());
+
+                Fixture.GetStub<IECommerceClient>()
+                       .CategoryService.GetCategoryByPath(Parent._url)
+                       .Returns(_category);
+
                 using (new FakeHttpContext())
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
@@ -76,9 +84,6 @@
 
                     _httpContextItems = HttpContext.Current.Items;
                 }
-
-                _category = Fixture.GetStub<IECommerceClient>()
-                                   .CategoryService.GetCategoryByPath(Parent._url);
 
                 _parameters = Fixture.GetStub<IHttpContextServant>()
                                         .GetFacetParametersFromRequest(Arg.Any<HttpContextBase>());
@@ -176,8 +181,8 @@
             public void QueryIsCalledWithTheCreatedQuery()
             {
                 Fixture.GetStub<IECommerceClient>()
-                       .Received()
-                       .QueryService.Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
+                       .QueryService.Received(1)
+                       .Query(Arg.Is<ECommerce.Api.Model.Query>(model => model.Category == _category));
             }
 
             [Fact]
@@ -266,6 +271,8 @@
             private readonly ActionResult _result;
 
             private readonly CategoryPageController _controller;
+            
+            private readonly PageModel _errorModel;
 
             public WhenCallingCategoryPageAndCategoryDoNotExist()
             {
@@ -273,11 +280,11 @@
                        .CategoryService.GetCategoryByPath(Arg.Any<string>())
                        .Returns((ICategory)null);
 
-                var model = Fixture.Create<PageModel>();
+                _errorModel = Fixture.Create<PageModel>();
 
                 Fixture.Freeze<IPageModelServant>()
                        .GetNotFoundPageModel(Arg.Any<IContentProvider>())
-                       .Returns(model);
+                       .Returns(_errorModel);
 
                 using (new FakeHttpContext())
                 {
@@ -302,6 +309,18 @@
             public void ControllerRouteValueShouldBePage()
             {
                 Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+            }
+
+            [Fact]
+            public void TheResultIsOfTypeViewResult()
+            {
+                Assert.IsType<ViewResult>(_result);
+            }
+
+            [Fact]
+            public void TheErrorMethodIsReturned()
+            {
+                Assert.Equal(_errorModel, ((ViewResult)_result).Model);
             }
         }
     }
