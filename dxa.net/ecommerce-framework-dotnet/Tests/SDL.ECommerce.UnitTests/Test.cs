@@ -22,18 +22,18 @@
 
     public abstract class Test<T> : Test
     {
-        private T _sut;
+        private T _systemUnderTest;
 
-        public T SUT
+        public T SystemUnderTest
         {
             get
             {
-                if (_sut == null)
+                if (_systemUnderTest == null)
                 {
-                    _sut = Fixture.Freeze<T>();
+                    _systemUnderTest = Fixture.Freeze<T>();
                 }
 
-                return _sut;
+                return _systemUnderTest;
             }
         }
     }

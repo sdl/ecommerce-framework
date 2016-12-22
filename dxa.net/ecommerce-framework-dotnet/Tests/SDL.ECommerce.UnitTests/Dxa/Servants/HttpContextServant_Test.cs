@@ -42,7 +42,7 @@
 
             public WhenGettingFacetParameters()
             {
-                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SystemUnderTest.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -82,7 +82,7 @@
             {
                 Parent._context.Request.QueryString.Add("q", Fixture.Create<string>());
 
-                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SystemUnderTest.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -106,7 +106,7 @@
             {
                 Parent._context.Request.QueryString.Add("startIndex", Fixture.Create<string>());
 
-                _result = Parent.SUT.GetFacetParametersFromRequest(Parent._context);
+                _result = Parent.SystemUnderTest.GetFacetParametersFromRequest(Parent._context);
             }
 
             [Fact]
@@ -127,7 +127,7 @@
             [Fact]
             public void WhenNoStartIndexExist_Then0ShouldBeReturned()
             {
-                var result = Parent.SUT.GetStartIndex(Parent._context);
+                var result = Parent.SystemUnderTest.GetStartIndex(Parent._context);
 
                 Assert.Equal(0, result);
             }
@@ -139,7 +139,7 @@
 
                 Parent._context.Request.QueryString.Add("startIndex", number.ToString());
 
-                var result = Parent.SUT.GetStartIndex(Parent._context);
+                var result = Parent.SystemUnderTest.GetStartIndex(Parent._context);
 
                 Assert.Equal(number, result);
             }
@@ -149,7 +149,7 @@
             {
                 Parent._context.Request.QueryString.Add("startIndex", Fixture.Create<string>());
 
-                var result = Parent.SUT.GetStartIndex(Parent._context);
+                var result = Parent.SystemUnderTest.GetStartIndex(Parent._context);
 
                 Assert.Equal(0, result);
             }
