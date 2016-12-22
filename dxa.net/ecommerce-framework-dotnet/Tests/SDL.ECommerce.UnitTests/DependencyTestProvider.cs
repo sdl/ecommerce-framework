@@ -1,34 +1,41 @@
 ﻿namespace SDL.ECommerce.UnitTests
 {
     using System;
-    using System.Collections.Generic;
 
     using Ploeh.AutoFixture;
-
-    using SDL.ECommerce.Api;
+    using Ploeh.AutoFixture.Kernel;
     using SDL.ECommerce.DXA.Providers;
-    using SDL.ECommerce.DXA.Servants;
 
     internal class DependencyTestProvider : IDisposable
     {
         public DependencyTestProvider(IFixture fixture)
         {
-            var dependencies = new Dictionary<Type, object>
-                                   {
-                                           { typeof(IECommerceClient), fixture.Freeze<IECommerceClient>() },
-                                           { typeof(IECommerceLinkResolver), fixture.Freeze<IECommerceLinkResolver>() },
-                                           { typeof(IHttpContextServant), fixture.Freeze<IHttpContextServant>() },
-                                           { typeof(IPageModelServant), fixture.Freeze<IPageModelServant>() },
-                                           { typeof(IPathServant), fixture.Freeze<IPathServant>() }
-                                   };
+            var context = new SpecimenContext(fixture);
 
-            DependencyResolverProvider.Set(type => !dependencies.ContainsKey(type) ? null : dependencies[type]);
+            DependencyResolverProvider.Set(type =>
+                                               {
+                                                   var instance = fixture.Create(type, context);
+
+                                                   Inject(fixture, type, instance);
+
+                                                   return instance;
+                                               });
         }
-
-
+        
         public void Dispose()
         {
             DependencyResolverProvider.Reset();
+        }
+
+        private static void Inject(IFixture fixture, Type type, object mockedObject)
+        {
+            typeof(FixtureRegistrar).GetMethod("Inject")
+                                    .MakeGenericMethod(type)
+                                    .Invoke(null, new[]
+                                                      {
+                                                          fixture,
+                                                          mockedObject
+                                                      });
         }
     }
 }
