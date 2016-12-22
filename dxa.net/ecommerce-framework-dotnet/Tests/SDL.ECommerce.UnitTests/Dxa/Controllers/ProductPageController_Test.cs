@@ -175,8 +175,8 @@
             public void ThenACallToGetProductDetailWithTheSecondUrlPartShouldBeMade()
             {
                 Fixture.GetStub<IECommerceClient>()
-                       .Received(1)
-                       .DetailService.GetDetail(_urlParts[1]);
+                       .DetailService.Received(1)
+                       .GetDetail(_urlParts[1]);
             }
         }
 
@@ -313,8 +313,8 @@
             public void ThenAnAttemtToGetProductAnyVariantAttributesShouldBeMade()
             {
                 Fixture.GetStub<IECommerceClient>()
-                       .DetailService.GetDetail(Parent._url.OneLevel)
-                       .Received(1);
+                       .DetailService.Received(1)
+                       .GetDetail(Parent._url.Parts(Parent._url.OneLevel)[0]);
             }
         }
 
