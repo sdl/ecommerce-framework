@@ -20,6 +20,6 @@ namespace SDL.ECommerce.Api.Service
         /// <param name="productId"></param>
         /// <param name="variantAttributes"></param>
         /// <returns></returns>
-        IProduct GetDetail(string productId, Dictionary<string, string> variantAttributes);
+        IProduct GetDetail(string productId, IDictionary<string, string> variantAttributes);
     }
 }

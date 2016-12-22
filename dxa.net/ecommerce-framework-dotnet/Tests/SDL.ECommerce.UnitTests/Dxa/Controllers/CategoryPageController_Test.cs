@@ -22,7 +22,7 @@
 
     using Xunit;
     
-    public class CategoryPageController_Test : Test
+    public class CategoryPageController_Test : Test<CategoryPageController>
     {
         private readonly string _url;
 
@@ -46,9 +46,7 @@
             private readonly ICategory _category;
 
             private readonly IList<FacetParameter> _parameters;
-
-            private readonly CategoryPageController _controller;
-
+            
             public WhenCallingCategoryPageWithValidUrl()
             {
                 Fixture.Freeze<IECommerceClient>()
@@ -58,7 +56,7 @@
                 _pageModel = Fixture.Create<PageModel>();
 
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(_pageModel);
 
                 _category = Fixture.Create<ICategory>();
@@ -75,9 +73,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _controller = Fixture.Create<CategoryPageController>();
-
-                        var result = _controller.CategoryPage(Parent._url);
+                        var result = Parent.SUT.Value.CategoryPage(Parent._url);
 
                         _resultModel = ((ViewResult)result).Model as PageModel;
                     }
@@ -144,7 +140,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath(Parent._url, Arg.Any<ICategory>(), Arg.Any<Localization>());
+                       .GetSearchPath(Parent._url, Arg.Any<ICategory>());
             }
 
             [Fact]
@@ -152,7 +148,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath(Arg.Any<string>(), _category, Arg.Any<Localization>());
+                       .GetSearchPath(Arg.Any<string>(), _category);
             }
 
             [Fact]
@@ -188,7 +184,7 @@
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
             }
         }
 
@@ -201,7 +197,7 @@
                        .RedirectLocation.Returns((ILocation)null);
 
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(Fixture.Create<PageModel>());
 
                 using (new FakeHttpContext())
@@ -210,8 +206,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Fixture.Create<CategoryPageController>()
-                               .CategoryPage(null);
+                        Parent.SUT.Value.CategoryPage(null);
                     }
                 }
             }
@@ -221,7 +216,7 @@
             {
                 Fixture.GetStub<IPathServant>()
                        .Received(1)
-                       .GetSearchPath("/", Arg.Any<ICategory>(), Parent._localization);
+                       .GetSearchPath("/", Arg.Any<ICategory>());
             }
         }
 
@@ -232,7 +227,7 @@
             public WhenCallingCategoryPageAndSearchResultIsRedirect()
             {
                 Fixture.Freeze<IPageModelServant>()
-                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>(), Arg.Any<Localization>())
+                       .ResolveTemplatePage(Arg.Any<IEnumerable<string>>(), Arg.Any<IContentProvider>())
                        .Returns(Fixture.Create<PageModel>());
 
                 Fixture.Freeze<IECommerceLinkResolver>()
@@ -247,8 +242,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _result = Fixture.Create<CategoryPageController>()
-                               .CategoryPage(Fixture.Create<string>());
+                        _result = Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
@@ -268,6 +262,7 @@
 
         public class WhenCallingCategoryPageAndCategoryDoNotExist : MultipleAssertTest<CategoryPageController_Test>
         {
+
             private readonly ActionResult _result;
 
             private readonly CategoryPageController _controller;
@@ -292,9 +287,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _controller = Fixture.Create<CategoryPageController>();
-
-                        _result = _controller.CategoryPage(Fixture.Create<string>());
+                        Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
@@ -302,13 +295,13 @@
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, _controller.Response.StatusCode);
+                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", _controller.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
             }
 
             [Fact]

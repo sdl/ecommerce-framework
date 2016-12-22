@@ -1,7 +1,6 @@
 ﻿namespace SDL.ECommerce.DXA.Controllers
 {
     using Sdl.Web.Common.Logging;
-    using Sdl.Web.Mvc.Configuration;
 
     using System.Web.Mvc;
 
@@ -47,7 +46,7 @@
 
             if (category != null)
             {
-                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category, WebRequestContext.Localization), ContentProvider, WebRequestContext.Localization);
+                templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(categoryUrl, category), ContentProvider);
 
                 PageModelServant.SetTemplatePage(templatePage);
 

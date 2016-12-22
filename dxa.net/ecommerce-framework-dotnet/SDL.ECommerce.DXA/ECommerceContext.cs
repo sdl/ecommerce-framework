@@ -120,23 +120,6 @@ namespace SDL.ECommerce.DXA
             return url;
         }
 
-        public static string LocalizePath(string url, Localization localization)
-        {
-            string path = localization.Path;
-            if (!String.IsNullOrEmpty(path))
-            {
-                if (path.EndsWith("/"))
-                {
-                    url = path + (url.StartsWith("/") ? url.Substring(1) : url);
-                }
-                else
-                {
-                    url = path + (url.StartsWith("/") ? url : '/' + url);
-                }
-            }
-            return url;
-        }
-
         public static bool ShowEditUrl(IEditable editableItem)
         {
             return WebRequestContext.IsPreview && editableItem != null && !String.IsNullOrEmpty(editableItem.EditUrl);

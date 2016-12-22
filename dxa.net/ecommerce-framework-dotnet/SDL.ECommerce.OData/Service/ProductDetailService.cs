@@ -36,7 +36,7 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        public IProduct GetDetail(string productId, Dictionary<string, string> variantAttributes)
+        public IProduct GetDetail(string productId, IDictionary<string, string> variantAttributes)
         {
             ODataV4ClientFunction func = new ODataV4ClientFunction("ProductVariant");
             func.AllowCaching = false;
