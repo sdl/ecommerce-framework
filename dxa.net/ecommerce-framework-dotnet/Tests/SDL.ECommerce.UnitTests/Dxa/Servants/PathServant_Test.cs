@@ -60,7 +60,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.Value.GetSearchPath(Parent._url, _category)
+                    _result = Parent.SystemUnderTest.GetSearchPath(Parent._url, _category)
                                     .ToArray();
                 }
             }
@@ -149,7 +149,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.Value.GetSearchPath(Parent._url, _product)
+                    _result = Parent.SystemUnderTest.GetSearchPath(Parent._url, _product)
                                     .ToArray();
                 }
             }
@@ -221,7 +221,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.Value.GetSearchPath(Parent._url, _product)
+                    _result = Parent.SystemUnderTest.GetSearchPath(Parent._url, _product)
                                     .ToArray();
                 }
             }
@@ -284,7 +284,7 @@
                 {
                     HttpContext.Current.Items.Add("Localization", Parent._localization);
 
-                    _result = Parent.SUT.Value.GetSearchPath(string.Empty, _product)
+                    _result = Parent.SystemUnderTest.GetSearchPath(string.Empty, _product)
                                     .ToArray();
                 }
             }

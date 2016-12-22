@@ -73,7 +73,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        var result = Parent.SUT.Value.CategoryPage(Parent._url);
+                        var result = Parent.SystemUnderTest.CategoryPage(Parent._url);
 
                         _resultModel = ((ViewResult)result).Model as PageModel;
                     }
@@ -184,7 +184,7 @@
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SystemUnderTest.RouteData.Values["Controller"]);
             }
         }
 
@@ -206,7 +206,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.CategoryPage(null);
+                        Parent.SystemUnderTest.CategoryPage(null);
                     }
                 }
             }
@@ -242,7 +242,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        _result = Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
+                        _result = Parent.SystemUnderTest.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
@@ -262,10 +262,7 @@
 
         public class WhenCallingCategoryPageAndCategoryDoNotExist : MultipleAssertTest<CategoryPageController_Test>
         {
-
             private readonly ActionResult _result;
-
-            private readonly CategoryPageController _controller;
             
             private readonly PageModel _errorModel;
 
@@ -287,7 +284,7 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.CategoryPage(Fixture.Create<string>());
+                        _result = Parent.SystemUnderTest.CategoryPage(Fixture.Create<string>());
                     }
                 }
             }
@@ -295,13 +292,13 @@
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+                Assert.Equal(404, Parent.SystemUnderTest.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SystemUnderTest.RouteData.Values["Controller"]);
             }
 
             [Fact]

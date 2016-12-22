@@ -22,11 +22,19 @@
 
     public abstract class Test<T> : Test
     {
-        public Lazy<T> SUT { get; }
-        
-        protected Test()
+        private T _systemUnderTest;
+
+        public T SystemUnderTest
         {
-            SUT = new Lazy<T>(() => Fixture.Freeze<T>());
+            get
+            {
+                if (_systemUnderTest == null)
+                {
+                    _systemUnderTest = Fixture.Freeze<T>();
+                }
+
+                return _systemUnderTest;
+            }
         }
     }
 }
