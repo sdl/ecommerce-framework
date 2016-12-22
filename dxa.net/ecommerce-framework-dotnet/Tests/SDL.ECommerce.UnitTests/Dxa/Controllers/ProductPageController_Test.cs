@@ -68,9 +68,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+                        Parent.SUT.Request.QueryString.Returns(new NameValueCollection());
 
-                        _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel) as ViewResult;
+                        _result = Parent.SUT.ProductPage(Parent._url.OneLevel) as ViewResult;
                     }
 
                     _httpContextItems = HttpContext.Current.Items;
@@ -104,7 +104,7 @@
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.RouteData.Values["Controller"]);
             }
         }
 
@@ -122,9 +122,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+                        Parent.SUT.Request.QueryString.Returns(new NameValueCollection());
 
-                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                        Parent.SUT.ProductPage(Parent._url.OneLevel);
                     }
                 }
             }
@@ -156,9 +156,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+                        Parent.SUT.Request.QueryString.Returns(new NameValueCollection());
 
-                        Parent.SUT.Value.ProductPage(Parent._url.TwoLevels);
+                        Parent.SUT.ProductPage(Parent._url.TwoLevels);
                     }
                 }
             }
@@ -200,22 +200,22 @@
 
                 using (new DependencyTestProvider(Fixture))
                 {
-                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+                    Parent.SUT.Request.QueryString.Returns(new NameValueCollection());
 
-                    _result = Parent.SUT.Value.ProductPage(string.Empty);
+                    _result = Parent.SUT.ProductPage(string.Empty);
                 }
             }
 
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+                Assert.Equal(404, Parent.SUT.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.RouteData.Values["Controller"]);
             }
 
             [Fact]
@@ -262,9 +262,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.Request.QueryString.Returns(collection);
+                        Parent.SUT.Request.QueryString.Returns(collection);
 
-                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                        Parent.SUT.ProductPage(Parent._url.OneLevel);
                     }
                 }
             }
@@ -302,9 +302,9 @@
 
                     using (new DependencyTestProvider(Fixture))
                     {
-                        Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection());
+                        Parent.SUT.Request.QueryString.Returns(new NameValueCollection());
 
-                        Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                        Parent.SUT.ProductPage(Parent._url.OneLevel);
                     }
                 }
             }
@@ -342,22 +342,22 @@
 
                 using (new DependencyTestProvider(Fixture))
                 {
-                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
+                    Parent.SUT.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
 
-                    _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                    _result = Parent.SUT.ProductPage(Parent._url.OneLevel);
                 }
             }
 
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+                Assert.Equal(404, Parent.SUT.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.RouteData.Values["Controller"]);
             }
 
             [Fact]
@@ -393,22 +393,22 @@
 
                 using (new DependencyTestProvider(Fixture))
                 {
-                    Parent.SUT.Value.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
+                    Parent.SUT.Request.QueryString.Returns(new NameValueCollection { { Fixture.Create<string>(), Fixture.Create<string>() } });
 
-                    _result = Parent.SUT.Value.ProductPage(Parent._url.OneLevel);
+                    _result = Parent.SUT.ProductPage(Parent._url.OneLevel);
                 }
             }
 
             [Fact]
             public void TheStatusCodeIs404()
             {
-                Assert.Equal(404, Parent.SUT.Value.Response.StatusCode);
+                Assert.Equal(404, Parent.SUT.Response.StatusCode);
             }
 
             [Fact]
             public void ControllerRouteValueShouldBePage()
             {
-                Assert.Equal("Page", Parent.SUT.Value.RouteData.Values["Controller"]);
+                Assert.Equal("Page", Parent.SUT.RouteData.Values["Controller"]);
             }
 
             [Fact]
