@@ -30,6 +30,7 @@ import java.util.*;
  * Build up variant info based on a JSON structure that aggregates all variant attributes.
  *
  * Format: {"attribute1": "value1","attribute2": "value2"} {"attribute1": "value1"}
+ * Where attribute name/value is of non-ML type
  *
  * @author nic
  */
@@ -44,10 +45,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
     @org.springframework.beans.factory.annotation.Value("${fredhopper.variant.variantIdAttributeName:#{null}}")
     private String variantIdAttributeName = null;
 
-    @org.springframework.beans.factory.annotation.Value("${fredhopper.variant.masterIdAttributeName:#{null}}")
-    private String masterIdAttributeName = null;
-
-    private String primaryVariantAttributeName = null; // TODO: Should it be called primary or style???
+    private String primaryVariantAttributeName = null;
 
     // The exposed variants. The order is how variants gets selected, for example color->size
     // TODO: Do we need to take locale in consideration??
@@ -55,6 +53,10 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
     private String exposedVariantsString = null;
 
     private List<String> exposedVariants = null;
+
+    @org.springframework.beans.factory.annotation.Value("${fredhopper.variant.ignoredValues:#{null}}")
+    private String ignoredValuesString = null;
+    private List<String> ignoredValues = null;
 
     @Autowired
     private FredhopperClient fredhopperClient;
@@ -87,6 +89,13 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 this.primaryVariantAttributeName = this.exposedVariants.get(0);
             }
         }
+        if ( ignoredValuesString != null ) {
+            this.ignoredValues = new ArrayList<>();
+            StringTokenizer tokenizer = new StringTokenizer(ignoredValuesString, ", ");
+            while ( tokenizer.hasMoreTokens() ) {
+                this.ignoredValues.add(tokenizer.nextToken());
+            }
+        }
     }
 
     @Override
@@ -117,17 +126,6 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             LOG.error("Missing Fredhopper SKU attribute name for aggregated variant info. No variant data is assembled.");
             return;
         }
-        else if ( masterIdAttributeName == null ) {
-            LOG.error("Missing Fredhopper master ID attribute name. No variant data is assembled.");
-            return;
-        }
-
-        Attribute masterIdAttribute = product.getFredhopperAttribute(this.masterIdAttributeName);
-        if ( masterIdAttribute == null || masterIdAttribute.getValue() == null || masterIdAttribute.getValue().size() == 0 ) {
-            LOG.error("Missing master ID for product ID: " + product.getId());
-            return;
-        }
-        String masterId = masterIdAttribute.getValue().get(0).getNonMl();
 
         FredhopperProduct masterProduct = product;
         
@@ -171,8 +169,8 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 }
             }
         }
-        else if ( !product.getId().equals(masterId) ) {
-            masterProduct = this.getMasterProduct(masterId);
+        else if ( !product.getId().equals(product.getMasterId()) ) {
+            masterProduct = this.getMasterProduct(product.getMasterId());
         }
 
         product.setVariantAttributes(currentVariantAttributes);
@@ -225,8 +223,6 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
      */
     private List<ProductVariant> getProductVariants(FredhopperProduct product, Universe universe) {
 
-        // TODO: Have it configurable how it interpret the JSON if it nonMl or value names in the JSON
-
         List<ProductVariant> variants = new ArrayList<>();
         Attribute aggregatedVariants = product.getFredhopperAttribute(aggregatedVariantAttributeName);
         if (aggregatedVariants != null && aggregatedVariants.getValue().size() > 0) {
@@ -252,24 +248,24 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 String variantId = null;
                 List<ProductVariantAttribute> variantAttributes = new ArrayList<>();
                 for (String variantAttributeId : aggregatedVariant.keySet()) {
-                    String variantAttributeValue = aggregatedVariant.get(variantAttributeId);
+                    String variantAttributeValueId = aggregatedVariant.get(variantAttributeId);
                     if (variantAttributeId.equals(this.variantIdAttributeName)) {
-                        variantId = variantAttributeValue;
-                    } else if ( this.exposedVariants.contains(variantAttributeId) ){
+                        variantId = variantAttributeValueId;
+                    } else if ( this.exposedVariants.contains(variantAttributeId) && (this.ignoredValues == null || (this.ignoredValues != null && !this.ignoredValues.contains(variantAttributeValueId)) ) ) {
 
                         Attribute attribute = product.getFredhopperAttribute(variantAttributeId);
                         if (attribute != null) {
-                            String variantAttributeValueId = null;
+                            String variantAttributeValue = null;
                             for (Value value : attribute.getValue()) {
-                                if (value.getValue().equals(variantAttributeValue)) {
-                                    variantAttributeValueId = value.getNonMl();
+                                if (value.getNonMl().equals(variantAttributeValueId)) {
+                                    variantAttributeValue = value.getValue();
                                 }
                             }
                             String variantAttributeName = this.fredhopperClient.getAttributeName(universe, variantAttributeId);
 
                             // If value was found
                             //
-                            if (variantAttributeValueId != null) {
+                            if (variantAttributeValue != null) {
                                 variantAttributes.add(new GenericProductVariantAttribute(variantAttributeId, variantAttributeName, variantAttributeValueId, variantAttributeValue));
                             }
                         }
