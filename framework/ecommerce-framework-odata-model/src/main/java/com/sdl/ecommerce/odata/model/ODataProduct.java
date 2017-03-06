@@ -23,6 +23,9 @@ public class ODataProduct implements Product, Serializable {
     private String id;
 
     @EdmProperty
+    private String masterId;
+
+    @EdmProperty
     private String variantId;
 
     @EdmProperty
@@ -63,17 +66,22 @@ public class ODataProduct implements Product, Serializable {
     @EdmProperty
     private List<ODataProductVariantAttributeType> variantAttributeTypes = new ArrayList<>();
 
+    @EdmProperty
+    private String variantLinkType;
+
     public ODataProduct() {}
 
     public ODataProduct(ProductDetailResult detailResult) {
         Product product = detailResult.getProductDetail();
         this.id = product.getId();
+        this.masterId = product.getMasterId();
         this.variantId = product.getVariantId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = new ODataProductPrice(product.getPrice());
         this.thumbnailUrl = product.getThumbnailUrl();
         this.primaryImageUrl = product.getPrimaryImageUrl();
+        this.variantLinkType = product.getVariantLinkType().name();
         Map<String,Object> attributes = product.getAttributes();
         if ( attributes != null ) {
             this.attributes = new ArrayList<>();
@@ -104,6 +112,11 @@ public class ODataProduct implements Product, Serializable {
     @Override
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String getMasterId() {
+        return this.masterId;
     }
 
     @Override
@@ -182,5 +195,10 @@ public class ODataProduct implements Product, Serializable {
     @Override
     public List<ProductVariantAttributeType> getVariantAttributeTypes() {
         return this.variantAttributeTypes.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public VariantLinkType getVariantLinkType() {
+        return VariantLinkType.valueOf(this.variantLinkType);
     }
 }
