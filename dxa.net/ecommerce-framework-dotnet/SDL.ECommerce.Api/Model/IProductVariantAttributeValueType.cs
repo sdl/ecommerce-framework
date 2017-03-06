@@ -7,5 +7,7 @@
         string Value { get; }
 
         bool IsSelected { get; }
+
+        bool IsAvailable { get; }
     }
 }

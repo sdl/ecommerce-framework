@@ -158,6 +158,14 @@ namespace SDL.ECommerce.Api
             }
         }
 
+        public bool IsHidden
+        {
+            get
+            {
+                return this._name.EndsWith("_hidden");
+            }
+        }
+
         public static FacetParameter FromUrl(String facetUrl)
         {
             var urlBits = facetUrl.Split('=');

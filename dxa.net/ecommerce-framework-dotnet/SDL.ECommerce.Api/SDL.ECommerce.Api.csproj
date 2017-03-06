@@ -69,6 +69,7 @@
     <Compile Include="Model\IQueryContributor.cs" />
     <Compile Include="Model\IQuerySuggestion.cs" />
     <Compile Include="Model\Query.cs" />
+    <Compile Include="Model\VariantLinkType.cs" />
     <Compile Include="Model\ViewType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ICartService.cs" />
