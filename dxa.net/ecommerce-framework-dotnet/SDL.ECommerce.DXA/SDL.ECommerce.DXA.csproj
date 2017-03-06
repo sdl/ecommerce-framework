@@ -177,7 +177,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AbstractECommercePageController.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceControllerRegistration.cs" />
     <Compile Include="Factories\DependencyFactory.cs" />
+    <Compile Include="Models\ECommerceFilterAttribute.cs" />
     <Compile Include="Providers\DependencyResolverProvider.cs" />
     <Compile Include="Servants\HttpContextServant.cs" />
     <Compile Include="Models\BreadcrumbWidget.cs" />

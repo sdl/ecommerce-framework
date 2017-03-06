@@ -17,6 +17,9 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:viewType")]
         public string ViewType { get; set; }
 
+        [SemanticProperty("e:filterAttributes")]
+        public List<ECommerceFilterAttribute> FilterAttributes { get; set; }
+
         [SemanticProperty(IgnoreMapping = true)]
         public IList<IProduct> Items { get; set; }
     
@@ -29,6 +32,14 @@ namespace SDL.ECommerce.DXA.Models
             {
                 query.ViewSize = ViewSize;
             }
+            if ( FilterAttributes != null )
+            {
+                foreach ( var filterAttribute in FilterAttributes )
+                {
+                    query.Facets.Add(new Api.FacetParameter(filterAttribute.Name + "_hidden", filterAttribute.Value));
+                }
+            } 
+          
         }
     }
 }

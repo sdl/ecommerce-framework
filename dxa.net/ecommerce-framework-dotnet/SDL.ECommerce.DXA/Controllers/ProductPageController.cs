@@ -70,6 +70,7 @@ namespace SDL.ECommerce.DXA.Controllers
 
             if (product == null)
             {
+                // TODO: Should we redirect to an URL without variants here? So it's clear for the user what's happening??
                 product = _eCommerceClient.DetailService.GetDetail(productId);
             }
 

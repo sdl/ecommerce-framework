@@ -15,18 +15,26 @@
                     @Model.Product.Description
                 </div>
                 
+                <!-- TODO: Make this a bit different? -->
+                <!-- Do an AJAX control here ??? -->
+
                 @if (Model.Product.VariantAttributeTypes != null)
                 {
+                    bool isPrimaryVariant = true;
                     foreach (var variantAttributeType in Model.Product.VariantAttributeTypes)
                     {
                         <h4>@variantAttributeType.Name</h4>
-                         foreach (var valueType in variantAttributeType.Values)
-                         {
+                        foreach (var valueType in variantAttributeType.Values)
+                        {
+                            if (valueType.IsAvailable)
+                            {
                              <a class="btn @(valueType.IsSelected ? "btn-info disabled" : "btn-default")" style="margin-bottom: 4px;" 
-                                href="@ECommerceContext.LinkResolver.GetProductDetailVariantLink(Model.Product, variantAttributeType.Id, valueType.Id)">
+                                href="@ECommerceContext.LinkResolver.GetProductDetailVariantLink(Model.Product, variantAttributeType.Id, valueType.Id, isPrimaryVariant)">
                                 @valueType.Value
                              </a>
-                         }
+                            }
+                        }
+                        isPrimaryVariant = false;
                     }
                 }
 
@@ -34,7 +42,7 @@
                     @Model.Product.Price.FormattedPrice
                 </h3>
                 <div class="product-add-to-cart">
-                    <a class="btn btn-primary add-to-cart-button" data-product-id="@Model.Product.Id">
+                    <a class="btn btn-primary add-to-cart-button  @(Model.Product.VariantId == null ? "disabled" : "")" data-product-id="@Model.Product.VariantId">
                         @Html.Resource("e-commerce.addToCartLabel") <i class="fa fa-cart-plus"></i>
                     </a>
                 </div>
