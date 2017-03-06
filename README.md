@@ -1,5 +1,5 @@
-SDL Web E-Commerce Framework v1.1
-====================================
+SDL Web E-Commerce Framework v1.2 Beta
+=========================================
 
 This is a framework to enable E-Commerce functionality for SDL Web.
 It contains ECL providers and DXA modules for various E-Commerce systems.
@@ -10,17 +10,12 @@ Right now it provides connectors for:
 * SAP Hybris (http://www.hybris.com)
 * Salesforce Commerce Cloud (Demandware) (http://www.demandware.com)
 
-The framework has been verified both on SDL Tridion 2013 SP1 and SDL Web 8 (8.1.1) using DXA 1.6.
+The framework has been verified both on SDL Web 8 (8.1.1) and SDL Web 8.5 using DXA 1.7.
 
-New functionality in the v1.1 version:
-* New OData based micro service for E-Commerce including clients for Java and .NET
-* Decoupled E-Commerce connectors, either they can be plugged into the micro service or they can be co-located in DXA (java only)
-* DXA modules for .NET providing the same functionality as the Java DXA modules
-* Support for product variants
-* ECL connector for Fredhopper
-* Support for latest Demandware version (v16.8)
-* Separation of DXA module into two parts: one generic (controllers & models) and one example module (example HTML views)
-* Supports DXA 1.6
+New functionality in the v1.2 version:
+* Improved support for product variants
+* Pluggable variant builders for the Fredhopper connector
+
 
 Concepts
 ---------
@@ -83,7 +78,7 @@ In addition the ECL provider gives the possibility to drag & drop categories & p
 Prerequisites
 ----------------
 
-The framework requires DXA 1.6 which includes support for SDL Tridion 2013 SP1 and SDL Web 8.
+The framework requires DXA 1.7 which includes support for SDL Web 8/8.5.
 
 The connectors to the E-Commerce systems has been verified against the following:
 
@@ -200,7 +195,7 @@ Please submit your pull requests on develop. In the near future we intend to pus
 
 License
 ---------
-Copyright (c) 2016 SDL Group.
+Copyright (c) 2017 SDL Group.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
