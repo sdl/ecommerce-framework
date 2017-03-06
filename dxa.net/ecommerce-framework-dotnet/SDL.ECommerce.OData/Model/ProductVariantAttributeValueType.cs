@@ -11,5 +11,14 @@ namespace SDL.ECommerce.OData
                 return (bool) this.IsSelected;
             }
         }
+
+        bool IProductVariantAttributeValueType.IsAvailable
+        {
+            get
+            {
+                return (bool)this.IsApplicable;
+            }
+        }
+
     }
 } 

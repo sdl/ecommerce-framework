@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SDL.ECommerce.Api.Model;
 
@@ -121,6 +122,14 @@ namespace SDL.ECommerce.OData
             get
             {
                 return this.VariantAttributeTypes.Cast<IProductVariantAttributeType>().ToList();
+            }
+        }
+
+        VariantLinkType IProduct.VariantLinkType
+        {
+            get
+            {
+                return (VariantLinkType) Enum.Parse(typeof(VariantLinkType), this.VariantLinkType);
             }
         }
     }

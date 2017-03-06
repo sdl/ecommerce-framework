@@ -12,6 +12,8 @@ namespace SDL.ECommerce.OData
     /// TODO: Implement an interface here
     public class ProductCategoryService : IProductCategoryService
     {
+        // TODO: Use DXA Cache Provider here instead?? Or how decoupled should this module be from DXA?
+
         private IECommerceODataV4Service service;
 
         private int categoryExpiryTimeout = 3600000; // TODO: Have this configurable

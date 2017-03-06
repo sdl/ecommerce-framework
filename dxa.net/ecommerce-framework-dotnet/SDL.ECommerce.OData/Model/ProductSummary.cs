@@ -88,5 +88,13 @@ namespace SDL.ECommerce.OData
                 throw new NotImplementedException();
             }
         }
+
+        public VariantLinkType VariantLinkType
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

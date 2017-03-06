@@ -184,7 +184,7 @@ namespace SDL.ECommerce.OData
             {
                 if (odataService == null)
                 {
-                    odataService = this.Resolve<IECommerceODataV4Service>() ?? new ECommerceODataV4Service(new ECommerceODataService(serviceConfiguration.ServiceEndpoint), serviceConfiguration, TokenProvider);
+                    odataService = this.Resolve<IECommerceODataV4Service>() ?? new ECommerceODataV4Service(new SDLECommerce(serviceConfiguration.ServiceEndpoint), serviceConfiguration, TokenProvider);
                 }
 
                 return odataService;
