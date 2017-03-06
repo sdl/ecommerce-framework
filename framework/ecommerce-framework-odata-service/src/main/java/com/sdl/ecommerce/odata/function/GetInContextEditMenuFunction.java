@@ -2,6 +2,7 @@ package com.sdl.ecommerce.odata.function;
 
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;
+import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.odata.datasource.ProductDataSource;
 import com.sdl.ecommerce.odata.model.ODataEditMenu;
@@ -45,7 +46,11 @@ public class GetInContextEditMenuFunction implements Operation<ODataEditMenu> {
         if ( searchPhrase != null ) {
             query.searchPhrase(searchPhrase);
         }
-        EditMenu editMenu = productDataSource.getEditService().getInContextMenuItems(query);
-        return new ODataEditMenu(editMenu, query);
+        EditService editService = productDataSource.getEditService();
+        if ( editService != null ) {
+            EditMenu editMenu = productDataSource.getEditService().getInContextMenuItems(query);
+            return new ODataEditMenu(editMenu, query);
+        }
+        return null;
     }
 }
