@@ -11,13 +11,19 @@ import java.util.Map;
 public interface Product {
 
     /**
-     * Get product ID/SKU.
+     * Get product ID
      * @return id
      */
     String getId();
 
     /**
-     * Get product variant ID. If NULL no variant ID is available for current product.
+     * Get master product ID. If this product is an variant, this ID could point to the master product.
+     * @return master ID
+     */
+    String getMasterId();
+
+    /**
+     * Get product variant ID. If NULL no variant ID is available for current product, i.e. is a master product.
      * Variant ID is normally referencing to a concrete product selection with a particular color, size etc.
      * @return variant id
      */
@@ -90,5 +96,7 @@ public interface Product {
      * @return list of variant attribute types
      */
     List<ProductVariantAttributeType> getVariantAttributeTypes();
+
+    VariantLinkType getVariantLinkType();
 
 }
