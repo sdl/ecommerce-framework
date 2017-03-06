@@ -22,9 +22,11 @@ import java.util.Map;
 public class FredhopperDetailResult extends FredhopperResultBase implements ProductDetailResult {
 
     private Product productDetail = null;
+    private ProductVariantBuilder productVariantBuilder = null;
 
-    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager) {
+    public FredhopperDetailResult(Page fredhopperPage, FredhopperLinkManager linkManager, ProductVariantBuilder productVariantBuilder) {
         super(fredhopperPage, linkManager);
+        this.productVariantBuilder = productVariantBuilder;
     }
 
     @Override
@@ -65,7 +67,9 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
                         }
                     }
                 }
-                this.setVariantInfo(product, universe);
+                if ( this.productVariantBuilder != null ) {
+                    this.productVariantBuilder.buildVariants(product, universe);
+                }
                 return product;
             }
         }
@@ -83,43 +87,6 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
             }
         }
         return breadcrumbs;
-    }
-
-    private void setVariantInfo(FredhopperProduct product, Universe universe) {
-
-        // Get variant attribute types
-        //
-        List<ProductVariantAttributeType> attributeTypes = new ArrayList<>();
-        List<Filter> filters = this.getFacetFilters(universe);
-        for ( Filter filter : filters ) {
-            // TODO: Have the variant prefixes configurable
-            if ( filter.getOn().startsWith("variant_") ) {
-                List<ProductVariantAttributeValueType> values = new ArrayList<>();
-                for (Filtersection section : filter.getFiltersection()) {
-                   values.add(new GenericProductVariantAttributeValueType(section.getValue().getValue(), section.getLink().getName(), section.isSelected() != null ? section.isSelected() : false));
-                }
-                attributeTypes.add(new GenericProductVariantAttributeType(filter.getOn(), filter.getTitle(), values));
-            }
-        }
-        if ( attributeTypes.isEmpty() ) {
-            // Current product has no variants
-            //
-            return;
-        }
-        product.setVariantAttributeTypes(attributeTypes);
-
-        // Get current variant values
-        //
-        List<ProductVariantAttribute> variantAttributes = new ArrayList<>();
-        for ( ProductVariantAttributeType attributeType : attributeTypes ) {
-            Attribute attributeValue = product.getFredhopperAttribute(attributeType.getId());
-            if ( !attributeValue.getValue().isEmpty() ) {
-                Value value = attributeValue.getValue().get(0);
-                variantAttributes.add(new GenericProductVariantAttribute(attributeType.getId(), attributeType.getName(), value.getNonMl(), value.getValue()));
-            }
-        }
-        product.setVariantAttributes(variantAttributes);
-
     }
 
 }

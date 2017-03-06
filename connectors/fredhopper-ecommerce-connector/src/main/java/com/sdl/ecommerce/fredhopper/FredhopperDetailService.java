@@ -1,6 +1,7 @@
 package com.sdl.ecommerce.fredhopper;
 
 import com.sdl.ecommerce.api.*;
+import com.sdl.ecommerce.api.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class FredhopperDetailService implements ProductDetailService {
                                                                      getUniverse(localizationService),
                                                                      getLocale(localizationService));
         this.injectServices(result);
+
         if ( result.getProductDetail() == null ) {
 
             // Fallback on variant ID
@@ -45,8 +47,8 @@ public class FredhopperDetailService implements ProductDetailService {
                 LOG.debug("Falling back on detail variant ID...");
                 result = this.fredhopperClient.getDetailViaAttribute(variantId,
                                                                      productId,
-                                                                    getUniverse(localizationService),
-                                                                    getLocale(localizationService));
+                                                                     getUniverse(localizationService),
+                                                                     getLocale(localizationService));
                 this.injectServices(result);
             }
         }
@@ -56,11 +58,13 @@ public class FredhopperDetailService implements ProductDetailService {
 
     @Override
     public ProductDetailResult getDetail(String productId, Map<String, String> variantAttributes) throws ECommerceException {
+
         ProductDetailResult result = this.fredhopperClient.getDetail(productId,
                                                                      getUniverse(localizationService),
                                                                      getLocale(localizationService),
                                                                      variantAttributes);
         this.injectServices(result);
+        Product product = result.getProductDetail();
         return result;
     }
 
