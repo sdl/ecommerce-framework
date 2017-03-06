@@ -355,7 +355,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
      */
     private FredhopperProduct getMasterProduct(String masterId) {
 
-        FredhopperProduct masterProduct = this.cachedMasterProducts.getIfPresent(masterId);
+        FredhopperProduct masterProduct = this.cachedMasterProducts.getIfPresent(masterId + "-" + localizationService.getLocale());
         if ( masterProduct == null ) {
 
             Query query = this.fredhopperClient.buildQuery(getUniverse(localizationService), getLocale(localizationService));
@@ -368,5 +368,9 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             masterProduct = (FredhopperProduct) result.getProductDetail();
         }
         return masterProduct;
+    }
+
+    private void cacheMasterProduct(FredhopperProduct masterProduct) {
+        this.cachedMasterProducts.put(masterProduct.getId() + "-" + localizationService.getLocale(), masterProduct);
     }
 }
