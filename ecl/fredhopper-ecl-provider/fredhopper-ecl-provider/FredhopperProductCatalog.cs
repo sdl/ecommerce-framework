@@ -23,6 +23,10 @@ namespace SDL.Fredhopper.Ecl
         private int maxItems;
         private int categoryMaxDepth;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
         public FredhopperProductCatalog(XElement configuration)
         {          
             var binding = new BasicHttpBinding();
@@ -71,6 +75,18 @@ namespace SDL.Fredhopper.Ecl
                     i = i + 2;
                 }
                 publicationConfig.ModelMappings = modelMappingsMap;
+
+                publicationConfig.Filters = new Dictionary<string, string>();
+                var filters = config.Element(EclProvider.EcommerceEclNs + "Filters");
+                if (filters != null)
+                {
+                    foreach (var filter in filters.Elements(EclProvider.EcommerceEclNs + "Filter"))
+                    {
+                        var filterName = filter.Attribute("name").Value;
+                        var filterValue = filter.Attribute("value").Value;
+                        publicationConfig.Filters.Add(filterName, filterValue);
+                    }
+                }
                 var ids = publicationIds.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach ( var id in ids )
                 {
@@ -120,7 +136,7 @@ namespace SDL.Fredhopper.Ecl
             // TODO: Have different configurable strategies here??
 
             Query query = new Query(GetLocation(publicationId, categoryId));
-            query.setListStartIndex(pageIndex);
+            query.setListStartIndex(pageIndex*this.maxItems);
             return QueryProducts(query, publicationId);
         }
 
@@ -262,11 +278,17 @@ namespace SDL.Fredhopper.Ecl
 
         private QueryResult QueryProducts(Query query, int publicationId)
         {
+            var config = this.GetPublicationConfiguration(publicationId);
+
             query.setThemesDisabled(true);
             query.setListViewSize(this.maxItems);
+            foreach ( var filter in config.Filters )
+            {
+                query.getLocation().addCriterion(new SingleValuedCriterion(filter.Key, filter.Value));
+            }
             page fhPage = this.fhClient.getAll(query.toString());
             universe universe = this.GetUniverse(fhPage);
-            var modelMappings = this.GetPublicationConfiguration(publicationId).ModelMappings;
+            var modelMappings = config.ModelMappings;
 
             var result = new QueryResult();
             result.Products = new List<Product>();
@@ -315,6 +337,7 @@ namespace SDL.Fredhopper.Ecl
         public string Universe { get; set; }
         public string Locale { get; set; }
         public IDictionary<string,string> ModelMappings { get; set; } 
-        public bool Fallback { get; set;  }      
+        public bool Fallback { get; set;  }
+        public IDictionary<string, string> Filters { get; set; }
     }
 }
