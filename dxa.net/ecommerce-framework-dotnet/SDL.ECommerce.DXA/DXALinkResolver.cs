@@ -187,6 +187,11 @@ namespace SDL.ECommerce.DXA
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
 
+        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
+        {
+            return GetProductDetailVariantLink(product, variantAttributeId, variantAttributeValueId);
+        }
+
         public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
         {
 
