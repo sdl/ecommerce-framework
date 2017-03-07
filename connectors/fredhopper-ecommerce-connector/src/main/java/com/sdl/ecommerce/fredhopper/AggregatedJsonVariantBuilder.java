@@ -149,7 +149,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
 
         if ( requestVariantAttributes != null ) {
 
-            masterProduct = this.getMasterProduct(product.getId());
+            masterProduct = this.getMasterProduct(product.getMasterId());
 
             // Get additional variant attributes based on the request attributes
             //
@@ -186,12 +186,11 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
         List<ProductVariantAttributeType> attributeTypes = new ArrayList<>();
 
         if (variants.size() > 0) {
-            List<ProductVariantAttribute> availableAttributes = variants.get(0).getAttributes();
-            for (ProductVariantAttribute availableAttribute : availableAttributes) {
+            for ( String variantAttributeId : this.exposedVariants ) {
                 List<ProductVariantAttributeValueType> values = new ArrayList<>();
                 List<String> addedValues = new ArrayList<>();
                 for (ProductVariant variant : variants) {
-                    ProductVariantAttribute variantAttribute = ((GenericProductVariant) variant).getAttribute(availableAttribute.getId());
+                    ProductVariantAttribute variantAttribute = ((GenericProductVariant) variant).getAttribute(variantAttributeId);
                     if (variantAttribute != null && !addedValues.contains(variantAttribute.getValue())) {
                         values.add(new GenericProductVariantAttributeValueType(variantAttribute.getValueId(),
                                                                                variantAttribute.getValue(),
@@ -201,7 +200,8 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                         addedValues.add(variantAttribute.getValue());
                     }
                 }
-                attributeTypes.add(new GenericProductVariantAttributeType(availableAttribute.getId(), availableAttribute.getName(), values));
+                String variantAttributeName = this.fredhopperClient.getAttributeName(universe, variantAttributeId);
+                attributeTypes.add(new GenericProductVariantAttributeType(variantAttributeId, variantAttributeName, values));
             }
 
         }
@@ -210,8 +210,6 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
         // Remove the JSON attribute from the result
         //
         product.getAttributes().remove(this.aggregatedVariantAttributeName);
-        
-        this.cachedMasterProducts.put(masterProduct.getId(), masterProduct);
 
     }
 
@@ -314,7 +312,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 if ( filteredList.isEmpty() ) {
                     for (ProductVariant variant : allProductVariants) {
                         ProductVariantAttribute attribute = ((GenericProductVariant) variant).getAttribute(currentAttribute.getId());
-                        if ( attribute.getValueId().equals(currentAttribute.getValueId()) ) {
+                        if ( attribute != null && attribute.getValueId().equals(currentAttribute.getValueId()) ) {
                             filteredList.add(variant);
                         }
                     }
@@ -326,7 +324,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                     filteredList = new ArrayList<>();
                     for ( ProductVariant variant : currentFilteredList ) {
                         ProductVariantAttribute attribute = ((GenericProductVariant) variant).getAttribute(currentAttribute.getId());
-                        if ( attribute.getValueId().equals(currentAttribute.getValueId()) ) {
+                        if ( attribute != null && attribute.getValueId().equals(currentAttribute.getValueId()) ) {
                             filteredList.add(variant);
                         }
                     }
@@ -355,7 +353,8 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
      */
     private FredhopperProduct getMasterProduct(String masterId) {
 
-        FredhopperProduct masterProduct = this.cachedMasterProducts.getIfPresent(masterId + "-" + localizationService.getLocale());
+        String cacheKey =  masterId + "-" + localizationService.getLocale();
+        FredhopperProduct masterProduct = this.cachedMasterProducts.getIfPresent(cacheKey);
         if ( masterProduct == null ) {
 
             Query query = this.fredhopperClient.buildQuery(getUniverse(localizationService), getLocale(localizationService));
@@ -366,11 +365,9 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             result.setCategoryService(this.categoryService);
             result.setLocalizationService(this.localizationService);
             masterProduct = (FredhopperProduct) result.getProductDetail();
+            this.cachedMasterProducts.put(cacheKey, masterProduct);
         }
         return masterProduct;
     }
 
-    private void cacheMasterProduct(FredhopperProduct masterProduct) {
-        this.cachedMasterProducts.put(masterProduct.getId() + "-" + localizationService.getLocale(), masterProduct);
-    }
 }
