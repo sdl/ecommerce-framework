@@ -23,7 +23,7 @@ fredhopper:
     mappings: #http://demo.fredhopper.com/images=/fredhopper-images
   variant:
         #builder: facetVariantBuilder
-        #prefix: [Prefix for the variant favets, e.g. variant_]
+        #prefix: [Prefix for the variant facets, e.g. variant_]
         builder: aggregatedJsonVariantBuilder
         aggregatedJsonAttributeName: [Attribute name where aggregated JSON is stored, e.g. pdp_info]
         variantIdAttributeName: [Attribute name for the variant ID, e.g. variant_sku_identifer]
