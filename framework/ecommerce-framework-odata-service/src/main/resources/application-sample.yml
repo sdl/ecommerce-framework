@@ -21,6 +21,15 @@ fredhopper:
     password: [Password to Fredhopper Business Manager]
   imageurl:
     mappings: #http://demo.fredhopper.com/images=/fredhopper-images
+  variant:
+        #builder: facetVariantBuilder
+        #prefix: [Prefix for the variant favets, e.g. variant_]
+        builder: aggregatedJsonVariantBuilder
+        aggregatedJsonAttributeName: [Attribute name where aggregated JSON is stored, e.g. pdp_info]
+        variantIdAttributeName: [Attribute name for the variant ID, e.g. variant_sku_identifer]
+        exposedVariants: [What variants that are exposed to the E-Com client, e.g. variant_colour,variant_size]
+        ignoredValues: [Variant values to be ingored, for like size=0]
+
 
 # Hybris Connector
 #
