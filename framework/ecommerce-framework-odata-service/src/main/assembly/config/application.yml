@@ -21,6 +21,20 @@ fredhopper:
     password: [Password to Fredhopper Business Manager]
   imageurl:
     mappings: #http://demo.fredhopper.com/images=/fredhopper-images
+  variant:
+          # Facet Variant Builder
+          #
+          #builder: facetVariantBuilder
+          #prefix: [Prefix for the variant favets, e.g. variant_]
+
+          # Aggregated JSON Variant Builder
+          #
+          #builder: aggregatedJsonVariantBuilder
+          #aggregatedJsonAttributeName: [Attribute name where aggregated JSON is stored, e.g. pdp_info]
+          #variantIdAttributeName: [Attribute name for the variant ID, e.g. variant_sku_identifer]
+          #exposedVariants: [What variants that are exposed to the E-Com client, e.g. variant_colour,variant_size]
+          #ignoredValues: [Variant values to be ingored, for like size=0]
+
 
 # Hybris Connector
 #
@@ -50,7 +64,7 @@ localization:
       #
       fredhopper-universe: [Fredhopper universe, e.g. catalog01]
       fredhopper-locale: [locale]
-      fredhopper-productModelMappings: [model mappings to Fredhopper catalog attributes, e.g "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl;variantId=variant_sku"]
+      fredhopper-productModelMappings: [model mappings to Fredhopper catalog attributes, e.g "name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl;variantId=variant_sku;masterId=master_item"]
       fredhopper-triggerMappings: [mapping of ADF claims to Fredhopper triggers, e.g "taf:claim:segment=fh_keyword"]
       # Hybris
       #
