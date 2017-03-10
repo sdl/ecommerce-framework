@@ -19,7 +19,10 @@
                         <p class="teaser-description lister-product-name">
                             @item.Name
                         </p>
-                        <h4 class="teaser-heading lister-product-price">@item.Price.FormattedPrice</h4>
+                        @if (item.Price != null)
+                        {
+                            <h4 class="teaser-heading lister-product-price">@item.Price.FormattedPrice</h4>
+                        }
                     </div>
                 </a>
             </div>
