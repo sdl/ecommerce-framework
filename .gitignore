@@ -34,3 +34,4 @@ _NCrunch_*
 .*crunch*.local.xml
 nCrunchTemp_*
 *.ncrunch*
+dxa.net/NuGet/output/
