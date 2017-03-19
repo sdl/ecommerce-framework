@@ -7,7 +7,7 @@
 
 Param(
     [Parameter(Mandatory=$false, HelpMessage="Artifact output directory.")]
-    [string]$outputDirectory = $PSScriptRoot,
+    [string]$outputDirectory = $PSScriptRoot + "\output",
 
     [Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.Dxa version.")]
     [string]$dxaVersion = "0.0.1",
