@@ -35,6 +35,11 @@ namespace SDL.ECommerce.DXA.Controllers
         /// <returns></returns>
         public ActionResult ProductPage(string productUrl)
         {
+            if (string.IsNullOrEmpty(productUrl))
+            {
+                return NotFound();
+            }
+
             var pathTokens = productUrl.Split( new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             string productSeoId;
             string productId;
