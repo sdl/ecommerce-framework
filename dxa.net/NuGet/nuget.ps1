@@ -7,7 +7,7 @@
 
 Param(
     [Parameter(Mandatory=$false, HelpMessage="Artifact output directory.")]
-    [string]$outputDirectory = "C:\temp\artifacts\",
+    [string]$outputDirectory = $PSScriptRoot + "\output",
 
     [Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.Dxa version.")]
     [string]$dxaVersion = "0.0.1",
@@ -18,6 +18,8 @@ Param(
     [Parameter(Mandatory=$false, HelpMessage="Sdl.Dxa.Modules.Navigation version.")]
     [string]$modulesNavigationVersion = "0.0.1"
 )
+
+$ErrorActionPreference = 'Stop';
 
 $basePath = "..\ecommerce-framework-dotnet"
 $packageDestination = Join-Path $PSScriptRoot "packages"
@@ -31,8 +33,14 @@ if ($nuGetPackage -eq $null) {
     Install-Package -Name NuGet.CommandLine -Provider Nuget -Source https://www.nuget.org/api/v2 -Destination $packageDestination -Force
 }
 
+if ((Test-Path $outputDirectory) -eq $false)
+{
+	Write-Host ('Creating directory "{0}"' -f $outputDirectory)
+	New-Item $outputDirectory -ItemType Directory | Out-Null
+}
+
 $nuGetFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "packages") -Filter "nuget.exe" -Recurse | Where-Object { !$_PSIsContainer } | Select-Object -First 1
 
 & $nuGetFile.FullName pack 'Sdl.ECommerce.Dxa.nuspec' -version $dxaVersion -basepath $basePath -outputdirectory $outputDirectory
 & $nuGetFile.FullName pack 'Sdl.ECommerce.Example.Views.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
-& $nuGetFile.FullName pack 'Sdl.Dxa.Modules.Navigation.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
+& $nuGetFile.FullName pack 'Sdl.Dxa.Modules.Navigation.nuspec' -version $modulesNavigationVersion -basepath $basePath -outputdirectory $outputDirectory
