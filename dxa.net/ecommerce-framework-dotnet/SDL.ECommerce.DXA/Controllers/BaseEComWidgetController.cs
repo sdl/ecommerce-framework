@@ -25,7 +25,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductDetail(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductDetail(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -65,7 +65,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductDetailEclItem(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductDetailEclItem(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -81,7 +81,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductLister(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductLister(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -115,7 +115,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Facets(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Facets(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             FacetsWidget widget = (FacetsWidget) entity;
@@ -149,7 +149,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult FlyoutFacets(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult FlyoutFacets(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             FacetsWidget widget = (FacetsWidget)entity;
@@ -190,7 +190,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Promotions(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Promotions(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             PromotionsWidget widget = (PromotionsWidget)entity;
@@ -245,7 +245,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Breadcrumb(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Breadcrumb(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             BreadcrumbWidget widget = (BreadcrumbWidget)entity;
@@ -295,7 +295,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult SearchFeedback(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult SearchFeedback(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             SearchFeedbackWidget widget = (SearchFeedbackWidget)entity;
@@ -314,7 +314,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Cart(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Cart(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             CartWidget widget = (CartWidget)entity;
