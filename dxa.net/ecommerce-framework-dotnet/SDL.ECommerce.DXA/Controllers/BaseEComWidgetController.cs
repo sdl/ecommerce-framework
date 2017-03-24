@@ -11,7 +11,7 @@ using SDL.ECommerce.Api.Model;
 using Sdl.Web.Mvc.Configuration;
 using System.Runtime.Caching;
 
-namespace SDL.ECommerce.DXA.Controller
+﻿namespace SDL.ECommerce.DXA.Controllers
 {
     /// <summary>
     /// Base Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
