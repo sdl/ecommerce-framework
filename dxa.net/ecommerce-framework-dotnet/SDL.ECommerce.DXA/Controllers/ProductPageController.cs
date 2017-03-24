@@ -33,7 +33,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// </summary>
         /// <param name="productUrl"></param>
         /// <returns></returns>
-        public ActionResult ProductPage(string productUrl)
+        public virtual ActionResult ProductPage(string productUrl)
         {
             if (string.IsNullOrEmpty(productUrl))
             {
