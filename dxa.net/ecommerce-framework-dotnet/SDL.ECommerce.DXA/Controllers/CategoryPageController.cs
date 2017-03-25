@@ -31,7 +31,7 @@
             _pathServant = DependencyFactory.Current.Resolve<IPathServant>();
         }
 
-        public ActionResult CategoryPage(string categoryUrl)
+        public virtual ActionResult CategoryPage(string categoryUrl)
         {
             Log.Info("Entering category page controller with URL: " + categoryUrl);
 

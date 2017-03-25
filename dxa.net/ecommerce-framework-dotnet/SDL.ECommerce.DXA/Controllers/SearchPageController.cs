@@ -15,7 +15,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// Search triggered by the search box
         /// </summary>
         /// <returns></returns>
-        public ActionResult Search()
+        public virtual ActionResult Search()
         {
             var searchPhrase = HttpContext.Request.QueryString["q"];
             return Redirect(ECommerceContext.LocalizePath("/search/") + searchPhrase);
@@ -27,7 +27,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// <param name="searchPhrase"></param>
         /// <param name="categoryUrl"></param>
         /// <returns></returns>
-        public ActionResult SearchCategoryPage(string searchPhrase, string categoryUrl)
+        public virtual ActionResult SearchCategoryPage(string searchPhrase, string categoryUrl)
         {
             Log.Info("Entering search page controller with search phrase: " + searchPhrase + ", category: "  + categoryUrl);
 

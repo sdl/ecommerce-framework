@@ -14,7 +14,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public ActionResult AddProductToCart(string productId)
+        public virtual ActionResult AddProductToCart(string productId)
         {
             var cart = ECommerceContext.Cart;
             if (cart == null )
@@ -31,7 +31,7 @@ namespace SDL.ECommerce.DXA.Controllers
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public ActionResult RemoveProductFromCart(string productId)
+        public virtual ActionResult RemoveProductFromCart(string productId)
         {
             Log.Info("Removing product from cart: " + productId);
             var cart = ECommerceContext.Cart;
