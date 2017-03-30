@@ -9,15 +9,15 @@ namespace SDL.ECommerce.OData
 {
     public class EditService : IEditService
     {
-        private IECommerceODataV4Service service;
+        private ECommerceClient ecommerceClient;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
-        /// <param name="service"></param>
-        internal EditService(IECommerceODataV4Service service)
+        /// <param name="ecommerceClient"></param>
+        internal EditService(ECommerceClient ecommerceClient)
         {
-            this.service = service;
+            this.ecommerceClient = ecommerceClient;
         }
 
         public IEditMenu GetInContextMenuItems(Query query)
@@ -43,7 +43,7 @@ namespace SDL.ECommerce.OData
                 func.WithParam("searchPhrase", query.SearchPhrase);
             }
 
-            return Enumerable.FirstOrDefault<EditMenu>(this.service.Execute<EditMenu>(func));
+            return Enumerable.FirstOrDefault<EditMenu>(this.ecommerceClient.ODataV4Service.Execute<EditMenu>(func));
         }
     }
 }

@@ -13,22 +13,25 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductDetailService : IProductDetailService
     {
-        private IECommerceODataV4Service service;
+        private ECommerceClient ecommerceClient;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductDetailService(IECommerceODataV4Service service)
+        internal ProductDetailService(ECommerceClient ecommerceClient)
         {
-            this.service = service;
+            this.ecommerceClient = ecommerceClient;
         }
 
         public IProduct GetDetail(string productId)
         {
             try
             {
-                return this.service.Products.ByKey(productId).GetValue();
+                // TODO: Could this be issue in MT sitations???
+                // System.InvalidOperationException: 'The context is already tracking a different entity with the same resource Uri.'
+                //
+                return this.ecommerceClient.ODataV4Service.Products.ByKey(productId).GetValue();
             }
             catch (DataServiceQueryException)
             {
@@ -62,7 +65,7 @@ namespace SDL.ECommerce.OData
 
             try
             {
-                return Enumerable.FirstOrDefault<Product>(this.service.Execute<Product>(func));
+                return Enumerable.FirstOrDefault<Product>(this.ecommerceClient.ODataV4Service.Execute<Product>(func));
             }
             catch (InvalidResourceException)
             {

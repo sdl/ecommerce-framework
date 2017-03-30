@@ -12,15 +12,15 @@ namespace SDL.ECommerce.OData
     /// </summary>
     public class ProductQueryService : IProductQueryService
     {
-        private IECommerceODataV4Service service;
+        private ECommerceClient ecommerceClient;
 
         /// <summary>
         /// Constructor (only available internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductQueryService(IECommerceODataV4Service service)
+        internal ProductQueryService(ECommerceClient ecommerceClient)
         {
-            this.service = service;
+            this.ecommerceClient = ecommerceClient;
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace SDL.ECommerce.OData
                 func.WithParam("viewType", query.ViewType.ToString());
             }
 
-            return Enumerable.FirstOrDefault<ProductQueryResult>(this.service.Execute<ProductQueryResult>(func));
+            return Enumerable.FirstOrDefault<ProductQueryResult>(this.ecommerceClient.ODataV4Service.Execute<ProductQueryResult>(func));
 
             /*
             var uriString = string.Format("{0}/{1}", (object)this.service.Service.BaseUri, (object)func);

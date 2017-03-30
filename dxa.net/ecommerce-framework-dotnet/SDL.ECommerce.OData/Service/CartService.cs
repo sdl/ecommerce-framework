@@ -9,18 +9,18 @@ namespace SDL.ECommerce.OData
 {
     public class CartService : ICartService
     {
-        private IECommerceODataV4Service service;
+        private ECommerceClient ecommerceClient;
 
-        internal CartService(IECommerceODataV4Service service)
+        internal CartService(ECommerceClient ecommerceClient)
         {
-            this.service = service;
+            this.ecommerceClient = ecommerceClient;
         }
 
         public ICart CreateCart()
         {
             ODataV4ClientFunction func = new ODataV4ClientFunction("CreateCart");
             func.AllowCaching = false;
-            return Enumerable.FirstOrDefault<Cart>(this.service.Execute<Cart>(func));
+            return Enumerable.FirstOrDefault<Cart>(this.ecommerceClient.ODataV4Service.Execute<Cart>(func));
         }
 
         public ICart AddProductToCart(ICart cart, string productId, int quantity)
@@ -31,7 +31,7 @@ namespace SDL.ECommerce.OData
             func.WithParam("sessionId", cart.SessionId);
             func.WithParam("productId", productId);
             func.WithParam("quantity", quantity);
-            return Enumerable.FirstOrDefault<Cart>(this.service.Execute<Cart>(func));
+            return Enumerable.FirstOrDefault<Cart>(this.ecommerceClient.ODataV4Service.Execute<Cart>(func));
         }
 
         public ICart RemoveProductFromCart(ICart cart, string productId)
@@ -41,7 +41,7 @@ namespace SDL.ECommerce.OData
             func.WithParam("cartId", cart.Id);
             func.WithParam("sessionId", cart.SessionId);
             func.WithParam("productId", productId);
-            return Enumerable.FirstOrDefault<Cart>(this.service.Execute<Cart>(func));
+            return Enumerable.FirstOrDefault<Cart>(this.ecommerceClient.ODataV4Service.Execute<Cart>(func));
         }
     }
 }

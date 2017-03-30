@@ -99,7 +99,7 @@ namespace SDL.ECommerce.OData
             {
                 if (categoryService == null)
                 {
-                    categoryService = this.Resolve<IProductCategoryService>() ?? new ProductCategoryService(ODataV4Service);
+                    categoryService = this.Resolve<IProductCategoryService>() ?? new ProductCategoryService(this);
                 }
 
                 return categoryService;
@@ -115,7 +115,7 @@ namespace SDL.ECommerce.OData
             {
                 if (queryService == null)
                 {
-                    queryService = this.Resolve<IProductQueryService>() ?? new ProductQueryService(ODataV4Service);
+                    queryService = this.Resolve<IProductQueryService>() ?? new ProductQueryService(this);
                 }
 
                 return queryService;
@@ -131,7 +131,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( detailService == null )
                 {
-                    detailService = this.Resolve<IProductDetailService>() ?? new ProductDetailService(ODataV4Service);
+                    detailService = this.Resolve<IProductDetailService>() ?? new ProductDetailService(this);
                 }
 
                 return detailService;
@@ -147,7 +147,7 @@ namespace SDL.ECommerce.OData
             {
                 if ( cartService == null )
                 {
-                    cartService = this.Resolve<ICartService>() ?? new CartService(ODataV4Service);
+                    cartService = this.Resolve<ICartService>() ?? new CartService(this);
                 }
 
                 return cartService;
@@ -163,7 +163,7 @@ namespace SDL.ECommerce.OData
             {
                 if (editService == null)
                 {
-                    editService = this.Resolve<IEditService>() ?? new EditService(ODataV4Service);
+                    editService = this.Resolve<IEditService>() ?? new EditService(this);
                 }
 
                 return editService;
@@ -177,17 +177,15 @@ namespace SDL.ECommerce.OData
                 return this.Resolve<IOAuthTokenProvider>() ?? DiscoveryServiceProvider.DefaultTokenProvider;
             }
         }
-        
-        private IECommerceODataV4Service ODataV4Service
+
+        /// <summary>
+        /// Get new OData V4 service instance
+        /// </summary>
+        public IECommerceODataV4Service ODataV4Service
         {
             get
             {
-                if (odataService == null)
-                {
-                    odataService = this.Resolve<IECommerceODataV4Service>() ?? new ECommerceODataV4Service(new SDLECommerce(serviceConfiguration.ServiceEndpoint), serviceConfiguration, TokenProvider);
-                }
-
-                return odataService;
+                return this.Resolve<IECommerceODataV4Service>() ?? new ECommerceODataV4Service(new SDLECommerce(serviceConfiguration.ServiceEndpoint), serviceConfiguration, TokenProvider);
             }
         }
 
