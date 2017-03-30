@@ -6,6 +6,7 @@ import com.sdl.ecommerce.api.edit.EditService;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.odata.datasource.ProductDataSource;
 import com.sdl.ecommerce.odata.model.ODataEditMenu;
+import com.sdl.ecommerce.odata.service.ODataRequestContextHolder;
 import com.sdl.odata.api.ODataException;
 import com.sdl.odata.api.edm.annotations.EdmFunction;
 import com.sdl.odata.api.edm.annotations.EdmParameter;
@@ -36,21 +37,26 @@ public class GetInContextEditMenuFunction implements Operation<ODataEditMenu> {
 
     @Override
     public ODataEditMenu doOperation(ODataRequestContext oDataRequestContext, DataSourceFactory dataSourceFactory) throws ODataException {
-
-        ProductDataSource productDataSource = (ProductDataSource) dataSourceFactory.getDataSource(oDataRequestContext, "SDL.ECommerce.Product");
-        Query query = productDataSource.getProductQueryService().newQuery();
-        if ( categoryId != null ) {
-            Category category = productDataSource.getProductCategoryService().getCategoryById(categoryId);
-            query.category(category);
+        ODataRequestContextHolder.set(oDataRequestContext);
+        try {
+            ProductDataSource productDataSource = (ProductDataSource) dataSourceFactory.getDataSource(oDataRequestContext, "SDL.ECommerce.Product");
+            Query query = productDataSource.getProductQueryService().newQuery();
+            if (categoryId != null) {
+                Category category = productDataSource.getProductCategoryService().getCategoryById(categoryId);
+                query.category(category);
+            }
+            if (searchPhrase != null) {
+                query.searchPhrase(searchPhrase);
+            }
+            EditService editService = productDataSource.getEditService();
+            if (editService != null) {
+                EditMenu editMenu = productDataSource.getEditService().getInContextMenuItems(query);
+                return new ODataEditMenu(editMenu, query);
+            }
+            return null;
         }
-        if ( searchPhrase != null ) {
-            query.searchPhrase(searchPhrase);
+        finally {
+            ODataRequestContextHolder.clear();
         }
-        EditService editService = productDataSource.getEditService();
-        if ( editService != null ) {
-            EditMenu editMenu = productDataSource.getEditService().getInContextMenuItems(query);
-            return new ODataEditMenu(editMenu, query);
-        }
-        return null;
     }
 }
