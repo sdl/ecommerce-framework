@@ -6,14 +6,14 @@ using SDL.ECommerce.OData;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA
 {
-    using Sdl.Web.Common.Configuration;
-
+    
     /// <summary>
     /// E-Commerce Context
     /// </summary>
@@ -28,7 +28,7 @@ namespace SDL.ECommerce.DXA
         public const string ROOT_TITLE = "RootTitle";
         public const string SEARCH_PHRASE = "SearchPhrase";
 
-        private static IDictionary<string, IECommerceClient> clients = new Dictionary<string,IECommerceClient>();
+        private static IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
         private static IECommerceLinkResolver linkResolver = new DXALinkResolver();
 
         /// <summary>
