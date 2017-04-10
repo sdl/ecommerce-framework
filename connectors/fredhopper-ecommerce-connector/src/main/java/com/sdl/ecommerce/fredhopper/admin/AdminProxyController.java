@@ -383,6 +383,25 @@ public class AdminProxyController {
             if ( cachedAsset.exists() ) {
                 IOUtils.copy(new FileInputStream(cachedAsset), response.getOutputStream());
                 String contentType = tika.detect(cachedAsset);
+                if ( contentType == null ) {
+                    // Guess content type based on the suffix
+                    //
+                    if ( fredhopperUrl.endsWith(".js") ) {
+                        contentType = "application/javascript";
+                    }
+                    else if ( fredhopperUrl.endsWith(".css") ) {
+                        contentType = "text/css";
+                    }
+                    else if ( fredhopperUrl.endsWith(".png") ) {
+                        contentType = "image/png";
+                    }
+                    else if ( fredhopperUrl.endsWith(".jpg") ) {
+                        contentType = "image/jpg";
+                    }
+                    else if ( fredhopperUrl.endsWith(".gif") ) {
+                        contentType = "image/gif";
+                    }
+                }
                 response.setContentType(contentType);
                 return true;
             }
