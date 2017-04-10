@@ -382,6 +382,9 @@ public class AdminProxyController {
             File cachedAsset = this.getLocalFilename(fredhopperUrl);
             if ( cachedAsset.exists() ) {
                 String contentType = tika.detect(cachedAsset);
+                if ( contentType.equals("text/x-matlab") ) {
+                    contentType = "application/javascript";
+                }
                 response.setContentType(contentType);
                 IOUtils.copy(new FileInputStream(cachedAsset), response.getOutputStream());
                 return true;
