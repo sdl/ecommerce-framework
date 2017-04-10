@@ -175,7 +175,7 @@ public class AdminProxyController {
         try {
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
+                String headerName = headerNames.nextElement().toLowerCase();
                 if (headerName.startsWith("wicket") || headerName.startsWith("x-") || headerName.startsWith("accept") || headerName.startsWith("user-agent")) {
                     method.setRequestHeader(headerName, request.getHeader(headerName));
                 }
@@ -270,7 +270,7 @@ public class AdminProxyController {
         try {
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
+                String headerName = headerNames.nextElement().toLowerCase();
                 if (headerName.startsWith("wicket") || headerName.startsWith("x-") || headerName.startsWith("accept") || headerName.startsWith("user-agent")) {
                     method.setRequestHeader(headerName, request.getHeader(headerName));
                 }
