@@ -39,6 +39,13 @@
             <version>${fredhopper-api-version}</version>
         </dependency>
 
+        <!-- Apacke Tika -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.14</version>
+        </dependency>
+
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>

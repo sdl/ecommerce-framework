@@ -1,16 +1,13 @@
 package com.sdl.ecommerce.fredhopper.admin;
 
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.Tika;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,7 +26,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.Enumeration;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -75,6 +71,8 @@ public class AdminProxyController {
 
     private HttpClient client;
     private MultiThreadedHttpConnectionManager connectionManager;
+
+    private Tika tika = new Tika();
 
     @PostConstruct
     public void initialize() throws IOException {
@@ -384,6 +382,8 @@ public class AdminProxyController {
             File cachedAsset = this.getLocalFilename(fredhopperUrl);
             if ( cachedAsset.exists() ) {
                 IOUtils.copy(new FileInputStream(cachedAsset), response.getOutputStream());
+                String contentType = tika.detect(cachedAsset);
+                response.setContentType(contentType);
                 return true;
             }
         }
