@@ -45,6 +45,7 @@ public class WebServiceController extends AbstractODataController {
         // Extract locale from the request URI
         //
         String requestUri = servletRequest.getRequestURI();
+        LOG.debug("Request: " + requestUri);
         StringTokenizer tokenizer = new StringTokenizer(requestUri, "/(?");
         tokenizer.nextToken();
         String locale = tokenizer.nextToken();
