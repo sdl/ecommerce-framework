@@ -130,15 +130,7 @@ public class DXALinkResolver implements ECommerceLinkResolver {
 
         // TODO: Add the possibility to resolve to a CMS based detail page using dynamic links
 
-        String productId;
-        if ( product.getVariantId() != null ) {
-            productId = product.getVariantId();
-        }
-        else {
-            productId = product.getId();
-        }
-
-       return this.getProductDetailLink(productId, product.getName());
+       return this.getProductDetailLink(product.getId(), product.getName());
     }
 
     @Override
@@ -146,7 +138,7 @@ public class DXALinkResolver implements ECommerceLinkResolver {
 
         String productId = product.getId();
 
-        if ( product.getVariants() != null && product.getVariants().size() > 0 ) {
+        if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ID && product.getVariants() != null && product.getVariants().size() > 0 ) {
 
             Map<String, String> selectedAttributes = new HashMap<>();
             selectedAttributes.put(variantAttributeId, variantAttributeValueId);
@@ -177,7 +169,7 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                 }
             }
         }
-        else if ( product.getVariantAttributeTypes() != null && product.getVariantAttributes() != null ) {
+        else if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ATTRIBUTES && product.getVariantAttributeTypes() != null && product.getVariantAttributes() != null ) {
 
             Map<String, String> selectedAttributes = new HashMap<>();
             selectedAttributes.put(variantAttributeId, variantAttributeValueId);
@@ -228,6 +220,8 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                     replace("/", "-").
                     replace("®", "").
                     replace("&", "").
+                    replace(".", "").
+                    replace("+", "-").
                     replace("\"", "");
             return  webRequestContext.getLocalization().localizePath("/p/") + seoName + "/" + productId;
         }
