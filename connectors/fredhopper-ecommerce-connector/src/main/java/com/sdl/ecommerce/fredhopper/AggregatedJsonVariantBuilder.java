@@ -185,6 +185,8 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
         
         List<ProductVariantAttributeType> attributeTypes = new ArrayList<>();
 
+        // TODO: Verify this code - does it really list all possible values (even those that are not available???)
+
         if (variants.size() > 0) {
             for ( String variantAttributeId : this.exposedVariants ) {
                 List<ProductVariantAttributeValueType> values = new ArrayList<>();
