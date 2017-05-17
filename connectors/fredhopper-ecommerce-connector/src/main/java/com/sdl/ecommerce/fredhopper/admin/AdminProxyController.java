@@ -1,16 +1,13 @@
 package com.sdl.ecommerce.fredhopper.admin;
 
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.Tika;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,7 +26,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.Enumeration;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -75,6 +71,8 @@ public class AdminProxyController {
 
     private HttpClient client;
     private MultiThreadedHttpConnectionManager connectionManager;
+
+    private Tika tika = new Tika();
 
     @PostConstruct
     public void initialize() throws IOException {
@@ -177,7 +175,7 @@ public class AdminProxyController {
         try {
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
+                String headerName = headerNames.nextElement().toLowerCase();
                 if (headerName.startsWith("wicket") || headerName.startsWith("x-") || headerName.startsWith("accept") || headerName.startsWith("user-agent")) {
                     method.setRequestHeader(headerName, request.getHeader(headerName));
                 }
@@ -272,7 +270,7 @@ public class AdminProxyController {
         try {
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
+                String headerName = headerNames.nextElement().toLowerCase();
                 if (headerName.startsWith("wicket") || headerName.startsWith("x-") || headerName.startsWith("accept") || headerName.startsWith("user-agent")) {
                     method.setRequestHeader(headerName, request.getHeader(headerName));
                 }
@@ -383,6 +381,11 @@ public class AdminProxyController {
         try {
             File cachedAsset = this.getLocalFilename(fredhopperUrl);
             if ( cachedAsset.exists() ) {
+                String contentType = tika.detect(cachedAsset);
+                if ( contentType.equals("text/x-matlab") ) {
+                    contentType = "application/javascript";
+                }
+                response.setContentType(contentType);
                 IOUtils.copy(new FileInputStream(cachedAsset), response.getOutputStream());
                 return true;
             }
