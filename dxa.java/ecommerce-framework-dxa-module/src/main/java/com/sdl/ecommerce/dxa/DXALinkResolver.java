@@ -126,6 +126,21 @@ public class DXALinkResolver implements ECommerceLinkResolver {
     }
 
     @Override
+    public String getProductVariantDetailLink(Product product)
+    {
+        String productId;
+        if ( product.getVariantId() != null )
+        {
+            productId = product.getVariantId();
+        }
+        else
+        {
+            productId = product.getId();
+        }
+        return this.getProductDetailLink(productId, product.getName());
+    }
+
+    @Override
     public String getProductDetailLink(Product product) {
 
         // TODO: Add the possibility to resolve to a CMS based detail page using dynamic links
@@ -138,7 +153,42 @@ public class DXALinkResolver implements ECommerceLinkResolver {
 
         String productId = product.getId();
 
-        if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ID && product.getVariants() != null && product.getVariants().size() > 0 ) {
+
+        // TODO: Add isPrimary parameter here!!
+
+        // TODO: VERIFY THIS CODE -> IS IT ALIGNED WITH .NET VERSION????
+
+        if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ATTRIBUTES && product.getVariantAttributeTypes() != null && product.getVariantAttributes() != null ) {
+
+            Map<String, String> selectedAttributes = new HashMap<>();
+            selectedAttributes.put(variantAttributeId, variantAttributeValueId);
+            for ( ProductVariantAttributeType attributeType : product.getVariantAttributeTypes() ) {
+                if ( !attributeType.getId().equals(variantAttributeId) ) {
+                    for ( ProductVariantAttributeValueType valueType : attributeType.getValues() ) {
+                        if ( valueType.isSelected() ) {
+                            selectedAttributes.put(attributeType.getId(), valueType.getId());
+                        }
+                    }
+                }
+            }
+
+            // Use the selected attributes to build a URL with the variant attributes as query parameters
+            //
+            String link = this.getProductDetailLink(productId, product.getName());
+            boolean firstAttribute = true;
+            for ( String selectedAttributeId : selectedAttributes.keySet() ) {
+                if ( firstAttribute ) {
+                    link += "?";
+                    firstAttribute = false;
+                }
+                else {
+                    link += "&";
+                }
+                link += selectedAttributeId + "=" + selectedAttributes.get(selectedAttributeId);
+            }
+            return link;
+        }
+        else if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ID && product.getVariants() != null && product.getVariants().size() > 0 ) {
 
             Map<String, String> selectedAttributes = new HashMap<>();
             selectedAttributes.put(variantAttributeId, variantAttributeValueId);
@@ -168,36 +218,6 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                     break;
                 }
             }
-        }
-        else if ( product.getVariantLinkType() == VariantLinkType.VARIANT_ATTRIBUTES && product.getVariantAttributeTypes() != null && product.getVariantAttributes() != null ) {
-
-            Map<String, String> selectedAttributes = new HashMap<>();
-            selectedAttributes.put(variantAttributeId, variantAttributeValueId);
-            for ( ProductVariantAttributeType attributeType : product.getVariantAttributeTypes() ) {
-                if ( !attributeType.getId().equals(variantAttributeId) ) {
-                    for ( ProductVariantAttributeValueType valueType : attributeType.getValues() ) {
-                        if ( valueType.isSelected() ) {
-                            selectedAttributes.put(attributeType.getId(), valueType.getId());
-                        }
-                    }
-                }
-            }
-
-            // Use the selected attributes to build a URL with the variant attributes as query parameters
-            //
-            String link = this.getProductDetailLink(productId, product.getName());
-            boolean firstAttribute = true;
-            for ( String selectedAttributeId : selectedAttributes.keySet() ) {
-                if ( firstAttribute ) {
-                    link += "?";
-                    firstAttribute = false;
-                }
-                else {
-                    link += "&";
-                }
-                link += selectedAttributeId + "=" + selectedAttributes.get(selectedAttributeId);
-            }
-            return link;
         }
 
 
@@ -238,6 +258,9 @@ public class DXALinkResolver implements ECommerceLinkResolver {
         StringBuilder sb = new StringBuilder();
         boolean firstParam = true;
         for ( FacetParameter facet : selectedFacets ) {
+            if ( facet.isHidden() ) {
+                continue;
+            }
             if ( firstParam ) {
                 sb.append("?");
                 firstParam = false;
@@ -257,6 +280,9 @@ public class DXALinkResolver implements ECommerceLinkResolver {
         boolean foundFacet = false;
         if ( selectedFacets != null ) {
             for (FacetParameter facetParam : selectedFacets) {
+                if ( facetParam.isHidden() ) {
+                    continue;
+                }
                 if (firstParam) {
                     sb.append("?");
                     firstParam = false;
@@ -289,6 +315,9 @@ public class DXALinkResolver implements ECommerceLinkResolver {
         boolean firstParam = true;
         if ( selectedFacets != null ) {
             for (FacetParameter facetParam : selectedFacets) {
+                if ( facetParam.isHidden() ) {
+                    continue;
+                }
                 if (firstParam) {
                     sb.append("?");
                     firstParam = false;

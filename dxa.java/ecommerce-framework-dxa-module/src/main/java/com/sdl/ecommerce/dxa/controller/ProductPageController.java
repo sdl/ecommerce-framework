@@ -82,10 +82,13 @@ public class ProductPageController extends AbstractECommercePageController {
             variantAttributes.put(parameterName, requestParameters.get(parameterName)[0]);
         }
 
-        ProductDetailResult detailResult = this.detailService.getDetail(productId, variantAttributes);
-        if ( detailResult.getProductDetail() == null ) {
-            LOG.warn("Could not find product variant page. Falling back on the main product page");
+        ProductDetailResult detailResult = null;
 
+        if ( variantAttributes.size() > 0 ) {
+            detailResult = this.detailService.getDetail(productId, variantAttributes);
+        }
+
+        if ( detailResult == null || detailResult.getProductDetail() == null ) {
             // Fallback on the product ID without variant attributes
             //
             detailResult = this.detailService.getDetail(productId);
