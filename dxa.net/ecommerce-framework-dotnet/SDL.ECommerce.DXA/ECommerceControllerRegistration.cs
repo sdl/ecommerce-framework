@@ -29,20 +29,6 @@ namespace SDL.ECommerce.DXA
             MapRoute(routes, "ECommerce_Search", "search/_redirect",
                new { controller = "SearchPage", action = "Search" });
 
-            // Localization routes
-            //
-            MapRoute(routes, "ECommerce_Category_Loc", "{localization}/c/{*categoryUrl}",
-                new { controller = "CategoryPage", action = "CategoryPage" });
-
-            MapRoute(routes, "ECommerce_Page", "{localization}/p/{*productUrl}",
-                new { controller = "ProductPage", action = "ProductPage" });
-
-            MapRoute(routes, "ECommerce_SearchPage", "{localization}/search/{searchPhrase}/{*categoryUrl}",
-                new { controller = "SearchPage", action = "SearchCategoryPage" });
-
-            MapRoute(routes, "ECommerce_Search", "{localization}/search/_redirect",
-               new { controller = "SearchPage", action = "Search" });
-
             // Cart controller
             //
             MapRoute(routes, "ECommerce_AddToCart", "ajax/cart/addProduct/{productId}",
@@ -50,6 +36,29 @@ namespace SDL.ECommerce.DXA
 
             MapRoute(routes, "ECommerce_RemoveFromCart", "ajax/cart/removeProduct/{productId}",
                 new { controller = "Cart", action = "RemoveProductFromCart" });
+
+
+            // Localization routes
+            //
+            MapRoute(routes, "ECommerce_Category_Loc", "{localization}/c/{*categoryUrl}",
+                new { controller = "CategoryPage", action = "CategoryPage" });
+
+            MapRoute(routes, "ECommerce_Page_Loc", "{localization}/p/{*productUrl}",
+                new { controller = "ProductPage", action = "ProductPage" });
+
+            MapRoute(routes, "ECommerce_SearchPage_Loc", "{localization}/search/{searchPhrase}/{*categoryUrl}",
+                new { controller = "SearchPage", action = "SearchCategoryPage" });
+
+            MapRoute(routes, "ECommerce_Search_Loc", "{localization}/search/_redirect",
+               new { controller = "SearchPage", action = "Search" });
+
+            MapRoute(routes, "ECommerce_AddToCart_Loc", "{localization}/ajax/cart/addProduct/{productId}",
+                new { controller = "Cart", action = "AddProductToCart" });
+
+            MapRoute(routes, "ECommerce_RemoveFromCart_Loc", "{localization}/ajax/cart/removeProduct/{productId}",
+                new { controller = "Cart", action = "RemoveProductFromCart" });
+
+
 
             // Edit Proxy route (only available for staging sites)
             //

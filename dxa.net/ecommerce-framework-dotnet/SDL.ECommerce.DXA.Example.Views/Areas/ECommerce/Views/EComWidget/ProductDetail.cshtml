@@ -42,7 +42,7 @@
                     @Model.Product.Price.FormattedPrice
                 </h3>
                 <div class="product-add-to-cart">
-                    <a class="btn btn-primary add-to-cart-button  @(Model.Product.VariantId == null && Model.Product.MasterId != null ? "disabled" : "")" data-product-id="@(Model.Product.VariantId != null ? Model.Product.VariantId : Model.Product.Id)">
+                    <a class="btn btn-primary add-to-cart-button  @(Model.Product.VariantId == null && Model.Product.MasterId != null ? "disabled" : "")" data-localization-prefix="@ECommerceContext.LocalizePath("/")" data-product-id="@(Model.Product.VariantId != null ? Model.Product.VariantId : Model.Product.Id)">
                         @Html.Resource("e-commerce.addToCartLabel") <i class="fa fa-cart-plus"></i>
                     </a>
                 </div>
