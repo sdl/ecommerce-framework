@@ -78,7 +78,9 @@ public class ODataProduct implements Product, Serializable {
         this.variantId = product.getVariantId();
         this.name = product.getName();
         this.description = product.getDescription();
-        this.price = new ODataProductPrice(product.getPrice());
+        if ( product.getPrice() != null ) {
+            this.price = new ODataProductPrice(product.getPrice());
+        }
         this.thumbnailUrl = product.getThumbnailUrl();
         this.primaryImageUrl = product.getPrimaryImageUrl();
         this.variantLinkType = product.getVariantLinkType().name();
