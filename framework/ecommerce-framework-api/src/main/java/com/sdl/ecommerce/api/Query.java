@@ -52,7 +52,12 @@ public abstract class Query implements Cloneable {
      * @return this
      */
     public Query facets(List<FacetParameter> facets) {
-        this.facets = facets;
+        if ( this.facets == null ) {
+            this.facets = facets;
+        }
+        else {
+            this.facets.addAll(facets);
+        }
         return this;
     }
 
