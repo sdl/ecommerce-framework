@@ -10,7 +10,6 @@ namespace SDL.ECommerce.Ecl
     /// </summary>
     public abstract class ProductItem : SelectableItem
     {
-        protected readonly IEclUri id;
         protected Category category;
         protected Product product;
 
@@ -24,8 +23,6 @@ namespace SDL.ECommerce.Ecl
         {
             this.category = category;
             this.product = product;
-            this.id = EclProvider.HostServices.CreateEclUri(publicationId, EclProvider.MountPointId,
-                     product.Id, DisplayTypeId, EclItemTypes.File);
         }
 
         public override string DisplayTypeId
