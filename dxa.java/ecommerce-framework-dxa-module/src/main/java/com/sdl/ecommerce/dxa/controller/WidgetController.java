@@ -239,7 +239,7 @@ public class WidgetController extends BaseController {
         if ( entity.getCategoryReference() != null ) {
             Category topCategory = this.resolveCategoryModel(entity.getCategoryReference());
             if (topCategory != null) {
-                entity.getCategoryReference().setCategoryUrl(this.linkResolver.getCategoryLink(topCategory)); // For flyout is the URL's always based on the category url pattern
+                entity.getCategoryReference().setCategoryUrl(this.linkResolver.getNonContextualCategoryLink(topCategory)); // For flyout is the URL's always based on the category url pattern
 
                 boolean useCache = this.isSessionPreview(request) == false;
 

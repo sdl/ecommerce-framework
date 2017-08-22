@@ -45,6 +45,13 @@ public class DXALinkResolver implements ECommerceLinkResolver {
     }
 
     @Override
+    public String getNonContextualCategoryLink(Category category) {
+        Localization localization = this.webRequestContext.getLocalization();
+        String urlPrefix = localization.localizePath("/c"); // TODO Have the category prefix configurable
+        return urlPrefix + CategoryRef.getCategoryAbsolutePath(category);
+    }
+
+    @Override
     public String getFacetLink(Facet facet) {
         String link;
         List<FacetParameter> selectedFacets = this.getFacets(request);
@@ -70,7 +77,7 @@ public class DXALinkResolver implements ECommerceLinkResolver {
         if (facet.isCategory()) {
 
             Category category = this.categoryService.getCategoryById(facet.getValue());
-            link = this.getCategoryLink(category);
+            link = this.getNonContextualCategoryLink(category);
             link += this.getFacetLink((List<FacetParameter>) null);
 
         }
