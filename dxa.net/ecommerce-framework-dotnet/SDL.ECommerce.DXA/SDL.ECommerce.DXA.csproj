@@ -212,8 +212,12 @@
     <Compile Include="Servants\IHttpContextServant.cs" />
     <Compile Include="Servants\IPageModelServant.cs" />
     <Compile Include="Servants\IPathServant.cs" />
+    <Compile Include="Servants\ISanitizerConfiguration.cs" />
+    <Compile Include="Servants\ISanitizerServant.cs" />
     <Compile Include="Servants\PageModelServant.cs" />
     <Compile Include="Servants\PathServant.cs" />
+    <Compile Include="Servants\SanitizerConfiguration.cs" />
+    <Compile Include="Servants\SanitizerServant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
