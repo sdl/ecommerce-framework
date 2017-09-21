@@ -7,8 +7,17 @@ using System.Text;
 
 namespace SDL.ECommerce.DXA
 {
+    using Servants;
+
     public class DXALinkResolver : IECommerceLinkResolver
     {
+        private ISanitizerServant _sanitizerServant;
+
+        public DXALinkResolver()
+        {
+            _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
+        }
+
         public string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
         {
             string link;
@@ -174,15 +183,9 @@ namespace SDL.ECommerce.DXA
                 // Generate a SEO friendly URL
                 //
                 String seoName = productName.ToLower().
-                                             Replace(" ", "-").
                                              Replace("'", "").
-                                             Replace("--", "").
-                                             Replace("/", "-").
-                                             Replace("®", "").
-                                             Replace("&", "").
-                                             Replace(".", "").
-                                             Replace("\"", "");
-                return ECommerceContext.LocalizePath("/p/") + seoName + "/" + productId;
+                                             Replace("--", "");
+                return ECommerceContext.LocalizePath("/p/") + _sanitizerServant.SanitizedUrlString(seoName) + "/" + productId;
             }
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
