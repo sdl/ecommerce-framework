@@ -38,6 +38,9 @@ public class DummyCartService implements CartService {
     @Override
     public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
+        if ( cart == null ) {
+            cart = (DummyCart) this.createCart();
+        }
         if ( cart != null ) {
             cart.addProduct(productId, quantity);
             return cart;

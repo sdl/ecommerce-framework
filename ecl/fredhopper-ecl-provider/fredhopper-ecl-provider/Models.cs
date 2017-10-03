@@ -114,19 +114,20 @@ namespace SDL.Fredhopper.Ecl
                     }
                 }
                
+            }
 
-                var imageUrl = GetModelAttributeValue("thumbnailUrl");
-                if (imageUrl == null)
-                {
-                    // Fallback on primary image Url
-                    //
-                    imageUrl = GetModelAttributeValue("primaryImageUrl");
-                }
-                if (imageUrl != null)
-                {
-                    this.productThumbnail = new StandardProductImage(imageUrl);
-                }
-            }  
+            var imageUrl = GetModelAttributeValue("thumbnailUrl");
+            if (imageUrl == null)
+            {
+                // Fallback on primary image Url
+                //
+                imageUrl = GetModelAttributeValue("primaryImageUrl");
+            }
+            if (imageUrl != null)
+            {
+                imageUrl = imageUrl.Replace("\\", "/");
+                this.productThumbnail = new StandardProductImage(imageUrl);
+            }
         }
 
         public string Id

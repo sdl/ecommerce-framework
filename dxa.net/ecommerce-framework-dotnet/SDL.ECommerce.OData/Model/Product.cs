@@ -124,5 +124,13 @@ namespace SDL.ECommerce.OData
                 return this.VariantAttributeTypes.Cast<IProductVariantAttributeType>().ToList();
             }
         }
+
+        VariantLinkType IProduct.VariantLinkType
+        {
+            get
+            {
+                return (VariantLinkType) Enum.Parse(typeof(VariantLinkType), this.VariantLinkType);
+            }
+        }
     }
 }

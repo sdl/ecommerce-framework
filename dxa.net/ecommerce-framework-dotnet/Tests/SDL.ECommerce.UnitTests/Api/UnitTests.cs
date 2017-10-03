@@ -1,16 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace SDL.ECommerce.Api
+using Xunit;
+
+using SDL.ECommerce.Api;
+
+namespace SDL.ECommerce.UnitTests.Api
 {
-    [TestClass]
     public class UnitTests
     {
-        [TestMethod]
+        [Fact]
         public void TestFacetParameter()
         {
             var facet = new FacetParameter("brand", "adidas|dkny");

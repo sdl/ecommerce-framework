@@ -1,11 +1,8 @@
-﻿using Sdl.Web.Delivery.Service;
-using SDL.ECommerce.Api.Model;
+﻿using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Api.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.OData
 {
@@ -15,7 +12,9 @@ namespace SDL.ECommerce.OData
     /// TODO: Implement an interface here
     public class ProductCategoryService : IProductCategoryService
     {
-        private ODataV4Service service;
+        // TODO: Use DXA Cache Provider here instead?? Or how decoupled should this module be from DXA?
+
+        private ECommerceClient ecommerceClient;
 
         private int categoryExpiryTimeout = 3600000; // TODO: Have this configurable
         private ICategory rootCategory = new Category();
@@ -24,9 +23,9 @@ namespace SDL.ECommerce.OData
         /// Constructor (only availably internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductCategoryService(ODataV4Service service)
+        internal ProductCategoryService(ECommerceClient ecommerceClient)
         {
-            this.service = service;
+            this.ecommerceClient = ecommerceClient;
             this.GetTopLevelCategories();
         }
 
@@ -38,7 +37,7 @@ namespace SDL.ECommerce.OData
         {
             if (((Category) rootCategory).NeedRefresh())
             {
-                LoadCategories(rootCategory);
+                LoadCategories(rootCategory, this.ecommerceClient.ODataV4Service);
             }
             return rootCategory.Categories;
         }
@@ -50,26 +49,27 @@ namespace SDL.ECommerce.OData
         /// <returns></returns>
         public ICategory GetCategoryById(string id)
         {
+            var service = this.ecommerceClient.ODataV4Service;
             // First recursively check in cache
             //
-            var category = GetCategoryById(id, rootCategory.Categories, true);
+            var category = GetCategoryById(id, rootCategory.Categories, service, true);
             if ( category == null )
             {
                 // Secondly get the category and try to fit it into the cached structure
                 //
-                category = ((SDLECommerce)this.service.Service).Categories.ByKey(id).GetValue();
+                category = service.Categories.ByKey(id).GetValue();
                 ICategory currentParent = rootCategory;
                 var parentIds = ((Category)category).ParentIds.ToList();
 
                 foreach ( var parentId in parentIds )
                 {
-                    var parent = GetCategoryById(parentId, currentParent.Categories);
+                    var parent = GetCategoryById(parentId, currentParent.Categories, service);
                     if ( parent == null )
                     {
                         // If something has changed with the category tree since last cache update
                         //
-                        LoadCategories(currentParent);
-                        parent = GetCategoryById(parentId, currentParent.Categories);
+                        LoadCategories(currentParent, service);
+                        parent = GetCategoryById(parentId, currentParent.Categories, service);
                         if ( parent == null )
                         {
                             throw new Exception("Inconsistent data returned from single category request and category tree requests.");
@@ -78,7 +78,7 @@ namespace SDL.ECommerce.OData
                     currentParent = parent;
                     if ( parent.Categories == null )
                     {
-                        LoadCategories(parent);
+                        LoadCategories(parent, service);
                     }
 
                     // If last item in the list -> Use that as parent reference for the current category
@@ -86,7 +86,7 @@ namespace SDL.ECommerce.OData
                     if (parentIds.IndexOf(parentId) == parentIds.Count - 1)
                     {
                         ((Category)category).SetParent(parent);
-                        LoadCategories(category);
+                        LoadCategories(category, service);
                     }
                 }
             }
@@ -101,6 +101,8 @@ namespace SDL.ECommerce.OData
         /// <returns></returns>
         public ICategory GetCategoryByPath(string path)
         {
+            var service = this.ecommerceClient.ODataV4Service;
+
             if ( String.IsNullOrEmpty(path) || path.Equals("/") )
             {
                 return rootCategory;
@@ -119,7 +121,7 @@ namespace SDL.ECommerce.OData
                 {
                     if ( ((Category) category).NeedRefresh() )
                     {
-                        LoadCategories(category);
+                        LoadCategories(category, service);
                     }
                     category = GetCategoryByPathName(category.Categories, pathName);
                 }
@@ -130,7 +132,7 @@ namespace SDL.ECommerce.OData
             }
             if ( category != null && ((Category) category).NeedRefresh() )
             {
-                LoadCategories(category);
+                LoadCategories(category, service);
             }
             return category;
             
@@ -140,16 +142,16 @@ namespace SDL.ECommerce.OData
         /// Load subordinated categories for specific category
         /// </summary>
         /// <param name="parent"></param>
-        internal void LoadCategories(ICategory parent)
+        internal void LoadCategories(ICategory parent, IECommerceODataV4Service service)
         {
             IList<Category> categories;
             if ( parent == rootCategory )
             {
-                categories = ((SDLECommerce)this.service.Service).Categories.ToList();
+                categories = service.Categories.ToList();
             }
             else
             {
-                categories = ((SDLECommerce)this.service.Service).Categories.ByKey(parent.Id).Categories.ToList();
+                categories = service.Categories.ByKey(parent.Id).Categories.ToList();
             }
             IList<ICategory> existingCategories = parent.Categories;
             IList<ICategory> newCategoryList = new List<ICategory>();
@@ -185,7 +187,7 @@ namespace SDL.ECommerce.OData
         /// <param name="categories"></param>
         /// <param name="refresh"></param>
         /// <returns></returns>
-        private ICategory GetCategoryById(String id, IList<ICategory> categories, bool refresh = false)
+        private ICategory GetCategoryById(String id, IList<ICategory> categories, IECommerceODataV4Service service, bool refresh = false)
         {
             if ( categories != null )
             {
@@ -199,9 +201,9 @@ namespace SDL.ECommerce.OData
                     {
                         if ( refresh && ((Category) category).NeedRefresh() )
                         {
-                            LoadCategories(category);
+                            LoadCategories(category, service);
                         }
-                        ICategory foundCategory = GetCategoryById(id, category.Categories);
+                        ICategory foundCategory = GetCategoryById(id, category.Categories, service);
                         if (foundCategory != null)
                         {
                             return foundCategory;

@@ -23,6 +23,8 @@ public class DemandwareProduct implements Product {
 
     private Category primaryCategory;
     private String id;
+    private String masterId;
+    private String variantId;
     private String name;
     private String description;
     private ProductPrice price;
@@ -40,6 +42,16 @@ public class DemandwareProduct implements Product {
     public DemandwareProduct(Category primaryCategory, com.sdl.ecommerce.demandware.api.model.Product dwreProduct) {
         this.primaryCategory = primaryCategory;
         this.id = dwreProduct.getId();
+        if ( dwreProduct.getMaster() != null ) {
+            if ( !dwreProduct.getMaster().getMaster_id().equals(this.id) ) {
+                this.variantId = this.id; // This product is an concrete product variant
+                this.masterId = dwreProduct.getMaster().getMaster_id();
+            }
+            else {
+                this.masterId = this.id;
+            }
+            
+        }
         this.name = dwreProduct.getName();
         this.description = dwreProduct.getLong_description();
         this.price = new DemandwarePrice(dwreProduct.getPrice(), dwreProduct.getCurrency());
@@ -77,6 +89,8 @@ public class DemandwareProduct implements Product {
             }
         }
 
+        // TODO: Variant types should reflect all available styles (e.g. color)
+
         // Get all available variations
         //
         if ( dwreProduct.getVariants() != null ) {
@@ -103,7 +117,7 @@ public class DemandwareProduct implements Product {
                                 }
                             }
                         }
-                        values.add(new GenericProductVariantAttributeValueType(variationAttributeValue.getValue(), variationAttributeValue.getName(), isSelected));
+                        values.add(new GenericProductVariantAttributeValueType(variationAttributeValue.getValue(), variationAttributeValue.getName(), isSelected, true /*variationAttributeValue.isOrderable()*/));
                     }
                     this.variantAttributeTypes.add(new GenericProductVariantAttributeType(attribute.getId(), attribute.getName(), values));
                 }
@@ -132,8 +146,13 @@ public class DemandwareProduct implements Product {
     }
 
     @Override
+    public String getMasterId() {
+        return this.masterId;
+    }
+
+    @Override
     public String getVariantId() {
-        return null;
+        return this.variantId;
     }
 
     @Override
@@ -208,5 +227,10 @@ public class DemandwareProduct implements Product {
     @Override
     public List<ProductVariantAttributeType> getVariantAttributeTypes() {
         return this.variantAttributeTypes;
+    }
+
+    @Override
+    public VariantLinkType getVariantLinkType() {
+        return VariantLinkType.VARIANT_ID;
     }
 }

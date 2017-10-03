@@ -63,6 +63,11 @@ public class TestLinkResolver implements ECommerceLinkResolver {
     }
 
     @Override
+    public String getProductVariantDetailLink(Product product) {
+        return "/p/" + product.getId();
+    }
+
+    @Override
     public String getProductDetailLink(Product product) {
         return "/p/" + product.getId();
     }

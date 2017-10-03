@@ -32,6 +32,10 @@
             <ModelMappings xmlns="http://sdl.com/ecl/ecommerce">
               [Model mappings to Fredhopper model defined in Business Manager, e.g  name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl]
             </ModelMappings>
+            <Filters>
+            	<Filter name="[facet name]" value="[facet value"/>
+            	...
+            </Filters>
         </PublicationConfiguration>
         ...
 	  </PublicationConfigurations>

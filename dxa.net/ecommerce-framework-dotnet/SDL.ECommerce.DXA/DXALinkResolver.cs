@@ -1,15 +1,23 @@
 ﻿using SDL.ECommerce.Api;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+
 using SDL.ECommerce.Api.Model;
 using System.Text;
 
 namespace SDL.ECommerce.DXA
 {
+    using Servants;
+
     public class DXALinkResolver : IECommerceLinkResolver
     {
+        private ISanitizerServant _sanitizerServant;
+
+        public DXALinkResolver()
+        {
+            _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
+        }
+
         public string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
         {
             string link;
@@ -94,6 +102,10 @@ namespace SDL.ECommerce.DXA
             bool firstParam = true;
             foreach (var facet in selectedFacets)
             {
+                if ( facet.IsHidden )
+                {
+                    continue;
+                }
                 if (firstParam)
                 {
                     sb.Append("?");
@@ -141,9 +153,8 @@ namespace SDL.ECommerce.DXA
             return link.ToString();
         }
 
-        public string GetProductDetailLink(IProduct product)
+        public string GetProductVariantDetailLink(IProduct product)
         {
-            // TODO: Add support to resolve to dynamic links if product page is CMS made
             string productId;
             if ( product.VariantId != null )
             {
@@ -154,6 +165,11 @@ namespace SDL.ECommerce.DXA
                 productId = product.Id;
             }
             return GetProductDetailLink(productId, product.Name);
+        }
+
+        public string GetProductDetailLink(IProduct product)
+        {
+            return GetProductDetailLink(product.Id, product.Name);
         }
 
         protected string GetProductDetailLink(string productId, string productName)
@@ -167,26 +183,74 @@ namespace SDL.ECommerce.DXA
                 // Generate a SEO friendly URL
                 //
                 String seoName = productName.ToLower().
-                                             Replace(" ", "-").
                                              Replace("'", "").
-                                             Replace("--", "").
-                                             Replace("/", "-").
-                                             Replace("®", "").
-                                             Replace("&", "").
-                                             Replace("\"", "");
-                return ECommerceContext.LocalizePath("/p/") + seoName + "/" + productId;
+                                             Replace("--", "");
+                return ECommerceContext.LocalizePath("/p/") + _sanitizerServant.SanitizedUrlString(seoName) + "/" + productId;
             }
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
 
         public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
         {
+            return GetProductDetailVariantLink(product, variantAttributeId, variantAttributeValueId);
+        }
+
+        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
+        {
 
             String productId = product.Id;
 
-            // Approach one: Use product variant model (if available)
+
+            // Approach one: Use variant attribute types
             //
-            if (product.Variants != null && product.Variants.Count > 0)
+            if (product.VariantLinkType == VariantLinkType.VARIANT_ATTRIBUTES && product.VariantAttributeTypes != null && product.VariantAttributes != null)
+            {
+
+                var selectedAttributes = new Dictionary<string,string>();
+                selectedAttributes.Add(variantAttributeId, variantAttributeValueId);
+                if (!isPrimary)
+                {
+                    foreach (var attributeType in product.VariantAttributeTypes)
+                    {
+                        if (!attributeType.Id.Equals(variantAttributeId))
+                        {
+                            foreach (var valueType in attributeType.Values)
+                            {
+                                if (valueType.IsSelected)
+                                {
+                                    selectedAttributes.Add(attributeType.Id, valueType.Id);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if ( product.MasterId != null )
+                {
+                    productId = product.MasterId;
+                }
+
+                // Use the selected attributes to build a URL with the variant attributes as query parameters
+                //             
+                String link = this.GetProductDetailLink(productId, product.Name);
+                bool firstAttribute = true;
+                foreach (var selectedAttributeId in selectedAttributes.Keys)
+                {
+                    if (firstAttribute)
+                    {
+                        link += "?";
+                        firstAttribute = false;
+                    }
+                    else
+                    {
+                        link += "&";
+                    }
+                    link += selectedAttributeId + "=" + selectedAttributes[selectedAttributeId];
+                }
+                return link;
+            }
+            // Approach two: Use product variant model (if available)
+            //
+            else if ( product.VariantLinkType == VariantLinkType.VARIANT_ID && product.Variants != null && product.Variants.Count > 0)
             {
 
                 var selectedAttributes = new Dictionary<string, string>();
@@ -226,46 +290,6 @@ namespace SDL.ECommerce.DXA
                     }
                 }
             }
-            // Approach two: Use variant attribute types (if available)
-            //
-            else if (product.VariantAttributeTypes != null && product.VariantAttributes != null)
-            {
-
-                var selectedAttributes = new Dictionary<string,string>();
-                selectedAttributes.Add(variantAttributeId, variantAttributeValueId);
-                foreach (var attributeType in product.VariantAttributeTypes)
-                {
-                    if (!attributeType.Id.Equals(variantAttributeId))
-                    {
-                        foreach (var valueType in attributeType.Values)
-                        {
-                            if (valueType.IsSelected)
-                            {
-                                selectedAttributes.Add(attributeType.Id, valueType.Id);
-                            }
-                        }
-                    }
-                }
-
-                // Use the selected attributes to build a URL with the variant attributes as query parameters
-                //
-                String link = this.GetProductDetailLink(productId, product.Name);
-                bool firstAttribute = true;
-                foreach (var selectedAttributeId in selectedAttributes.Keys)
-                {
-                    if (firstAttribute)
-                    {
-                        link += "?";
-                        firstAttribute = false;
-                    }
-                    else
-                    {
-                        link += "&";
-                    }
-                    link += selectedAttributeId + "=" + selectedAttributes[selectedAttributeId];
-                }
-                return link;
-            }
 
 
             return this.GetProductDetailLink(productId, product.Name);
@@ -294,6 +318,11 @@ namespace SDL.ECommerce.DXA
             {
                 foreach (var facetParam in selectedFacets)
                 {
+                    if ( facetParam.IsHidden )
+                    {
+                        continue;
+                    }
+
                     if (firstParam)
                     {
                         sb.Append("?");
@@ -338,6 +367,10 @@ namespace SDL.ECommerce.DXA
             {
                 foreach (var facetParam in selectedFacets)
                 {
+                    if ( facetParam.IsHidden )
+                    {
+                        continue;
+                    }
                     string facetString;
                     if (facetParam.Name.Equals(facet.Id) && facetParam.ContainsValue(facet.Value))
                     {

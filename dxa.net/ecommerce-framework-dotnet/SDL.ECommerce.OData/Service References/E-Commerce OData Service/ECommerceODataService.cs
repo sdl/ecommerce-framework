@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 11/9/2016 12:56:17 PM
+// Generation date: 3/6/2017 8:40:00 AM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -221,6 +221,7 @@ namespace SDL.ECommerce.OData
           <PropertyRef Name=""id""></PropertyRef>
         </Key>
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""masterId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""variantId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""name"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""description"" Type=""Edm.String"" Nullable=""true""></Property>
@@ -234,6 +235,7 @@ namespace SDL.ECommerce.OData
         <Property Name=""variantAttributes"" Type=""Collection(SDL.ECommerce.ProductVariantAttribute)"" Nullable=""true""></Property>
         <Property Name=""variants"" Type=""Collection(SDL.ECommerce.ProductVariant)"" Nullable=""true""></Property>
         <Property Name=""variantAttributeTypes"" Type=""Collection(SDL.ECommerce.ProductVariantAttributeType)"" Nullable=""true""></Property>
+        <Property Name=""variantLinkType"" Type=""Edm.String"" Nullable=""true""></Property>
       </EntityType>
       <EntityType Name=""Cart"">
         <Key>
@@ -276,6 +278,7 @@ namespace SDL.ECommerce.OData
       </ComplexType>
       <ComplexType Name=""ProductSummary"">
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""masterId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""variantId"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""name"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""price"" Type=""SDL.ECommerce.ProductPrice"" Nullable=""true""></Property>
@@ -382,6 +385,7 @@ namespace SDL.ECommerce.OData
         <Property Name=""id"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""value"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""isSelected"" Type=""Edm.Boolean"" Nullable=""true""></Property>
+        <Property Name=""isApplicable"" Type=""Edm.Boolean"" Nullable=""true""></Property>
       </ComplexType>
       <ComplexType Name=""MenuItem"">
         <Property Name=""title"" Type=""Edm.String"" Nullable=""true""></Property>
@@ -730,6 +734,28 @@ namespace SDL.ECommerce.OData
         partial void OnIdChanging(string value);
         partial void OnIdChanged();
         /// <summary>
+        /// There are no comments for Property MasterId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("masterId")]
+        public string MasterId
+        {
+            get
+            {
+                return this._MasterId;
+            }
+            set
+            {
+                this.OnMasterIdChanging(value);
+                this._MasterId = value;
+                this.OnMasterIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _MasterId;
+        partial void OnMasterIdChanging(string value);
+        partial void OnMasterIdChanged();
+        /// <summary>
         /// There are no comments for Property VariantId in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -1015,6 +1041,28 @@ namespace SDL.ECommerce.OData
         private global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductVariantAttributeType> _VariantAttributeTypes = new global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductVariantAttributeType>();
         partial void OnVariantAttributeTypesChanging(global::System.Collections.ObjectModel.Collection<global::SDL.ECommerce.OData.ProductVariantAttributeType> value);
         partial void OnVariantAttributeTypesChanged();
+        /// <summary>
+        /// There are no comments for Property VariantLinkType in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("variantLinkType")]
+        public string VariantLinkType
+        {
+            get
+            {
+                return this._VariantLinkType;
+            }
+            set
+            {
+                this.OnVariantLinkTypeChanging(value);
+                this._VariantLinkType = value;
+                this.OnVariantLinkTypeChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _VariantLinkType;
+        partial void OnVariantLinkTypeChanging(string value);
+        partial void OnVariantLinkTypeChanged();
     }
     /// <summary>
     /// There are no comments for CartSingle in the schema.
@@ -1643,6 +1691,28 @@ namespace SDL.ECommerce.OData
         private string _Id;
         partial void OnIdChanging(string value);
         partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Property MasterId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("masterId")]
+        public string MasterId
+        {
+            get
+            {
+                return this._MasterId;
+            }
+            set
+            {
+                this.OnMasterIdChanging(value);
+                this._MasterId = value;
+                this.OnMasterIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _MasterId;
+        partial void OnMasterIdChanging(string value);
+        partial void OnMasterIdChanged();
         /// <summary>
         /// There are no comments for Property VariantId in the schema.
         /// </summary>
@@ -3309,6 +3379,28 @@ namespace SDL.ECommerce.OData
         private global::System.Nullable<bool> _IsSelected;
         partial void OnIsSelectedChanging(global::System.Nullable<bool> value);
         partial void OnIsSelectedChanged();
+        /// <summary>
+        /// There are no comments for Property IsApplicable in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("isApplicable")]
+        public global::System.Nullable<bool> IsApplicable
+        {
+            get
+            {
+                return this._IsApplicable;
+            }
+            set
+            {
+                this.OnIsApplicableChanging(value);
+                this._IsApplicable = value;
+                this.OnIsApplicableChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Nullable<bool> _IsApplicable;
+        partial void OnIsApplicableChanging(global::System.Nullable<bool> value);
+        partial void OnIsApplicableChanged();
     }
     /// <summary>
     /// There are no comments for MenuItem in the schema.

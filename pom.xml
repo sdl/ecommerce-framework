@@ -47,9 +47,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java-version>1.7</java-version>
+        <java-version>1.8</java-version>
 
-        <dxa.version>1.6.0</dxa.version>
+        <dxa.version>1.7.0</dxa.version>
         <dxa-release-branch>1.6</dxa-release-branch>
 
         <!-- Servlet and JSP APIs -->

@@ -31,6 +31,16 @@ public class HybrisProduct implements Product {
     }
 
     @Override
+    public String getMasterId() {
+        return null;
+    }
+
+    @Override
+    public VariantLinkType getVariantLinkType() {
+        return VariantLinkType.VARIANT_ID;
+    }
+
+    @Override
     public String getVariantId() {
         return null;
     }

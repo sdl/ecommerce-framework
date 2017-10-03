@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SDL.ECommerce.Api.Model
 {
@@ -25,5 +21,15 @@ namespace SDL.ECommerce.Api.Model
         /// Variant Attributes
         /// </summary>
         IList<IProductVariantAttribute> Attributes { get; }
+
+        // TODO: Can this be typed somehow??
+
+        /*
+
+        Get all all variants of type 'color'
+
+        product.getVariantAttributeType.filter(name="color");
+
+        */
     }
 }

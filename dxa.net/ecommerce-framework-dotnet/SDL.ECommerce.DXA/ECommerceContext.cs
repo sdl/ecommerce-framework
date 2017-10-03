@@ -1,17 +1,19 @@
 ﻿using Sdl.Web.Mvc.Configuration;
+
 using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.OData;
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Mvc;
 
 namespace SDL.ECommerce.DXA
 {
+    
     /// <summary>
     /// E-Commerce Context
     /// </summary>
@@ -26,7 +28,7 @@ namespace SDL.ECommerce.DXA
         public const string ROOT_TITLE = "RootTitle";
         public const string SEARCH_PHRASE = "SearchPhrase";
 
-        private static IDictionary<string, IECommerceClient> clients = new Dictionary<string,IECommerceClient>();
+        private static IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
         private static IECommerceLinkResolver linkResolver = new DXALinkResolver();
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace SDL.ECommerce.DXA
         {
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
             // TODO: Get token service data here as well
-            return new ECommerceClient(endpointAddress, locale);
+            return new ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
         }
 
         /// <summary>

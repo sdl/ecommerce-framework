@@ -4,16 +4,14 @@ using Sdl.Web.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using SDL.ECommerce.DXA.Models;
 using SDL.ECommerce.Api;
-using Sdl.Web.Mvc.Configuration;
 using SDL.ECommerce.Api.Model;
+using Sdl.Web.Mvc.Configuration;
 using System.Runtime.Caching;
 
-namespace SDL.ECommerce.DXA.Controller
+﻿namespace SDL.ECommerce.DXA.Controllers
 {
     /// <summary>
     /// Base Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
@@ -27,7 +25,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductDetail(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductDetail(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -67,7 +65,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductDetailEclItem(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductDetailEclItem(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -83,7 +81,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult ProductLister(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult ProductLister(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
 
@@ -117,7 +115,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Facets(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Facets(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             FacetsWidget widget = (FacetsWidget) entity;
@@ -151,7 +149,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult FlyoutFacets(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult FlyoutFacets(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             FacetsWidget widget = (FacetsWidget)entity;
@@ -161,7 +159,7 @@ namespace SDL.ECommerce.DXA.Controller
                 widget.CategoryReference.Category = ResolveCategory(widget.CategoryReference);
                 if (widget.CategoryReference.Category != null)
                 {
-                    var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id);
+                    var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId);
                     if (cachedData == null)
                     {
                         var queryResult = ECommerceContext.Client.QueryService.Query(
@@ -176,7 +174,7 @@ namespace SDL.ECommerce.DXA.Controller
                             FacetGroups = queryResult.FacetGroups.ToList(),
                             Promotions = queryResult.Promotions.ToList()
                         };
-                        this.CacheFlyoutData(widget.CategoryReference.Category.Id, cachedData);
+                        this.CacheFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId, cachedData);
                     }
                     widget.FacetGroups = cachedData.FacetGroups;
                     widget.RelatedPromotions = cachedData.Promotions;
@@ -192,7 +190,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Promotions(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Promotions(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             PromotionsWidget widget = (PromotionsWidget)entity;
@@ -247,7 +245,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Breadcrumb(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Breadcrumb(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             BreadcrumbWidget widget = (BreadcrumbWidget)entity;
@@ -297,7 +295,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult SearchFeedback(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult SearchFeedback(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             SearchFeedbackWidget widget = (SearchFeedbackWidget)entity;
@@ -316,7 +314,7 @@ namespace SDL.ECommerce.DXA.Controller
         /// <param name="entity"></param>
         /// <param name="containerSize"></param>
         /// <returns></returns>
-        public ActionResult Cart(EntityModel entity, int containerSize = 0)
+        public virtual ActionResult Cart(EntityModel entity, int containerSize = 0)
         {
             SetupViewData(entity, containerSize);
             CartWidget widget = (CartWidget)entity;
@@ -455,16 +453,16 @@ namespace SDL.ECommerce.DXA.Controller
 
         }
 
-        private FlyoutData GetCachedFlyoutData(string categoryId)
+        private FlyoutData GetCachedFlyoutData(string categoryId, string LocalizationId)
         {
-            return this.flyoutCache[categoryId] as FlyoutData;
+            return this.flyoutCache[string.Concat(categoryId, "-", LocalizationId)] as FlyoutData;
         }
 
-        private void CacheFlyoutData(string categoryId, FlyoutData flyoutData)
+        private void CacheFlyoutData(string categoryId, string LocalizationId, FlyoutData flyoutData)
         {
             // Default cache flyout data in 1 hour. TODO: Have this configurable
             //
-            this.flyoutCache.Add(categoryId, flyoutData, DateTimeOffset.Now.AddHours(1.0));
+            this.flyoutCache.Add(string.Concat(categoryId, "-", LocalizationId), flyoutData, DateTimeOffset.Now.AddHours(1.0));
         }
 
         private ObjectCache flyoutCache = MemoryCache.Default;

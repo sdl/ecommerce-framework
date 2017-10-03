@@ -1,16 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SDL.ECommerce.Api;
-using SDL.ECommerce.Api.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SDL.ECommerce.OData
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using SDL.ECommerce.Api;
+using SDL.ECommerce.Api.Model;
+using SDL.ECommerce.OData;
+
+namespace SDL.ECommerce.IntegrationTests.OData
 {
     /// <summary>
-    /// OData Client integration tests. The tests is baed on an OData micro service instance having
+    /// OData Client integration tests. The tests is based on an OData micro service instance having
     /// the Fredhopper connector installed using the standard Fredhopper demo dataset.
     /// </summary>
     [TestClass]

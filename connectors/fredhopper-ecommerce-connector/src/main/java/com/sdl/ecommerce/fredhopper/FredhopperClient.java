@@ -5,24 +5,21 @@ import com.fredhopper.lang.query.ViewType;
 import com.fredhopper.lang.query.location.Location;
 import com.fredhopper.lang.query.location.criteria.*;
 import com.fredhopper.webservice.client.*;
-import com.sdl.ecommerce.api.ECommerceLinkResolver;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.FacetParameter.ParameterType;
 import com.sdl.ecommerce.api.QueryResult;
-import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.impl.GenericLocation;
 import com.sdl.ecommerce.fredhopper.model.FredhopperCategory;
-import com.sdl.ecommerce.fredhopper.model.FredhopperFacet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.swing.text.View;
 import javax.xml.ws.BindingProvider;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -39,6 +36,8 @@ public class FredhopperClient implements FredhopperLinkManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(FredhopperClient.class);
 
+    // TODO: Use the REST Service here instead???
+
     static final String WS_PATH = "/fredhopper-ws/services/FASWebService";
     static final String WSDL_PATH = "/fredhopper-ws/services/FASWebService?wsdl";
 
@@ -54,6 +53,14 @@ public class FredhopperClient implements FredhopperLinkManager {
     @org.springframework.beans.factory.annotation.Value("${fredhopper.imageurl.mappings}")
     private String imageUrlMappingsConfig = null;
     private Map<String,String> imageUrlMappings = new HashMap<>();
+
+    @org.springframework.beans.factory.annotation.Value("${fredhopper.variant.builder:#{null}}")
+    private String productVariantBuilderName = null;
+    
+    private ProductVariantBuilder productVariantBuilder;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private FASWebService fasService;
 
@@ -83,6 +90,12 @@ public class FredhopperClient implements FredhopperLinkManager {
                 imageUrlMappings.put(imageUrlPrefix, imageUrlPrefixReplace);
             }
         }
+
+        // Build variant builder
+        //
+        if ( productVariantBuilderName != null ) {
+            this.productVariantBuilder = (ProductVariantBuilder) this.applicationContext.getBean(productVariantBuilderName);
+        }
     }
 
     /**
@@ -108,26 +121,30 @@ public class FredhopperClient implements FredhopperLinkManager {
      */
     public ProductDetailResult getDetail(String productId, String universe, String locale, Map<String,String> variantAttributes) {
         Query query = this.buildQuery(universe, locale);
-        if ( variantAttributes != null ) {
-            for ( String variantAttributeId : variantAttributes.keySet() ) {
-                String variantAttributeValue = variantAttributes.get(variantAttributeId);
 
-                com.fredhopper.lang.query.location.criteria.ValueSet valueSet = new com.fredhopper.lang.query.location.criteria.ValueSet(com.fredhopper.lang.query.location.criteria.ValueSet.AggregationType.OR);
-                valueSet.add(variantAttributeValue);
-                query.getLocation().addCriterion(new MultiValuedCriterion(variantAttributeId, valueSet, null, false));
-                //query.getLocation().addCriterion(new SingleValuedCriterion(variantAttributeId, variantAttributeValue));
-            }
-        }
         query.addSecondId(productId);
+
+        if ( this.productVariantBuilder != null ) {
+            this.productVariantBuilder.contributeToQuery(query, productId, variantAttributes);
+        }
         query.setView(ViewType.DETAIL);
-        return new FredhopperDetailResult(this.doQuery(query), this);
+        return new FredhopperDetailResult(this.doQuery(query), this, this.productVariantBuilder);
     }
 
     public ProductDetailResult getDetailViaAttribute(String attributeId, String attributeValue, String universe, String locale) {
         Query query = this.buildQuery(universe, locale);
         query.getLocation().addCriterion(new SingleValuedCriterion(attributeId, attributeValue));
         query.setView(ViewType.DETAIL);
-        return new FredhopperDetailResult(this.doQuery(query), this);
+        return new FredhopperDetailResult(this.doQuery(query), this, this.productVariantBuilder);
+    }
+
+    public String getAttributeName(Universe universe, String attributeId) {
+        for ( AttributeType attributeType : universe.getAttributeTypes().getAttributeType() ) {
+            if ( attributeType.getName().equals(attributeId) ) {
+                return attributeType.getValue();
+            }
+        }
+        return null;
     }
 
     Page doQuery(Query query) {
@@ -370,7 +387,7 @@ public class FredhopperClient implements FredhopperLinkManager {
         Facetmap facetmap = (Facetmap) facetmapArray.get(0);
         List<Filter> filters = facetmap.getFilter();
         for (Filter filter : filters) {
-            if ( filter.getBasetype().value().equals("cat") ) {
+            if ( filter.getBasetype().value().equals("cat") && filter.isSelected() == null  ) {
                 for (Filtersection section : filter.getFiltersection()) {
                     categories.add(new FredhopperCategory(parent, section));
                 }

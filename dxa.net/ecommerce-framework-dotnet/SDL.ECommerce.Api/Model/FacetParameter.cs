@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.Api
 {
@@ -156,6 +155,14 @@ namespace SDL.ECommerce.Api
             get
             {
                 return type;
+            }
+        }
+
+        public bool IsHidden
+        {
+            get
+            {
+                return this._name.EndsWith("_hidden");
             }
         }
 

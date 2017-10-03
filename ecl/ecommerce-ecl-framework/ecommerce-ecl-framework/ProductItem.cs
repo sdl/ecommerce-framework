@@ -35,7 +35,7 @@ namespace SDL.ECommerce.Ecl
 
         public override bool IsThumbnailAvailable
         {
-            get { return true; } // return this.product.Thumbnail != null; }
+            get { return this.product.Thumbnail != null; }
         }
 
         /// <summary>
@@ -67,6 +67,8 @@ namespace SDL.ECommerce.Ecl
                 }
             }
              */
+
+            // TODO: We can not return NULL here....
 
             return null;           
         }

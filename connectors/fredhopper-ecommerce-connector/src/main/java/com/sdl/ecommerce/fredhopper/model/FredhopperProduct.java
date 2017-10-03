@@ -29,6 +29,9 @@ public class FredhopperProduct implements Product {
     private FredhopperLinkManager linkManager;
     private Map<String,String> modelMappings;
     private LocalizationService localizationService;
+
+    private List<ProductVariant> variants;
+
     private List<ProductVariantAttribute> variantAttributes;
     private List<ProductVariantAttributeType> variantAttributeTypes;
 
@@ -53,6 +56,11 @@ public class FredhopperProduct implements Product {
     @Override
     public String getId() {
         return this.item.getId();
+    }
+
+    @Override
+    public String getMasterId() {
+        return this.getModelAttribute("masterId", true);
     }
 
     @Override
@@ -122,7 +130,7 @@ public class FredhopperProduct implements Product {
 
     @Override
     public List<ProductVariant> getVariants() {
-        return null;
+        return this.variants;
     }
 
     @Override
@@ -133,6 +141,15 @@ public class FredhopperProduct implements Product {
     @Override
     public List<ProductVariantAttributeType> getVariantAttributeTypes() {
         return this.variantAttributeTypes;
+    }
+
+    @Override
+    public VariantLinkType getVariantLinkType() {
+        return VariantLinkType.VARIANT_ATTRIBUTES;
+    }
+
+    public void setVariants(List<ProductVariant> variants) {
+        this.variants = variants;
     }
 
     public void setVariantAttributes(List<ProductVariantAttribute> variantAttributes) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<id>Sdl.ECommerce.Dxa</id>
+    <version>0.0.1</version>
+    <authors>Sdl</authors>
+    <owners>Sdl</owners>
+    <summary></summary>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<description>Sdl ECommerce Dxa.</description>
+    <releaseNotes></releaseNotes>
+	<copyright>© Sdl 2016</copyright>
+    <dependencies>
+	  <dependency id="Sdl.Dxa.Framework.Web8" version="1.6.0" />
+	  <dependency id="Sdl.Web.Delivery" version="8.1.1" />	  
+	  <dependency id="Microsoft.AspNet.Mvc" version="5.1.2" />
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Dxa.dll" target="lib\net452" />
+	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Api.dll" target="lib\net452" />
+	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.OData.dll" target="lib\net452" />
+	<file src="..\NuGet\*.xdt" target="Content" />
+  </files>
+</package>

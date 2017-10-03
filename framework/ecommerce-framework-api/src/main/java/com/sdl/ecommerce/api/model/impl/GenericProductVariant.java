@@ -37,4 +37,15 @@ public class GenericProductVariant implements ProductVariant {
     public List<ProductVariantAttribute> getAttributes() {
         return this.attributes;
     }
+
+    public ProductVariantAttribute getAttribute(String id) {
+        if ( this.attributes != null ) {
+            for ( ProductVariantAttribute attribute : this.attributes ) {
+                if ( attribute.getId().equals(id) ) {
+                    return attribute;
+                }
+            }
+        }
+        return null;
+    }
 }
