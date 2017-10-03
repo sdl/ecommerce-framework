@@ -1,11 +1,6 @@
 # E-Commerce Micro Service Configuration
 #
 
-# Spring Boot
-#
-server:
-  port: 8097
-
 # Fredhopper Connector
 #
 fredhopper:
