@@ -10,15 +10,15 @@ server:
 #
 fredhopper:
   queryserver:
-    url: http://localhost:8180  # [Fredhopper URL, e.g. http://localhost:8180]
+    url: ${fh-queryserver-url:http://localhost:8180}  # [Fredhopper URL, e.g. http://localhost:8180]
   adminserver:
-    url: http://localhost:8180  # [Fredhopper URL, e.g. http://localhost:8180]
+    url: ${fh-adminserver-url:http://localhost:8180}  # [Fredhopper URL, e.g. http://localhost:8180]
   access:
-    username:
+    username: 
     password:
   admin:
-    username: username  # [Username to Fredhopper Business Manager]
-    password: password  # [Password to Fredhopper Business Manager]
+    username: ${fh-user:username}  # [Username to Fredhopper Business Manager]
+    password: ${fh-password:password}  # [Password to Fredhopper Business Manager]
   imageurl:
     mappings:  # http://demo.fredhopper.com/images=/fredhopper-images
   variant:
@@ -39,20 +39,20 @@ fredhopper:
 # Hybris Connector
 #
 hybris:
-  url: http://localhost:9001/rest/v1/  # [Hybris URL, e.g. http://localhost:9001/rest/v1/]
-  username: username  # [Hybris username]
-  password: password  # [Hybris password]
-  mediaUrlPrefix: http://localhost:9001  # [Hybris media prefix, e.g. http://localhost:9001]
+  url: ${hybris-url:http://localhost:9001/rest/v1/}  # [Hybris URL, e.g. http://localhost:9001/rest/v1/]
+  username: ${hybris-user:username}  # [Hybris username]
+  password: ${hybris-password:password}  # [Hybris password]
+  mediaUrlPrefix: ${hybris-media-urlprefix:http://localhost:9001}  # [Hybris media prefix, e.g. http://localhost:9001]
   categoryExpiryTimeout: 6000000
 
 
 # Demandware connector
 #
 demandware:
-  url: http://site-dw.demandware.net/s/  #[URL to Demandware cloud instance, e.g. http://site-dw.demandware.net/s/]
-  clientId:  # [API client ID]
+  url: ${demandware-url:http://site-dw.demandware.net/s/}  #[URL to Demandware cloud instance, e.g. http://site-dw.demandware.net/s/]
+  clientId: ${demandware-clienid} # [API client ID]
   categoryExpiryTimeout: 600000
-  trustAllSSLCerts: false  # [If all certs should be trusted or not - should only be 'true' for dev&test setups]
+  trustAllSSLCerts: ${demandware-trust-sslcerts:false}  # [If all certs should be trusted or not - should only be 'true' for dev&test setups]
 
 # Localization properties
 #
