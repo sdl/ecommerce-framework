@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.OData", "SDL.ECommerce.OData\SDL.ECommerce.OData.csproj", "{F5434B12-5F20-48DF-8B17-A6C2A1345BA9}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.UnitTests", "Tests\SDL.ECommerce.UnitTests\SDL.ECommerce.UnitTests.csproj", "{2819AEB8-2277-4E43-96B9-A20A3BFEE941}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.IntegrationTests", "Tests\SDL.ECommerce.IntegrationTests\SDL.ECommerce.IntegrationTests.csproj", "{5EB69A43-7467-4A7A-8CFE-D23274B56B07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL.ECommerce.Rest", "SDL.ECommerce.Rest\SDL.ECommerce.Rest.csproj", "{055151C2-713C-49DE-85A3-1E073E88CB94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{5EB69A43-7467-4A7A-8CFE-D23274B56B07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB69A43-7467-4A7A-8CFE-D23274B56B07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EB69A43-7467-4A7A-8CFE-D23274B56B07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{055151C2-713C-49DE-85A3-1E073E88CB94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{055151C2-713C-49DE-85A3-1E073E88CB94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055151C2-713C-49DE-85A3-1E073E88CB94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{055151C2-713C-49DE-85A3-1E073E88CB94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
