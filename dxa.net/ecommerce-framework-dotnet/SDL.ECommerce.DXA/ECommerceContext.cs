@@ -2,7 +2,8 @@
 
 using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
-using SDL.ECommerce.OData;
+//using SDL.ECommerce.OData;
+using SDL.ECommerce.Rest;
 
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Sdl.Web.Common;
 
 namespace SDL.ECommerce.DXA
 {
@@ -69,8 +71,21 @@ namespace SDL.ECommerce.DXA
         private static IECommerceClient Create(string locale)
         {
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
-            // TODO: Get token service data here as well
-            return new ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
+            var clientType = WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
+            if (clientType.Equals("odata"))
+            {
+
+                // TODO: Get token service data here as well
+                return new SDL.ECommerce.OData.ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
+            }
+            else if (clientType.Equals("rest"))
+            {
+
+                // TODO: Add support for dependency injection on the REST client as well!!
+                //
+                return new ECommerceClient(endpointAddress, locale);
+            }
+            throw new DxaException("Invalid client type configured for the E-Commerce service: " + clientType);
         }
 
         /// <summary>

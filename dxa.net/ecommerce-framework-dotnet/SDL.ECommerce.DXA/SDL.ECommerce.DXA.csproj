@@ -236,6 +236,10 @@
       <Project>{f5434b12-5f20-48df-8b17-a6c2a1345ba9}</Project>
       <Name>SDL.ECommerce.OData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SDL.ECommerce.Rest\SDL.ECommerce.Rest.csproj">
+      <Project>{055151c2-713c-49de-85a3-1e073e88cb94}</Project>
+      <Name>SDL.ECommerce.Rest</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -262,12 +266,9 @@
     <Error Condition="!Exists('..\packages\Sdl.Dxa.Framework.Web8.1.7.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdl.Dxa.Framework.Web8.1.7.0\build\net452\Sdl.Dxa.Framework.Web8.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>REM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set)
-
-if defined DXA_SITE_DIR (
-
+    <PostBuildEvent>REM Deploy build artifacts to DXA Site (on development machines with DXA_SITE_DIR environment variable set) if defined DXA_SITE_DIR (
 xcopy "$(TargetDir)SDL.ECommerce*.*" "%25DXA_SITE_DIR%25\bin" /Y
-
+xcopy "$(TargetDir)RestSharp*.*" "%25DXA_SITE_DIR%25\bin" /Y
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Sdl.Dxa.Framework.Web8.1.7.0\build\net452\Sdl.Dxa.Framework.Web8.targets" Condition="Exists('..\packages\Sdl.Dxa.Framework.Web8.1.7.0\build\net452\Sdl.Dxa.Framework.Web8.targets')" />
