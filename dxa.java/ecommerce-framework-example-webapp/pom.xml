@@ -3,7 +3,7 @@
 
     <groupId>com.sdl</groupId>
     <artifactId>ecommerce-framework-example-webapp</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>war</packaging>
     <description>Example web application for the E-Commerce Framework</description>
 
