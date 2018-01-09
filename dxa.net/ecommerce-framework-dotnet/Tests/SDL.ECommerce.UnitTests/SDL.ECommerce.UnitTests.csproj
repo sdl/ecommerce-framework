@@ -194,6 +194,8 @@
     <Compile Include="Dxa\Servants\PageModelServant_Test.cs" />
     <Compile Include="Customizations\Sdl\SdlCustomizations.cs" />
     <Compile Include="Dxa\Servants\PathServant_Test.cs" />
+    <Compile Include="Dxa\Servants\SanitizerConfiguration_Test.cs" />
+    <Compile Include="Dxa\Servants\SanitizerServant_Test.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="MultipleAssertTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
