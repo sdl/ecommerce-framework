@@ -50,7 +50,7 @@
         <java-version>1.8</java-version>
 
         <dxa.version>1.7.0</dxa.version>
-        <dxa-release-branch>1.6</dxa-release-branch>
+        <dxa-release-branch>1.7</dxa-release-branch>
 
         <!-- Servlet and JSP APIs -->
         <servlet-api-version>3.1.0</servlet-api-version>
