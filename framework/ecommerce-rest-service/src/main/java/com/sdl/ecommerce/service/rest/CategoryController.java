@@ -26,16 +26,12 @@ import java.util.List;
 @Slf4j
 public class CategoryController {
 
-    // TODO: Make it possible to plug this into the integration container
-
-    // TODO: Add some kind of versioning here?????
-
     @Autowired
     private ProductCategoryService categoryService;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     public ResponseEntity list() throws ECommerceException {
-        log.info("Get all categories...");
+        log.debug("Get all categories...");
 
         List<Category> topLevelCategories = this.categoryService.getTopLevelCategories();
         return toRest(topLevelCategories);
