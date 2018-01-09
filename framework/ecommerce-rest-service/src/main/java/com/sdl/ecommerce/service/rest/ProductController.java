@@ -4,8 +4,6 @@ import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 import com.sdl.ecommerce.api.model.Product;
-import com.sdl.ecommerce.odata.model.ODataProduct;
-import com.sdl.ecommerce.odata.model.ODataQueryResult;
 import com.sdl.ecommerce.service.model.ErrorMessage;
 import com.sdl.ecommerce.service.model.RestProduct;
 import com.sdl.ecommerce.service.model.RestQueryResult;
@@ -18,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 

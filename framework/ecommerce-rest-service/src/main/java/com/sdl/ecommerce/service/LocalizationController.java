@@ -41,7 +41,7 @@ public class LocalizationController {
 
     @RequestMapping(value = "/ecommerce.svc/rest/v1/{locale}/{entity:category|product|editmenu|cart}/**", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
     public void serviceRest(@PathVariable String locale, @PathVariable String entity, HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws ServletException, IOException {
-        log.debug("Handling locale: " + locale);
+        log.debug("Handling locale: " + locale + " Request: " + servletRequest.getRequestURI());
         LocalizationService.setCurrentLocale(locale);
 
         // TODO: Validate locale so it is defined in the service

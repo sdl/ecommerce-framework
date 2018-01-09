@@ -3,7 +3,6 @@ package com.sdl.ecommerce.service.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sdl.ecommerce.api.model.ContentPromotion;
 import com.sdl.ecommerce.api.model.ImageMapPromotion;
-import com.sdl.ecommerce.api.model.Location;
 import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;

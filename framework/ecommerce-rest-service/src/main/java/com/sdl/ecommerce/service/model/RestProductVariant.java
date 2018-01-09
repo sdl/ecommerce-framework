@@ -8,7 +8,6 @@ import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @GraphQLDescription("E-Commerce Product Variant")

@@ -1,6 +1,5 @@
 package com.sdl.ecommerce.service.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sdl.ecommerce.api.model.Category;
 import graphql.annotations.GraphQLDescription;

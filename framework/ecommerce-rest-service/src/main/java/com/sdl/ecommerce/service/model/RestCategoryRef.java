@@ -2,8 +2,6 @@ package com.sdl.ecommerce.service.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sdl.ecommerce.api.model.CategoryRef;
-import com.sdl.odata.api.edm.annotations.EdmComplex;
-import com.sdl.odata.api.edm.annotations.EdmProperty;
 import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;

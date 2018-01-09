@@ -1,15 +1,11 @@
 package com.sdl.ecommerce.service.model;
 
 import com.sdl.ecommerce.api.model.ContentPromotion;
-import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductsPromotion;
 import com.sdl.ecommerce.api.model.Promotion;
 import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RestPromotion

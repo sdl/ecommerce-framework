@@ -28,7 +28,7 @@
 
     <files>
         <file>
-            <source>${project.build.directory}/ecommerce-framework-rest-service-${project.version}.jar</source>
+            <source>${project.build.directory}/ecommerce-rest-service-${project.version}.jar</source>
             <outputDirectory>lib</outputDirectory>
         </file>
     </files>

@@ -10,7 +10,6 @@ import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
