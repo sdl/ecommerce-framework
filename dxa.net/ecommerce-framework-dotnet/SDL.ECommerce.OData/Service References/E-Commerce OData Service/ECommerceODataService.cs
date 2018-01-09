@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 3/6/2017 8:40:00 AM
+// Generation date: 1/8/2018 3:27:38 PM
 namespace SDL.ECommerce.OData
 {
     /// <summary>
@@ -314,6 +314,7 @@ namespace SDL.ECommerce.OData
       <ComplexType Name=""QuerySuggestion"">
         <Property Name=""original"" Type=""Edm.String"" Nullable=""true""></Property>
         <Property Name=""suggestion"" Type=""Edm.String"" Nullable=""true""></Property>
+        <Property Name=""estimatedResults"" Type=""Edm.Int32"" Nullable=""true""></Property>
       </ComplexType>
       <ComplexType Name=""Location"">
         <Property Name=""categoryRef"" Type=""SDL.ECommerce.CategoryRef"" Nullable=""true""></Property>
@@ -2298,6 +2299,28 @@ namespace SDL.ECommerce.OData
         private string _Suggestion;
         partial void OnSuggestionChanging(string value);
         partial void OnSuggestionChanged();
+        /// <summary>
+        /// There are no comments for Property EstimatedResults in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("estimatedResults")]
+        public global::System.Nullable<int> EstimatedResults
+        {
+            get
+            {
+                return this._EstimatedResults;
+            }
+            set
+            {
+                this.OnEstimatedResultsChanging(value);
+                this._EstimatedResults = value;
+                this.OnEstimatedResultsChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::System.Nullable<int> _EstimatedResults;
+        partial void OnEstimatedResultsChanging(global::System.Nullable<int> value);
+        partial void OnEstimatedResultsChanged();
     }
     /// <summary>
     /// There are no comments for Location in the schema.

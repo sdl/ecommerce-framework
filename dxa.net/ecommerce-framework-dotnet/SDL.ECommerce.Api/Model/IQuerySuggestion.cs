@@ -4,5 +4,6 @@
     {
         string Original { get; }
         string Suggestion { get; }
+        int? EstimatedResults { get; }
     }
 }

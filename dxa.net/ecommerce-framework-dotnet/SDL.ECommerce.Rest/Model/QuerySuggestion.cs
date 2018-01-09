@@ -12,5 +12,7 @@ namespace SDL.ECommerce.Rest.Model
         public string Original { get; set; }
 
         public string Suggestion { get; set; }
+
+        public int? EstimatedResults { get; set; }
     }
 }
