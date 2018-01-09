@@ -38,6 +38,9 @@ public class ProductController {
     @Autowired
     private ProductDetailService productDetailService;
 
+    @Autowired
+    private LocalizationService localizationService;
+
     @RequestMapping("/query")
     public QueryResult query(@RequestParam(required = false) String categoryId,
                              @RequestParam(required = false) String searchPhrase,
@@ -46,6 +49,8 @@ public class ProductController {
                              @RequestParam(required = false) Integer viewSize,
                              @RequestParam(required = false) String viewType) throws ECommerceException {
 
+        // Build E-Commerce query based on input query parameters
+        //
         Query query = this.productQueryService.newQuery();
         if ( categoryId != null ) {
             Category category = this.categoryService.getCategoryById(categoryId);
@@ -72,6 +77,21 @@ public class ProductController {
         if ( viewType != null ) {
             query.viewType(ViewType.valueOf(viewType));
         }
+
+        // Consume system facets which will be handled as hidden facets in the query and will not be shown for the end-user
+        //
+        String systemFacets = this.localizationService.getLocalizedConfigProperty("system-facets");
+        if ( systemFacets != null ) {
+            StringTokenizer tokenizer = new StringTokenizer(systemFacets, "=&");
+            while ( tokenizer.hasMoreTokens() ) {
+                String facetName = tokenizer.nextToken();
+                String facetValues = tokenizer.nextToken();
+                FacetParameter facet = new FacetParameter(facetName + "_hidden", facetValues);
+                query.facet(facet);
+            }
+        }
+
+
         QueryResult queryResult = this.productQueryService.query(query);
         return new RestQueryResult(queryResult);
     }
