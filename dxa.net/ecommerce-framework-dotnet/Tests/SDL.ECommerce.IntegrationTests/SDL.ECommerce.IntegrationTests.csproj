@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\Temp\EComFW\build\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,6 +54,7 @@
   <ItemGroup>
     <Compile Include="OData\IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\IntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDL.ECommerce.Api\SDL.ECommerce.Api.csproj">
@@ -63,9 +65,14 @@
       <Project>{f5434b12-5f20-48df-8b17-a6c2a1345ba9}</Project>
       <Name>SDL.ECommerce.OData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SDL.ECommerce.Rest\SDL.ECommerce.Rest.csproj">
+      <Project>{055151c2-713c-49de-85a3-1e073e88cb94}</Project>
+      <Name>SDL.ECommerce.Rest</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="odata-client-sample.runsettings" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
