@@ -109,13 +109,16 @@ namespace SDL.ECommerce.Ecl
                             }
                         }
 
-                        var result = EclProvider.ProductCatalog.GetProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId, pageIndex);
-                        if (result != null)
+                        if (itemTypes.HasFlag(EclItemTypes.File))
                         {
-                            numberOfPages = result.NumberOfPages;
-                            foreach (var product in result.Products)
+                            var result = EclProvider.ProductCatalog.GetProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId, pageIndex);
+                            if (result != null)
                             {
-                               items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
+                                numberOfPages = result.NumberOfPages;
+                                foreach (var product in result.Products)
+                                {
+                                    items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
+                                }
                             }
                         }
                     }
