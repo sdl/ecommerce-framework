@@ -55,7 +55,7 @@ public class AdminProxyController {
     @Value("${fredhopper.adminserver.url:#{null}}")
     private String fredhopperBaseUrl = "http://localhost:8180";
 
-    @Value("${fredhopper.access.username:#{null}")
+    @Value("${fredhopper.access.username:#{null}}")
     private String accessUsername = null;
     @Value("${fredhopper.access.password:#{null}}")
     private String accessPassword = null;
@@ -64,6 +64,9 @@ public class AdminProxyController {
     private String username;
     @Value("${fredhopper.admin.password:#{null}}")
     private String password;
+
+    @Value("${fredhopper.edit.cacheDir:#{null}}")
+    private String cacheDirectory;
 
     private long sessionTimeout = 1 * 60 * 1000; // TODO: Have configurable
     private long lastAccessTime;
@@ -208,6 +211,9 @@ public class AdminProxyController {
                     response.getWriter().write(htmlBody);
 
                 } else {
+
+                    // TODO: REFACTOR BELOW CODE
+
                     if (contentEncoding != null && contentEncoding.getValue().equals("gzip")) {
                         if (isAjax) {
                             GZIPInputStream zipStream = new GZIPInputStream(method.getResponseBodyAsStream());
@@ -225,7 +231,19 @@ public class AdminProxyController {
 
                         }
                     } else {
-                        IOUtils.copy(method.getResponseBodyAsStream(), response.getOutputStream());
+                        if (isAjax) {
+                            String htmlBody = IOUtils.toString(method.getResponseBodyAsStream());
+                            htmlBody = htmlBody.replaceAll("\\.jsp", ".jspfh");  // TODO: Do we need to do this? Only probably when having the connectors co-located with DXA.Java
+                            htmlBody = htmlBody.replaceAll("src=\"../../preview/", "src=\"/preview/");
+                            response.getWriter().write(htmlBody);
+                        }
+                        else {
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            IOUtils.copy(method.getResponseBodyAsStream(), byteArrayOutputStream);
+                            byte[] responseData = byteArrayOutputStream.toByteArray();
+                            this.storeCachedResources(fredhopperUrl, responseData);
+                            response.getOutputStream().write(responseData);
+                        }
                     }
                 }
                 response.flushBuffer();
@@ -336,7 +354,8 @@ public class AdminProxyController {
         this.addStyleToElementsWithId(htmlDoc, "content", "top: 0px;");
         this.addStyleToElementsWithId(htmlDoc, "verticalsplitpanelRightPanel", "margin-left: 0px;");
 
-        htmlDoc.body().append("<script src='/system/assets/scripts/fredhopper-edit-popup.js'></script>");
+        this.addEditPopupJavascript(htmlDoc);
+        //htmlDoc.body().append("<script src='/system/assets/scripts/fredhopper-edit-popup.js'></script>");
 
         return htmlDoc.html();
     }
@@ -367,6 +386,37 @@ public class AdminProxyController {
                 element.attr("style", style);
             }
         }
+    }
+
+    protected void addEditPopupJavascript(Document htmlDoc) {
+
+        htmlDoc.body().append("<script>$(document).ready(function() {\n" +
+
+                // Remove buttons that does not make sense from the edit popup view
+                //
+                "    $(\".toolbar-button-container[title='Archive']\").remove();\n" +
+                "    $(\".edit .toolbarShowLabelsDropDown\").remove();\n" +
+                "    $(\".toolbar-button-container[title='Assign/remove labels']\").remove();\n" +
+
+                // Add events on the save and cancel buttons to close the popup (to avoid end up in the list view)
+                //
+                "    $(\"#synonymSaveButton\").mouseup(function () {\n" +
+                "        setTimeout(function() {\n" +
+                "            window.parent.$('.mfp-close').click();\n" +
+                "        }, 250);\n" +
+                "    });\n" +
+                "    $(\"#synonymCancelButton\").mouseup(function () {\n" +
+                "        setTimeout(function() {\n" +
+                "            window.parent.$('.mfp-close').click();\n" +
+                "        }, 250);\n" +
+                "    });\n" +
+                "    $(\".toolbar-button-container[title='Delete']\").mouseup(function () {\n" +
+                "        setTimeout(function() {\n" +
+                "            window.parent.$('.mfp-close').click();\n" +
+                "        }, 250);\n" +
+                "    });\n" +
+                "});</script>");
+
     }
 
     /**
@@ -425,14 +475,23 @@ public class AdminProxyController {
      */
     protected File getLocalFilename(String fredhopperUrl) {
 
+        // TODO: Use alternative paths here when running it on Spring Boot??
+
         String filename = fredhopperUrl.replace(fredhopperBaseUrl, "").
                 replace("/fredhopper/admin/wicket/resource", "").
                 replace("/", "_").
                 replace("?", "_").
                 replace("=", "_");
-        return new File(StringUtils.join(new String[]{
-                webApplicationContext.getServletContext().getRealPath("/"), "BinaryData", "fredhopper", "assets", filename
-        }, File.separator));
+        if ( this.cacheDirectory != null ){
+            return new File(StringUtils.join(new String[]{
+                    this.cacheDirectory, "fredhopper", "assets", filename
+            }, File.separator));
+        }
+        else {
+            return new File(StringUtils.join(new String[]{
+                    webApplicationContext.getServletContext().getRealPath("/"), "BinaryData", "fredhopper", "assets", filename
+            }, File.separator));
+        }
     }
 
 }
