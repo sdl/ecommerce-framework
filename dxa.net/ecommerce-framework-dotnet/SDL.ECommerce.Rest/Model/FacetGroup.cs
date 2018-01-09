@@ -12,7 +12,8 @@ namespace SDL.ECommerce.Rest.Model
         public string Id { get; set; }
         public string Title { get; set; }
         public string EditUrl { get; set; }
-        public bool IsCategory { get; set; }
+        public bool Category { get; set; }
+        public bool IsCategory { get { return Category; } }
         public List<Facet> Facets { get; set; }
 
         ICollection<IFacet> IFacetGroup.Facets
