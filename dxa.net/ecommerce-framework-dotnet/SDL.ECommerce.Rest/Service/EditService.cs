@@ -8,31 +8,37 @@ using SDL.ECommerce.Api.Model;
 using RestSharp;
 using Newtonsoft.Json;
 using SDL.ECommerce.Rest.Model;
+using SDL.ECommerce.Api;
 
 namespace SDL.ECommerce.Rest.Service
 {
     class EditService : IEditService
     {
         private RestClient restClient;
+        private IECommerceCacheProvider cacheProvider;
 
-        public EditService(RestClient restClient)
+        public EditService(RestClient restClient, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
+            this.cacheProvider = cacheProvider;
         }
 
         public IEditMenu GetInContextMenuItems(Query query)
         {
             var request = new RestRequest("/editmenu/inContextMenuItems", Method.GET);
+            var cacheKey = "";
 
             // Category
             //
             if (query.Category != null)
             {
                 request.AddParameter("categoryId", query.Category.Id);
+                cacheKey = query.Category.Id;
             }
             else if (query.CategoryId != null)
             {
                 request.AddParameter("categoryId", query.CategoryId);
+                cacheKey = query.CategoryId;
             }
 
             // Search phrase
@@ -40,17 +46,26 @@ namespace SDL.ECommerce.Rest.Service
             if (query.SearchPhrase != null)
             {
                 request.AddParameter("searchPhrase", query.SearchPhrase);
+                cacheKey = ":" + query.SearchPhrase;
             }
 
-            var response = this.restClient.Execute(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            IEditMenu editMenu;
+            if (!cacheProvider.TryGet(CacheRegion.ECommerceInContextMenu, cacheKey, out editMenu))
             {
-               return JsonConvert.DeserializeObject<EditMenu>(response.Content);             
+                var response = this.restClient.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    editMenu = JsonConvert.DeserializeObject<EditMenu>(response.Content);
+                    cacheProvider.Store<IEditMenu>(CacheRegion.ECommerceInContextMenu, cacheKey, editMenu);
+                }
+                else
+                {
+                    // Return NULL which will make the in-context menu not available for editors
+                    //
+                    return null;
+                }              
             }
-
-            // Return NULL which will make the in-context menu not available for editors
-            //
-            return null; 
+            return editMenu;
         }
     }
 }

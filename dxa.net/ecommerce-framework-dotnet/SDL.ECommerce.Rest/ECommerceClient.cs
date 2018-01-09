@@ -14,6 +14,9 @@ namespace SDL.ECommerce.Rest
     {
 
         private RestClient restClient;
+        private IECommerceCacheProvider cacheProvider;
+        private int categoryExpiryTimeout;
+
         private IProductCategoryService categoryService;
         private IProductDetailService productDetailService;
         private IProductQueryService productQueryService;
@@ -22,9 +25,14 @@ namespace SDL.ECommerce.Rest
 
         // TODO: Add dependency injection here!!!!
 
-        public ECommerceClient(string endpointAddress, string locale)
+        public ECommerceClient(string endpointAddress, 
+                               string locale, 
+                               IECommerceCacheProvider cacheProvider,
+                               int categoryExpiryTimeout)
         {
             this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
+            this.cacheProvider = cacheProvider;
+            this.categoryExpiryTimeout = categoryExpiryTimeout;
         }
 
         public ICartService CartService
@@ -45,7 +53,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( categoryService == null )
                 {
-                    categoryService = new ProductCategoryService(this.restClient);
+                    categoryService = new ProductCategoryService(this.restClient, this.categoryExpiryTimeout); 
                 }
                 return categoryService;
             }
@@ -57,7 +65,7 @@ namespace SDL.ECommerce.Rest
             {
                if ( productDetailService == null)
                 {
-                    productDetailService = new ProductDetailService(this.restClient, CategoryService);
+                    productDetailService = new ProductDetailService(this.restClient, CategoryService, this.cacheProvider);
                 }
                 return productDetailService;
             }
@@ -69,7 +77,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( editService == null)
                 {
-                    editService = new EditService(this.restClient);
+                    editService = new EditService(this.restClient, this.cacheProvider);
                 }
                 return editService;
             }
@@ -81,7 +89,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( productQueryService == null )
                 {
-                    productQueryService = new ProductQueryService(this.restClient);
+                    productQueryService = new ProductQueryService(this.restClient, this.cacheProvider);
                 }
                 return productQueryService;
             }

@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using Sdl.Web.Common;
+using Sdl.Web.Common.Configuration;
 
 namespace SDL.ECommerce.DXA
 {
@@ -32,6 +33,9 @@ namespace SDL.ECommerce.DXA
 
         private static IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
         private static IECommerceLinkResolver linkResolver = new DXALinkResolver();
+
+        private const int DEFAULT_CATEGORY_EXPIRY_TIMEOUT = 3600000;
+
 
         /// <summary>
         /// Cline to E-Commerce services
@@ -72,6 +76,8 @@ namespace SDL.ECommerce.DXA
         {
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
             var clientType = WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
+            var categoryExpiryTimeoutStr = WebConfigurationManager.AppSettings["ecommerce-category-expiry-timeout"];
+            int categoryExpiryTimeout = categoryExpiryTimeoutStr != null ? Int32.Parse(categoryExpiryTimeoutStr) : DEFAULT_CATEGORY_EXPIRY_TIMEOUT;
             if (clientType.Equals("odata"))
             {
 
@@ -83,7 +89,8 @@ namespace SDL.ECommerce.DXA
 
                 // TODO: Add support for dependency injection on the REST client as well!!
                 //
-                return new ECommerceClient(endpointAddress, locale);
+
+                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout);
             }
             throw new DxaException("Invalid client type configured for the E-Commerce service: " + clientType);
         }

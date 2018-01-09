@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Service;
 using SDL.ECommerce.Rest.Model;
 using System;
@@ -17,11 +18,13 @@ namespace SDL.ECommerce.Rest.Service
     {
         private RestClient restClient;
         private IProductCategoryService productCategoryService;
+        private IECommerceCacheProvider cacheProvider;
 
-        public ProductDetailService(RestClient restClient, IProductCategoryService productCategoryService)
+        public ProductDetailService(RestClient restClient, IProductCategoryService productCategoryService, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
             this.productCategoryService = productCategoryService;
+            this.cacheProvider = cacheProvider;
         }
 
         public IProduct GetDetail(string productId)
@@ -31,26 +34,48 @@ namespace SDL.ECommerce.Rest.Service
 
         public IProduct GetDetail(string productId, IDictionary<string, string> variantAttributes)
         {
-            var request = new RestRequest("/product/" + productId, Method.GET);
-            if ( variantAttributes != null )
+            Product product;
+            var cacheKey = GetCacheKey(productId, variantAttributes);
+
+            if (!this.cacheProvider.TryGet(CacheRegion.ECommerceProductDetail, cacheKey, out product))
             {
-                foreach ( var variantAttribute in variantAttributes )
+                var request = new RestRequest("/product/" + productId, Method.GET);
+                if (variantAttributes != null)
                 {
-                    request.AddParameter(variantAttribute.Key, variantAttribute.Value);
+                    foreach (var variantAttribute in variantAttributes)
+                    {
+                        request.AddParameter(variantAttribute.Key, variantAttribute.Value);
+                    }
                 }
+                var response = this.restClient.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    product = JsonConvert.DeserializeObject<Product>(response.Content);
+                    product.ProductCategoryService = productCategoryService;
+                    this.cacheProvider.Store<IProduct>(CacheRegion.ECommerceProductDetail, cacheKey, product);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw new Exception("Could not get product details. Error Code: " + response.StatusCode + ", Error Message: " + response.ErrorMessage);
+                }            
             }
-            var response = this.restClient.Execute(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var product = JsonConvert.DeserializeObject<Product>(response.Content);
-                product.ProductCategoryService = productCategoryService;
-                return product;
-            }
-            else if ( response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-            throw new Exception("Could not get product details. Error Code: " + response.StatusCode + ", Error Message: " + response.ErrorMessage); 
+            return product;
         }
-    }
+
+        private string GetCacheKey(string productId, IDictionary<string, string> variantAttributes)
+        {
+            if (variantAttributes != null)
+            {
+                return productId + "#" + string.Join("#", variantAttributes.Select(attr => attr.Key + "=" + attr.Value));
+            }
+            else
+            {
+                return productId;
+            }
+        }
+    }    
 }

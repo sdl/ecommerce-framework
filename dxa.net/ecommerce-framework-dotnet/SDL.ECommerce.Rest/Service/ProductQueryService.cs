@@ -8,6 +8,7 @@ using SDL.ECommerce.Api.Model;
 using RestSharp;
 using SDL.ECommerce.Rest.Model;
 using Newtonsoft.Json;
+using SDL.ECommerce.Api;
 
 namespace SDL.ECommerce.Rest.Service
 {
@@ -18,25 +19,32 @@ namespace SDL.ECommerce.Rest.Service
     {
 
         private RestClient restClient;
+        private IECommerceCacheProvider cacheProvider;
 
-        public ProductQueryService(RestClient restClient)
+        public ProductQueryService(RestClient restClient, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
+            this.cacheProvider = cacheProvider;
         }
 
         public IProductQueryResult Query(Query query)
         {
 
             var request = new RestRequest("/product/query", Method.GET);
+            string cacheKey = "";
+            CacheRegion cacheRegion = CacheRegion.ECommerceProductLister;
+
             // Category
             //
             if (query.Category != null)
             {
                 request.AddParameter("categoryId", query.Category.Id);
+                cacheKey = query.Category.Id;
             }
             else if (query.CategoryId != null)
             {
                 request.AddParameter("categoryId", query.CategoryId);
+                cacheKey = query.CategoryId;
             }
 
             // Search phrase
@@ -44,6 +52,8 @@ namespace SDL.ECommerce.Rest.Service
             if (query.SearchPhrase != null)
             {
                 request.AddParameter("searchPhrase", query.SearchPhrase);
+                cacheKey = ":" + query.SearchPhrase;
+                cacheRegion = CacheRegion.ECommerceSearch;
             }
 
             // Facets
@@ -61,10 +71,12 @@ namespace SDL.ECommerce.Rest.Service
                     }
                 }
                 request.AddParameter("facets", facetsString.ToString());
+                cacheKey += "#" + facetsString.ToString();
             }
             if (query.StartIndex != null)
             {
                 request.AddParameter("startIndex", query.StartIndex);
+                cacheKey += "#" + query.StartIndex;
             }
             if (query.ViewSize != null)
             {
@@ -73,15 +85,26 @@ namespace SDL.ECommerce.Rest.Service
             if (query.ViewType != null)
             {
                 request.AddParameter("viewType", query.ViewType.ToString());
+                // TODO: Should we have a specific cache for the top navigation????
             }
 
-            // TODO: Add Async I/O here !!!!
-            var response = this.restClient.Execute(request);
-            if ( response.StatusCode == System.Net.HttpStatusCode.OK )
+            IProductQueryResult queryResult;
+            if (!cacheProvider.TryGet(cacheRegion, cacheKey, out queryResult))
             {
-                return JsonConvert.DeserializeObject<ProductQueryResult>(response.Content);
+                // TODO: Add Async I/O here !!!!
+                var response = this.restClient.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    queryResult = JsonConvert.DeserializeObject<ProductQueryResult>(response.Content);
+                    cacheProvider.Store<IProductQueryResult>(cacheRegion, cacheKey, queryResult);
+                }
+                else
+                {
+                    throw new Exception("Failure when doing product query. Error Code: " + response.StatusCode + ", Error Message: " + response.ErrorMessage);
+                }
             }
-            throw new Exception("Failure when doing product query. Error Code: " + response.StatusCode + ", Error Message: " + response.ErrorMessage);
+            return queryResult;
         }
+
     }
 }

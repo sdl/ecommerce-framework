@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IECommerceCacheProvider.cs" />
     <Compile Include="IECommerceLinkResolver.cs" />
     <Compile Include="Model\FacetParameter.cs" />
     <Compile Include="Model\IBreadcrumb.cs" />

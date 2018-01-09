@@ -189,6 +189,7 @@
     <Compile Include="Controllers\EditProxyController.cs" />
     <Compile Include="Controllers\ProductPageController.cs" />
     <Compile Include="Controllers\SearchPageController.cs" />
+    <Compile Include="DXACacheProvider.cs" />
     <Compile Include="DXALinkResolver.cs" />
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceControllerRegistration.cs" />

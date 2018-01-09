@@ -5,6 +5,7 @@ using System.Linq;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using SDL.ECommerce.Rest.Model;
+using SDL.ECommerce.Api;
 
 namespace SDL.ECommerce.Rest.Service
 {
@@ -14,13 +15,14 @@ namespace SDL.ECommerce.Rest.Service
     class ProductCategoryService : IProductCategoryService
     {
         private RestClient restClient;
-        private int categoryExpiryTimeout = 3600000; // TODO: Have this configurable
+        private int categoryExpiryTimeout = 3600000; 
         private ICategory rootCategory = new Category();
 
-        public ProductCategoryService(RestClient restClient)
+        public ProductCategoryService(RestClient restClient, int categoryExpiryTimeout) 
         {
             this.restClient = restClient;
             this.GetTopLevelCategories();
+            this.categoryExpiryTimeout = categoryExpiryTimeout;
         }
 
         /// <summary>
@@ -179,7 +181,7 @@ namespace SDL.ECommerce.Rest.Service
         {
             var request = new RestRequest("/category/" + (categoryId != null ? categoryId : ""), Method.GET);
             var response = this.restClient.Execute<List<Category>>(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return response.Data.Cast<ICategory>().ToList();
             }
