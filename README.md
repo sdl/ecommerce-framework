@@ -1,4 +1,4 @@
-SDL Web E-Commerce Framework v1.2 Beta
+SDL Web E-Commerce Framework v1.2 RC1
 =========================================
 
 This is a framework to enable E-Commerce functionality for SDL Web.
@@ -15,6 +15,10 @@ The framework has been verified both on SDL Web 8 (8.1.1) and SDL Web 8.5 using 
 New functionality in the v1.2 version:
 * Improved support for product variants
 * Pluggable variant builders for the Fredhopper connector
+* REST based service (as alternative to the OData service)
+* Experimental support for Graph-QL
+* Support for DXA caching of E-Commerce data using MemCache, REDIS etc
+* Demandware ECL connector now supports search
 
 
 Concepts
@@ -195,7 +199,7 @@ Please submit your pull requests on develop. In the near future we intend to pus
 
 License
 ---------
-Copyright (c) 2017 SDL Group.
+Copyright (c) 2018 SDL Group.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
