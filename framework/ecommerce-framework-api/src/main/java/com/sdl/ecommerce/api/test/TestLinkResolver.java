@@ -18,6 +18,11 @@ public class TestLinkResolver implements ECommerceLinkResolver {
     }
 
     @Override
+    public String getNonContextualCategoryLink(Category category) {
+        return CategoryRef.getCategoryAbsolutePath(category);
+    }
+
+    @Override
     public String getFacetLink(Facet facet) {
         if ( facet.isCategory() ) {
             return "/" + facet.getTitle().toLowerCase().replace(" ", "_");

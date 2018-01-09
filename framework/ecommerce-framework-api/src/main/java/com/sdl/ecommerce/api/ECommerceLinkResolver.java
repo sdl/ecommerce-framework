@@ -20,6 +20,14 @@ public interface ECommerceLinkResolver {
     String getCategoryLink(Category category);
 
     /**
+     * Get a non-contextual category link which is not dependent if a category is within a search or lister context.
+     * Can be used for render category links in top navigations etc.
+     * @param category
+     * @return
+     */
+    String getNonContextualCategoryLink(Category category);
+
+    /**
      * Get facet link.
      * @param facet
      * @return link
