@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author nic
  */
 @Configuration
-public class MvcConfigurer extends WebMvcConfigurerAdapter {
+public class ECommerceMvcConfigurer extends WebMvcConfigurerAdapter {
 
     @Autowired
     private LocalizationRedirectInterceptor localizationRedirectInterceptor;
