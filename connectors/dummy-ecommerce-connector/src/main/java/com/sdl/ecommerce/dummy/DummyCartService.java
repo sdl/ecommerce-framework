@@ -40,6 +40,7 @@ public class DummyCartService implements CartService {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
         if ( cart == null ) {
             cart = (DummyCart) this.createCart();
+            cartStore.put(cart.getId(), cart);
         }
         if ( cart != null ) {
             cart.addProduct(productId, quantity);
@@ -51,6 +52,10 @@ public class DummyCartService implements CartService {
     @Override
     public Cart removeProductFromCart(String cartId, String sessionId, String productId) throws ECommerceException {
         DummyCart cart = this.cartStore.getIfPresent(cartId);
+        if ( cart == null ) {
+            cart = (DummyCart) this.createCart();
+            cartStore.put(cart.getId(), cart);
+        }
         if ( cart != null ) {
             cart.removeProduct(productId);
             return cart;
