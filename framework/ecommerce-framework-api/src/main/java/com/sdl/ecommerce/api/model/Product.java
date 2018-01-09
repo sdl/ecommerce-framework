@@ -17,7 +17,7 @@ public interface Product {
     String getId();
 
     /**
-     * Get master product ID. If this product is an variant, this ID could point to the master product.
+     * Get master product ID. If this product is a variant, this ID could point to the master product.
      * @return master ID
      */
     String getMasterId();
