@@ -14,6 +14,7 @@ namespace SDL.ECommerce.Api
         ECommerceProductDetail,
         ECommerceProductLister,
         ECommerceSearch,
+        ECommerceFlyout,
         ECommerceInContextMenu
     }
 

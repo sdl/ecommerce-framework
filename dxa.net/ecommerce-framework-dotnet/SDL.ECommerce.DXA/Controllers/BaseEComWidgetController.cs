@@ -10,14 +10,19 @@ using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
 using Sdl.Web.Mvc.Configuration;
 using System.Runtime.Caching;
+using System.Web.Configuration;
 
-﻿namespace SDL.ECommerce.DXA.Controllers
+namespace SDL.ECommerce.DXA.Controllers
 {
     /// <summary>
     /// Base Controller for E-Commerce widgets such as listers, facets, breadcrumbs etc
     /// </summary>
     public abstract class BaseEComWidgetController : BaseController
     {
+
+        // Temporary solution until OData has full support for DXA caching
+        //
+        private string _clientType =  WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
 
         /// <summary>
         /// Product Detail
@@ -154,12 +159,14 @@ using System.Runtime.Caching;
             SetupViewData(entity, containerSize);
             FacetsWidget widget = (FacetsWidget)entity;
 
+            bool useDxaCaching = _clientType.Equals("rest");
+
             if ( widget.CategoryReference != null )
             {
                 widget.CategoryReference.Category = ResolveCategory(widget.CategoryReference);
                 if (widget.CategoryReference.Category != null)
                 {
-                    var cachedData = this.GetCachedFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId);
+                    var cachedData = useDxaCaching ? null : this.GetCachedFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId);
                     if (cachedData == null)
                     {
                         var queryResult = ECommerceContext.Client.QueryService.Query(
@@ -169,15 +176,28 @@ using System.Runtime.Caching;
                                 ViewType = Api.Model.ViewType.FLYOUT
                             });
 
-                        cachedData = new FlyoutData
+                        // Tempory workaround
+                        if (!useDxaCaching)
                         {
-                            FacetGroups = queryResult.FacetGroups.ToList(),
-                            Promotions = queryResult.Promotions.ToList()
-                        };
-                        this.CacheFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId, cachedData);
+                            cachedData = new FlyoutData
+                            {
+                                FacetGroups = queryResult.FacetGroups.ToList(),
+                                Promotions = queryResult.Promotions.ToList()
+                            };
+                            this.CacheFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId, cachedData);
+                        }
+                        else
+                        {
+                            widget.FacetGroups = queryResult.FacetGroups.ToList();
+                            widget.RelatedPromotions = queryResult.Promotions.ToList();
+                        }
                     }
-                    widget.FacetGroups = cachedData.FacetGroups;
-                    widget.RelatedPromotions = cachedData.Promotions;
+                    // Temporary workaround
+                    if (!useDxaCaching)
+                    {
+                        widget.FacetGroups = cachedData.FacetGroups;
+                        widget.RelatedPromotions = cachedData.Promotions;
+                    }
                 }
             }
             

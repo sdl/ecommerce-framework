@@ -85,7 +85,11 @@ namespace SDL.ECommerce.Rest.Service
             if (query.ViewType != null)
             {
                 request.AddParameter("viewType", query.ViewType.ToString());
-                // TODO: Should we have a specific cache for the top navigation????
+                if ( query.ViewType == ViewType.FLYOUT )
+                {
+                    cacheRegion = CacheRegion.ECommerceFlyout;
+                }
+               
             }
 
             IProductQueryResult queryResult;
