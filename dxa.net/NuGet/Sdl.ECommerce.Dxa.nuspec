@@ -14,6 +14,7 @@
 	  <dependency id="Sdl.Dxa.Framework.Web8" version="1.7.0" />
 	  <dependency id="Sdl.Web.Delivery" version="8.5.0" />
 	  <dependency id="Microsoft.AspNet.Mvc" version="5.1.2" />
+	  <dependency id="RestSharp" version="105.2.3" />
     </dependencies>
   </metadata>
   <files>
