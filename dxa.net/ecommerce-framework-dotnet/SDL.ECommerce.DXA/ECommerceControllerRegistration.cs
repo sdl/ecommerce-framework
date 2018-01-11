@@ -58,6 +58,13 @@ namespace SDL.ECommerce.DXA
             MapRoute(routes, "ECommerce_RemoveFromCart_Loc", "{localization}/ajax/cart/removeProduct/{productId}",
                 new { controller = "Cart", action = "RemoveProductFromCart" });
 
+            // Resolve routes
+            //
+            MapRoute(routes, "ECommerce_Resolve", "ecom-resolve",
+               new { controller = "Resolve", action = "Resolve" });
+
+            MapRoute(routes, "ECommerce_Resolve_Loc", "{localization}/ecom-resolve",
+               new { controller = "Resolve", action = "Resolve" });
 
 
             // Edit Proxy route (only available for staging sites)

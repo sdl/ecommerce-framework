@@ -155,6 +155,7 @@
     <Content Include="Areas\ECommerce\Views\EComWidget\SearchFeedback.cshtml" />
     <Content Include="Areas\ECommerce\Views\Entity\SearchBox.cshtml" />
     <Content Include="Areas\ECommerce\Views\web.config" />
+    <Content Include="Areas\ECommerce\Views\Entity\LanguageSelector.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

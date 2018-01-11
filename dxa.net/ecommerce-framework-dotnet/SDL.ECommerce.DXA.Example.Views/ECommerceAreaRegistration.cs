@@ -1,4 +1,5 @@
-﻿using Sdl.Web.Mvc.Configuration;
+﻿using Sdl.Web.Common.Models;
+using Sdl.Web.Mvc.Configuration;
 using SDL.ECommerce.DXA.Models;
 using System.Web.Mvc;
 
@@ -39,6 +40,7 @@ namespace SDL.ECommerce.DXA.Example.Views
             RegisterViewModel("FacetsMegaNavigation", typeof(FacetsWidget), "EComWidget");
             RegisterViewModel("CartMinimized", typeof(CartWidget), "EComWidget");
             RegisterViewModel("CartDetail", typeof(CartWidget), "EComWidget");
+            RegisterViewModel("LanguageSelector", typeof(Configuration));
         }
     }
 }

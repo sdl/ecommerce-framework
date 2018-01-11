@@ -38,7 +38,7 @@ namespace SDL.ECommerce.DXA
 
 
         /// <summary>
-        /// Cline to E-Commerce services
+        /// Client to E-Commerce services
         /// </summary>
         public static IECommerceClient Client
         {
@@ -54,6 +54,23 @@ namespace SDL.ECommerce.DXA
                 return client;
             }
             
+        }
+
+        /// <summary>
+        /// GEt client to E-Commerce services via locale
+        /// </summary>
+        public static IECommerceClient GetClient(Localization localization)
+        {
+            string locale = localization.Culture;
+            IECommerceClient client = null;
+            if (!clients.TryGetValue(locale, out client))
+            {
+                client = Create(locale);
+                clients.Add(locale, client);
+            }
+            return client;
+
+
         }
 
         /// <summary>

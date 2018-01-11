@@ -188,6 +188,7 @@
     <Compile Include="Controllers\BaseEComWidgetController.cs" />
     <Compile Include="Controllers\EditProxyController.cs" />
     <Compile Include="Controllers\ProductPageController.cs" />
+    <Compile Include="Controllers\ResolveController.cs" />
     <Compile Include="Controllers\SearchPageController.cs" />
     <Compile Include="DXACacheProvider.cs" />
     <Compile Include="DXALinkResolver.cs" />
