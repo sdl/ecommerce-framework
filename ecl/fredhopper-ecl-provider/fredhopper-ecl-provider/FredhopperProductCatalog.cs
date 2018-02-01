@@ -23,16 +23,27 @@ namespace SDL.Fredhopper.Ecl
         private int maxItems;
         private int categoryMaxDepth;
 
+        static int DEFAULT_MAX_RECEIVED_MESSAGE_SIZE = 1000000;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
         public FredhopperProductCatalog(XElement configuration)
-        {          
+        {
             var binding = new BasicHttpBinding();
-            binding.MaxReceivedMessageSize = 1000000; // Needs be configurable?
+            var maxReceivedMessageSize = configuration.Element(EclProvider.EcommerceEclNs + "MaxReceivedMessageSize");
+            if ( maxReceivedMessageSize != null )
+            {
+                binding.MaxReceivedMessageSize = Int32.Parse(maxReceivedMessageSize.Value);
+            }
+            else
+            {
+                binding.MaxReceivedMessageSize = DEFAULT_MAX_RECEIVED_MESSAGE_SIZE;
+            }
+             
             this.maxItems = Int32.Parse(configuration.Element(EclProvider.EcommerceEclNs + "MaxItems").Value);
-            this.categoryMaxDepth = Int32.Parse(configuration.Element(EclProvider.EcommerceEclNs + "CategoryMaxDepth").Value); 
+            this.categoryMaxDepth = Int32.Parse(configuration.Element(EclProvider.EcommerceEclNs + "CategoryMaxDepth").Value);
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
             if ( usernameElement != null )
@@ -46,7 +57,7 @@ namespace SDL.Fredhopper.Ecl
             {
                 this.fhClient.ClientCredentials.UserName.UserName = usernameElement.Value;
                 this.fhClient.ClientCredentials.UserName.Password = passwordElement.Value;
-            }           
+            }
 
             // TODO: How to handle creation of new publications through SiteWizard? This will require some reconfig for each publication...
             // Use a fallback for those cases or???
@@ -131,7 +142,7 @@ namespace SDL.Fredhopper.Ecl
         }
 
         public QueryResult GetProducts(string categoryId, int publicationId, int pageIndex)
-        {        
+        {
             // TODO: What products to show? Should we only show leaf products?
             // TODO: Have different configurable strategies here??
 
@@ -145,7 +156,7 @@ namespace SDL.Fredhopper.Ecl
             Location location = categoryId != null ? GetLocation(publicationId, categoryId) : GetLocation(publicationId);
             location.addCriterion(new SearchCriterion(searchTerm));
             Query query = new Query(location);
-            query.setListStartIndex(pageIndex);
+            query.setListStartIndex(pageIndex); // TODO: This is probably a bug: this is not page index we are using towards Fredhopper!!!
             return QueryProducts(query, publicationId);
         }
 
@@ -178,11 +189,11 @@ namespace SDL.Fredhopper.Ecl
             }
             else
             {
-                location = GetLocation(publicationId); 
+                location = GetLocation(publicationId);
             }
             Query query = new Query(location);
             page fhPage = this.fhClient.getAll(query.toString());
-           
+
             universe universe = this.GetUniverse(fhPage);
 
             var facetmap = universe.facetmap[0];
@@ -200,7 +211,7 @@ namespace SDL.Fredhopper.Ecl
                             {
                                 parentCategory.Categories.Add(category);
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -336,7 +347,7 @@ namespace SDL.Fredhopper.Ecl
         // TODO: Make a generic abstraction for this
         public string Universe { get; set; }
         public string Locale { get; set; }
-        public IDictionary<string,string> ModelMappings { get; set; } 
+        public IDictionary<string,string> ModelMappings { get; set; }
         public bool Fallback { get; set;  }
         public IDictionary<string, string> Filters { get; set; }
     }

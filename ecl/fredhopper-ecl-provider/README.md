@@ -17,6 +17,7 @@
       <EndpointAddress xmlns="http://sdl.com/ecl/ecommerce">
       [Fredhopper endpoint address, e.g. http://localhost:8180/fredhopper-ws/services/FASWebService]
       </EndpointAddress>
+      <MaxReceivedMessageSize>[optional paramter to define max receive message size on the endpoint, e.g. 1000000]</MaxReceivedMessageSize>
       <MaxItems xmlns="http://sdl.com/ecl/ecommerce">
         [Max items to be presented when navigating products & doing searches, e.g. 100]
       </MaxItems>
