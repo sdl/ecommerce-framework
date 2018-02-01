@@ -14,12 +14,14 @@
 	  <dependency id="Sdl.Dxa.Framework.Web8" version="1.7.0" />
 	  <dependency id="Sdl.Web.Delivery" version="8.5.0" />
 	  <dependency id="Microsoft.AspNet.Mvc" version="5.1.2" />
+	  <dependency id="RestSharp" version="105.2.3" />
     </dependencies>
   </metadata>
   <files>
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Dxa.dll" target="lib\net452" />
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Api.dll" target="lib\net452" />
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.OData.dll" target="lib\net452" />
+	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Rest.dll" target="lib\net452" />
 	<file src="..\NuGet\*.xdt" target="Content" />
   </files>
 </package>

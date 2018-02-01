@@ -78,7 +78,10 @@ namespace SDL.ECommerce.Rest.Model
                             var array = (JArray)attribute.Value;
                             _attributes[attribute.Key] = array.Select(i => i.ToString()).ToList();
                         }
-
+                        else
+                        {
+                            _attributes[attribute.Key] = attribute.Value;
+                        }
                     }
                 }
                 return _attributes;
