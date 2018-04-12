@@ -1,9 +1,5 @@
 ﻿using SDL.ECommerce.Api;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SDL.ECommerce.Api.Service;
 using RestSharp;
 using SDL.ECommerce.Rest.Service;
@@ -12,10 +8,10 @@ namespace SDL.ECommerce.Rest
 {
     public class ECommerceClient : IECommerceClient
     {
-
-        private RestClient restClient;
-        private IECommerceCacheProvider cacheProvider;
-        private int categoryExpiryTimeout;
+        private readonly Func<Type, object> dependencies;
+        private readonly RestClient restClient;
+        private readonly IECommerceCacheProvider cacheProvider;
+        private readonly int categoryExpiryTimeout;
 
         private IProductCategoryService categoryService;
         private IProductDetailService productDetailService;
@@ -23,16 +19,16 @@ namespace SDL.ECommerce.Rest
         private ICartService cartService;
         private IEditService editService;
 
-        // TODO: Add dependency injection here!!!!
-
         public ECommerceClient(string endpointAddress, 
                                string locale, 
                                IECommerceCacheProvider cacheProvider,
-                               int categoryExpiryTimeout)
+                               int categoryExpiryTimeout,
+                               Func<Type, object> dependencies = null)
         {
             this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
+            this.dependencies = dependencies;
         }
 
         public ICartService CartService
@@ -41,7 +37,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( cartService == null)
                 {
-                    cartService = new CartService(this.restClient);
+                    cartService = Resolve<ICartService>() ?? new CartService(this.restClient);
                 }
                 return cartService;
             }
@@ -53,7 +49,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( categoryService == null )
                 {
-                    categoryService = new ProductCategoryService(this.restClient, this.categoryExpiryTimeout); 
+                    categoryService = Resolve<IProductCategoryService>() ?? new ProductCategoryService(this.restClient, this.categoryExpiryTimeout); 
                 }
                 return categoryService;
             }
@@ -65,7 +61,7 @@ namespace SDL.ECommerce.Rest
             {
                if ( productDetailService == null)
                 {
-                    productDetailService = new ProductDetailService(this.restClient, CategoryService, this.cacheProvider);
+                    productDetailService = Resolve<IProductDetailService>() ?? new ProductDetailService(this.restClient, CategoryService, this.cacheProvider);
                 }
                 return productDetailService;
             }
@@ -77,7 +73,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( editService == null)
                 {
-                    editService = new EditService(this.restClient, this.cacheProvider);
+                    editService = Resolve<IEditService>() ?? new EditService(this.restClient, this.cacheProvider);
                 }
                 return editService;
             }
@@ -89,10 +85,22 @@ namespace SDL.ECommerce.Rest
             {
                 if ( productQueryService == null )
                 {
-                    productQueryService = new ProductQueryService(this.restClient, this.cacheProvider);
+                    productQueryService = Resolve<IProductQueryService>() ?? new ProductQueryService(this.restClient, this.cacheProvider);
                 }
                 return productQueryService;
             }
+        }
+
+        private T Resolve<T>()
+        {
+            var dependency = dependencies?.Invoke(typeof(T));
+
+            if (dependency == null)
+            {
+                return default(T);
+            }
+
+            return (T)dependency;
         }
     }
 }
