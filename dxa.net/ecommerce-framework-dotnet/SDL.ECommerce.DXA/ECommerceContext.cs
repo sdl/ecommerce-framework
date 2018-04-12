@@ -2,7 +2,6 @@
 
 using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
-//using SDL.ECommerce.OData;
 using SDL.ECommerce.Rest;
 
 using System;
@@ -31,8 +30,7 @@ namespace SDL.ECommerce.DXA
         public const string ROOT_TITLE = "RootTitle";
         public const string SEARCH_PHRASE = "SearchPhrase";
 
-        private static IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
-        private static IECommerceLinkResolver linkResolver = new DXALinkResolver();
+        private static readonly IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
 
         private const int DEFAULT_CATEGORY_EXPIRY_TIMEOUT = 3600000;
 
@@ -76,13 +74,7 @@ namespace SDL.ECommerce.DXA
         /// <summary>
         /// Link resolver for E-Commerce items
         /// </summary>
-        public static IECommerceLinkResolver LinkResolver
-        {
-            get
-            {
-                return linkResolver;
-            }
-        }
+        public static IECommerceLinkResolver LinkResolver { get; } = new DXALinkResolver();
 
         /// <summary>
         /// Create E-Commerce client for specified locale
@@ -94,21 +86,19 @@ namespace SDL.ECommerce.DXA
             var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
             var clientType = WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
             var categoryExpiryTimeoutStr = WebConfigurationManager.AppSettings["ecommerce-category-expiry-timeout"];
-            int categoryExpiryTimeout = categoryExpiryTimeoutStr != null ? Int32.Parse(categoryExpiryTimeoutStr) : DEFAULT_CATEGORY_EXPIRY_TIMEOUT;
+            int categoryExpiryTimeout = categoryExpiryTimeoutStr != null ? int.Parse(categoryExpiryTimeoutStr) : DEFAULT_CATEGORY_EXPIRY_TIMEOUT;
+
             if (clientType.Equals("odata"))
             {
-
                 // TODO: Get token service data here as well
-                return new SDL.ECommerce.OData.ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
+                return new OData.ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
             }
-            else if (clientType.Equals("rest"))
+
+            if (clientType.Equals("rest"))
             {
-
-                // TODO: Add support for dependency injection on the REST client as well!!
-                //
-
-                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout);
+                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout, DependencyResolver.Current.GetService);
             }
+
             throw new DxaException("Invalid client type configured for the E-Commerce service: " + clientType);
         }
 
