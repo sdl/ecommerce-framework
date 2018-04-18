@@ -18,7 +18,7 @@ namespace SDL.ECommerce.DXA
             _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
         }
 
-        public string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
+        public virtual string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
         {
             string link;
             if ( facet.IsCategory )
@@ -41,7 +41,7 @@ namespace SDL.ECommerce.DXA
             return link;
         }
 
-        public string GetBreadcrumbLink(IBreadcrumb breadcrumb)
+        public virtual string GetBreadcrumbLink(IBreadcrumb breadcrumb)
         {
             if (breadcrumb.IsCategory)
             {
@@ -55,13 +55,13 @@ namespace SDL.ECommerce.DXA
             }
         }
 
-        public string GetNonContextualCategoryLink(ICategory category)
+        public virtual string GetNonContextualCategoryLink(ICategory category)
         {
             var urlPrefix = ECommerceContext.LocalizePath("/c"); // Always use the category lister path  
             return urlPrefix + GetCategoryAbsolutePath(category);
         }
 
-        public string GetCategoryLink(ICategory category)
+        public virtual string GetCategoryLink(ICategory category)
         {
             string urlPrefix = (string) ECommerceContext.Get(ECommerceContext.URL_PREFIX);
             if ( urlPrefix == null || urlPrefix.Length == 0 )
@@ -71,7 +71,7 @@ namespace SDL.ECommerce.DXA
             return urlPrefix + GetCategoryAbsolutePath(category);
         }
 
-        public string GetFacetLink(IFacet facet)
+        public virtual string GetFacetLink(IFacet facet)
         {
             string link;
             IList<FacetParameter> selectedFacets = (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS);
@@ -95,7 +95,7 @@ namespace SDL.ECommerce.DXA
             return link;
         }
 
-        public string GetFacetLink(IList<FacetParameter> selectedFacets)
+        public virtual string GetFacetLink(IList<FacetParameter> selectedFacets)
         {
             if (selectedFacets == null || selectedFacets.Count == 0) { return ""; }
             StringBuilder sb = new StringBuilder();
@@ -120,7 +120,7 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        public string GetLocationLink(ILocation location)
+        public virtual string GetLocationLink(ILocation location)
         {
             if (location == null) { return ""; }
             if (location.StaticUrl != null)
@@ -153,7 +153,7 @@ namespace SDL.ECommerce.DXA
             return link.ToString();
         }
 
-        public string GetProductVariantDetailLink(IProduct product)
+        public virtual string GetProductVariantDetailLink(IProduct product)
         {
             string productId;
             if ( product.VariantId != null )
@@ -167,12 +167,12 @@ namespace SDL.ECommerce.DXA
             return GetProductDetailLink(productId, product.Name);
         }
 
-        public string GetProductDetailLink(IProduct product)
+        public virtual string GetProductDetailLink(IProduct product)
         {
             return GetProductDetailLink(product.Id, product.Name);
         }
 
-        protected string GetProductDetailLink(string productId, string productName)
+        protected virtual string GetProductDetailLink(string productId, string productName)
         {
             // Handle some special characters on product IDs
             //
@@ -190,12 +190,12 @@ namespace SDL.ECommerce.DXA
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
 
-        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
+        public virtual string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
         {
             return GetProductDetailVariantLink(product, variantAttributeId, variantAttributeValueId);
         }
 
-        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
+        public virtual string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
         {
 
             String productId = product.Id;
@@ -296,7 +296,7 @@ namespace SDL.ECommerce.DXA
         }
 
 
-        protected string GetCategoryAbsolutePath(ICategory category)
+        protected virtual string GetCategoryAbsolutePath(ICategory category)
         {
             String path = "";
             ICategory currentCategory = category;
@@ -308,7 +308,7 @@ namespace SDL.ECommerce.DXA
             return path;
         }
 
-        protected string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
+        protected virtual string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
         {
 
             StringBuilder sb = new StringBuilder();
@@ -358,7 +358,7 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        protected string GetRemoveFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
+        protected virtual string GetRemoveFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("?");
@@ -400,7 +400,7 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        protected static string GetFacetUrl(IFacet facet)
+        protected virtual string GetFacetUrl(IFacet facet)
         {
 
             // TODO: This is already done by the FacetParameter class...

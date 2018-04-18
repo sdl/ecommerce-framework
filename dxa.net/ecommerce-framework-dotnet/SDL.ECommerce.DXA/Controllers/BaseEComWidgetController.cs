@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using SDL.ECommerce.DXA.Factories;
 using SDL.ECommerce.DXA.Models;
 using SDL.ECommerce.Api;
 using SDL.ECommerce.Api.Model;
@@ -19,11 +20,17 @@ namespace SDL.ECommerce.DXA.Controllers
     /// </summary>
     public abstract class BaseEComWidgetController : BaseController
     {
-
         // Temporary solution until OData has full support for DXA caching
         //
         private string _clientType =  WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
 
+        protected BaseEComWidgetController()
+        {
+            LinkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+        }
+
+        protected IECommerceLinkResolver LinkResolver { get; }
+        
         /// <summary>
         /// Product Detail
         /// </summary>
@@ -437,7 +444,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 {
                     nextStartIndex = startIndex + viewSize;
                 }
-                string baseUrl = ECommerceContext.LinkResolver.GetFacetLink(facets);
+                string baseUrl = LinkResolver.GetFacetLink(facets);
                 if ( String.IsNullOrEmpty(baseUrl) )
                 {
                     baseUrl += "?";
