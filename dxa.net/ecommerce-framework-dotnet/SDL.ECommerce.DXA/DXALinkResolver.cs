@@ -1,17 +1,15 @@
 ﻿using SDL.ECommerce.Api;
 using System;
 using System.Collections.Generic;
-
 using SDL.ECommerce.Api.Model;
 using System.Text;
+using SDL.ECommerce.DXA.Servants;
 
 namespace SDL.ECommerce.DXA
 {
-    using Servants;
-
     public class DXALinkResolver : IECommerceLinkResolver
     {
-        private ISanitizerServant _sanitizerServant;
+        private readonly ISanitizerServant _sanitizerServant;
 
         public DXALinkResolver()
         {
@@ -172,7 +170,7 @@ namespace SDL.ECommerce.DXA
             return GetProductDetailLink(product.Id, product.Name);
         }
 
-        protected virtual string GetProductDetailLink(string productId, string productName)
+        protected string GetProductDetailLink(string productId, string productName)
         {
             // Handle some special characters on product IDs
             //
@@ -182,12 +180,18 @@ namespace SDL.ECommerce.DXA
             {
                 // Generate a SEO friendly URL
                 //
-                String seoName = productName.ToLower().
-                                             Replace("'", "").
-                                             Replace("--", "");
-                return ECommerceContext.LocalizePath("/p/") + _sanitizerServant.SanitizedUrlString(seoName) + "/" + productId;
+                return ECommerceContext.LocalizePath("/p/") + SanitizeUrlSegment(productName) + "/" + productId;
             }
             return ECommerceContext.LocalizePath("/p/") + productId;
+        }
+
+        protected string SanitizeUrlSegment(string segment)
+        {
+            var seoSegment = segment.ToLower().
+                Replace("'", "").
+                Replace("--", "");
+
+            return _sanitizerServant.SanitizedUrlString(seoSegment);
         }
 
         public virtual string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
@@ -289,9 +293,8 @@ namespace SDL.ECommerce.DXA
 
             return this.GetProductDetailLink(productId, product.Name);
         }
-
-
-        protected virtual string GetCategoryAbsolutePath(ICategory category)
+        
+        protected string GetCategoryAbsolutePath(ICategory category)
         {
             String path = "";
             ICategory currentCategory = category;
@@ -303,9 +306,8 @@ namespace SDL.ECommerce.DXA
             return path;
         }
 
-        protected virtual string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
+        protected string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
         {
-
             StringBuilder sb = new StringBuilder();
             bool firstParam = true;
             bool foundFacet = false;
@@ -353,7 +355,7 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        protected virtual string GetRemoveFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
+        protected string GetRemoveFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("?");
@@ -395,9 +397,8 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        protected virtual string GetFacetUrl(IFacet facet)
+        protected string GetFacetUrl(IFacet facet)
         {
-
             // TODO: This is already done by the FacetParameter class...
 
             String name = facet.Id;
@@ -435,4 +436,3 @@ namespace SDL.ECommerce.DXA
         }
     }
 }
- 
