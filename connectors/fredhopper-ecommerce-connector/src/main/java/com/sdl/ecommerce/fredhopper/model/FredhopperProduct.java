@@ -8,7 +8,6 @@ import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +19,7 @@ import java.util.Map;
 public class FredhopperProduct implements Product {
 
     private Item item;
-    private Map<String,Object> attributes = new HashMap<>();
-    // TODO: Replace this with a single list of attribute values.
-    // Or use the similar structure as the ProductVariantAttribute
-    //
+    private List<ProductAttribute> attributes = new ArrayList<>();
     private Map<String,Attribute> fhAttributes = new HashedMap();
     private List<Category> categories;
     private FredhopperLinkManager linkManager;
@@ -32,7 +28,7 @@ public class FredhopperProduct implements Product {
 
     private List<ProductVariant> variants;
 
-    private List<ProductVariantAttribute> variantAttributes;
+    private List<ProductAttribute> variantAttributes;
     private List<ProductVariantAttributeType> variantAttributeTypes;
 
     /**
@@ -60,17 +56,17 @@ public class FredhopperProduct implements Product {
 
     @Override
     public String getMasterId() {
-        return this.getModelAttribute("masterId", true);
+        return this.getModelAttribute("masterId");
     }
 
     @Override
     public String getVariantId() {
-        return this.getModelAttribute("variantId", true);
+        return this.getModelAttribute("variantId");
     }
 
     @Override
     public String getName() {
-        return this.getModelAttribute("name");
+        return this.getModelAttribute("name", true);
     }
 
     @Override
@@ -123,10 +119,20 @@ public class FredhopperProduct implements Product {
     }
 
     @Override
-    public Map<String,Object> getAttributes() {
-        return this.attributes;
+    public List<ProductAttribute> getAttributes() {
+        List<ProductAttribute> fullList = this.attributes;
+        List<ProductAttribute> listExcludedModelMappedAttributes = new ArrayList<>();
+        for ( ProductAttribute attribute : fullList ) {
+            if ( !this.modelMappings.containsValue(attribute.getId()) ) {
+                listExcludedModelMappedAttributes.add(attribute);
+            }
+        }
+        return listExcludedModelMappedAttributes;
     }
 
+    public void setAttributes(List<ProductAttribute> attributes) {
+        this.attributes = attributes;
+    }
 
     @Override
     public List<ProductVariant> getVariants() {
@@ -134,7 +140,7 @@ public class FredhopperProduct implements Product {
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return this.variantAttributes;
     }
 
@@ -152,7 +158,7 @@ public class FredhopperProduct implements Product {
         this.variants = variants;
     }
 
-    public void setVariantAttributes(List<ProductVariantAttribute> variantAttributes) {
+    public void setVariantAttributes(List<ProductAttribute> variantAttributes) {
         this.variantAttributes = variantAttributes;
     }
 
@@ -172,34 +178,31 @@ public class FredhopperProduct implements Product {
         return this.fhAttributes.get(name);
     }
 
-    public Object getAttribute(String name) {
-        return this.attributes.get(name);
+    public boolean isModelAttribute(String fredhopperId) {
+        return this.modelMappings.containsValue(fredhopperId);
     }
 
+    public List<ProductAttributeValue> getAttributeValues(String id) {
+        for ( ProductAttribute attribute : this.attributes ) {
+            if ( attribute.getId().equals(id) ) {
+                return attribute.getValues();
+            }
+        }
+        return null;
+    }
 
     private String getModelAttribute(String name) {
         return this.getModelAttribute(name, false);
     }
 
-    private String getModelAttribute(String name, boolean singleValue) {
+    private String getModelAttribute(String name, boolean usePresentationValue) {
         String fredhopperAttribute = this.modelMappings.get(name);
-        Object fredhopperValue = null;
+
         String fredhopperStringValue = null;
         if ( fredhopperAttribute != null ) {
-            fredhopperValue = this.attributes.get(fredhopperAttribute);
-            if ( fredhopperValue instanceof String ) {
-                fredhopperStringValue = (String) fredhopperValue;
-            }
-            else if ( fredhopperValue instanceof List ) {
-                List<String> list = (List<String>) fredhopperValue;
-                if ( list.size() > 0 ) {
-                    if ( list.size() > 1 && singleValue ) {
-                        // When having a list of values when expecting one single value
-                        //
-                        return null;
-                    }
-                    fredhopperStringValue = list.get(0); // TODO: What to select if there is multiple values here?
-                }
+            List<ProductAttributeValue> values = getAttributeValues(fredhopperAttribute);
+            if ( values != null && values.size() > 0 ) {
+                fredhopperStringValue = usePresentationValue ? values.get(0).getPresentationValue() : values.get(0).getValue();
             }
         }
         return fredhopperStringValue;

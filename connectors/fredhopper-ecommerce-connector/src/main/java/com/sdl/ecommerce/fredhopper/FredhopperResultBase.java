@@ -8,6 +8,8 @@ import com.sdl.ecommerce.api.QueryFilterAttribute;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
 import com.sdl.ecommerce.api.model.impl.GenericFacet;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttributeValue;
 import com.sdl.ecommerce.fredhopper.model.*;
 import com.sdl.ecommerce.fredhopper.model.promotion.FredhopperPromotion;
 import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
@@ -73,14 +75,17 @@ public abstract class FredhopperResultBase {
         List<Product> products = new ArrayList<>();
         for ( com.fredhopper.webservice.client.Item item : items ) {
             FredhopperProduct fhItem = new FredhopperProduct(item, this.linkManager, this.productModelMappings, this.localizationService);
+            List<ProductAttribute> attributes = new ArrayList<>();
             products.add(fhItem);
             for (Attribute attribute : item.getAttribute()) {
                 String name = attribute.getName();
                 Object value;
-                if (attribute.getValue().size() == 0) {
+                if (attribute.getValue().size() == 0 ) {
                     continue;
                 }
                 String baseType = attribute.getBasetype().value();
+
+                // TODO: Refactor this code!!!
 
                 /*
                 if ( baseType.equals("text") ) {
@@ -94,37 +99,45 @@ public abstract class FredhopperResultBase {
                 }
                 */
                 if (baseType.equals("set") || baseType.equals("list")) {
-                    List<String> valueList = new ArrayList<>();
+                    List<ProductAttributeValue> valueList = new ArrayList<>();
                     for (com.fredhopper.webservice.client.Value attrValue : attribute.getValue()) {
-                        valueList.add(attrValue.getValue());
+                        valueList.add(new GenericProductAttributeValue(attrValue.getNonMl(), attrValue.getValue()));
                     }
                     value = valueList;
                 }
                 else if (baseType.equals("cat")) {
-                    name = "categoryId";
-                    List<String> valueList = new ArrayList<>();
+                    List<ProductAttributeValue> valueList = new ArrayList<>();
                     for (com.fredhopper.webservice.client.Value attrValue : attribute.getValue()) {
-                        valueList.add(attrValue.getNonMl());
+                        valueList.add(new GenericProductAttributeValue(attrValue.getNonMl(), attrValue.getValue()));
                     }
                     value = valueList;
                 }
                 else {
-                    value = attribute.getValue().get(0).getValue();
+                    value = new GenericProductAttributeValue(attribute.getValue().get(0).getNonMl(), attribute.getValue().get(0).getValue());
                 }
                 if ( value instanceof List ) {
-                    List<String> currentValueList = (List<String>) fhItem.getAttributes().get(name);
+                    List<ProductAttributeValue> currentValueList = getAttributeValues(attributes, name);
                     if ( currentValueList != null ) {
                         // Merge the list
                         //
-                        List<String> list = (List<String>) value;
-                        for ( String currentValue : currentValueList ) {
+                        List<ProductAttributeValue> list = (List<ProductAttributeValue>) value;
+                        for ( ProductAttributeValue currentValue : currentValueList ) {
                             if ( !list.contains(currentValue) ) {
                                 list.add(currentValue);
                             }
                         }
                     }
                 }
-                fhItem.getAttributes().put(name, value);
+
+                ProductAttribute productAttribute;
+                if ( value instanceof ProductAttributeValue ) {
+                    productAttribute = new GenericProductAttribute(name, FredhopperClient.getAttributeName(universe, name), (ProductAttributeValue) value);
+                }
+                else {
+                    productAttribute = new GenericProductAttribute(name, FredhopperClient.getAttributeName(universe, name), (List<ProductAttributeValue>) value);
+                }
+
+                attributes.add(productAttribute);
 
                 // Save the internal representation as well.
                 // TODO: Merge this with the generic attribute representation
@@ -159,9 +172,20 @@ public abstract class FredhopperResultBase {
                     }
                     fhItem.addFredhopperAttribute(name, attribute);
                 }
+
             }
+            fhItem.setAttributes(attributes);
         }
         return products;
+    }
+
+    protected static List<ProductAttributeValue> getAttributeValues(List<ProductAttribute> attributeList, String id) {
+        for ( ProductAttribute attribute : attributeList ) {
+            if ( attribute.getId().equals(id) ) {
+                return attribute.getValues();
+            }
+        }
+        return null;
     }
 
     protected List<Promotion> getPromotions(Universe universe) {

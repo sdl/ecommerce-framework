@@ -9,10 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.ProductCategoryService;
 import com.sdl.ecommerce.api.model.*;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariant;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttribute;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeType;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeValueType;
+import com.sdl.ecommerce.api.model.impl.*;
 import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
 import static com.sdl.ecommerce.fredhopper.FredhopperHelper.*;
 import org.slf4j.Logger;
@@ -36,6 +33,8 @@ import java.util.*;
  */
 @Component
 public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
+
+    // TODO: Introduce sorting of variant values. Either numerical or through defined order
 
     private static final Logger LOG = LoggerFactory.getLogger(AggregatedJsonVariantBuilder.class);
     
@@ -129,7 +128,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
 
         FredhopperProduct masterProduct = product;
         
-        List<ProductVariantAttribute> currentVariantAttributes = new ArrayList<>();
+        List<ProductAttribute> currentVariantAttributes = new ArrayList<>();
 
         // Get variant attributes
         //
@@ -137,11 +136,11 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             Attribute variantAttribute = product.getFredhopperAttribute(variantAttributeId);
             if ( variantAttribute != null && variantAttribute.getValue().size() == 1 ) {
                 Value variantValue = variantAttribute.getValue().get(0);
-                currentVariantAttributes.add(new GenericProductVariantAttribute(
-                                                        variantAttributeId,
-                                                        this.fredhopperClient.getAttributeName(universe, variantAttributeId),
-                                                        variantValue.getNonMl(),
-                                                        variantValue.getValue()));
+                currentVariantAttributes.add(new GenericProductAttribute(
+                        variantAttributeId,
+                        this.fredhopperClient.getAttributeName(universe, variantAttributeId),
+                        new GenericProductAttributeValue(variantValue.getNonMl(), variantValue.getValue())
+                ));
             }
         }
         Map<String,String> requestVariantAttributes = this.currentVariantAttributes.get();
@@ -159,11 +158,10 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 if ( variantAttribute != null ) {
                     for ( Value value : variantAttribute.getValue() ) {
                         if ( value.getNonMl().equals(currentAttributeValueId) ) {
-                            currentVariantAttributes.add(new GenericProductVariantAttribute(
+                            currentVariantAttributes.add(new GenericProductAttribute(
                                     currentAttributeId,
                                     this.fredhopperClient.getAttributeName(universe, currentAttributeId),
-                                    value.getNonMl(),
-                                    value.getValue()));
+                                    new GenericProductAttributeValue(value.getNonMl(), value.getValue())));
                         }
                     }
                 }
@@ -192,14 +190,18 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                 List<ProductVariantAttributeValueType> values = new ArrayList<>();
                 List<String> addedValues = new ArrayList<>();
                 for (ProductVariant variant : variants) {
-                    ProductVariantAttribute variantAttribute = ((GenericProductVariant) variant).getAttribute(variantAttributeId);
-                    if (variantAttribute != null && !addedValues.contains(variantAttribute.getValue())) {
-                        values.add(new GenericProductVariantAttributeValueType(variantAttribute.getValueId(),
-                                                                               variantAttribute.getValue(),
+                    ProductAttribute variantAttribute = ((GenericProductVariant) variant).getAttribute(variantAttributeId);
+                    if ( variantAttribute == null || variantAttribute.getValues().isEmpty() ) {
+                        continue;
+                    }
+                    ProductAttributeValue variantValue = variantAttribute.getValues().get(0);
+                    if (variantValue != null && !addedValues.contains(variantValue.getValue())) {
+                        values.add(new GenericProductVariantAttributeValueType(variantValue.getValue(),
+                                                                               variantValue.getPresentationValue(),
                                                                                isSelected(variantAttribute,
                                                                                product.getVariantAttributes()),
                                                                                masterProduct != product ? isApplicable(variantAttribute, variants, currentVariantAttributes) : true));
-                        addedValues.add(variantAttribute.getValue());
+                        addedValues.add(variantValue.getValue());
                     }
                 }
                 String variantAttributeName = this.fredhopperClient.getAttributeName(universe, variantAttributeId);
@@ -246,7 +248,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             for (Map<String, String> aggregatedVariant : variantAttributeList) {
 
                 String variantId = null;
-                List<ProductVariantAttribute> variantAttributes = new ArrayList<>();
+                List<ProductAttribute> variantAttributes = new ArrayList<>();
                 for (String variantAttributeId : aggregatedVariant.keySet()) {
                     String variantAttributeValueId = aggregatedVariant.get(variantAttributeId);
                     if (variantAttributeId.equals(this.variantIdAttributeName)) {
@@ -266,7 +268,8 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
                             // If value was found
                             //
                             if (variantAttributeValue != null) {
-                                variantAttributes.add(new GenericProductVariantAttribute(variantAttributeId, variantAttributeName, variantAttributeValueId, variantAttributeValue));
+                                variantAttributes.add(new GenericProductAttribute(variantAttributeId, variantAttributeName,
+                                        new GenericProductAttributeValue(variantAttributeValueId, variantAttributeValue)));
                             }
                         }
 
@@ -284,11 +287,18 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
      * @param productVariantAttributes
      * @return if selected
      */
-    private boolean isSelected(ProductVariantAttribute variantAttribute, List<ProductVariantAttribute> productVariantAttributes) {
-        for ( ProductVariantAttribute productVariantAttribute : productVariantAttributes ) {
-            if ( productVariantAttribute.getId().equals(variantAttribute.getId()) &&
-                 productVariantAttribute.getValueId().equals(variantAttribute.getValueId()) ) {
-                return true;
+    private boolean isSelected(ProductAttribute variantAttribute, List<ProductAttribute> productVariantAttributes) {
+        if (!variantAttribute.getValues().isEmpty()) {
+            ProductAttributeValue selectedValue = variantAttribute.getValues().get(0);
+            for (ProductAttribute productVariantAttribute : productVariantAttributes) {
+                if (productVariantAttribute.getValues().isEmpty()) {
+                    continue;
+                }
+                ProductAttributeValue variantValue = productVariantAttribute.getValues().get(0);
+                if (productVariantAttribute.getId().equals(variantAttribute.getId()) &&
+                        variantValue.getValue().equals(selectedValue.getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -301,7 +311,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
      * @param currentVariantAttributes
      * @return if applicable
      */
-    private boolean isApplicable(ProductVariantAttribute variantAttribute, List<ProductVariant> allProductVariants, List<ProductVariantAttribute> currentVariantAttributes) {
+    private boolean isApplicable(ProductAttribute variantAttribute, List<ProductVariant> allProductVariants, List<ProductAttribute> currentVariantAttributes) {
 
         // TODO: Test with a product that does not have a style
 
@@ -309,43 +319,62 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
             return true;
         }
         List<ProductVariant> filteredList = new ArrayList<>();
-        for ( ProductVariantAttribute currentAttribute : currentVariantAttributes ) {
+        for ( ProductAttribute currentAttribute : currentVariantAttributes ) {
+            if ( currentAttribute.getValues().isEmpty() ) {
+                continue;
+            }
+            ProductAttributeValue currentValue = currentAttribute.getValues().get(0);
             if ( !currentAttribute.getId().equals(variantAttribute.getId()) ) {
                 if ( filteredList.isEmpty() ) {
-                    for (ProductVariant variant : allProductVariants) {
-                        ProductVariantAttribute attribute = ((GenericProductVariant) variant).getAttribute(currentAttribute.getId());
-                        if ( attribute != null && attribute.getValueId().equals(currentAttribute.getValueId()) ) {
-                            filteredList.add(variant);
-                        }
-                    }
+                    buildFilterList(filteredList, currentAttribute, currentValue, allProductVariants);
                 }
                 else {
                     // Further filter the filter list
                     //
                     List<ProductVariant> currentFilteredList = filteredList;
                     filteredList = new ArrayList<>();
-                    for ( ProductVariant variant : currentFilteredList ) {
-                        ProductVariantAttribute attribute = ((GenericProductVariant) variant).getAttribute(currentAttribute.getId());
-                        if ( attribute != null && attribute.getValueId().equals(currentAttribute.getValueId()) ) {
-                            filteredList.add(variant);
-                        }
-                    }
+                    buildFilterList(filteredList, currentAttribute, currentValue, currentFilteredList);
                 }
             }
         }
 
-        // Is the value in the filtered list ?
-        //
-        for ( ProductVariant variant : filteredList ) {
-            ProductVariantAttribute attribute = ((GenericProductVariant) variant).getAttribute(variantAttribute.getId());
-            if ( attribute != null ) {
-                if ( attribute.getValueId().equals(variantAttribute.getValueId()) ) {
-                    return true;
+        if ( !variantAttribute.getValues().isEmpty() ) {
+
+            ProductAttributeValue variantValue = variantAttribute.getValues().get(0);
+            // Is the value in the filtered list ?
+            //
+            for (ProductVariant variant : filteredList) {
+                ProductAttribute attribute = ((GenericProductVariant) variant).getAttribute(variantAttribute.getId());
+                if (attribute != null && !attribute.getValues().isEmpty()) {
+                    ProductAttributeValue value = attribute.getValues().get(0);
+                    if (value.getValue().equals(variantValue.getValue())) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
 
+    }
+
+    /**
+     * Build filter list
+     * @param filteredList
+     * @param currentAttribute
+     * @param currentValue
+     * @param currentFilteredList
+     */
+    private void buildFilterList(List<ProductVariant> filteredList, ProductAttribute currentAttribute, ProductAttributeValue currentValue, List<ProductVariant> currentFilteredList) {
+        for ( ProductVariant variant : currentFilteredList ) {
+            ProductAttribute attribute = ((GenericProductVariant) variant).getAttribute(currentAttribute.getId());
+            if ( attribute.getValues().isEmpty() ) {
+                continue;
+            }
+            ProductAttributeValue value = attribute.getValues().get(0);
+            if ( attribute != null && value.getValue().equals(currentValue.getValue()) ) {
+                filteredList.add(variant);
+            }
+        }
     }
 
     /**

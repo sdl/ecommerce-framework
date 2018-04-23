@@ -4,10 +4,11 @@ import com.fredhopper.lang.query.Query;
 import com.fredhopper.lang.query.location.criteria.MultiValuedCriterion;
 import com.fredhopper.lang.query.location.criteria.SearchCriterion;
 import com.fredhopper.webservice.client.*;
-import com.sdl.ecommerce.api.model.ProductVariantAttribute;
+import com.sdl.ecommerce.api.model.ProductAttribute;
 import com.sdl.ecommerce.api.model.ProductVariantAttributeType;
 import com.sdl.ecommerce.api.model.ProductVariantAttributeValueType;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttributeValue;
 import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeType;
 import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeValueType;
 import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
@@ -73,12 +74,13 @@ public class FacetVariantBuilder implements ProductVariantBuilder {
 
         // Get current variant values
         //
-        List<ProductVariantAttribute> variantAttributes = new ArrayList<>();
+        List<ProductAttribute> variantAttributes = new ArrayList<>();
         for ( ProductVariantAttributeType attributeType : attributeTypes ) {
             Attribute attributeValue = product.getFredhopperAttribute(attributeType.getId());
             if ( attributeValue != null && !attributeValue.getValue().isEmpty() ) {
                 Value value = attributeValue.getValue().get(0);
-                variantAttributes.add(new GenericProductVariantAttribute(attributeType.getId(), attributeType.getName(), value.getNonMl(), value.getValue()));
+                variantAttributes.add(new GenericProductAttribute(attributeType.getId(), attributeType.getName(),
+                        new GenericProductAttributeValue(value.getNonMl(), value.getValue())));
             }
         }
         product.setVariantAttributes(variantAttributes);

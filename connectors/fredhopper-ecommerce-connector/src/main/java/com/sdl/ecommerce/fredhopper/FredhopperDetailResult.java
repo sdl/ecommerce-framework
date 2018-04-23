@@ -4,15 +4,10 @@ import com.fredhopper.webservice.client.*;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.impl.GenericBreadcrumb;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttribute;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeType;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeValueType;
-import com.sdl.ecommerce.fredhopper.model.FredhopperBreadcrumb;
 import com.sdl.ecommerce.fredhopper.model.FredhopperProduct;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Fredhopper Detail Result
@@ -58,10 +53,11 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
             if (products.size() > 0) {
                 FredhopperProduct product = (FredhopperProduct) products.get(0);
                 // TODO: categoryId should also be an model attribute, right?
-                List<String> categoryIds = (List<String>) product.getAttribute("categoryId");
+
+                List<ProductAttributeValue> categoryIds = product.getAttributeValues("categories");
                 if (categoryIds != null) {
-                    for (String categoryId : categoryIds) {
-                        Category category = this.categoryService.getCategoryById(categoryId);
+                    for (ProductAttributeValue categoryId : categoryIds) {
+                        Category category = this.categoryService.getCategoryById(categoryId.getValue());
                         if (category != null) {
                             product.getCategories().add(category);
                         }

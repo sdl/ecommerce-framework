@@ -138,10 +138,12 @@ public class FredhopperClient implements FredhopperLinkManager {
         return new FredhopperDetailResult(this.doQuery(query), this, this.productVariantBuilder);
     }
 
-    public String getAttributeName(Universe universe, String attributeId) {
-        for ( AttributeType attributeType : universe.getAttributeTypes().getAttributeType() ) {
-            if ( attributeType.getName().equals(attributeId) ) {
-                return attributeType.getValue();
+    public static String getAttributeName(Universe universe, String attributeId) {
+        if ( universe.getAttributeTypes() != null ) {
+            for (AttributeType attributeType : universe.getAttributeTypes().getAttributeType()) {
+                if (attributeType.getName().equals(attributeId)) {
+                    return attributeType.getValue();
+                }
             }
         }
         return null;
