@@ -1,17 +1,15 @@
 ﻿using Sdl.Web.Common.Logging;
 using Sdl.Web.Common.Models;
-
 using System;
 using System.Web.Mvc;
-
 using SDL.ECommerce.Api;
 using SDL.ECommerce.DXA.Factories;
 using SDL.ECommerce.DXA.Servants;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
-    using System.Linq;
-
     /// <summary>
     /// E-Commerce Product Page Controller
     /// </summary>
@@ -40,8 +38,68 @@ namespace SDL.ECommerce.DXA.Controllers
                 return NotFound();
             }
 
-            var pathTokens = productUrl.Split( new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var urlSegments = ParseUrl(productUrl);
+            
+            if (urlSegments.IsInvalid)
+            {
+                Log.Warn("Invalid product URL: " + productUrl);
+
+                return NotFound();
+            }
+
+            IProduct product = null;
+            
+            if (urlSegments.VariantAttributes.Any())
+            {
+                product = _eCommerceClient.DetailService.GetDetail(urlSegments.ProductId, urlSegments.VariantAttributes);
+            }
+
+            if (product == null)
+            {
+                return CreateVariantMissingActionResult(productUrl, urlSegments);
+            }
+
+            return CreateProductActionResult(productUrl, urlSegments, product);
+        }
+
+        protected virtual ActionResult CreateVariantMissingActionResult(string productUrl, UrlSegments urlSegments)
+        {
+            // TODO: Should we redirect to an URL without variants here? So it's clear for the user what's happening??
+            var product = _eCommerceClient.DetailService.GetDetail(urlSegments.ProductId);
+
+            if (product == null)
+            {
+                Log.Info("Product not found: " + urlSegments.ProductId);
+
+                return NotFound();
+            }
+
+            return CreateProductActionResult(productUrl, urlSegments, product);
+        }
+
+        protected virtual ActionResult CreateProductActionResult(string productUrl, UrlSegments urlSegments, IProduct product)
+        {
+            PageModel templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(urlSegments.SeoId, product), ContentProvider);
+
+            if (templatePage == null)
+            {
+                Log.Error("Product template page could not be found for product URL: " + productUrl);
+
+                return NotFound();
+            }
+
+            templatePage.Title = product.Name;
+            ECommerceContext.Set(ECommerceContext.PRODUCT, product);
+            ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
+            return View(templatePage);
+        }
+
+        protected virtual UrlSegments ParseUrl(string productUrl)
+        {
+            var pathTokens = productUrl.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+
             string productSeoId;
+
             string productId;
 
             if (pathTokens.Length == 2)
@@ -58,47 +116,37 @@ namespace SDL.ECommerce.DXA.Controllers
             }
             else
             {
-                Log.Warn("Invalid product URL: " + productUrl);
-
-                return NotFound();
+                return new UrlSegments(null);
             }
 
-            IProduct product = null;
             var queryParams = HttpContext.Request.QueryString;
 
             if (queryParams.Count > 0)
             {
                 var variantAttributes = queryParams.AllKeys.ToDictionary(k => k, k => queryParams[k]);
 
-                product = _eCommerceClient.DetailService.GetDetail(productId, variantAttributes);
+                return new UrlSegments(productId, productSeoId, variantAttributes);
             }
 
-            if (product == null)
+            return new UrlSegments(productId, productSeoId);
+        }
+
+        protected class UrlSegments
+        {
+            public UrlSegments(string productId, string seoId = null, IDictionary<string, string> variantAttributes = null)
             {
-                // TODO: Should we redirect to an URL without variants here? So it's clear for the user what's happening??
-                product = _eCommerceClient.DetailService.GetDetail(productId);
+                ProductId = productId;
+                SeoId = seoId;
+                VariantAttributes = variantAttributes ?? new Dictionary<string, string>();
             }
 
-            if ( product == null )
-            {
-                Log.Info("Product not found: " + productId);
+            public string ProductId { get; }
+            
+            public string SeoId { get; }
+            
+            public IDictionary<string, string> VariantAttributes { get; }
 
-                return NotFound();
-            }
-
-            PageModel templatePage = PageModelServant.ResolveTemplatePage(_pathServant.GetSearchPath(productSeoId, product), ContentProvider);
-
-            if ( templatePage == null )
-            {
-                Log.Error("Product template page could not be found for product URL: " + productUrl);
-
-                return NotFound();
-            }
-
-            templatePage.Title = product.Name;
-            ECommerceContext.Set(ECommerceContext.PRODUCT, product);
-            ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
-            return View(templatePage);
+            public bool IsInvalid => string.IsNullOrEmpty(ProductId) && string.IsNullOrEmpty(SeoId) && !VariantAttributes.Any();
         }
     }
 }
