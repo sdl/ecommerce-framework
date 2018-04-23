@@ -7,7 +7,7 @@
     <map name="@Model.Id">
         @foreach (var contentArea in Model.ContentAreas)
         {
-            <area shape="rect" coords="@contentArea.X1,@contentArea.Y1,@contentArea.X2,@contentArea.Y2" href="@ECommerceContext.LinkResolver.GetLocationLink(contentArea.Location)">
+            <area shape="rect" coords="@contentArea.X1,@contentArea.Y1,@contentArea.X2,@contentArea.Y2" href="@LinkResolver.Instance.GetLocationLink(contentArea.Location)">
         }               
     </map>
 

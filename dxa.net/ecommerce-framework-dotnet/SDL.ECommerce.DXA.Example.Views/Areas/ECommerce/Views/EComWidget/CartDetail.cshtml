@@ -30,7 +30,7 @@
                                     <img src="@item.Product.ThumbnailUrl" height="100" />
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="@ECommerceContext.LinkResolver.GetProductVariantDetailLink(item.Product)"><strong>@item.Product.Name</strong></a>
+                                    <a href="@LinkResolver.Instance.GetProductVariantDetailLink(item.Product)"><strong>@item.Product.Name</strong></a>
                                 </div>
                                 <div class="col-md-2">
                                     @item.Quantity

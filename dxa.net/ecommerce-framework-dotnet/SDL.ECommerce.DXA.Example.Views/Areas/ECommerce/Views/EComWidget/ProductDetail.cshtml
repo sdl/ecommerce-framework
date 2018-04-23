@@ -29,7 +29,7 @@
                             if (valueType.IsAvailable)
                             {
                              <a class="btn @(valueType.IsSelected ? "btn-info disabled" : "btn-default")" style="margin-bottom: 4px;" 
-                                href="@ECommerceContext.LinkResolver.GetProductDetailVariantLink(Model.Product, variantAttributeType.Id, valueType.Id, isPrimaryVariant)">
+                                href="@LinkResolver.Instance.GetProductDetailVariantLink(Model.Product, variantAttributeType.Id, valueType.Id, isPrimaryVariant)">
                                 @valueType.Value
                              </a>
                             }
