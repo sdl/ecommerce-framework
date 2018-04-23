@@ -1,5 +1,6 @@
 package com.sdl.ecommerce.service.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sdl.ecommerce.api.model.ContentPromotion;
 import com.sdl.ecommerce.api.model.ProductsPromotion;
 import com.sdl.ecommerce.api.model.Promotion;
@@ -14,6 +15,7 @@ import graphql.annotations.GraphQLName;
  */
 @GraphQLName("Promotion")
 @GraphQLDescription("E-Commerce Promotion")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestPromotion implements Promotion {
 
     @GraphQLField

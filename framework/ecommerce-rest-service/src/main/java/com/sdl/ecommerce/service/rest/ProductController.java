@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
  * @author nic
  */
 @RestController
-@RequestMapping("/ecommerce.svc/rest/v1//product")
+@RequestMapping("/ecommerce.svc/rest/v1/product")
 @Slf4j
 public class ProductController {
 

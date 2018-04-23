@@ -5,8 +5,11 @@ import com.sdl.ecommerce.api.ProductQueryService;
 import com.sdl.ecommerce.api.Query;
 import com.sdl.ecommerce.api.edit.EditMenu;
 import com.sdl.ecommerce.api.edit.EditService;
+import com.sdl.ecommerce.service.model.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class EditMenuController {
 
-    @Autowired
+    @Autowired(required = false)
     private EditService editService;
 
     @Autowired
@@ -27,8 +30,12 @@ public class EditMenuController {
     private ProductCategoryService categoryService;
 
     @RequestMapping(value="/inContextMenuItems", method = RequestMethod.GET)
-    public EditMenu getInContextMenuItems(@RequestParam(required = false) String categoryId, @RequestParam(required = false) String searchPhrase)
+    public ResponseEntity getInContextMenuItems(@RequestParam(required = false) String categoryId, @RequestParam(required = false) String searchPhrase)
     {
+        if ( this.editService == null ) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorMessage(""));
+        }
+
         Query query = queryService.newQuery();
         if ( categoryId != null)
         {
@@ -39,6 +46,6 @@ public class EditMenuController {
             query.searchPhrase(searchPhrase);
         }
 
-        return this.editService.getInContextMenuItems(query);
+        return new ResponseEntity<>(this.editService.getInContextMenuItems(query), HttpStatus.OK);
     }
 }
