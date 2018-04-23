@@ -4,15 +4,13 @@ import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.Product;
 import com.sdl.ecommerce.api.model.ProductVariant;
-import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttribute;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttributeValue;
 import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeType;
 import com.sdl.ecommerce.api.model.impl.GenericProductVariantAttributeValueType;
 import com.sdl.ecommerce.demandware.api.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Demandware Product
@@ -30,7 +28,7 @@ public class DemandwareProduct implements Product {
     private ProductPrice price;
     private String thumbnailUrl;
     private String primaryImageUrl;
-    private List<ProductVariantAttribute> variantAttributes = null;
+    private List<ProductAttribute> variantAttributes = null;
     private List<ProductVariant> variants = null;
     private List<ProductVariantAttributeType> variantAttributeTypes = null;
 
@@ -77,10 +75,8 @@ public class DemandwareProduct implements Product {
                         String attributeName = variationAttribute.getName();
                         for ( VariationAttributeValue value : variationAttribute.getValues() ) {
                             if ( valueId.equals(value.getValue()) ) {
-                                ProductVariantAttribute attributeValue = new GenericProductVariantAttribute(attributeId,
-                                        attributeName,
-                                        valueId,
-                                        value.getName());
+                                ProductAttribute attributeValue = new GenericProductAttribute(attributeId,
+                                        attributeName, new GenericProductAttributeValue(valueId, value.getName()));
                                 this.variantAttributes.add(attributeValue);
                             }
                         }
@@ -110,8 +106,13 @@ public class DemandwareProduct implements Product {
                     for ( VariationAttributeValue variationAttributeValue : attribute.getValues() ) {
                         boolean isSelected = false;
                         if ( this.variantAttributes != null ) {
-                            for ( ProductVariantAttribute selectedAttribute : this.variantAttributes ) {
-                                if ( selectedAttribute.getId().equals(attribute.getId()) && selectedAttribute.getValueId().equals(variationAttributeValue.getValue())) {
+
+                            for ( ProductAttribute selectedAttribute : this.variantAttributes ) {
+                                if ( selectedAttribute.getValues().isEmpty()) {
+                                    continue;
+                                }
+                                ProductAttributeValue selectedAttributeValue = selectedAttribute.getValues().get(0);
+                                if ( selectedAttribute.getId().equals(attribute.getId()) && selectedAttributeValue.getValue().equals(variationAttributeValue.getValue())) {
                                     isSelected = true;
                                     break;
                                 }
@@ -210,12 +211,12 @@ public class DemandwareProduct implements Product {
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        return new HashMap<>();
+    public List<ProductAttribute> getAttributes() {
+        return Collections.emptyList();
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return this.variantAttributes;
     }
 
