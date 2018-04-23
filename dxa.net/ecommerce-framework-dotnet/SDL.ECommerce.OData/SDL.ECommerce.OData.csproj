@@ -132,12 +132,13 @@
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductAttributeValue.cs" />
     <Compile Include="Model\ProductPrice.cs" />
     <Compile Include="Model\ProductQueryResult.cs" />
     <Compile Include="Model\ProductRef.cs" />
     <Compile Include="Model\ProductSummary.cs" />
     <Compile Include="Model\ProductVariant.cs" />
-    <Compile Include="Model\ProductVariantAttribute.cs" />
+    <Compile Include="Model\ProductAttribute.cs" />
     <Compile Include="Model\ProductVariantAttributeType.cs" />
     <Compile Include="Model\ProductVariantAttributeValueType.cs" />
     <Compile Include="Model\Promotion.cs" />

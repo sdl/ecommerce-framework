@@ -20,7 +20,7 @@ namespace SDL.ECommerce.Api.Model
         /// <summary>
         /// Variant Attributes
         /// </summary>
-        IList<IProductVariantAttribute> Attributes { get; }
+        IList<IProductAttribute> Attributes { get; }
 
         // TODO: Can this be typed somehow??
 

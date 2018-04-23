@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace SDL.ECommerce.Rest.Model
 {
-    public class ProductVariantAttribute : IProductVariantAttribute
+    public class ProductAttributeValue : IProductAttributeValue
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+        public string PresentationValue { get; set; }
         public string Value { get; set; }
-        public string ValueId { get; set; }
     }
 }

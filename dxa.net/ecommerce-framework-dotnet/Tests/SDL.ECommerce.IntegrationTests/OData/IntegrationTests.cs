@@ -158,16 +158,18 @@ namespace SDL.ECommerce.IntegrationTests.OData
             Console.WriteLine("Attributes: ");
             foreach ( var attribute in product.Attributes )
             {
-                if ( attribute.Value.GetType() == typeof(string) )
+                if (attribute.IsSingleValue)
                 {
-                    Console.WriteLine(attribute.Key + ": " + attribute.Value);
+                    Console.WriteLine(attribute.Id + ": " + attribute.Value.PresentationValue + "(" + attribute.Value.Value + ")");
                 }
                 else
                 {
-                    IList<string> values = (IList<string>) attribute.Value;
-                    Console.WriteLine(attribute.Key + ": " + string.Join(",", values.ToArray()));
+                    Console.WriteLine(attribute.Id + ":");
+                    foreach (var attributeValue in attribute.Values)
+                    {
+                        Console.WriteLine("  - " + attributeValue.PresentationValue);
+                    }
                 }
-               
             }
             Console.WriteLine("Categories: ");
             foreach ( var category in product.Categories )

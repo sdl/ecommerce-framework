@@ -15,11 +15,11 @@ namespace SDL.ECommerce.OData
             }
         }
 
-        IList<IProductVariantAttribute> IProductVariant.Attributes
+        IList<IProductAttribute> IProductVariant.Attributes
         {
             get
             {
-                return this.Attributes.Cast<IProductVariantAttribute>().ToList();
+                return this.Attributes.Cast<IProductAttribute>().ToList();
             }
         }
 

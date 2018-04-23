@@ -62,7 +62,7 @@ public interface IProduct
     /// <summary>
     /// Get all additional attributes of the product. Can for example be used in compare views etc.
     /// </summary>
-    IDictionary<string, object> Attributes { get; }
+    IList<IProductAttribute> Attributes { get; }
 
     /// <summary>
     /// Product variants
@@ -72,7 +72,7 @@ public interface IProduct
     /// <summary>
     /// If current product is an variant this list is populated with selected variant attributes
     /// </summary>
-    IList<IProductVariantAttribute> VariantAttributes { get; }
+    IList<IProductAttribute> VariantAttributes { get; }
 
     /// <summary>
     /// Get all available variant attribute types for this product, e.g. color, size. The type also contain all possible values.

@@ -26,10 +26,10 @@ namespace SDL.ECommerce.Rest.Model
         public string ThumbnailUrl { get; set; }
         public ProductPrice Price { get; set; }
         public List<string> CategoryIds { get; set; }
-        public Dictionary<string, object> Attributes { get; set; }
+        public List<ProductAttribute> Attributes { get; set; }
         public List<Promotion> Promotions { get; set; }
         public List<Breadcrumb> Breadcrumbs { get; set; }
-        public List<ProductVariantAttribute> VariantAttributes { get; set; }
+        public List<ProductAttribute> VariantAttributes { get; set; }
         public List<ProductVariantAttributeType> VariantAttributeTypes { get; set; }
         public List<ProductVariant> Variants { get; set; }
         public string VariantLinkType { get; set; }
@@ -64,27 +64,11 @@ namespace SDL.ECommerce.Rest.Model
             }
         }
   
-        IDictionary<string, object> IProduct.Attributes
+        IList<IProductAttribute> IProduct.Attributes
         {
             get
             {
-                if (_attributes == null)
-                {
-                    _attributes = new Dictionary<string, object>();
-                    foreach (var attribute in Attributes.ToList())
-                    {
-                        if (attribute.Value is JArray)
-                        {
-                            var array = (JArray)attribute.Value;
-                            _attributes[attribute.Key] = array.Select(i => i.ToString()).ToList();
-                        }
-                        else
-                        {
-                            _attributes[attribute.Key] = attribute.Value;
-                        }
-                    }
-                }
-                return _attributes;
+                return Attributes?.Cast<IProductAttribute>().ToList();
             }
         }
 
@@ -104,11 +88,11 @@ namespace SDL.ECommerce.Rest.Model
             }
         }
 
-        IList<IProductVariantAttribute> IProduct.VariantAttributes
+        IList<IProductAttribute> IProduct.VariantAttributes
         {
             get
             {
-                return VariantAttributes.Cast<IProductVariantAttribute>().ToList();
+                return VariantAttributes.Cast<IProductAttribute>().ToList();
             }
         }
 

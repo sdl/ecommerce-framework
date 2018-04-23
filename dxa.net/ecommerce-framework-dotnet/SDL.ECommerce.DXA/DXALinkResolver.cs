@@ -261,7 +261,7 @@ namespace SDL.ECommerce.DXA
                     {
                         if (!attribute.Id.Equals(variantAttributeId))
                         {
-                            selectedAttributes.Add(attribute.Id, attribute.ValueId);
+                            selectedAttributes.Add(attribute.Id, attribute.Value.Value);
                         }
                     }
                 }
@@ -276,7 +276,7 @@ namespace SDL.ECommerce.DXA
                         String selectedAttributeValueId = selectedAttributes[selectedAttributeId];
                         foreach (var attribute in variant.Attributes)
                         {
-                            if (attribute.Id.Equals(selectedAttributeId) && attribute.ValueId.Equals(selectedAttributeValueId))
+                            if (attribute.Id.Equals(selectedAttributeId) && attribute.Value.Value.Equals(selectedAttributeValueId))
                             {
                                 matchingAttributes++;
                                 break;

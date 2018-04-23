@@ -58,12 +58,13 @@
     <Compile Include="Model\ILocation.cs" />
     <Compile Include="Model\IMenuItem.cs" />
     <Compile Include="Model\IProduct.cs" />
+    <Compile Include="Model\IProductAttributeValue.cs" />
     <Compile Include="Model\IProductVariantAttributeType.cs" />
     <Compile Include="Model\IProductPrice.cs" />
     <Compile Include="Model\IProductsPromotion.cs" />
     <Compile Include="Model\IProductQueryResult.cs" />
     <Compile Include="Model\IProductVariant.cs" />
-    <Compile Include="Model\IProductVariantAttribute.cs" />
+    <Compile Include="Model\IProductAttribute.cs" />
     <Compile Include="Model\IProductVariantAttributeValueType.cs" />
     <Compile Include="Model\IPromotion.cs" />
     <Compile Include="Model\IProductRef.cs" />

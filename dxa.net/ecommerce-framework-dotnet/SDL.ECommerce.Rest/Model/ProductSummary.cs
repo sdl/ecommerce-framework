@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using SDL.ECommerce.Api.Model;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace SDL.ECommerce.Rest.Model
 {
@@ -23,10 +24,17 @@ namespace SDL.ECommerce.Rest.Model
         public IProductPrice Price { get; set; }
           
         public string ThumbnailUrl { get; set; }
+        public List<ProductAttribute> Attributes { get; set; }
+
+        IList<IProductAttribute> IProduct.Attributes
+        {
+            get
+            {
+                return Attributes?.Cast<IProductAttribute>().ToList();
+            }
+        }
 
         /***** METHODS NOT AVAILABLE FOR PRODUCT SUMMARY ONLY IN DETAIL PRODUCT INFO ******/
-
-        public IDictionary<string, object> Attributes { get; set; }
 
         public string Description
         {
@@ -76,7 +84,7 @@ namespace SDL.ECommerce.Rest.Model
             }
         }
 
-        public IList<IProductVariantAttribute> VariantAttributes
+        public IList<IProductAttribute> VariantAttributes
         {
             get
             {

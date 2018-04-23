@@ -11,7 +11,7 @@ namespace SDL.ECommerce.Rest.Model
     {
         public string Id { get; set; }
         public ProductPrice ProductPrice { get; set; }
-        public List<ProductVariantAttribute> Attributes { get; set; }
+        public List<ProductAttribute> Attributes { get; set; }
 
         IProductPrice IProductVariant.Price
         {
@@ -21,11 +21,11 @@ namespace SDL.ECommerce.Rest.Model
             }
         }
 
-        IList<IProductVariantAttribute> IProductVariant.Attributes
+        IList<IProductAttribute> IProductVariant.Attributes
         {
             get
             {
-                return Attributes.Cast<IProductVariantAttribute>().ToList();
+                return Attributes.Cast<IProductAttribute>().ToList();
             }
         }
     }
