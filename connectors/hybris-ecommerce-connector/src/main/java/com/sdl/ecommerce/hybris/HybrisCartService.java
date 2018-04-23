@@ -33,6 +33,8 @@ public class HybrisCartService implements CartService {
 
     @Override
     public Cart addProductToCart(String cartId, String sessionId, String productId, int quantity) throws ECommerceException {
+
+        // Why not make the cartID the session ID??
         try {
             com.sdl.ecommerce.hybris.api.model.Cart cart = this.hybrisClientManager.getInstance().addItemToCart(toHybrisSessionId(sessionId), productId, quantity);
             return new HybrisCart(cart, sessionId, this.productDetailService);
