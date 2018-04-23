@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,9 +198,11 @@ public class DXALinkResolver implements ECommerceLinkResolver {
             Map<String, String> selectedAttributes = new HashMap<>();
             selectedAttributes.put(variantAttributeId, variantAttributeValueId);
             if ( product.getVariantAttributes() != null ) {
-                for (ProductVariantAttribute attribute : product.getVariantAttributes()) {
+                for (ProductAttribute attribute : product.getVariantAttributes()) {
                     if (!attribute.getId().equals(variantAttributeId)) {
-                        selectedAttributes.put(attribute.getId(), attribute.getValueId());
+                        if ( attribute.getValues() != null && !attribute.getValues().isEmpty() ) {
+                            selectedAttributes.put(attribute.getId(), attribute.getValues().get(0).getValue());
+                        }
                     }
                 }
             }
@@ -213,10 +213,12 @@ public class DXALinkResolver implements ECommerceLinkResolver {
                 int matchingAttributes = 0;
                 for (String selectedAttributeId : selectedAttributes.keySet()) {
                     String selectedAttributeValueId = selectedAttributes.get(selectedAttributeId);
-                    for (ProductVariantAttribute attribute : variant.getAttributes()) {
-                        if (attribute.getId().equals(selectedAttributeId) && attribute.getValueId().equals(selectedAttributeValueId)) {
-                            matchingAttributes++;
-                            break;
+                    for (ProductAttribute attribute : variant.getAttributes()) {
+                        if ( attribute.getValues() != null && !attribute.getValues().isEmpty() ) {
+                            if (attribute.getId().equals(selectedAttributeId) && attribute.getValues().get(0).getValue().equals(selectedAttributeValueId)) {
+                                matchingAttributes++;
+                                break;
+                            }
                         }
                     }
                 }

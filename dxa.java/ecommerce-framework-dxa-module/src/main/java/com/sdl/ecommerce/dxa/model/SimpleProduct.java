@@ -38,7 +38,7 @@ public class SimpleProduct implements Product {
             return this.product.getThumbnailUrl();
         }
 
-        public Map<String,Object> getAttributes() {
+        public List<ProductAttribute> getAttributes() {
             return this.product.getAttributes();
         }
 
@@ -69,7 +69,7 @@ public class SimpleProduct implements Product {
         }
 
         @Override
-        public List<ProductVariantAttribute> getVariantAttributes() {
+        public List<ProductAttribute> getVariantAttributes() {
             return null;
         }
 
