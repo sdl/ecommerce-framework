@@ -3,7 +3,7 @@ package com.sdl.ecommerce.service.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sdl.ecommerce.api.model.ProductPrice;
 import com.sdl.ecommerce.api.model.ProductVariant;
-import com.sdl.ecommerce.api.model.ProductVariantAttribute;
+import com.sdl.ecommerce.api.model.ProductAttribute;
 import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;
@@ -39,7 +39,7 @@ public class RestProductVariant implements ProductVariant {
     }
 
     @Override
-    public List<ProductVariantAttribute> getAttributes() {
+    public List<ProductAttribute> getAttributes() {
         return this.productVariant.getAttributes();
     }
 }

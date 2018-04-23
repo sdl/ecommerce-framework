@@ -2,6 +2,7 @@ package com.sdl.ecommerce.service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.sdl.ecommerce.api.ProductDetailResult;
 import com.sdl.ecommerce.api.model.*;
 import com.sdl.ecommerce.service.ListHelper;
@@ -22,11 +23,10 @@ import java.util.stream.Collectors;
 @GraphQLDescription("E-Commerce Product")
 @GraphQLName("Product")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "id", "masterId", "variantId", "name", "description", "price", "thumbnailUrl", "primaryImageUrl", "attributes"})
 public class RestProduct implements Product {
 
     private Product product;
-
-    private List<RestProductAttribute> attributes;
 
     @GraphQLField
     @GraphQLDescription("Product Category IDs")
@@ -35,6 +35,10 @@ public class RestProduct implements Product {
     @GraphQLField
     @GraphQLDescription("Product Price")
     private RestProductPrice price;
+
+    @GraphQLField
+    @GraphQLName("attributes")
+    private List<RestProductAttribute> attributes;
 
     @GraphQLField
     @GraphQLDescription("Product breadcrumbs")
@@ -50,7 +54,7 @@ public class RestProduct implements Product {
 
     @GraphQLField
     @GraphQLDescription("Product variant attributes")
-    private List<RestProductVariantAttribute> variantAttributes;
+    private List<RestProductAttribute> variantAttributes;
 
     private List<RestProductVariantAttributeType> variantAttributeTypes;
 
@@ -73,20 +77,9 @@ public class RestProduct implements Product {
         }
         categoryIds = new ArrayList<>();
         product.getCategories().forEach(category -> categoryIds.add(category.getId()));
-        if ( product.getAttributes() != null ) {
-            attributes = new ArrayList<>();
-            for (String attributeName : product.getAttributes().keySet()) {
-                Object attributeValue = product.getAttributes().get(attributeName);
-                if ( attributeValue instanceof List ) {
-                    attributes.add(new RestProductAttribute(attributeName, (List<String>) attributeValue));
-                }
-                else {
-                    attributes.add(new RestProductAttribute(attributeName, attributeValue.toString()));
-                }
-            }
-        }
+        this.attributes = ListHelper.createWrapperList(product.getAttributes(), ProductAttribute.class, RestProductAttribute.class);
         this.productVariants = ListHelper.createWrapperList(product.getVariants(), ProductVariant.class, RestProductVariant.class);
-        this.variantAttributes = ListHelper.createWrapperList(product.getVariantAttributes(), ProductVariantAttribute.class, RestProductVariantAttribute.class);
+        this.variantAttributes = ListHelper.createWrapperList(product.getVariantAttributes(), ProductAttribute.class, RestProductAttribute.class);
         this.variantAttributeTypes = ListHelper.createWrapperList(product.getVariantAttributeTypes(), ProductVariantAttributeType.class, RestProductVariantAttributeType.class);
     }
 
@@ -156,18 +149,10 @@ public class RestProduct implements Product {
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        return product.getAttributes();
+    public List<ProductAttribute> getAttributes() {
+        return attributes.stream().collect(Collectors.toList());
     }
 
-
-    // TODO: REMOVE ATTRIBUTE LIST? Graph-QL can not handle map object values....
-    @GraphQLField
-    @GraphQLName("attributes")
-    @JsonIgnore
-    public List<RestProductAttribute> getAttributeList() {
-        return this.attributes;
-    }
 
     @Override
     public List<ProductVariant> getVariants() {
@@ -175,7 +160,7 @@ public class RestProduct implements Product {
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return variantAttributes.stream().collect(Collectors.toList());
     }
 

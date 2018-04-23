@@ -1,23 +1,30 @@
 package com.sdl.ecommerce.service.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.service.ListHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * REST Product Summary
  * Gives a product summary. Is only used for the REST API. In Graph-QL you can specify what attributes you're interested in
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "id", "masterId", "variantId", "name", "price", "thumbnailUrl", "attributes"})
 public class RestProductSummary implements Product {
 
     private Product product;
 
+    private List<RestProductAttribute> attributes;
+
+
     public RestProductSummary(Product product) {
         this.product = product;
+        this.attributes = ListHelper.createWrapperList(product.getAttributes(), ProductAttribute.class, RestProductAttribute.class);
     }
 
     @Override
@@ -59,6 +66,11 @@ public class RestProductSummary implements Product {
         return restProductList;
     }
 
+    @Override
+    public List<ProductAttribute> getAttributes() {
+        return this.attributes.stream().collect(Collectors.toList());
+    }
+
     /************ NOT EXPOSED PROPERTIES ***********/
 
     @Override
@@ -77,17 +89,12 @@ public class RestProductSummary implements Product {
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
-
-    @Override
     public List<ProductVariant> getVariants() {
         return null;
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return null;
     }
 
