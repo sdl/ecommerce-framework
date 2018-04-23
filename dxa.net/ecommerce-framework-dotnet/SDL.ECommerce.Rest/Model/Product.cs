@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SDL.ECommerce.Api.Model;
-using Newtonsoft.Json.Linq;
 using SDL.ECommerce.Api.Service;
 
 namespace SDL.ECommerce.Rest.Model
@@ -14,7 +11,6 @@ namespace SDL.ECommerce.Rest.Model
 
     public class Product : IProduct
     {
-        private IDictionary<string, object> _attributes;
         private IList<ICategory> _categories;
 
         public string Description { get; set; }
