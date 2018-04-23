@@ -30,8 +30,8 @@ public class ODataProductDetailService implements ProductDetailService {
         this.odataClient.registerModelClass(ODataProduct.class);
         this.odataClient.registerModelClass(ODataProductPrice.class);
         this.odataClient.registerModelClass(ODataProductAttribute.class);
+        this.odataClient.registerModelClass(ODataProductAttributeValue.class);
         this.odataClient.registerModelClass(ODataProductVariant.class);
-        this.odataClient.registerModelClass(ODataProductVariantAttribute.class);
         this.odataClient.registerModelClass(ODataProductVariantAttributeType.class);
         this.odataClient.registerModelClass(ODataProductVariantAttributeValueType.class);
     }
