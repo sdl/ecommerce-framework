@@ -52,7 +52,7 @@ namespace SDL.ECommerce.Rest.Service
             if (query.SearchPhrase != null)
             {
                 request.AddParameter("searchPhrase", query.SearchPhrase);
-                cacheKey = ":" + query.SearchPhrase;
+                cacheKey += ":" + query.SearchPhrase;
                 cacheRegion = CacheRegion.ECommerceSearch;
             }
 
@@ -92,6 +92,7 @@ namespace SDL.ECommerce.Rest.Service
                
             }
 
+            
             IProductQueryResult queryResult;
             if (!cacheProvider.TryGet(cacheRegion, cacheKey, out queryResult))
             {
