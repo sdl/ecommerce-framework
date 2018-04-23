@@ -72,12 +72,7 @@ public interface Product {
      * Get all additional attributes of the product. Can for example be used in compare views etc.
      * @return list of attributes
      */
-
-    // TODO: Use Map<String,List<String>> here instead?? To make it easier to map over OData???
-    // TODO: Have an AttributeValue representation here that indicate formatted value, raw value, type, single/multi value etc?
-    // TODO: Consider to use the same model as for variant attributes?
-
-    Map<String,Object> getAttributes();
+    List<ProductAttribute> getAttributes();
 
     /**
      * Get product variants (if any)
@@ -89,7 +84,7 @@ public interface Product {
      * If current product is an variant this list is populated with selected variant attributes
      * @return list of variant attributes
      */
-    List<ProductVariantAttribute> getVariantAttributes();
+    List<ProductAttribute> getVariantAttributes();
 
     /**
      * Get all available variant attribute types for this product, e.g. color, size. The type also contain all possible values.
