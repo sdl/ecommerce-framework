@@ -4,8 +4,10 @@ import com.sdl.ecommerce.api.model.*;
 import com.sdl.odata.api.edm.annotations.EdmComplex;
 import com.sdl.odata.api.edm.annotations.EdmProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * OData Product Summary
@@ -34,6 +36,8 @@ public class ODataProductSummary implements Product {
     @EdmProperty
     private String thumbnailUrl;
 
+    @EdmProperty
+    private List<ODataProductAttribute> attributes = new ArrayList<>();
 
     public ODataProductSummary() {}
     public ODataProductSummary(Product product) {
@@ -45,6 +49,9 @@ public class ODataProductSummary implements Product {
             this.price = new ODataProductPrice(product.getPrice());
         }
         this.thumbnailUrl = product.getThumbnailUrl();
+        if ( product.getAttributes() != null ) {
+            product.getAttributes().forEach(attribute -> this.attributes.add(new ODataProductAttribute(attribute)));
+        }
     }
 
     @Override
@@ -75,6 +82,11 @@ public class ODataProductSummary implements Product {
         return this.thumbnailUrl;
     }
 
+    @Override
+    public List<ProductAttribute> getAttributes() {
+        return this.attributes.stream().collect(Collectors.toList());
+    }
+
     /********* Data only available for product details ***********/
 
     @Override
@@ -87,10 +99,6 @@ public class ODataProductSummary implements Product {
         return null;
     }
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
 
     @Override
     public List<Category> getCategories() {
@@ -103,7 +111,7 @@ public class ODataProductSummary implements Product {
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return null;
     }
 

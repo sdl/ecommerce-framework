@@ -43,10 +43,8 @@ public class ODataProduct implements Product, Serializable {
     @EdmProperty
     private String primaryImageUrl;
 
-    @EdmProperty(name = "attributes")
-    private List<ODataProductAttribute> attributes;
-
-    private Map<String,Object> attributeMap = null;
+    @EdmProperty
+    private List<ODataProductAttribute> attributes = new ArrayList<>();
 
     @EdmProperty
     private List<ODataCategorySummary> categories = new ArrayList<>();
@@ -58,7 +56,7 @@ public class ODataProduct implements Product, Serializable {
     private List<ODataBreadcrumb> breadcrumbs = new ArrayList<>();
 
     @EdmProperty
-    private List<ODataProductVariantAttribute> variantAttributes = new ArrayList<>();
+    private List<ODataProductAttribute> variantAttributes = new ArrayList<>();
 
     @EdmProperty
     private List<ODataProductVariant> variants = new ArrayList<>();
@@ -84,15 +82,12 @@ public class ODataProduct implements Product, Serializable {
         this.thumbnailUrl = product.getThumbnailUrl();
         this.primaryImageUrl = product.getPrimaryImageUrl();
         this.variantLinkType = product.getVariantLinkType().name();
-        Map<String,Object> attributes = product.getAttributes();
-        if ( attributes != null ) {
-            this.attributes = new ArrayList<>();
-            for ( String name : attributes.keySet() ) {
-                this.attributes.add(new ODataProductAttribute(name, attributes.get(name)));
-            }
+
+        if ( product.getAttributes() != null ) {
+            product.getAttributes().forEach(attribute -> this.attributes.add(new ODataProductAttribute(attribute)));
         }
         if ( product.getVariantAttributes() != null ) {
-            product.getVariantAttributes().forEach(attribute -> this.variantAttributes.add(new ODataProductVariantAttribute(attribute)));
+            product.getVariantAttributes().forEach(attribute -> this.variantAttributes.add(new ODataProductAttribute(attribute)));
         }
         if ( product.getVariants() != null ) {
             product.getVariants().forEach(variant -> this.variants.add(new ODataProductVariant(variant)));
@@ -157,23 +152,8 @@ public class ODataProduct implements Product, Serializable {
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        if ( this.attributeMap == null ) {
-            this.attributeMap = new HashMap<>();
-            if ( this.attributes != null ) {
-                for ( ODataProductAttribute attribute : this.attributes ) {
-                    Object value;
-                    if ( attribute.getSingleValue() != null ) {
-                        value = attribute.getSingleValue();
-                    }
-                    else {
-                        value = attribute.getMultiValue();
-                    }
-                    this.attributeMap.put(attribute.getName(), value);
-                }
-            }
-        }
-        return this.attributeMap;
+    public List<ProductAttribute> getAttributes() {
+        return attributes.stream().collect(Collectors.toList());
     }
 
     public List<Promotion> getPromotions() {
@@ -190,7 +170,7 @@ public class ODataProduct implements Product, Serializable {
     }
 
     @Override
-    public List<ProductVariantAttribute> getVariantAttributes() {
+    public List<ProductAttribute> getVariantAttributes() {
         return this.variantAttributes.stream().collect(Collectors.toList());
     }
 
