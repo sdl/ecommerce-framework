@@ -1,15 +1,21 @@
 ﻿using Sdl.Web.Common.Configuration;
 using Sdl.Web.Mvc.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using SDL.ECommerce.Api;
+using SDL.ECommerce.DXA.Factories;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
     public class ResolveController : Controller
     {
+        private readonly IECommerceLinkResolver _linkResolver;
+
+        public ResolveController()
+        {
+            _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+        }
+        
         /// <summary>
         /// Resolve to product detail page or a category page and redirect to that URL
         /// </summary>
@@ -38,7 +44,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 var product = ECommerceContext.Client.DetailService.GetDetail(productId);
                 if (product != null)
                 {
-                    url = ECommerceContext.LinkResolver.GetProductDetailLink(product);
+                    url = _linkResolver.GetProductDetailLink(product);
                 }
             }
             else if (categoryId != null)
@@ -46,7 +52,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 var category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryId);
                 if (category != null)
                 {
-                    url = ECommerceContext.LinkResolver.GetCategoryLink(category);
+                    url = _linkResolver.GetCategoryLink(category);
                 }
             }
             if (url == null)

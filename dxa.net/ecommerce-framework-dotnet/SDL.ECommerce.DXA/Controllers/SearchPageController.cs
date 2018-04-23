@@ -1,8 +1,9 @@
 ﻿using Sdl.Web.Common.Logging;
 using Sdl.Web.Common.Models;
-
 using System.Collections.Generic;
 using System.Web.Mvc;
+using SDL.ECommerce.Api;
+using SDL.ECommerce.DXA.Factories;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
@@ -11,6 +12,13 @@ namespace SDL.ECommerce.DXA.Controllers
     /// </summary>
     public class SearchPageController : AbstractECommercePageController
     {
+        private readonly IECommerceLinkResolver _linkResolver;
+
+        public SearchPageController()
+        {
+            _linkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+        }
+
         /// <summary>
         /// Search triggered by the search box
         /// </summary>
@@ -67,7 +75,7 @@ namespace SDL.ECommerce.DXA.Controllers
 
             if (searchResult.RedirectLocation != null)
             {
-                return Redirect(ECommerceContext.LinkResolver.GetLocationLink(searchResult.RedirectLocation));
+                return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
             }
 
             ECommerceContext.Set(ECommerceContext.CURRENT_QUERY, query);

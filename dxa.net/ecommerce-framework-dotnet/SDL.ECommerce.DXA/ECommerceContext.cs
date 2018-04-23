@@ -70,12 +70,7 @@ namespace SDL.ECommerce.DXA
 
 
         }
-
-        /// <summary>
-        /// Link resolver for E-Commerce items
-        /// </summary>
-        public static IECommerceLinkResolver LinkResolver { get; } = new DXALinkResolver();
-
+        
         /// <summary>
         /// Create E-Commerce client for specified locale
         /// </summary>

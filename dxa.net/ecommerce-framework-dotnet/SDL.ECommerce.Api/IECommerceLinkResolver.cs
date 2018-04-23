@@ -79,15 +79,6 @@ namespace SDL.ECommerce.Api
         /// <param name="product"></param>
         /// <param name="variantAttributeId"></param>
         /// <param name="variantAttributeValueId"></param>
-        /// <returns></returns>
-        string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId);
-
-        /// <summary>
-        /// Get link to product variant page using specified variant attribute
-        /// </summary>
-        /// <param name="product"></param>
-        /// <param name="variantAttributeId"></param>
-        /// <param name="variantAttributeValueId"></param>
         /// <param name="isPrimary"></param>
         /// <returns></returns>
         string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary);

@@ -1,24 +1,22 @@
 ﻿using SDL.ECommerce.Api;
 using System;
 using System.Collections.Generic;
-
 using SDL.ECommerce.Api.Model;
 using System.Text;
+using SDL.ECommerce.DXA.Servants;
 
 namespace SDL.ECommerce.DXA
 {
-    using Servants;
-
     public class DXALinkResolver : IECommerceLinkResolver
     {
-        private ISanitizerServant _sanitizerServant;
+        private readonly ISanitizerServant _sanitizerServant;
 
         public DXALinkResolver()
         {
             _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
         }
 
-        public string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
+        public virtual string GetAbsoluteFacetLink(IFacet facet, string navigationBasePath)
         {
             string link;
             if ( facet.IsCategory )
@@ -41,7 +39,7 @@ namespace SDL.ECommerce.DXA
             return link;
         }
 
-        public string GetBreadcrumbLink(IBreadcrumb breadcrumb)
+        public virtual string GetBreadcrumbLink(IBreadcrumb breadcrumb)
         {
             if (breadcrumb.IsCategory)
             {
@@ -55,13 +53,13 @@ namespace SDL.ECommerce.DXA
             }
         }
 
-        public string GetNonContextualCategoryLink(ICategory category)
+        public virtual string GetNonContextualCategoryLink(ICategory category)
         {
             var urlPrefix = ECommerceContext.LocalizePath("/c"); // Always use the category lister path  
             return urlPrefix + GetCategoryAbsolutePath(category);
         }
 
-        public string GetCategoryLink(ICategory category)
+        public virtual string GetCategoryLink(ICategory category)
         {
             string urlPrefix = (string) ECommerceContext.Get(ECommerceContext.URL_PREFIX);
             if ( urlPrefix == null || urlPrefix.Length == 0 )
@@ -71,7 +69,7 @@ namespace SDL.ECommerce.DXA
             return urlPrefix + GetCategoryAbsolutePath(category);
         }
 
-        public string GetFacetLink(IFacet facet)
+        public virtual string GetFacetLink(IFacet facet)
         {
             string link;
             IList<FacetParameter> selectedFacets = (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS);
@@ -95,7 +93,7 @@ namespace SDL.ECommerce.DXA
             return link;
         }
 
-        public string GetFacetLink(IList<FacetParameter> selectedFacets)
+        public virtual string GetFacetLink(IList<FacetParameter> selectedFacets)
         {
             if (selectedFacets == null || selectedFacets.Count == 0) { return ""; }
             StringBuilder sb = new StringBuilder();
@@ -120,7 +118,7 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        public string GetLocationLink(ILocation location)
+        public virtual string GetLocationLink(ILocation location)
         {
             if (location == null) { return ""; }
             if (location.StaticUrl != null)
@@ -153,7 +151,7 @@ namespace SDL.ECommerce.DXA
             return link.ToString();
         }
 
-        public string GetProductVariantDetailLink(IProduct product)
+        public virtual string GetProductVariantDetailLink(IProduct product)
         {
             string productId;
             if ( product.VariantId != null )
@@ -167,7 +165,7 @@ namespace SDL.ECommerce.DXA
             return GetProductDetailLink(productId, product.Name);
         }
 
-        public string GetProductDetailLink(IProduct product)
+        public virtual string GetProductDetailLink(IProduct product)
         {
             return GetProductDetailLink(product.Id, product.Name);
         }
@@ -182,20 +180,21 @@ namespace SDL.ECommerce.DXA
             {
                 // Generate a SEO friendly URL
                 //
-                String seoName = productName.ToLower().
-                                             Replace("'", "").
-                                             Replace("--", "");
-                return ECommerceContext.LocalizePath("/p/") + _sanitizerServant.SanitizedUrlString(seoName) + "/" + productId;
+                return ECommerceContext.LocalizePath("/p/") + SanitizeUrlSegment(productName) + "/" + productId;
             }
             return ECommerceContext.LocalizePath("/p/") + productId;
         }
 
-        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId)
+        protected string SanitizeUrlSegment(string segment)
         {
-            return GetProductDetailVariantLink(product, variantAttributeId, variantAttributeValueId);
+            var seoSegment = segment.ToLower().
+                Replace("'", "").
+                Replace("--", "");
+
+            return _sanitizerServant.SanitizedUrlString(seoSegment);
         }
 
-        public string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
+        public virtual string GetProductDetailVariantLink(IProduct product, string variantAttributeId, string variantAttributeValueId, bool isPrimary = false)
         {
 
             String productId = product.Id;
@@ -294,8 +293,7 @@ namespace SDL.ECommerce.DXA
 
             return this.GetProductDetailLink(productId, product.Name);
         }
-
-
+        
         protected string GetCategoryAbsolutePath(ICategory category)
         {
             String path = "";
@@ -310,7 +308,6 @@ namespace SDL.ECommerce.DXA
 
         protected string GetAddFacetLink(IFacet facet, IList<FacetParameter> selectedFacets)
         {
-
             StringBuilder sb = new StringBuilder();
             bool firstParam = true;
             bool foundFacet = false;
@@ -400,9 +397,8 @@ namespace SDL.ECommerce.DXA
             return sb.ToString();
         }
 
-        protected static string GetFacetUrl(IFacet facet)
+        protected string GetFacetUrl(IFacet facet)
         {
-
             // TODO: This is already done by the FacetParameter class...
 
             String name = facet.Id;
@@ -440,4 +436,3 @@ namespace SDL.ECommerce.DXA
         }
     }
 }
- 
