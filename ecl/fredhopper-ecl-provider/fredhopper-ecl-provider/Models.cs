@@ -1,9 +1,6 @@
 ﻿using SDL.ECommerce.Ecl;
 using System.Collections.Generic;
-using System.Web;
 using SDL.Fredhopper.Ecl.FredhopperWS;
-using java.util;
-using System;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -57,7 +54,7 @@ namespace SDL.Fredhopper.Ecl
             this.modelMappings = modelMappings;
             foreach ( var attribute in this.fhItem.attribute )
             {
-                if ( attribute.value.Length == 0 )
+                if ( attribute.isnull || (attribute.value?.Length ?? 0) == 0 )
                 {
                     continue;
                 }
