@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Net;
 using System.Security;
+using System.Collections.Generic;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -106,13 +107,22 @@ namespace SDL.Fredhopper.Ecl
             var productCatalog = CreateProductCatalog();
             FredhopperProduct product = (FredhopperProduct) productCatalog.GetProduct("008010231960");
             Console.WriteLine("Product Name: " + product.Name);
-            Console.WriteLine("Product Thumbnail URL: " + product.Thumbnail.Url);
-            Console.WriteLine("Product Thumbnail MIME: " + product.Thumbnail.Mime);
+            Console.WriteLine("Product Thumbnail URL: " + product.Thumbnail?.Url);
+            Console.WriteLine("Product Thumbnail MIME: " + product.Thumbnail?.Mime);
             Console.WriteLine("Description:" + SecurityElement.Escape(product.Description));         
             Console.WriteLine("Price: " + product.Price);
             foreach ( var attribute in product.AdditionalAttributes )
             {
-                Console.WriteLine(attribute.Key.Substring(0,1).ToUpper() + attribute.Key.Substring(1) + ": " + attribute.Value);
+                var key = attribute.Key.Substring(0, 1).ToUpper() + attribute.Key.Substring(1);
+
+                if (attribute.Value is List<string>)
+                {
+                    Console.WriteLine(key + ": \n\t" + string.Join("\n\t", attribute.Value as List<string>));
+                }
+                else
+                {
+                    Console.WriteLine(key + ": " + attribute.Value);
+                }
             }
         }
 
