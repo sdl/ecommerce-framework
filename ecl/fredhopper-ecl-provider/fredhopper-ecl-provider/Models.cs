@@ -1,10 +1,14 @@
 ﻿using SDL.ECommerce.Ecl;
 using System.Collections.Generic;
 using SDL.Fredhopper.Ecl.FredhopperWS;
+using System.Security;
 
 namespace SDL.Fredhopper.Ecl
 {
     
+    /// <summary>
+    /// Fredhopper Category
+    /// </summary>
     public class FredhopperCategory : Category
     {
 
@@ -35,10 +39,10 @@ namespace SDL.Fredhopper.Ecl
         }
           
     }
-    
-
-    // TODO: Use model mappings to expose configured values to CME
   
+    /// <summary>
+    /// Fredhopper Product
+    /// </summary>
     public class FredhopperProduct : Product
     {
         private item fhItem;
@@ -46,7 +50,6 @@ namespace SDL.Fredhopper.Ecl
         private IDictionary<string, object> additionalAttributes = null;
         private IDictionary<string, string> modelMappings;
         private ProductImage productThumbnail = null;
-        private IList<string> categories = null;
 
         public FredhopperProduct(item fhItem, IDictionary<string,string> modelMappings)
         {
@@ -60,29 +63,18 @@ namespace SDL.Fredhopper.Ecl
                 }
                 var name = attribute.name;
                 object value;
-                if ( attribute.basetype == attributeTypeFormat.set || attribute.basetype == attributeTypeFormat.list )
+                if ( attribute.basetype == attributeTypeFormat.set || attribute.basetype == attributeTypeFormat.list || attribute.basetype == attributeTypeFormat.cat )
                 {
-                    List<string> valueList = new List<string>();
+                    List<ProductAttributeValue> valueList = new List<ProductAttributeValue>();
                     foreach ( var attrValue in attribute.value )
                     {
-                        valueList.Add(attrValue.Value);
+                        valueList.Add(new ProductAttributeValue { Value = attrValue.nonml, PresentationValue = attrValue.Value });
                     }
                     value = valueList;
-                }
-                else if ( attribute.basetype == attributeTypeFormat.cat )
-                {
-                    name = "categoryId";
-                    List<string> valueList = new List<string>();
-                    foreach (var attrValue in attribute.value)
-                    {
-                        valueList.Add(attrValue.nonml);
-                    }
-                    value = valueList;
-                    this.categories = valueList;
                 }
                 else
                 {
-                    value = attribute.value[0].Value;
+                    value = new ProductAttributeValue { Value = attribute.value[0].nonml, PresentationValue = attribute.value[0].Value };
                 }
                 if (!attributes.ContainsKey(name))
                 {
@@ -92,22 +84,22 @@ namespace SDL.Fredhopper.Ecl
                 {
                     // Merge the values into one list
                     //
-                    var valueList = attributes[name] as List<string>;
+                    var valueList = attributes[name] as List<ProductAttributeValue>;
                     if (valueList == null)
                     {
-                        var singleValue = (string)attributes[name];
-                        valueList = new List<string>();
+                        var singleValue = (ProductAttributeValue) attributes[name];
+                        valueList = new List<ProductAttributeValue>();
                         valueList.Add(singleValue);
                         attributes.Remove(name);
                         attributes.Add(name, valueList);
                     }
-                    if (value.GetType() == typeof(List<string>))
+                    if (value.GetType() == typeof(List<ProductAttributeValue>))
                     {
-                        valueList.AddRange((List<string>)value);
+                        valueList.AddRange((List<ProductAttributeValue>)value);
                     }
                     else
                     {
-                        valueList.Add((string)value);
+                        valueList.Add((ProductAttributeValue)value);
                     }
                 }
                
@@ -155,7 +147,7 @@ namespace SDL.Fredhopper.Ecl
         {
             get
             {
-                return GetModelAttributeValue("price");
+                return GetModelAttributeValue("price", false);
             }
         }
 
@@ -186,15 +178,7 @@ namespace SDL.Fredhopper.Ecl
             }
         }
 
-        public IList<string> Categories
-        {
-            get
-            {
-                return this.categories;
-            }
-        }
-
-        private string GetModelAttributeValue(string name)
+        private string GetModelAttributeValue(string name, bool usePresentationValue = true)
         {
             string fhAttribute;
             this.modelMappings.TryGetValue(name, out fhAttribute);
@@ -205,24 +189,42 @@ namespace SDL.Fredhopper.Ecl
                 this.attributes.TryGetValue(fhAttribute, out fhValue);
                 if ( fhValue != null )
                 {
-                    if (fhValue.GetType() == typeof(string))
+                    ProductAttributeValue value = null;
+                    if (fhValue.GetType() == typeof(ProductAttributeValue))
                     {
-                        fhStringValue = (string)fhValue;
+                        value = (ProductAttributeValue) fhValue;
                     }
-                    else if (fhValue.GetType() == typeof(List<string>))
+                    else if (fhValue.GetType() == typeof(List<ProductAttributeValue>))
                     {
-                        List<string> list = (List<string>)fhValue;
+                        List<ProductAttributeValue> list = (List<ProductAttributeValue>) fhValue;
                         if (list.Count > 0)
                         {
                             // Pick the first value
-                            fhStringValue = list[0];
+                            value = list[0];
                         }
+                    }
+                    if ( value != null )
+                    {
+                        return usePresentationValue == true ? value.PresentationValue : value.Value;
                     }
                 }           
             }
-            return fhStringValue;
+            return null;
         }
 
+    }
+
+    public class ProductAttributeValue
+    {
+        public string Value { get; set; }
+        public string PresentationValue { get; set; }
+
+        public string ToXml()
+        {
+            return
+                "<Value>" + Value + "</Value>" +
+                "<PresentationValue>" + SecurityElement.Escape(PresentationValue) + "</PresentationValue>";
+        }
     }
    
   
