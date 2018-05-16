@@ -2,6 +2,7 @@ package com.sdl.ecommerce.fredhopper;
 
 import com.sdl.ecommerce.api.*;
 import com.sdl.ecommerce.api.model.Product;
+import com.sdl.ecommerce.fredhopper.model.PredefinedModelAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class FredhopperDetailService implements ProductDetailService {
             // Fallback on variant ID
             //
             Map<String,String> modelMappings = getProductModelMappings(localizationService);
-            String variantId = modelMappings.get("variantId");
+            String variantId = modelMappings.get(PredefinedModelAttributes.variantId.name());
             if ( variantId != null ) {
                 LOG.debug("Falling back on detail variant ID...");
                 result = this.fredhopperClient.getDetailViaAttribute(variantId,

@@ -213,8 +213,7 @@ public class AggregatedJsonVariantBuilder implements ProductVariantBuilder {
 
         // Remove the JSON attribute from the result
         //
-        product.getAttributes().remove(this.aggregatedVariantAttributeName);
-
+        product.removeAttribute(this.aggregatedVariantAttributeName);
     }
 
     /**

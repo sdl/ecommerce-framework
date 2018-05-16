@@ -4,10 +4,12 @@ import com.fredhopper.webservice.client.Attribute;
 import com.fredhopper.webservice.client.Item;
 import com.sdl.ecommerce.api.LocalizationService;
 import com.sdl.ecommerce.api.model.*;
+import com.sdl.ecommerce.api.model.impl.GenericProductAttribute;
 import com.sdl.ecommerce.fredhopper.FredhopperLinkManager;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -121,17 +123,35 @@ public class FredhopperProduct implements Product {
     @Override
     public List<ProductAttribute> getAttributes() {
         List<ProductAttribute> fullList = this.attributes;
-        List<ProductAttribute> listExcludedModelMappedAttributes = new ArrayList<>();
+        List<ProductAttribute> processedAttributes = new ArrayList<>();
+
         for ( ProductAttribute attribute : fullList ) {
-            if ( !this.modelMappings.containsValue(attribute.getId()) ) {
-                listExcludedModelMappedAttributes.add(attribute);
+            String modelAttributeName = getModelAttributeMapping(attribute.getId());
+            if ( modelAttributeName != null ) {
+                if ( !PredefinedModelAttributes.isDefined(modelAttributeName) ) {
+                    ProductAttribute mappedProductAttribute =
+                            new GenericProductAttribute(modelAttributeName, attribute.getName(), attribute.getValues());
+                    processedAttributes.add(mappedProductAttribute);
+                }
+            }
+            else {
+                processedAttributes.add(attribute);
             }
         }
-        return listExcludedModelMappedAttributes;
+        return processedAttributes;
     }
 
     public void setAttributes(List<ProductAttribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public void removeAttribute(String attributeName) {
+        for ( ProductAttribute attribute : this.attributes ) {
+            if ( attribute.getId().equals(attributeName) ) {
+                this.attributes.remove(attribute);
+                break;
+            }
+        }
     }
 
     @Override
@@ -206,5 +226,15 @@ public class FredhopperProduct implements Product {
             }
         }
         return fredhopperStringValue;
+    }
+
+    private String getModelAttributeMapping(String fhName) {
+        for ( String modelName : this.modelMappings.keySet() ) {
+            String mappedFredhopperName = this.modelMappings.get(modelName);
+            if ( mappedFredhopperName.equals(fhName) ) {
+                return modelName;
+            }
+        }
+        return null;
     }
 }
