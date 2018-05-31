@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
@@ -208,6 +210,20 @@ namespace SDL.ECommerce.Ecl
 
         public byte[] GetThumbnailImage(IEclUri eclUri, int maxWidth, int maxHeight)
         {
+            if ( eclUri.ItemType == EclItemTypes.File && eclUri.SubType.Equals("product") )
+            {
+                string productId = eclUri.ItemId;
+                Product product = EclProvider.ProductCatalog.GetProduct(productId, eclUri.PublicationId);
+                if (product.Thumbnail != null)
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        Stream stream = new MemoryStream(webClient.DownloadData(product.Thumbnail.Url));
+                        stream.Position = 0;
+                        return EclProvider.HostServices.CreateThumbnailImage(maxWidth, maxHeight, stream, null);
+                    }
+                }
+            }
             return null;
         }
 
