@@ -15,8 +15,16 @@ public enum PredefinedModelAttributes {
     primaryImageUrl;
 
     static boolean isDefined(String attributeValue) {
-        return Arrays.stream(PredefinedModelAttributes.values())
-                .anyMatch(value -> value.name().equals(attributeValue));
+        // As DXA 1.x us using Spring 3.1 we can't use JDK8 features.
+        //
+        //return Arrays.stream(PredefinedModelAttributes.values())
+        //        .anyMatch(value -> value.name().equals(attributeValue));
+        for ( PredefinedModelAttributes value : PredefinedModelAttributes.values() ) {
+            if ( value.name().equals(attributeValue) ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
