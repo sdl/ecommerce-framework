@@ -78,11 +78,10 @@ namespace SDL.ECommerce.Ecl
         /// <returns></returns>
         public override string GetDirectLinkToPublished(IList<ITemplateAttribute> attributes)
         {
-            if ( this.product.Thumbnail != null )
-            {
-                return this.product.Thumbnail.Url;
-            }
-            return null;
+            // Return a E-Com FW specific URI to the product. This can be used to resolve to
+            // concrete site URLs to product detail pages (for example via an custom RTF processor).
+            //
+            return "ecom:product:" + this.product.Id + ":uri";
         }
 
         /// <summary>
