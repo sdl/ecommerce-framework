@@ -87,11 +87,14 @@ namespace SDL.ECommerce.Ecl
 
                         // TODO: Can we somehow build up a structure here instead???
                         // TODO: Have a hook for providers to hook in their variant on the listing here???
-         
-                        var allCategories = EclProvider.GetAllCategories(parentFolderUri.PublicationId);
-                        foreach ( var category in allCategories )
+
+                        if (itemTypes.HasFlag(EclItemTypes.File))
                         {
-                            items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, category));
+                            var allCategories = EclProvider.GetAllCategories(parentFolderUri.PublicationId);
+                            foreach (var category in allCategories)
+                            {
+                                items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, category));
+                            }
                         }
                     }
                 }
