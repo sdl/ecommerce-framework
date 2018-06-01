@@ -55,33 +55,35 @@ namespace SDL.ECommerce.Rest.Service
                 category = GetCategoryFromService(id);
                 ICategory currentParent = rootCategory;
                 var parentIds = ((Category)category).ParentIds;
-
-                foreach (var parentId in parentIds)
+                if (parentIds != null)
                 {
-                    var parent = GetCategoryById(parentId, currentParent.Categories);
-                    if (parent == null)
+                    foreach (var parentId in parentIds)
                     {
-                        // If something has changed with the category tree since last cache update
-                        //
-                        LoadCategories(currentParent);
-                        parent = GetCategoryById(parentId, currentParent.Categories);
+                        var parent = GetCategoryById(parentId, currentParent.Categories);
                         if (parent == null)
                         {
-                            throw new Exception("Inconsistent data returned from single category request and category tree requests.");
+                            // If something has changed with the category tree since last cache update
+                            //
+                            LoadCategories(currentParent);
+                            parent = GetCategoryById(parentId, currentParent.Categories);
+                            if (parent == null)
+                            {
+                                throw new Exception("Inconsistent data returned from single category request and category tree requests.");
+                            }
                         }
-                    }
-                    currentParent = parent;
-                    if (parent.Categories == null)
-                    {
-                        LoadCategories(parent);
-                    }
+                        currentParent = parent;
+                        if (parent.Categories == null)
+                        {
+                            LoadCategories(parent);
+                        }
 
-                    // If last item in the list -> Use that as parent reference for the current category
-                    //
-                    if (parentIds.IndexOf(parentId) == parentIds.Count - 1)
-                    {
-                        ((Category)category).SetParent(parent);
-                        LoadCategories(category);
+                        // If last item in the list -> Use that as parent reference for the current category
+                        //
+                        if (parentIds.IndexOf(parentId) == parentIds.Count - 1)
+                        {
+                            ((Category)category).SetParent(parent);
+                            LoadCategories(category);
+                        }
                     }
                 }
             }
