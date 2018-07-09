@@ -12,5 +12,6 @@
         public string PreviousUrl { get; set; }
         public string FirstUrl { get; set; }
         public string LastUrl { get; set; }
+        public int TotalCount { get; set; }
     }
 }
