@@ -186,7 +186,10 @@
     <Compile Include="Customizations\Sdl\LocalizationCustomization.cs" />
     <Compile Include="Customizations\Sdl\PageModelCustomization.cs" />
     <Compile Include="DependencyTestProvider.cs" />
+    <Compile Include="Dxa\Controllers\BaseEComWidgetController_Test.cs" />
     <Compile Include="Dxa\Controllers\CategoryPageController_Test.cs" />
+    <Compile Include="Dxa\Fakes\FakeBaseEcomWidgetController.cs" />
+    <Compile Include="Dxa\Fakes\FakeECommerceClient.cs" />
     <Compile Include="Dxa\Controllers\ProductPageController_Test.cs" />
     <Compile Include="Dxa\Factories\DependencyFactory_Test.cs" />
     <Compile Include="Dxa\Providers\DependencyResolverProvider_Test.cs" />

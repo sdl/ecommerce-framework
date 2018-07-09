@@ -24,13 +24,16 @@ namespace SDL.ECommerce.DXA.Controllers
         //
         private string _clientType =  WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
 
+        private IECommerceClient _eCommerceClient;
+
         protected BaseEComWidgetController()
         {
             LinkResolver = DependencyFactory.Current.Resolve<IECommerceLinkResolver>();
+            _eCommerceClient = DependencyFactory.Current.Resolve<IECommerceClient>();
         }
 
         protected IECommerceLinkResolver LinkResolver { get; }
-        
+
         /// <summary>
         /// Product Detail
         /// </summary>
@@ -102,7 +105,7 @@ namespace SDL.ECommerce.DXA.Controllers
             if ( widget.CategoryReference != null )
             {
                 var category = ResolveCategory(widget.CategoryReference);
-                queryResult = ECommerceContext.Client.QueryService.Query(new Api.Model.Query { Category = category });
+                queryResult = _eCommerceClient.QueryService.Query(new Api.Model.Query { Category = category });
             }
             else
             {
@@ -359,15 +362,15 @@ namespace SDL.ECommerce.DXA.Controllers
             ICategory category = null;
             if ( categoryReference.CategoryPath != null )
             {
-                category = ECommerceContext.Client.CategoryService.GetCategoryByPath(categoryReference.CategoryPath);
+                category = _eCommerceClient.CategoryService.GetCategoryByPath(categoryReference.CategoryPath);
             }
             else if ( categoryReference.CategoryId != null )
             {
-                category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryId);
+                category = _eCommerceClient.CategoryService.GetCategoryById(categoryReference.CategoryId);
             }
             else if ( categoryReference.CategoryRef != null )
             {
-                category = ECommerceContext.Client.CategoryService.GetCategoryById(categoryReference.CategoryRef.ExternalId);
+                category = _eCommerceClient.CategoryService.GetCategoryById(categoryReference.CategoryRef.ExternalId);
             }
             return category;
         }
@@ -423,7 +426,10 @@ namespace SDL.ECommerce.DXA.Controllers
             int startIndex = result.StartIndex;
             int currentSet = result.CurrentSet;
 
-            lister.NavigationData = new ListerNavigationData();
+            lister.NavigationData = new ListerNavigationData 
+            {
+                TotalCount = totalCount
+            };
 
             int viewSets = 1;
             if (totalCount > viewSize)
