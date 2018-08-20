@@ -1,12 +1,9 @@
 ﻿namespace SDL.ECommerce.UnitTests
 {
-    using System;
-
     using Ploeh.AutoFixture;
     using Ploeh.AutoFixture.AutoNSubstitute;
 
     using SDL.ECommerce.UnitTests.Customizations;
-    using SDL.ECommerce.UnitTests.Customizations.Sdl;
 
     public abstract class Test
     {
