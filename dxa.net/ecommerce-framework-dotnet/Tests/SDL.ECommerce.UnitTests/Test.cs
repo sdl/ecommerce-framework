@@ -15,8 +15,7 @@
         protected Test()
         {
             Fixture = new Fixture().Customize(new AutoNSubstituteCustomization())
-                                   .Customize(new MvcCustomization())
-                                   .Customize(new SdlCustomizations());
+                                   .Customize(new MvcCustomization());
         }
     }
 

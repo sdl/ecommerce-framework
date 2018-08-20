@@ -214,8 +214,6 @@
   <ItemGroup>
     <Compile Include="Api\UnitTests.cs" />
     <Compile Include="Customizations\MvcCustomization.cs" />
-    <Compile Include="Customizations\Sdl\LocalizationCustomization.cs" />
-    <Compile Include="Customizations\Sdl\PageModelCustomization.cs" />
     <Compile Include="DependencyTestProvider.cs" />
     <Compile Include="Dxa\Controllers\BaseEComWidgetController_Test.cs" />
     <Compile Include="Dxa\Controllers\CategoryPageController_Test.cs" />
@@ -226,7 +224,6 @@
     <Compile Include="Dxa\Providers\DependencyResolverProvider_Test.cs" />
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
     <Compile Include="Dxa\Servants\PageModelServant_Test.cs" />
-    <Compile Include="Customizations\Sdl\SdlCustomizations.cs" />
     <Compile Include="Dxa\Servants\PathServant_Test.cs" />
     <Compile Include="Dxa\Servants\SanitizerConfiguration_Test.cs" />
     <Compile Include="Dxa\Servants\SanitizerServant_Test.cs" />
