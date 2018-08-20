@@ -63,7 +63,6 @@ namespace SDL.ECommerce.OData
     {
         private readonly Func<Type, object> dependencies;
         private readonly IServiceConfiguration serviceConfiguration;
-        private IECommerceODataV4Service odataService;
         private IProductCategoryService categoryService;
         private IProductQueryService queryService;
         private IProductDetailService detailService;
