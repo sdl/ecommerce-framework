@@ -176,7 +176,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 widget.CategoryReference.Category = ResolveCategory(widget.CategoryReference);
                 if (widget.CategoryReference.Category != null)
                 {
-                    var cachedData = useDxaCaching ? null : this.GetCachedFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId);
+                    var cachedData = useDxaCaching ? null : this.GetCachedFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.Id);
                     if (cachedData == null)
                     {
                         var queryResult = ECommerceContext.Client.QueryService.Query(
@@ -194,7 +194,7 @@ namespace SDL.ECommerce.DXA.Controllers
                                 FacetGroups = queryResult.FacetGroups.ToList(),
                                 Promotions = queryResult.Promotions.ToList()
                             };
-                            this.CacheFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.LocalizationId, cachedData);
+                            this.CacheFlyoutData(widget.CategoryReference.Category.Id, WebRequestContext.Localization.Id, cachedData);
                         }
                         else
                         {
