@@ -224,6 +224,7 @@
     <Compile Include="ECommerceContext.cs" />
     <Compile Include="ECommerceControllerRegistration.cs" />
     <Compile Include="Factories\DependencyFactory.cs" />
+    <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Models\ECommerceFilterAttribute.cs" />
     <Compile Include="Providers\DependencyResolverProvider.cs" />
     <Compile Include="Servants\HttpContextServant.cs" />
