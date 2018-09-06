@@ -1,4 +1,4 @@
-﻿namespace SDL.ECommerce.DXA.Servants
+﻿namespace SDL.ECommerce.Formatting.Servants
 {
     public interface ISanitizerServant
     {

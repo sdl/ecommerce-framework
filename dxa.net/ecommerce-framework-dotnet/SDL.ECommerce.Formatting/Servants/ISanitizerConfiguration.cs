@@ -1,4 +1,4 @@
-﻿namespace SDL.ECommerce.DXA.Servants
+﻿namespace SDL.ECommerce.Formatting.Servants
 {
     using System.Collections.Generic;
 

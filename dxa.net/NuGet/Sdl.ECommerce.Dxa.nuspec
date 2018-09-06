@@ -19,6 +19,7 @@
   </metadata>
   <files>
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Dxa.dll" target="lib\net452" />
+	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Formatting.dll" target="lib\net452" />
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Api.dll" target="lib\net452" />
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.OData.dll" target="lib\net452" />
 	<file src="SDL.ECommerce.Dxa\bin\SDL.ECommerce.Rest.dll" target="lib\net452" />
