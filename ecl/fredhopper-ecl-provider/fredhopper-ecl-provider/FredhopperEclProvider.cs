@@ -5,7 +5,7 @@ using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.Fredhopper.Ecl
 {
-    [AddIn("Fredhopper-ECL-Provider", Version = "1.2.0.2")]
+    [AddIn("Fredhopper-ECL-Provider", Version = "1.2.0.3")]
     public class FredhopperEclProvider : EclProvider
     {
 
@@ -14,9 +14,9 @@ namespace SDL.Fredhopper.Ecl
             return new FredhopperProductCatalog(configuration);
         }
 
-        public override IContentLibraryContext CreateContext(IEclSession tridionUser)
+        public override IContentLibraryContext CreateContext(IEclSession session)
         {
-            return new FredhopperMountpoint();
+            return new FredhopperMountpoint(session);
         }
     }
 }
