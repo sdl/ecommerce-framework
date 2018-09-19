@@ -1,8 +1,8 @@
-﻿namespace SDL.ECommerce.UnitTests.Dxa.Servants
+﻿namespace SDL.ECommerce.UnitTests.Formatting.Servants
 {
-    using DXA.Servants;
-    using Xunit;
     using System.Collections.Generic;
+    using ECommerce.Formatting.Servants;
+    using Xunit;
 
     public class SanitizerConfiguration_Test
     {

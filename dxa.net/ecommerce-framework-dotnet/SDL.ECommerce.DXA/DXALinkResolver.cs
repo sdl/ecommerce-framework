@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using SDL.ECommerce.Api.Model;
 using System.Text;
-using SDL.ECommerce.DXA.Servants;
+using System.Linq;
+using SDL.ECommerce.Formatting.Servants;
 
 namespace SDL.ECommerce.DXA
 {
-    using System.Linq;
-
     public class DXALinkResolver : IECommerceLinkResolver
     {
         private readonly ISanitizerServant _sanitizerServant;

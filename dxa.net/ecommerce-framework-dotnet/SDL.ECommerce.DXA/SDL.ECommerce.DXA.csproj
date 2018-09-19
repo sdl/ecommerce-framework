@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -244,12 +244,8 @@
     <Compile Include="Servants\IHttpContextServant.cs" />
     <Compile Include="Servants\IPageModelServant.cs" />
     <Compile Include="Servants\IPathServant.cs" />
-    <Compile Include="Servants\ISanitizerConfiguration.cs" />
-    <Compile Include="Servants\ISanitizerServant.cs" />
     <Compile Include="Servants\PageModelServant.cs" />
     <Compile Include="Servants\PathServant.cs" />
-    <Compile Include="Servants\SanitizerConfiguration.cs" />
-    <Compile Include="Servants\SanitizerServant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -267,6 +263,10 @@
     <ProjectReference Include="..\SDL.ECommerce.Api\SDL.ECommerce.Api.csproj">
       <Project>{1030d0f7-9334-4864-b495-540e3ad7928c}</Project>
       <Name>SDL.ECommerce.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL.ECommerce.Formatting\SDL.ECommerce.Formatting.csproj">
+      <Project>{e2beacd6-4a49-43b4-8e84-2dc4df9a4690}</Project>
+      <Name>SDL.ECommerce.Formatting</Name>
     </ProjectReference>
     <ProjectReference Include="..\SDL.ECommerce.OData\SDL.ECommerce.OData.csproj">
       <Project>{f5434b12-5f20-48df-8b17-a6c2a1345ba9}</Project>

@@ -225,9 +225,9 @@
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
     <Compile Include="Dxa\Servants\PageModelServant_Test.cs" />
     <Compile Include="Dxa\Servants\PathServant_Test.cs" />
-    <Compile Include="Dxa\Servants\SanitizerConfiguration_Test.cs" />
-    <Compile Include="Dxa\Servants\SanitizerServant_Test.cs" />
     <Compile Include="FixtureExtensions.cs" />
+    <Compile Include="Formatting\Servants\SanitizerConfiguration_Test.cs" />
+    <Compile Include="Formatting\Servants\SanitizerServant_Test.cs" />
     <Compile Include="MultipleAssertTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
@@ -241,6 +241,10 @@
     <ProjectReference Include="..\..\SDL.ECommerce.DXA\SDL.ECommerce.DXA.csproj">
       <Project>{1d5a79d3-8870-410d-99fd-5d54601e19b5}</Project>
       <Name>SDL.ECommerce.DXA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDL.ECommerce.Formatting\SDL.ECommerce.Formatting.csproj">
+      <Project>{e2beacd6-4a49-43b4-8e84-2dc4df9a4690}</Project>
+      <Name>SDL.ECommerce.Formatting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
