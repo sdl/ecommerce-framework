@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Caching;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.ECommerce.Ecl
@@ -12,6 +13,14 @@ namespace SDL.ECommerce.Ecl
     /// </summary>
     abstract public class Mountpoint : IContentLibraryContext
     {
+
+        protected IEclSession session;
+
+        protected Mountpoint(IEclSession session)
+        {
+            this.session = session;
+        }
+
         public bool CanGetUploadMultimediaItemsUrl(int publicationId)
         {
             return true;
@@ -38,6 +47,7 @@ namespace SDL.ECommerce.Ecl
                 foreach (var product in result.Products)
                 {
                     items.Add(this.CreateProductItem(contextUri.PublicationId, null, product));
+                    AddProductToCache(product);
                 }
             }
             return EclProvider.HostServices.CreateFolderContent(contextUri, pageIndex, result.NumberOfPages, items, CanGetUploadMultimediaItemsUrl(contextUri.PublicationId), CanSearch(contextUri.PublicationId));
@@ -123,6 +133,7 @@ namespace SDL.ECommerce.Ecl
                                 foreach (var product in result.Products)
                                 {
                                     items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
+                                    AddProductToCache(product);
                                 }
                             }
                         }
@@ -145,12 +156,13 @@ namespace SDL.ECommerce.Ecl
 
         public IContentLibraryItem GetItem(IEclUri eclUri)
         {
+            // TODO: Can we find out if this is within a lister request or not????
             if (eclUri.ItemType == EclItemTypes.File )
             {
                 if ( eclUri.SubType.Equals("product") )
                 {
                     string productId = eclUri.ItemId;
-                    return this.CreateProductItem(eclUri.PublicationId, null, EclProvider.ProductCatalog.GetProduct(productId, eclUri.PublicationId));
+                    return this.CreateProductItem(eclUri.PublicationId, null, GetProductFromCacheOrCatalog(productId, eclUri.PublicationId));
                 }
                 else // selectable category
                 {
@@ -216,8 +228,9 @@ namespace SDL.ECommerce.Ecl
             if ( eclUri.ItemType == EclItemTypes.File && eclUri.SubType.Equals("product") )
             {
                 string productId = eclUri.ItemId;
-                Product product = EclProvider.ProductCatalog.GetProduct(productId, eclUri.PublicationId);
-                if (product.Thumbnail != null)
+                Product product = GetProductFromCacheOrCatalog(productId, eclUri.PublicationId);
+             
+                if (product != null && product.Thumbnail != null)
                 {
                     using (WebClient webClient = new WebClient())
                     {
@@ -260,6 +273,43 @@ namespace SDL.ECommerce.Ecl
 
         public void Dispose()
         {
+        }
+
+        protected void AddProductToCache(Product product)
+        {
+            MemoryCache.Default.Add(GetCacheKey(product.Id), new CachedProduct { Product = product }, DateTime.Now.AddSeconds(60));
+        }
+
+        protected Product GetProductFromCacheOrCatalog(string productId, int publicationId)
+        {
+            Product product = null; 
+            var cachedProduct = (CachedProduct) MemoryCache.Default.Get(GetCacheKey(productId));
+            if (cachedProduct != null)
+            {
+                cachedProduct.Requested++;
+                if (cachedProduct.Requested > 2)
+                {
+                    // Cached product can be requested twice: once for the list build + get the thumbnail
+                    // This to force a full read of the product when requesting the properties view of the product (which needs the full product information).
+                    //
+                    MemoryCache.Default.Remove(GetCacheKey(productId));
+                }
+                else
+                {
+                    product = cachedProduct.Product;
+                }
+            }
+            if (product == null)
+            {
+                product = EclProvider.ProductCatalog.GetProduct(productId, publicationId);
+            }
+            return product;
+           
+        }
+
+        private string GetCacheKey(string productId)
+        {
+            return session.TridionUser.Id + ":" + productId;
         }
     }
 }

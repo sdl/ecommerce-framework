@@ -152,7 +152,7 @@ namespace SDL.ECommerce.Ecl
         /// <returns></returns>
         protected abstract ProductCatalog CreateProductCatalog(XElement configuration);
 
-        public abstract IContentLibraryContext CreateContext(IEclSession tridionUser);
+        public abstract IContentLibraryContext CreateContext(IEclSession session);
 
         public IList<IDisplayType> DisplayTypes
         {
