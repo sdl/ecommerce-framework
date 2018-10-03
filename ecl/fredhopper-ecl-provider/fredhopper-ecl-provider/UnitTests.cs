@@ -62,7 +62,7 @@ namespace SDL.Fredhopper.Ecl
         }
 
         [TestMethod]
-        public void TestGetCategory()
+        public void TestGetProductsUnderCategory()
         {           
             var productCatalog = CreateProductCatalog();
             var result = productCatalog.GetProducts("catalog01_18661_17638", 0);
@@ -86,6 +86,15 @@ namespace SDL.Fredhopper.Ecl
             var result = productCatalog.GetProducts("catalog01_18661", 0);
             Console.WriteLine("Total number of products: " + result.Total);
             Console.WriteLine("Number of result pages: " + result.NumberOfPages);
+        }
+
+        [TestMethod]
+        public void TestGetCategory()
+        {
+            var productCatalog = CreateProductCatalog();
+            var category = productCatalog.GetCategory("catalog01_18664");
+            Console.WriteLine("Category Title: " + category.Title);
+            Console.WriteLine("Category Parent ID: " + category.Parent.CategoryId);
         }
 
         [TestMethod]
@@ -115,13 +124,25 @@ namespace SDL.Fredhopper.Ecl
             {
                 var key = attribute.Key.Substring(0, 1).ToUpper() + attribute.Key.Substring(1);
 
-                if (attribute.Value is List<string>)
+                if (attribute.Value is List<ProductAttributeValue>)
                 {
-                    Console.WriteLine(key + ": \n\t" + string.Join("\n\t", attribute.Value as List<string>));
+                    Console.WriteLine(key + ":");
+                    foreach (var attrValue in attribute.Value as List<ProductAttributeValue>)
+                    {
+                        Console.WriteLine("  " + attrValue.PresentationValue);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine(key + ": " + attribute.Value);
+                    Console.WriteLine(key + ": " + ((ProductAttributeValue) attribute.Value).PresentationValue);
+                }
+            }
+            if (product.Categories != null)
+            {
+                Console.WriteLine("Categories:");
+                foreach (var category in product.Categories)
+                {
+                    Console.WriteLine("  " + category.Title + " (" + category.CategoryId + ")");
                 }
             }
         }

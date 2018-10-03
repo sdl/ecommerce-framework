@@ -16,6 +16,7 @@ namespace SDL.ECommerce.Ecl
         string Id { get; }
         string Name { get; }
         ProductImage Thumbnail { get; }
+        IList<Category> Categories { get; }
     }
 
     public interface ProductImage

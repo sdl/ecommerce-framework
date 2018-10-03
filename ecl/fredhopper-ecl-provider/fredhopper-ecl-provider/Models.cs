@@ -49,6 +49,7 @@ namespace SDL.Fredhopper.Ecl
         private IDictionary<string, object> attributes = new Dictionary<string,object>();
         private IDictionary<string, object> additionalAttributes = null;
         private IDictionary<string, string> modelMappings;
+        private IList<Category> categories = new List<Category>();
         private ProductImage productThumbnail = null;
 
         public FredhopperProduct(item fhItem, IDictionary<string,string> modelMappings)
@@ -69,6 +70,12 @@ namespace SDL.Fredhopper.Ecl
                     foreach ( var attrValue in attribute.value )
                     {
                         valueList.Add(new ProductAttributeValue { Value = attrValue.nonml, PresentationValue = attrValue.Value });
+                        if (attribute.basetype == attributeTypeFormat.cat)
+                        {
+                            // Create category from the attribute
+                            //
+                            categories.Add(new FredhopperCategory(attrValue.nonml, attrValue.Value, null));
+                    }
                     }
                     value = valueList;
                 }
@@ -175,6 +182,14 @@ namespace SDL.Fredhopper.Ecl
                     }
                 }             
                 return this.additionalAttributes;
+            }
+        }
+
+        public IList<Category> Categories
+        {
+            get
+            {
+                return categories;
             }
         }
 

@@ -56,6 +56,7 @@ namespace SDL.ECommerce.Ecl
         public IList<IContentLibraryListItem> FindItem(IEclUri eclUri)
         {
             // return null so we force it to call GetItem(IEclUri)
+            //
             return null;
         }
 
@@ -156,7 +157,6 @@ namespace SDL.ECommerce.Ecl
 
         public IContentLibraryItem GetItem(IEclUri eclUri)
         {
-            // TODO: Can we find out if this is within a lister request or not????
             if (eclUri.ItemType == EclItemTypes.File )
             {
                 if ( eclUri.SubType.Equals("product") )
@@ -184,6 +184,10 @@ namespace SDL.ECommerce.Ecl
                     if ( categoryId == null )
                     {
                         throw new Exception("Undefined category for ECL URI: " + eclUri);
+                    }
+                    if (categoryId.Equals("0")) // If root category -> return the 'Products' type folder
+                    {
+                        return new TypeItem(eclUri.PublicationId, "Products");
                     }
                     var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
                     if ( category == null )
