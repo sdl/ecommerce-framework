@@ -16,7 +16,10 @@ Param(
     [string]$exampleViewsVersion = "0.0.1",
 
     [Parameter(Mandatory=$false, HelpMessage="Sdl.Dxa.Modules.Navigation version.")]
-    [string]$modulesNavigationVersion = "0.0.1"
+    [string]$modulesNavigationVersion = "0.0.1",
+	
+	[Parameter(Mandatory=$false, HelpMessage="Sdl.ECommerce.Formatting version.")]
+    [string]$formattingVersion = "0.0.1"
 )
 
 $ErrorActionPreference = 'Stop';
@@ -44,3 +47,4 @@ $nuGetFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "packages") -Filter "n
 & $nuGetFile.FullName pack 'Sdl.ECommerce.Dxa.nuspec' -version $dxaVersion -basepath $basePath -outputdirectory $outputDirectory
 & $nuGetFile.FullName pack 'Sdl.ECommerce.Example.Views.nuspec' -version $exampleViewsVersion -basepath $basePath -outputdirectory $outputDirectory
 & $nuGetFile.FullName pack 'Sdl.Dxa.Modules.Navigation.nuspec' -version $modulesNavigationVersion -basepath $basePath -outputdirectory $outputDirectory
+& $nuGetFile.FullName pack 'Sdl.ECommerce.Formatting.nuspec' -version $formattingVersion -basepath $basePath -outputdirectory $outputDirectory
