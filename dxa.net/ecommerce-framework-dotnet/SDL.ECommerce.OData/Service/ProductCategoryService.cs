@@ -1,5 +1,6 @@
 ﻿using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Api.Service;
+using SDL.ECommerce.Formatting.Servants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,20 @@ namespace SDL.ECommerce.OData
         private ECommerceClient ecommerceClient;
 
         private int categoryExpiryTimeout = 3600000; // TODO: Have this configurable
+        private bool useSanitizedPathNames = false;
         private ICategory rootCategory = new Category();
+        private readonly ISanitizerServant _sanitizerServant;
 
         /// <summary>
         /// Constructor (only availably internally)
         /// </summary>
         /// <param name="service"></param>
-        internal ProductCategoryService(ECommerceClient ecommerceClient)
+        internal ProductCategoryService(ECommerceClient ecommerceClient, bool useSanitizedPathNames)
         {
             this.ecommerceClient = ecommerceClient;
-            this.GetTopLevelCategories();
+            this.useSanitizedPathNames = useSanitizedPathNames;
+            _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
+            this.GetTopLevelCategories();            
         }
 
         /// <summary>
@@ -168,6 +173,12 @@ namespace SDL.ECommerce.OData
                 else
                 {
                     ((Category)category).SetParent(parent);
+
+                    if (this.useSanitizedPathNames)
+                    {
+                        ((Category)category).SanitizedPathName = SanitizePathName(category.PathName);
+                    }
+
                     newCategoryList.Add(category);
                 }
             }
@@ -177,6 +188,16 @@ namespace SDL.ECommerce.OData
                 ((Category) parent).SetCategories(newCategoryList, (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond) + categoryExpiryTimeout);
             }
                   
+        }
+
+        /// <summary>
+        /// Sanitize a path name
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        private string SanitizePathName(string pathName)
+        {
+            return _sanitizerServant.SanitizedUrlString(pathName);
         }
 
         /// <summary>
@@ -225,9 +246,19 @@ namespace SDL.ECommerce.OData
         {
             foreach (var category in categories)
             {
-                if (category.PathName.Equals(pathName))
+                if (this.useSanitizedPathNames)
                 {
-                    return category;
+                    if (category.SanitizedPathName != null && category.SanitizedPathName.Equals(pathName))
+                    {
+                        return category;
+                    }
+                }
+                else
+                {
+                    if (category.PathName.Equals(pathName))
+                    {
+                        return category;
+                    }
                 }
             }
             return null;

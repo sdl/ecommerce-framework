@@ -17,6 +17,7 @@ namespace SDL.ECommerce.Rest.Model
         public string Id { get; set; }
         public string Name { get; set; }      
         public string PathName { get; set; }
+        public string SanitizedPathName { get; set; }
         public List<string> ParentIds { get; set; }
 
         IList<ICategory> ICategory.Categories

@@ -33,6 +33,7 @@ namespace SDL.ECommerce.DXA
         private static readonly IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
 
         private const int DEFAULT_CATEGORY_EXPIRY_TIMEOUT = 3600000;
+        private const bool DEFAULT_CATEGORY_USE_SANITIZED_PATHNAMES = false;
 
 
         /// <summary>
@@ -82,16 +83,18 @@ namespace SDL.ECommerce.DXA
             var clientType = WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
             var categoryExpiryTimeoutStr = WebConfigurationManager.AppSettings["ecommerce-category-expiry-timeout"];
             int categoryExpiryTimeout = categoryExpiryTimeoutStr != null ? int.Parse(categoryExpiryTimeoutStr) : DEFAULT_CATEGORY_EXPIRY_TIMEOUT;
+            var useSanitizedPathNamesStr = WebConfigurationManager.AppSettings["ecommerce-category-use-sanitized-pathnames"];
+            bool useSanitizedPathNames = useSanitizedPathNamesStr != null ? bool.Parse(useSanitizedPathNamesStr) : DEFAULT_CATEGORY_USE_SANITIZED_PATHNAMES;
 
             if (clientType.Equals("odata"))
             {
                 // TODO: Get token service data here as well
-                return new OData.ECommerceClient(endpointAddress, locale, DependencyResolver.Current.GetService);
+                return new OData.ECommerceClient(endpointAddress, locale, useSanitizedPathNames, DependencyResolver.Current.GetService);
             }
 
             if (clientType.Equals("rest"))
             {
-                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout, DependencyResolver.Current.GetService);
+                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout, useSanitizedPathNames, DependencyResolver.Current.GetService);
             }
 
             throw new DxaException("Invalid client type configured for the E-Commerce service: " + clientType);

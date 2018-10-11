@@ -89,6 +89,10 @@
       <Project>{1030d0f7-9334-4864-b495-540e3ad7928c}</Project>
       <Name>SDL.ECommerce.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SDL.ECommerce.Formatting\SDL.ECommerce.Formatting.csproj">
+      <Project>{e2beacd6-4a49-43b4-8e84-2dc4df9a4690}</Project>
+      <Name>SDL.ECommerce.Formatting</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
