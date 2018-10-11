@@ -12,6 +12,7 @@ namespace SDL.ECommerce.Rest
         private readonly RestClient restClient;
         private readonly IECommerceCacheProvider cacheProvider;
         private readonly int categoryExpiryTimeout;
+        private readonly bool useSanitizedPathNames;
 
         private IProductCategoryService categoryService;
         private IProductDetailService productDetailService;
@@ -23,11 +24,13 @@ namespace SDL.ECommerce.Rest
                                string locale, 
                                IECommerceCacheProvider cacheProvider,
                                int categoryExpiryTimeout,
+                               bool useSanitizedPathNames,
                                Func<Type, object> dependencies = null)
         {
             this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
+            this.useSanitizedPathNames = useSanitizedPathNames;
             this.dependencies = dependencies;
         }
 
@@ -49,7 +52,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( categoryService == null )
                 {
-                    categoryService = Resolve<IProductCategoryService>() ?? new ProductCategoryService(this.restClient, this.categoryExpiryTimeout); 
+                    categoryService = Resolve<IProductCategoryService>() ?? new ProductCategoryService(this.restClient, this.categoryExpiryTimeout, this.useSanitizedPathNames); 
                 }
                 return categoryService;
             }

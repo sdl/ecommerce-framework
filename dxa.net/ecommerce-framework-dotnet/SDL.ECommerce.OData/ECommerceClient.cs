@@ -68,6 +68,7 @@ namespace SDL.ECommerce.OData
         private IProductDetailService detailService;
         private ICartService cartService;
         private IEditService editService;
+        private readonly bool useSanitizedPathNames;
 
         /// <summary>
         /// Constructor
@@ -77,7 +78,8 @@ namespace SDL.ECommerce.OData
         /// <param name="dependencies">Optional list of dependencies.</param>
         public ECommerceClient(
             string endpointAddress, 
-            string locale, 
+            string locale,
+            bool useSanitizedPathNames,
             Func<Type, object> dependencies = null)
         {
             this.serviceConfiguration = new SimpleServiceConfiguration
@@ -86,6 +88,7 @@ namespace SDL.ECommerce.OData
                                                 Timeout = 1000
                                             };
 
+            this.useSanitizedPathNames = useSanitizedPathNames;
             this.dependencies = dependencies;
         }
         
@@ -98,7 +101,7 @@ namespace SDL.ECommerce.OData
             {
                 if (categoryService == null)
                 {
-                    categoryService = this.Resolve<IProductCategoryService>() ?? new ProductCategoryService(this);
+                    categoryService = this.Resolve<IProductCategoryService>() ?? new ProductCategoryService(this, this.useSanitizedPathNames);
                 }
 
                 return categoryService;

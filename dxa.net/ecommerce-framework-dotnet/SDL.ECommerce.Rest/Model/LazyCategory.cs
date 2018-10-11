@@ -61,5 +61,13 @@ namespace SDL.ECommerce.Rest.Model
                 return GetCategory().PathName;
             }
         }
+
+        public string SanitizedPathName
+        {
+            get
+            {
+                return GetCategory().SanitizedPathName;
+            }
+        }
     }
 }

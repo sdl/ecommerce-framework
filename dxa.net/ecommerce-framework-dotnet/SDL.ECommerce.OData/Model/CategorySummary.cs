@@ -21,5 +21,7 @@ namespace SDL.ECommerce.OData
                 throw new NotImplementedException();
             }
         }
+
+        public string SanitizedPathName { get; set; }
     }
 }
