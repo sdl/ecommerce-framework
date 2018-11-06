@@ -74,6 +74,7 @@
     <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\QuerySuggestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestClientFactory.cs" />
     <Compile Include="Service\CartService.cs" />
     <Compile Include="Service\EditService.cs" />
     <Compile Include="Service\ProductCategoryService.cs" />

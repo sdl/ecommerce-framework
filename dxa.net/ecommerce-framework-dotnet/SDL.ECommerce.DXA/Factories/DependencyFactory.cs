@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
-
+    using Rest;
     using SDL.ECommerce.Api;
     using SDL.ECommerce.DXA.Providers;
     using SDL.ECommerce.DXA.Servants;
@@ -22,7 +22,8 @@
                                            { typeof(IECommerceLinkResolver), new Lazy<IECommerceLinkResolver>(() => TryResolveDependency<IECommerceLinkResolver>() ?? new DXALinkResolver()) },
                                            { typeof(IHttpContextServant), new Lazy<IHttpContextServant>(() => TryResolveDependency<IHttpContextServant>() ?? new HttpContextServant()) },
                                            { typeof(IPageModelServant), new Lazy<IPageModelServant>(() => TryResolveDependency<IPageModelServant>() ?? new PageModelServant()) },
-                                           { typeof(IPathServant), new Lazy<IPathServant>(() => TryResolveDependency<IPathServant>() ?? new PathServant()) }
+                                           { typeof(IPathServant), new Lazy<IPathServant>(() => TryResolveDependency<IPathServant>() ?? new PathServant()) },
+                                           { typeof(RestClientFactory), new Lazy<RestClientFactory>(() => TryResolveDependency<RestClientFactory>() ?? new RestClientFactory()) }
                                    };
 
             var dependency = dependencies[typeof(T)];
