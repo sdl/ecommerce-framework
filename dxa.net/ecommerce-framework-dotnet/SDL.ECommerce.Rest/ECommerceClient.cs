@@ -9,7 +9,7 @@ namespace SDL.ECommerce.Rest
     public class ECommerceClient : IECommerceClient
     {
         private readonly Func<Type, object> dependencies;
-        private readonly RestClient restClient;
+        private readonly IRestClient restClient;
         private readonly IECommerceCacheProvider cacheProvider;
         private readonly int categoryExpiryTimeout;
         private readonly bool useSanitizedPathNames;

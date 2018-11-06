@@ -1,9 +1,6 @@
 ﻿using SDL.ECommerce.Api.Service;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using SDL.ECommerce.Rest.Model;
@@ -18,10 +15,10 @@ namespace SDL.ECommerce.Rest.Service
     class ProductQueryService : IProductQueryService
     {
 
-        private RestClient restClient;
+        private IRestClient restClient;
         private IECommerceCacheProvider cacheProvider;
 
-        public ProductQueryService(RestClient restClient, IECommerceCacheProvider cacheProvider)
+        public ProductQueryService(IRestClient restClient, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
             this.cacheProvider = cacheProvider;

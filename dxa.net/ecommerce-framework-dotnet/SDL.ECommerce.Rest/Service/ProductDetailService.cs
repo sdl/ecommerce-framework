@@ -6,8 +6,6 @@ using SDL.ECommerce.Rest.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL.ECommerce.Rest.Service
 {
@@ -16,11 +14,11 @@ namespace SDL.ECommerce.Rest.Service
     /// </summary>
     public class ProductDetailService : IProductDetailService
     {
-        private RestClient restClient;
+        private IRestClient restClient;
         private IProductCategoryService productCategoryService;
         private IECommerceCacheProvider cacheProvider;
 
-        public ProductDetailService(RestClient restClient, IProductCategoryService productCategoryService, IECommerceCacheProvider cacheProvider)
+        public ProductDetailService(IRestClient restClient, IProductCategoryService productCategoryService, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
             this.productCategoryService = productCategoryService;

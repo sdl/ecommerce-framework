@@ -5,7 +5,6 @@ using System.Linq;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using SDL.ECommerce.Rest.Model;
-using SDL.ECommerce.Api;
 using SDL.ECommerce.Formatting.Servants;
 
 namespace SDL.ECommerce.Rest.Service
@@ -15,13 +14,13 @@ namespace SDL.ECommerce.Rest.Service
     /// </summary>
     class ProductCategoryService : IProductCategoryService
     {
-        private RestClient restClient;
+        private IRestClient restClient;
         private int categoryExpiryTimeout = 3600000;
         private bool useSanitizedPathNames = false;
         private ICategory rootCategory = new Category();
         private readonly ISanitizerServant _sanitizerServant;
 
-        public ProductCategoryService(RestClient restClient, int categoryExpiryTimeout, bool useSanitizedPathNames) 
+        public ProductCategoryService(IRestClient restClient, int categoryExpiryTimeout, bool useSanitizedPathNames) 
         {
             this.restClient = restClient;
             this.useSanitizedPathNames = useSanitizedPathNames;
