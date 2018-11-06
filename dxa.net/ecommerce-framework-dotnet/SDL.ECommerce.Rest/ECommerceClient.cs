@@ -27,11 +27,16 @@ namespace SDL.ECommerce.Rest
                                bool useSanitizedPathNames,
                                Func<Type, object> dependencies = null)
         {
-            this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
+            this.dependencies = dependencies;
+            
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
             this.useSanitizedPathNames = useSanitizedPathNames;
-            this.dependencies = dependencies;
+
+            restClient = new RestClient(endpointAddress + "/rest/v1/" + locale)
+            {
+                Proxy = Resolve<RestClientProxy>()?.Proxy
+            };
         }
 
         public ICartService CartService
