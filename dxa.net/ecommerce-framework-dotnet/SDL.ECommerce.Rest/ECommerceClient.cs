@@ -9,7 +9,7 @@ namespace SDL.ECommerce.Rest
     public class ECommerceClient : IECommerceClient
     {
         private readonly Func<Type, object> dependencies;
-        private readonly RestClient restClient;
+        private readonly IRestClient restClient;
         private readonly IECommerceCacheProvider cacheProvider;
         private readonly int categoryExpiryTimeout;
         private readonly bool useSanitizedPathNames;
@@ -27,11 +27,14 @@ namespace SDL.ECommerce.Rest
                                bool useSanitizedPathNames,
                                Func<Type, object> dependencies = null)
         {
-            this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
+            this.dependencies = dependencies;
+            
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
             this.useSanitizedPathNames = useSanitizedPathNames;
-            this.dependencies = dependencies;
+
+            var restClientFactory = Resolve<RestClientFactory>() ?? new RestClientFactory();
+            restClient = restClientFactory.CreateClient(endpointAddress, locale);
         }
 
         public ICartService CartService
