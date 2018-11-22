@@ -168,6 +168,13 @@ namespace SDL.ECommerce.Ecl
                 {
                     string categoryId = eclUri.ItemId;
                     var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
+                    if (category == null)
+                    {
+                        // Category could not be found. It has either been removed from the external system, but references might still
+                        // exists in Tridion. In that case we need to be able to return a dummy category item.
+                        //
+                        category = new DummyCategory(categoryId);
+                    }
                     return new SelectableCategoryItem(eclUri.PublicationId, category);
                 }
             }
@@ -306,6 +313,13 @@ namespace SDL.ECommerce.Ecl
             if (product == null)
             {
                 product = EclProvider.ProductCatalog.GetProduct(productId, publicationId);
+                if (product == null)
+                {
+                    // Product could not be found. It has either been removed from the external system, but references might still
+                    // exists in Tridion. In that case we need to be able to return a dummy product item.
+                    //
+                    return new DummyProduct(productId);
+                }
             }
             return product;
            

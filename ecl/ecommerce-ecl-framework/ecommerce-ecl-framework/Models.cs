@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 
 namespace SDL.ECommerce.Ecl
@@ -11,12 +12,85 @@ namespace SDL.ECommerce.Ecl
         IList<Category> Categories { get; }
     }
 
+    public class DummyCategory : Category
+    {
+        public DummyCategory(string categoryId)
+        {
+            CategoryId = categoryId;
+        }
+
+        public IList<Category> Categories
+        {
+            get
+            {
+                return new List<Category>();
+            }
+        }
+
+        public string CategoryId
+        {
+            get; internal set;
+        }
+
+        public Category Parent
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return "Category Not Found";
+            }
+        }
+    }
+
     public interface Product
     {
         string Id { get; }
         string Name { get; }
         ProductImage Thumbnail { get; }
         IList<Category> Categories { get; }
+    }
+
+    public class DummyProduct : Product
+    {
+        public DummyProduct(string id)
+        {
+            Id = id;
+        }
+        public IList<Category> Categories
+        {
+            get
+            {
+                return new List<Category>();
+            }
+        }
+
+        public string Id
+        {
+            get; internal set;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return "Product Not Found";
+            }
+        }
+
+        public ProductImage Thumbnail
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 
     public interface ProductImage
