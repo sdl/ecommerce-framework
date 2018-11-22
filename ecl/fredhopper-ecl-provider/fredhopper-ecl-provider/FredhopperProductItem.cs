@@ -11,31 +11,34 @@ namespace SDL.Fredhopper.Ecl
 
         protected override void GetMetadata(Dictionary<string, object> metadata)
         {
-            var fhProduct = (FredhopperProduct) this.product;
-            metadata.Add("Description", SecurityElement.Escape(fhProduct.Description));
-            metadata.Add("Price", fhProduct.Price);
-            foreach (var attribute in fhProduct.AdditionalAttributes)
+            if (this.product is FredhopperProduct)
             {
-                var name = getSchemaAttributeName(attribute.Key) + "__xml"; // Indicate that the value is a xml string
+                var fhProduct = (FredhopperProduct)this.product;
+                metadata.Add("Description", SecurityElement.Escape(fhProduct.Description));
+                metadata.Add("Price", fhProduct.Price);
+                foreach (var attribute in fhProduct.AdditionalAttributes)
+                {
+                    var name = getSchemaAttributeName(attribute.Key) + "__xml"; // Indicate that the value is a xml string
 
-                object value = null;
-                if (attribute.Value.GetType() == typeof(ProductAttributeValue))
-                {
-                    var attributeValue = (ProductAttributeValue) attribute.Value;
-                    value = attributeValue.ToXml(); ;
+                    object value = null;
+                    if (attribute.Value.GetType() == typeof(ProductAttributeValue))
+                    {
+                        var attributeValue = (ProductAttributeValue)attribute.Value;
+                        value = attributeValue.ToXml(); ;
+                    }
+                    else if (attribute.Value.GetType() == typeof(List<ProductAttributeValue>))
+                    {
+                        var attributeList = (List<ProductAttributeValue>)attribute.Value;
+                        var xmlList = new List<string>();
+                        attributeList.ForEach(val => xmlList.Add(val.ToXml()));
+                        value = xmlList;
+                    }
+
+                    if (value != null)
+                    {
+                        metadata.Add(name, value);
+                    }
                 }
-                else if (attribute.Value.GetType() == typeof(List<ProductAttributeValue>))
-                {
-                    var attributeList = (List<ProductAttributeValue>)attribute.Value;
-                    var xmlList = new List<string>();
-                    attributeList.ForEach(val => xmlList.Add(val.ToXml()));
-                    value = xmlList;
-                }
-               
-                if (value != null)
-                {
-                    metadata.Add(name, value);
-                }              
             }
         }
 
@@ -43,7 +46,7 @@ namespace SDL.Fredhopper.Ecl
         {
             schema.Fields.Add(EclProvider.HostServices.CreateMultiLineTextFieldDefinition("Description", "Description", 0, 1, 7));
             schema.Fields.Add(EclProvider.HostServices.CreateSingleLineTextFieldDefinition("Price", "Price", 0, 1));
-            var fhProduct = (FredhopperProduct) this.product;
+           
 
             var attributeValueField = EclProvider.HostServices.CreateFieldGroupDefinition("ProductAttributeValue", "Attribute Value", 0, null);
             var attributeValueFields = new List<IFieldDefinition>
@@ -51,21 +54,25 @@ namespace SDL.Fredhopper.Ecl
                 EclProvider.HostServices.CreateSingleLineTextFieldDefinition("Value", "Value", 0, 1),
                 EclProvider.HostServices.CreateSingleLineTextFieldDefinition("PresentationValue", "Presentation Value", 0, 1)
             };
-            
-            foreach ( var attribute in fhProduct.AdditionalAttributes )
+
+            if (this.product is FredhopperProduct)
             {
-                var name = getSchemaAttributeName(attribute.Key);
-                if (attribute.Value.GetType() == typeof(ProductAttributeValue) )
+                var fhProduct = (FredhopperProduct)this.product;
+                foreach (var attribute in fhProduct.AdditionalAttributes)
                 {
-                    var field = EclProvider.HostServices.CreateFieldGroupDefinition(name, name, 0, 1);
-                    attributeValueFields.ForEach(f => field.Fields.Add(f));
-                    schema.Fields.Add(field);                      
-                }
-                else if ( attribute.Value.GetType() == typeof(List<ProductAttributeValue>))
-                {
-                    var field = EclProvider.HostServices.CreateFieldGroupDefinition(name, name, 0, null);
-                    attributeValueFields.ForEach(f => field.Fields.Add(f));
-                    schema.Fields.Add(field);
+                    var name = getSchemaAttributeName(attribute.Key);
+                    if (attribute.Value.GetType() == typeof(ProductAttributeValue))
+                    {
+                        var field = EclProvider.HostServices.CreateFieldGroupDefinition(name, name, 0, 1);
+                        attributeValueFields.ForEach(f => field.Fields.Add(f));
+                        schema.Fields.Add(field);
+                    }
+                    else if (attribute.Value.GetType() == typeof(List<ProductAttributeValue>))
+                    {
+                        var field = EclProvider.HostServices.CreateFieldGroupDefinition(name, name, 0, null);
+                        attributeValueFields.ForEach(f => field.Fields.Add(f));
+                        schema.Fields.Add(field);
+                    }
                 }
             }
         }
