@@ -47,7 +47,7 @@ namespace SDL.ECommerce.IntegrationTests.Rest
                 var locale = TestContext.Properties["Locale"] as string;
                 return new ECommerceClient(endpointAddress, locale);
                 */
-                return new ECommerceClient("http://preview:8097/ecommerce.svc", "en-US", new DummyCacheProvider(), 3600000);
+                return new ECommerceClient("http://preview:8097/ecommerce.svc", "en-US", new DummyCacheProvider(), 3600000, false);
             }
         }
 

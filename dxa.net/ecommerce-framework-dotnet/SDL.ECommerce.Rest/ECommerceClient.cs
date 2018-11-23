@@ -9,9 +9,10 @@ namespace SDL.ECommerce.Rest
     public class ECommerceClient : IECommerceClient
     {
         private readonly Func<Type, object> dependencies;
-        private readonly RestClient restClient;
+        private readonly IRestClient restClient;
         private readonly IECommerceCacheProvider cacheProvider;
         private readonly int categoryExpiryTimeout;
+        private readonly bool useSanitizedPathNames;
 
         private IProductCategoryService categoryService;
         private IProductDetailService productDetailService;
@@ -23,12 +24,17 @@ namespace SDL.ECommerce.Rest
                                string locale, 
                                IECommerceCacheProvider cacheProvider,
                                int categoryExpiryTimeout,
+                               bool useSanitizedPathNames,
                                Func<Type, object> dependencies = null)
         {
-            this.restClient = new RestClient(endpointAddress + "/rest/v1/" + locale);
+            this.dependencies = dependencies;
+            
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
-            this.dependencies = dependencies;
+            this.useSanitizedPathNames = useSanitizedPathNames;
+
+            var restClientFactory = Resolve<RestClientFactory>() ?? new RestClientFactory();
+            restClient = restClientFactory.CreateClient(endpointAddress, locale);
         }
 
         public ICartService CartService
@@ -49,7 +55,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( categoryService == null )
                 {
-                    categoryService = Resolve<IProductCategoryService>() ?? new ProductCategoryService(this.restClient, this.categoryExpiryTimeout); 
+                    categoryService = Resolve<IProductCategoryService>() ?? new ProductCategoryService(this.restClient, this.categoryExpiryTimeout, this.useSanitizedPathNames); 
                 }
                 return categoryService;
             }

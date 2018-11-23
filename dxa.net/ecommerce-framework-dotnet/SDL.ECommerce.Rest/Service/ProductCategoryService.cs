@@ -5,7 +5,7 @@ using System.Linq;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using SDL.ECommerce.Rest.Model;
-using SDL.ECommerce.Api;
+using SDL.ECommerce.Formatting.Servants;
 
 namespace SDL.ECommerce.Rest.Service
 {
@@ -14,15 +14,19 @@ namespace SDL.ECommerce.Rest.Service
     /// </summary>
     class ProductCategoryService : IProductCategoryService
     {
-        private RestClient restClient;
-        private int categoryExpiryTimeout = 3600000; 
+        private IRestClient restClient;
+        private int categoryExpiryTimeout = 3600000;
+        private bool useSanitizedPathNames = false;
         private ICategory rootCategory = new Category();
+        private readonly ISanitizerServant _sanitizerServant;
 
-        public ProductCategoryService(RestClient restClient, int categoryExpiryTimeout) 
+        public ProductCategoryService(IRestClient restClient, int categoryExpiryTimeout, bool useSanitizedPathNames) 
         {
             this.restClient = restClient;
+            this.useSanitizedPathNames = useSanitizedPathNames;
+            _sanitizerServant = new SanitizerServant(new SanitizerConfiguration());
             this.GetTopLevelCategories();
-            this.categoryExpiryTimeout = categoryExpiryTimeout;
+            this.categoryExpiryTimeout = categoryExpiryTimeout;            
         }
 
         /// <summary>
@@ -163,6 +167,12 @@ namespace SDL.ECommerce.Rest.Service
                 else
                 {
                     ((Category)category).SetParent(parent);
+
+                    if (this.useSanitizedPathNames)
+                    {
+                        ((Category)category).SanitizedPathName = SanitizePathName(category.PathName);
+                    }
+
                     newCategoryList.Add(category);
                 }
             }
@@ -172,6 +182,16 @@ namespace SDL.ECommerce.Rest.Service
                 ((Category)parent).SetCategories(newCategoryList, (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond) + categoryExpiryTimeout);
             }
 
+        }
+
+        /// <summary>
+        /// Sanitize a path name
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        private string SanitizePathName(string pathName)
+        {
+            return _sanitizerServant.SanitizedUrlString(pathName);
         }
 
         /// <summary>
@@ -248,9 +268,19 @@ namespace SDL.ECommerce.Rest.Service
         {
             foreach (var category in categories)
             {
-                if (category.PathName.Equals(pathName))
+                if (this.useSanitizedPathNames)
                 {
-                    return category;
+                    if (category.SanitizedPathName != null && category.SanitizedPathName.Equals(pathName))
+                    {
+                        return category;
+                    }
+                }
+                else
+                {
+                    if (category.PathName.Equals(pathName))
+                    {
+                        return category;
+                    }
                 }
             }
             return null;

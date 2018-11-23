@@ -1,9 +1,6 @@
 ﻿using SDL.ECommerce.Api.Service;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using Newtonsoft.Json;
@@ -14,9 +11,9 @@ namespace SDL.ECommerce.Rest.Service
 {
     public class CartService : ICartService
     {
-        private RestClient restClient;
+        private IRestClient restClient;
 
-        public CartService(RestClient restClient)
+        public CartService(IRestClient restClient)
         {
             this.restClient = restClient;
         }

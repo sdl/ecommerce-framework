@@ -25,7 +25,7 @@ namespace SDL.ECommerce.IntegrationTests.OData
             {
                 var endpointAddress = TestContext.Properties["EndpointAddress"] as string;
                 var locale = TestContext.Properties["Locale"] as string;
-                return new ECommerceClient(endpointAddress, locale);
+                return new ECommerceClient(endpointAddress, locale, false);
             }
         }
 

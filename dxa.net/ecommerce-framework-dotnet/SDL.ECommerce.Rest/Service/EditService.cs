@@ -1,9 +1,4 @@
 ﻿using SDL.ECommerce.Api.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SDL.ECommerce.Api.Model;
 using RestSharp;
 using Newtonsoft.Json;
@@ -14,10 +9,10 @@ namespace SDL.ECommerce.Rest.Service
 {
     class EditService : IEditService
     {
-        private RestClient restClient;
+        private IRestClient restClient;
         private IECommerceCacheProvider cacheProvider;
 
-        public EditService(RestClient restClient, IECommerceCacheProvider cacheProvider)
+        public EditService(IRestClient restClient, IECommerceCacheProvider cacheProvider)
         {
             this.restClient = restClient;
             this.cacheProvider = cacheProvider;
