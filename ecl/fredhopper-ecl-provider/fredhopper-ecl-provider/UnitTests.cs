@@ -22,20 +22,28 @@ namespace SDL.Fredhopper.Ecl
         private ProductCatalog CreateProductCatalog()
         {
             var endpointAddress = TestContext.Properties["EndpointAddress"];
-            
-            return new FredhopperProductCatalog(
-                XElement.Parse(
-                    "<Configuration xmlns=\"http://sdl.com/ecl/ecommerce\">" +
-                    "<EndpointAddress>" + endpointAddress + "</EndpointAddress>" +
+            var username = TestContext.Properties["UserName"];
+            var password = TestContext.Properties["Password"];
+
+            var configXml = "<Configuration xmlns=\"http://sdl.com/ecl/ecommerce\">" +
+                    "<EndpointAddress>" + endpointAddress + "</EndpointAddress>";
+            if (username != null && password != null)
+            {
+                configXml += "<UserName>" + username + "</UserName>" +
+                             "<Password>" + password + "</Password>";
+            }
+            configXml +=
                     "<MaxItems>100</MaxItems>" +
                     "<CategoryMaxDepth>3</CategoryMaxDepth>" +
                     "<PublicationConfigurations>" +
                     "  <PublicationConfiguration publicationIds = \"1,2,3\" fallback=\"true\">" +
                     "    <Locale>en-GB</Locale>" +
                     "    <Universe>catalog01</Universe>" +
-                    "    <ModelMappings>name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl</ModelMappings>" + 
+                    "    <ModelMappings>name=name;description=description;price=price;thumbnailUrl=_thumburl;primaryImageUrl=_imageurl</ModelMappings>" +
                     "  </PublicationConfiguration>" +
-                    "</PublicationConfigurations></Configuration>"));
+                    "</PublicationConfigurations></Configuration>";
+
+            return new FredhopperProductCatalog(XElement.Parse(configXml));
         }
 
         [TestMethod]    

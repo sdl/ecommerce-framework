@@ -23,7 +23,9 @@ namespace SDL.Fredhopper.Ecl
         private int maxItems;
         private int categoryMaxDepth;
 
-        static int DEFAULT_MAX_RECEIVED_MESSAGE_SIZE = 1000000;
+        static int DEFAULT_MAX_ITEMS = 100;
+        static int DEFAULT_CATEGORY_MAX_DEPTH = 4;
+        static int DEFAULT_MAX_RECEIVED_MESSAGE_SIZE = 10485760;
 
         /// <summary>
         /// Constructor
@@ -32,31 +34,29 @@ namespace SDL.Fredhopper.Ecl
         public FredhopperProductCatalog(XElement configuration)
         {
             var binding = new BasicHttpBinding();
-            var maxReceivedMessageSize = configuration.Element(EclProvider.EcommerceEclNs + "MaxReceivedMessageSize");
-            if ( maxReceivedMessageSize != null )
-            {
-                binding.MaxReceivedMessageSize = Int32.Parse(maxReceivedMessageSize.Value);
-            }
-            else
-            {
-                binding.MaxReceivedMessageSize = DEFAULT_MAX_RECEIVED_MESSAGE_SIZE;
-            }
+            binding.MaxReceivedMessageSize = GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
              
-            this.maxItems = Int32.Parse(configuration.Element(EclProvider.EcommerceEclNs + "MaxItems").Value);
-            this.categoryMaxDepth = Int32.Parse(configuration.Element(EclProvider.EcommerceEclNs + "CategoryMaxDepth").Value);
+            this.maxItems = GetIntConfigurationValue(configuration, "MaxItems", DEFAULT_MAX_ITEMS);
+            this.categoryMaxDepth = GetIntConfigurationValue(configuration, "CategoryMaxDepth", DEFAULT_CATEGORY_MAX_DEPTH);
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
             if ( usernameElement != null )
             {
-                binding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
-                binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+                binding.Security = new BasicHttpSecurity
+                {
+                    Mode = BasicHttpSecurityMode.TransportCredentialOnly,
+                    Transport  = new HttpTransportSecurity
+                    {
+                        ClientCredentialType = HttpClientCredentialType.Basic
+                     }
+                };
             }
             var endpointAddress = new EndpointAddress(configuration.Element(EclProvider.EcommerceEclNs + "EndpointAddress").Value);
             this.fhClient = new FASWebServiceClient(binding, endpointAddress);
             if ( usernameElement != null )
             {
-                this.fhClient.ClientCredentials.UserName.UserName = usernameElement.Value;
-                this.fhClient.ClientCredentials.UserName.Password = passwordElement.Value;
+                this.fhClient.ChannelFactory.Credentials.UserName.UserName = usernameElement.Value;
+                this.fhClient.ChannelFactory.Credentials.UserName.Password = passwordElement.Value;
             }
 
             // TODO: How to handle creation of new publications through SiteWizard? This will require some reconfig for each publication...
@@ -339,6 +339,19 @@ namespace SDL.Fredhopper.Ecl
                 }
             }
             return null; // TODO: Throw an exception here?
+        }
+
+        private int GetIntConfigurationValue(XElement configuration, string configName, int defaultValue)
+        {
+            var value = configuration.Element(EclProvider.EcommerceEclNs + configName);
+            if (value != null)
+            {
+                return Int32.Parse(value.Value);
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
     }
 
