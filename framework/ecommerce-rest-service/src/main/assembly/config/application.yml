@@ -28,6 +28,7 @@ com.merapar.graphql:
 # Fredhopper Connector
 #
 fredhopper:
+  version: [Fredhopper version, e.g 8.5]
   queryserver:
     url: [Fredhopper URL, e.g. http://localhost:8180]
   adminserver:
