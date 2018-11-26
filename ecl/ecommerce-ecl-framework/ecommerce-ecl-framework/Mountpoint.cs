@@ -170,7 +170,7 @@ namespace SDL.ECommerce.Ecl
                     var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
                     if (category == null)
                     {
-                        // Category could not be found. It has either been removed from the external system, but references might still
+                        // Category could not be found. It has probably been removed from the external system, but references might still
                         // exists in Tridion. In that case we need to be able to return a dummy category item.
                         //
                         category = new DummyCategory(categoryId);
@@ -315,7 +315,7 @@ namespace SDL.ECommerce.Ecl
                 product = EclProvider.ProductCatalog.GetProduct(productId, publicationId);
                 if (product == null)
                 {
-                    // Product could not be found. It has either been removed from the external system, but references might still
+                    // Product could not be found. It has probably been removed from the external system, but references might still
                     // exists in Tridion. In that case we need to be able to return a dummy product item.
                     //
                     return new DummyProduct(productId);
