@@ -106,8 +106,9 @@ namespace SDL.ECommerce.DXA.Controllers
         protected ActionResult View(PageModel templatePage)
         {
             SetupViewData(templatePage);
+            ViewModel model = EnrichModel(templatePage) ?? templatePage;
             ControllerContext.RouteData.Values["controller"] = "Page";
-            return View(templatePage.MvcData.ViewName, templatePage);
+            return View(model.MvcData.ViewName, model);
         }
 
         protected int GetStartIndex()
