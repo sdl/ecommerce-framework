@@ -68,6 +68,9 @@ public class AdminProxyController {
     @Value("${fredhopper.edit.cacheDir:#{null}}")
     private String cacheDirectory;
 
+    @Value("${fredhopper.version:8.5}")
+    private double fredhopperVersion;
+
     private long sessionTimeout = 1 * 60 * 1000; // TODO: Have configurable
     private long lastAccessTime;
     private boolean isInitialized = false;
@@ -390,32 +393,93 @@ public class AdminProxyController {
 
     protected void addEditPopupJavascript(Document htmlDoc) {
 
-        htmlDoc.body().append("<script>$(document).ready(function() {\n" +
+        StringBuilder jsModifications = new StringBuilder();
 
-                // Remove buttons that does not make sense from the edit popup view
-                //
-                "    $(\".toolbar-button-container[title='Archive']\").remove();\n" +
-                "    $(\".edit .toolbarShowLabelsDropDown\").remove();\n" +
-                "    $(\".toolbar-button-container[title='Assign/remove labels']\").remove();\n" +
+        jsModifications.append("<script>$(document).ready(function() {\n");
 
-                // Add events on the save and cancel buttons to close the popup (to avoid end up in the list view)
-                //
-                "    $(\"#synonymSaveButton\").mouseup(function () {\n" +
-                "        setTimeout(function() {\n" +
-                "            window.parent.$('.mfp-close').click();\n" +
-                "        }, 250);\n" +
-                "    });\n" +
-                "    $(\"#synonymCancelButton\").mouseup(function () {\n" +
-                "        setTimeout(function() {\n" +
-                "            window.parent.$('.mfp-close').click();\n" +
-                "        }, 250);\n" +
-                "    });\n" +
-                "    $(\".toolbar-button-container[title='Delete']\").mouseup(function () {\n" +
-                "        setTimeout(function() {\n" +
-                "            window.parent.$('.mfp-close').click();\n" +
-                "        }, 250);\n" +
-                "    });\n" +
-                "});</script>");
+        if (fredhopperVersion < 8.4) {
+
+            // Remove buttons that does not make sense from the edit popup view
+            //
+            jsModifications.append(
+            "    $(\".toolbar-button-container[title='Archive']\").remove();\n" +
+            "    $(\".edit .toolbarShowLabelsDropDown\").remove();\n" +
+            "    $(\".toolbar-button-container[title='Assign/remove labels']\").remove();\n");
+
+            // Add events on the save and cancel buttons to close the popup (to avoid end up in the list view)
+            //
+            jsModifications.append(
+            "    $(\"#synonymSaveButton\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "    });\n" +
+            "    $(\"#synonymCancelButton\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "    });\n" +
+            "    $(\".toolbar-button-container[title='Delete']\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "    });\n");
+
+        }
+        else {
+
+            // Modifications for Fredhopper 8.4/8.5 GUI
+            //
+            jsModifications.append(
+            "    var tweakButtons = function() {" +
+            "      $(\".save-and-close-button\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "      });\n" +
+            "      $(\".save-button\").remove();\n" +
+            "      $(\".edit .labels-dropdown-button\").remove();\n" +
+            "      $(\".delete-button\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "      });\n" +
+            "      $(\".cancel-button\").mouseup(function () {\n" +
+            "        setTimeout(function() {\n" +
+            "            window.parent.$('.mfp-close').click();\n" +
+            "        }, 250);\n" +
+            "      });\n" +
+            "    };" +
+            "    tweakButtons();" +
+            "    var activatePressed = function() {\n" +
+            "       setTimeout(function() {\n" +
+            "           tweakButtons();\n" +
+            "           $(\".deactivate-button\").mouseup(deactivatePressed);\n" +
+            "       }, 400);\n };" +
+            "    var deactivatePressed = function() {\n" +
+            "       setTimeout(function() {\n" +
+            "           tweakButtons();\n" +
+            "           $(\".activate-button\").mouseup(activatePressed);\n" +
+            "       }, 400);\n };" +
+            "     $(\".deactivate-button\").mouseup(deactivatePressed);"
+
+            );
+
+        }
+
+        jsModifications.append("});</script>");
+        htmlDoc.body().append(jsModifications.toString());
+
+        if (fredhopperVersion >= 8.4) {
+            htmlDoc.head().append(
+                    "<style>" +
+                    " #main-container { zoom: 80%; }" +
+                    " .k-window { zoom: 80%; }" +
+                    " .k-window .wicket-modal { zoom: 100%; }" +
+                    " .wicket-modal { zoom: 80%; }" +
+                    "</style>");
+        }
+
 
     }
 
