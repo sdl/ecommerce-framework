@@ -3,12 +3,14 @@
     using Sdl.Web.Common.Logging;
 
     using System.Web.Mvc;
-
+    using Api.Model;
+    using Api.Service;
     using Sdl.Web.Common.Models;
 
     using SDL.ECommerce.Api;
     using SDL.ECommerce.DXA.Servants;
     using SDL.ECommerce.DXA.Factories;
+    using Query = Api.Model.Query;
 
     /// <summary>
     /// E-Commerce Category Page Controller
@@ -50,12 +52,13 @@
 
                 PageModelServant.SetTemplatePage(templatePage);
 
-                templatePage.Title = category.Name;
+                templatePage = EnrichPageModelWithCategoryData(templatePage, category);
 
                 SetupViewData(templatePage);
 
                 var facets = _httpContextServant.GetFacetParametersFromRequest(HttpContext);
-                var query = new Api.Model.Query
+
+                var query = new Query
                                 {
                                     Category = category,
                                     Facets = facets,
@@ -63,9 +66,10 @@
                                 };
 
                 PageModelServant.GetQueryContributions(templatePage, query);
-                var searchResult = _eCommerceClient.QueryService.Query(query);
 
-                if ( searchResult.RedirectLocation != null )
+                var searchResult = ExecuteQuery(_eCommerceClient.QueryService, query);
+
+                if (searchResult?.RedirectLocation != null)
                 {
                    return Redirect(_linkResolver.GetLocationLink(searchResult.RedirectLocation));
                 }
@@ -84,6 +88,18 @@
             }
 
             return View(templatePage);
+        }
+
+        protected virtual PageModel EnrichPageModelWithCategoryData(PageModel templatePage, ICategory category)
+        {
+            templatePage.Title = category.Name;
+
+            return templatePage;
+        }
+
+        protected virtual IProductQueryResult ExecuteQuery(IProductQueryService productQueryService, Query query)
+        {
+            return productQueryService.Query(query);
         }
     }
 }
