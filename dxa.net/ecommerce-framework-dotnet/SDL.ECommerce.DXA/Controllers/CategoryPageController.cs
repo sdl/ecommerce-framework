@@ -1,9 +1,9 @@
-﻿namespace SDL.ECommerce.DXA.Controllers
+namespace SDL.ECommerce.DXA.Controllers
 {
     using Sdl.Web.Common.Logging;
 
     using System.Web.Mvc;
-
+    using Api.Model;
     using Sdl.Web.Common.Models;
 
     using SDL.ECommerce.Api;
@@ -50,7 +50,7 @@
 
                 PageModelServant.SetTemplatePage(templatePage);
 
-                templatePage.Title = category.Name;
+                templatePage = EnrichPageModelWithCategoryData(templatePage, category);
 
                 SetupViewData(templatePage);
 
@@ -84,6 +84,13 @@
             }
 
             return View(templatePage);
+        }
+
+        protected virtual PageModel EnrichPageModelWithCategoryData(PageModel templatePage, ICategory category)
+        {
+            templatePage.Title = category.Name;
+
+            return templatePage;
         }
     }
 }
