@@ -9,6 +9,7 @@
     using SDL.ECommerce.Api;
     using SDL.ECommerce.DXA.Servants;
     using SDL.ECommerce.DXA.Factories;
+    using Sdl.Web.Mvc.Configuration;
 
     /// <summary>
     /// E-Commerce Category Page Controller
@@ -53,6 +54,7 @@
                 templatePage.Title = category.Name;
 
                 SetupViewData(templatePage);
+                WebRequestContext.PageModel = templatePage;
 
                 var facets = _httpContextServant.GetFacetParametersFromRequest(HttpContext);
                 var query = new Api.Model.Query

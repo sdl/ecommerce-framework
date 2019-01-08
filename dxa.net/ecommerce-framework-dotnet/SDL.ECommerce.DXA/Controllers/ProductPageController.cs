@@ -7,6 +7,7 @@ using SDL.ECommerce.DXA.Factories;
 using SDL.ECommerce.DXA.Servants;
 using System.Collections.Generic;
 using System.Linq;
+using Sdl.Web.Mvc.Configuration;
 
 namespace SDL.ECommerce.DXA.Controllers
 {
@@ -91,6 +92,7 @@ namespace SDL.ECommerce.DXA.Controllers
             templatePage.Title = product.Name;
             ECommerceContext.Set(ECommerceContext.PRODUCT, product);
             ECommerceContext.Set(ECommerceContext.URL_PREFIX, ECommerceContext.LocalizePath("/c"));
+            WebRequestContext.PageModel = templatePage;
             return View(templatePage);
         }
 
