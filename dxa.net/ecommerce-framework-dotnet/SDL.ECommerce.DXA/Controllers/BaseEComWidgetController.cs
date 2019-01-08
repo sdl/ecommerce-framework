@@ -105,7 +105,7 @@ namespace SDL.ECommerce.DXA.Controllers
             if ( widget.CategoryReference != null )
             {
                 var category = ResolveCategory(widget.CategoryReference);
-                queryResult = _eCommerceClient.QueryService.Query(new Api.Model.Query { Category = category });
+                queryResult = _eCommerceClient.QueryService.Query(new Api.Model.Query { Category = category, ViewSize = widget.ViewSize });
             }
             else
             {
