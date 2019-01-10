@@ -132,7 +132,7 @@ namespace SDL.ECommerce.DXA.Controllers
             using (new Tracer())
             {
                 PageModel pageModel = PageModelServant.GetNotFoundPageModel(ContentProvider);
-
+                WebRequestContext.PageModel = pageModel;
                 SetupViewData(pageModel);
                 ViewModel model = EnrichModel(pageModel) ?? pageModel;
                 Response.StatusCode = 404;
