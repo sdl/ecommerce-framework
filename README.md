@@ -1,4 +1,4 @@
-SDL Web E-Commerce Framework v1.2 RC4
+SDL Web E-Commerce Framework v1.2 RC6
 =========================================
 
 This is a framework to enable E-Commerce functionality for SDL Web.
@@ -20,6 +20,7 @@ New functionality in the v1.2 version:
 * Support for DXA caching of E-Commerce data using MemCache, REDIS etc
 * Demandware ECL connector now supports search
 * Processing of category and product links in RTF fields
+* Support for querying several categories (OR)
 
 Concepts
 ---------
