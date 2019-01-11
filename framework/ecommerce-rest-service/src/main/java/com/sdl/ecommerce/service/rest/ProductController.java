@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -41,8 +43,10 @@ public class ProductController {
     @Autowired
     private LocalizationService localizationService;
 
+    // TODO: Accept a list of categories here
     @RequestMapping("/query")
     public QueryResult query(@RequestParam(required = false) String categoryId,
+                             @RequestParam(required = false) String categoryIds,
                              @RequestParam(required = false) String searchPhrase,
                              @RequestParam(required = false) String facets,
                              @RequestParam(required = false) Integer startIndex,
@@ -55,6 +59,13 @@ public class ProductController {
         if ( categoryId != null ) {
             Category category = this.categoryService.getCategoryById(categoryId);
             query.category(category);
+        } else if (categoryIds != null) {
+            List<Category> categories = new ArrayList<>();
+            StringTokenizer tokenizer = new StringTokenizer(categoryIds, "|");
+            while (tokenizer.hasMoreTokens()) {
+                categories.add(this.categoryService.getCategoryById(tokenizer.nextToken()));
+            }
+            query.categories(categories);
         }
         if ( searchPhrase != null ) {
             query.searchPhrase(searchPhrase);
@@ -90,7 +101,6 @@ public class ProductController {
                 query.facet(facet);
             }
         }
-
 
         QueryResult queryResult = this.productQueryService.query(query);
         return new RestQueryResult(queryResult);

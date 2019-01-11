@@ -186,7 +186,11 @@ public class FredhopperClient implements FredhopperLinkManager {
             query.setSearchPhrase(eCommerceQuery.getSearchPhrase());
             query.setView(ViewType.SEARCH);
         }
-        this.buildCategoryQuery(query, eCommerceQuery.getCategory());
+        if (eCommerceQuery.getCategory() != null) {
+            this.buildCategoryQuery(query, eCommerceQuery.getCategory());
+        } else if (eCommerceQuery.getCategories() != null) {
+            this.buildCategoryOrQuery(query, eCommerceQuery.getCategories());
+        }
         this.buildFacetQuery(query, eCommerceQuery.getFacets());
 
         if ( eCommerceQuery.getStartIndex()  > 0 ) {
@@ -214,6 +218,17 @@ public class FredhopperClient implements FredhopperLinkManager {
         for ( String categoryId: categoryIds ) {
             query.getLocation().addCriterion(new CategoryCriterion("categories", categoryId));
         }
+    }
+
+    public void buildCategoryOrQuery(Query query, List<Category> categories) {
+        String categoryOrString = "";
+        for ( Category category: categories ) {
+            if (!categoryOrString.isEmpty()) {
+                categoryOrString += ",";
+            }
+            categoryOrString += category.getId();
+        }
+        query.getLocation().addCriterion(new CategoryCriterion("categories", categoryOrString));
     }
 
     public void buildFacetQuery(Query query, List<FacetParameter> facets) {

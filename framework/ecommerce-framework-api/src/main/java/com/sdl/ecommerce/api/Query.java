@@ -16,6 +16,7 @@ import java.util.List;
 public abstract class Query implements Cloneable {
 
     private Category category;
+    private List<Category> categories;
     private String searchPhrase;
     private List<FacetParameter> facets;
     private int startIndex;
@@ -33,6 +34,16 @@ public abstract class Query implements Cloneable {
      */
     public Query category(Category category) {
         this.category = category;
+        return this;
+    }
+
+    /**
+     * Set a list of categories (OR statement)
+     * @param categories
+     * @return this
+     */
+    public Query categories(List<Category> categories) {
+        this.categories = categories;
         return this;
     }
 
@@ -122,6 +133,13 @@ public abstract class Query implements Cloneable {
      */
     public Category getCategory() {
         return category;
+    }
+
+    /**
+     * @return categories
+     */
+    public List<Category> getCategories() {
+        return categories;
     }
 
     /**

@@ -225,6 +225,12 @@ public abstract class FredhopperResultBase {
             //
             if (fhCrumb.getName().getAttributeType() != null && fhCrumb.getName().getAttributeType().equals("categories")) {
                 String categoryId = fhCrumb.getName().getNonMlValue().replace("{", "").replace("}", "");
+
+                // If searching using several categories (OR) -> Skip exposing that in the breadcrumb
+                //
+                if (categoryId.contains(",")) {
+                    continue;
+                }
                 Category category = categoryService.getCategoryById(categoryId);
                 Breadcrumb breadcrumb = new GenericBreadcrumb(fhCrumb.getName().getValue(), new CategoryRef(category));
                 breadcrumbs.add(breadcrumb);
