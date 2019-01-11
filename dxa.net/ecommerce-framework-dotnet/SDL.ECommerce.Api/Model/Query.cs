@@ -18,9 +18,11 @@ namespace SDL.ECommerce.Api.Model
             ViewSize = query.ViewSize;
             StartIndex = query.StartIndex;
         }
-               
+             
         public ICategory Category { get; set; }
         public string CategoryId { get; set; }
+        public IList<ICategory> Categories { get; set; }
+        public IList<string> CategoryIds { get; set; }
         public string SearchPhrase { get; set; }
         public IList<FacetParameter> Facets { get; set; }
         public int? ViewSize { get; set; }   

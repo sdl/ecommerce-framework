@@ -6,6 +6,7 @@ using RestSharp;
 using SDL.ECommerce.Rest.Model;
 using Newtonsoft.Json;
 using SDL.ECommerce.Api;
+using System.Linq;
 
 namespace SDL.ECommerce.Rest.Service
 {
@@ -42,6 +43,18 @@ namespace SDL.ECommerce.Rest.Service
             {
                 request.AddParameter("categoryId", query.CategoryId);
                 cacheKey = query.CategoryId;
+            }
+            else if (query.Categories != null)
+            {
+                var categoryOrString = string.Join("|", query.Categories.Select(c => c.Id));
+                request.AddParameter("categoryIds", categoryOrString);
+                cacheKey = categoryOrString;
+            }
+            else if (query.CategoryIds != null)
+            {
+                var categoryOrString = string.Join("|", query.CategoryIds);
+                request.AddParameter("categoryIds", categoryOrString);
+                cacheKey = categoryOrString;
             }
 
             // Search phrase

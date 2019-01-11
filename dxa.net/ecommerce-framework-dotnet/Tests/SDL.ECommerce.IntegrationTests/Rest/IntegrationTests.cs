@@ -124,6 +124,21 @@ namespace SDL.ECommerce.IntegrationTests.Rest
         }
 
         [TestMethod]
+        public void RestSearchCategories()
+        {
+            var query = new Query
+            {
+                Categories = new List<ICategory>
+                {
+                    ECommerceClient.CategoryService.GetCategoryByPath("/women"),
+                    ECommerceClient.CategoryService.GetCategoryByPath("/men")
+                }
+            };
+            var result = ECommerceClient.QueryService.Query(query);
+            PrintQueryResult(result);
+        }
+
+        [TestMethod]
         public void RestSearchWithFacets()
         {
             var query = new Query {
@@ -131,6 +146,20 @@ namespace SDL.ECommerce.IntegrationTests.Rest
                 Facets = { new FacetParameter("brand", "dkny" ) },
                 ViewSize = 20
                 
+            };
+            var result = ECommerceClient.QueryService.Query(query);
+            PrintQueryResult(result);
+        }
+
+        [TestMethod]
+        public void RestSearchCategoriesWithFacets()
+        {
+            var query = new Query
+            {
+                CategoryIds = new List<string> { "catalog01_18661", "catalog01_18664" },
+                Facets = { new FacetParameter("brand", "adidas") },
+                ViewSize = 20
+
             };
             var result = ECommerceClient.QueryService.Query(query);
             PrintQueryResult(result);
