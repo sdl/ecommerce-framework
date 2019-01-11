@@ -10,7 +10,7 @@ Right now it provides connectors for:
 * SAP Hybris (http://www.hybris.com)
 * Salesforce Commerce Cloud (Demandware) (http://www.demandware.com)
 
-The framework has been verified both on SDL Web 8 (8.1.1) and SDL Web 8.5 using DXA 1.7.
+The framework has been verified on SDL Web 8.5 and DXA 2.0.
 
 New functionality in the v1.2 version:
 * Improved support for product variants
