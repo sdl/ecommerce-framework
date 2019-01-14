@@ -23,6 +23,7 @@ namespace SDL.ECommerce.DXA
     {
         public const string CURRENT_QUERY = "CurrentQuery";
         public const string QUERY_RESULT = "QueryResult";
+        // TODO: Rename this to CATEGORY_URL_PREFIX (as it is only used to build category URLs)
         public const string URL_PREFIX = "UrlPrefix";
         public const string FACETS = "Facets";
         public const string PRODUCT = "Product";
@@ -35,6 +36,8 @@ namespace SDL.ECommerce.DXA
         private const int DEFAULT_CATEGORY_EXPIRY_TIMEOUT = 3600000;
         private const bool DEFAULT_CATEGORY_USE_SANITIZED_PATHNAMES = false;
 
+        private static object _lock = new object();
+
 
         /// <summary>
         /// Client to E-Commerce services
@@ -43,12 +46,24 @@ namespace SDL.ECommerce.DXA
         {
             get
             {
-                string locale = WebRequestContext.Localization.Culture;
+                var locale = GetLocale(WebRequestContext.Localization);
                 IECommerceClient client = null;
                 if (!clients.TryGetValue(locale, out client))
                 {
-                    client = Create(locale);
-                    clients.Add(locale, client);
+                    lock (_lock)
+                    {
+                        // Double-check so one other thread has already created the client
+                        //
+                        if (!clients.ContainsKey(locale))
+                        {
+                            client = Create(locale);
+                            clients.Add(locale, client);
+                        }
+                        else
+                        {
+                            client = clients[locale];
+                        }
+                    }
                 }
                 return client;
             }
@@ -60,7 +75,7 @@ namespace SDL.ECommerce.DXA
         /// </summary>
         public static IECommerceClient GetClient(Localization localization)
         {
-            string locale = localization.Culture;
+            var locale = GetLocale(localization);
             IECommerceClient client = null;
             if (!clients.TryGetValue(locale, out client))
             {
@@ -68,8 +83,25 @@ namespace SDL.ECommerce.DXA
                 clients.Add(locale, client);
             }
             return client;
+        }
 
-
+        /// <summary>
+        /// Get locale from the localization.
+        /// </summary>
+        /// <param name="localization"></param>
+        /// <returns></returns>
+        private static string GetLocale(Localization localization)
+        {
+            // check first if locale has been specifially set in current publication
+            //
+            string locale = WebRequestContext.Localization.GetConfigValue("e-commerce.ecommerce-locale");
+            if (locale == null)
+            {
+                // If not -> fallback on the locale in the DXA Localization instance
+                // 
+                locale = WebRequestContext.Localization.Culture;
+            }
+            return locale;
         }
         
         /// <summary>
