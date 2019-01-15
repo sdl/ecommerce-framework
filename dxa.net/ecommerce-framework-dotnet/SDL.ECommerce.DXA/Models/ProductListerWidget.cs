@@ -8,9 +8,6 @@ namespace SDL.ECommerce.DXA.Models
     [SemanticEntity(Vocab = CoreVocabulary, EntityName = "ProductListerWidget", Prefix = "e")]
     public class ProductListerWidget : EntityModel, IQueryContributor
     {
-        [SemanticProperty("e:category")]
-        public ECommerceCategoryReference CategoryReference { get; set; }
-
         [SemanticProperty("e:categories")]
         public List<ECommerceCategoryReference> CategoryReferences { get; set; }
 

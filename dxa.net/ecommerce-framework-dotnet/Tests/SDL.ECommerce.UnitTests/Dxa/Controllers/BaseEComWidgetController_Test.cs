@@ -55,6 +55,40 @@ public class BaseEComWidgetController_Test : Test<FakeBaseEcomWidgetController>
     }
 
     [Fact]
+    public void WhenPassingSingleCategoryReferencesWithCategoryId_ThenTheCategoryIdShouldBePassedToTheRestCall()
+    {
+        // Arrange
+        var restClient = SetupDependencies(new FakeRestResponse());
+
+        var entity = new ProductListerWidget
+        {
+            MvcData = new MvcData("MyView"),
+            CategoryReferences = new List<ECommerceCategoryReference>
+            {
+                new ECommerceCategoryReference
+                {
+                    CategoryId = "cat123"
+                }
+            }
+        };
+
+        // Act
+        using (new DependencyTestProvider(Fixture))
+        {
+            SystemUnderTest.ProductLister(entity);
+        }
+
+        // Assert
+        Assert.Equal(1, restClient.MadeRequests.Count); // Only one request should be made.
+
+        var firstQuery = restClient.MadeRequests.First();
+
+        var categoryIdsParameter = firstQuery.Parameters.Single(c => c.Name.Equals("categoryId", StringComparison.InvariantCulture));
+
+        Assert.Equal("cat123", categoryIdsParameter.Value);
+    }
+
+    [Fact]
     public void WhenPassingMultipleCategoryReferencesWithCategoryId_ThenTheCategoryIdsShouldBePassedToTheRestCall()
     {
         // Arrange

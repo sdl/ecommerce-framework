@@ -1,4 +1,4 @@
-using Sdl.Web.Common.Models;
+﻿using Sdl.Web.Common.Models;
 using Sdl.Web.Mvc.Controllers;
 using Sdl.Web.Common.Logging;
 using System;
@@ -103,12 +103,7 @@ namespace SDL.ECommerce.DXA.Controllers
             ProductListerWidget widget = (ProductListerWidget) entity;
             IProductQueryResult queryResult = null;
 
-            if ( widget.CategoryReference != null )
-            {
-                var category = ResolveCategory(widget.CategoryReference);
-                queryResult = _eCommerceClient.QueryService.Query(new Api.Model.Query { Category = category, ViewSize = widget.ViewSize });
-            }
-            else if (widget.CategoryReferences?.Any() ?? false)
+            if (widget.CategoryReferences?.Any() ?? false)
             {
                 var query = new Api.Model.Query
                 {
@@ -116,9 +111,16 @@ namespace SDL.ECommerce.DXA.Controllers
                     CategoryIds = new List<string>()
                 };
 
-                foreach (var eCommerceCategoryReference in widget.CategoryReferences)
+                if (widget.CategoryReferences.Count == 1)
                 {
-                    query.CategoryIds.Add(ResolveCategoryId(eCommerceCategoryReference));
+                    query.CategoryId = ResolveCategoryId(widget.CategoryReferences.First());
+                }
+                else
+                {
+                    foreach (var eCommerceCategoryReference in widget.CategoryReferences)
+                    {
+                        query.CategoryIds.Add(ResolveCategoryId(eCommerceCategoryReference));
+                    }
                 }
 
                 queryResult = _eCommerceClient.QueryService.Query(query);
