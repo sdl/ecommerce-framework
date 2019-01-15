@@ -11,6 +11,9 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:category")]
         public ECommerceCategoryReference CategoryReference { get; set; }
 
+        [SemanticProperty("e:categories")]
+        public List<ECommerceCategoryReference> CategoryReferences { get; set; }
+
         [SemanticProperty("e:viewSize")]
         public int? ViewSize { get; set; }
 
@@ -39,7 +42,6 @@ namespace SDL.ECommerce.DXA.Models
                     query.Facets.Add(new Api.FacetParameter(filterAttribute.Name + "_hidden", filterAttribute.Value));
                 }
             } 
-          
         }
     }
 }

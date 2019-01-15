@@ -13,7 +13,7 @@ namespace SDL.ECommerce.Rest.Service
     /// <summary>
     /// Product Query Service
     /// </summary>
-    class ProductQueryService : IProductQueryService
+    public class ProductQueryService : IProductQueryService
     {
 
         private IRestClient restClient;
