@@ -102,10 +102,28 @@ namespace SDL.ECommerce.DXA.Controllers
 
             ProductListerWidget widget = (ProductListerWidget) entity;
             IProductQueryResult queryResult = null;
-            if ( widget.CategoryReference != null )
+
+            if (widget.CategoryReferences?.Any() ?? false)
             {
-                var category = ResolveCategory(widget.CategoryReference);
-                queryResult = _eCommerceClient.QueryService.Query(new Api.Model.Query { Category = category, ViewSize = widget.ViewSize });
+                var query = new Api.Model.Query
+                {
+                    ViewSize = widget.ViewSize,
+                    CategoryIds = new List<string>()
+                };
+
+                if (widget.CategoryReferences.Count == 1)
+                {
+                    query.CategoryId = ResolveCategoryId(widget.CategoryReferences.First());
+                }
+                else
+                {
+                    foreach (var eCommerceCategoryReference in widget.CategoryReferences)
+                    {
+                        query.CategoryIds.Add(ResolveCategoryId(eCommerceCategoryReference));
+                    }
+                }
+
+                queryResult = _eCommerceClient.QueryService.Query(query);
             }
             else
             {
@@ -118,7 +136,7 @@ namespace SDL.ECommerce.DXA.Controllers
                 queryResult = GetResultFromPageTemplate();
             }
 
-            widget.Items = queryResult.Products.ToList();
+            widget.Items = queryResult.Products?.ToList();
             this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS));
 
             return View(entity.MvcData.ViewName, entity);
@@ -373,6 +391,31 @@ namespace SDL.ECommerce.DXA.Controllers
                 category = _eCommerceClient.CategoryService.GetCategoryById(categoryReference.CategoryRef.ExternalId);
             }
             return category;
+        }
+
+        /// <summary>
+        /// Resolve category id via a CMS category reference
+        /// </summary>
+        /// <param name="categoryReference"></param>
+        /// <returns></returns>
+        protected string ResolveCategoryId(ECommerceCategoryReference categoryReference)
+        {
+            if (categoryReference?.CategoryId != null)
+            {
+                return categoryReference.CategoryId;
+            }
+
+            if (categoryReference?.CategoryRef != null)
+            {
+                return categoryReference.CategoryRef.ExternalId;
+            }
+
+            if (categoryReference?.CategoryPath != null)
+            {
+                return _eCommerceClient.CategoryService.GetCategoryByPath(categoryReference.CategoryPath)?.Id;
+            }
+
+            return null;
         }
 
         protected IProductQueryResult GetResultFromPageTemplate()

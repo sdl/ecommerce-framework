@@ -119,6 +119,9 @@
       <HintPath>..\..\packages\AutoFixture.AutoNSubstitute.3.50.2\lib\net40\Ploeh.AutoFixture.AutoNSubstitute.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Sdl.Web.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Sdl.Dxa.Framework.Web8.2.0.0\lib\net452\Sdl.Web.Common.dll</HintPath>
     </Reference>
@@ -225,6 +228,11 @@
     <Compile Include="Dxa\Servants\HttpContextServant_Test.cs" />
     <Compile Include="Dxa\Servants\PageModelServant_Test.cs" />
     <Compile Include="Dxa\Servants\PathServant_Test.cs" />
+    <Compile Include="Fakes\FakeCategory.cs" />
+    <Compile Include="Fakes\FakeECommerceCacheProvider.cs" />
+    <Compile Include="Fakes\FakeProductQueryResult.cs" />
+    <Compile Include="Fakes\FakeRestClient.cs" />
+    <Compile Include="Fakes\FakeRestResponse.cs" />
     <Compile Include="FixtureExtensions.cs" />
     <Compile Include="Formatting\Servants\SanitizerConfiguration_Test.cs" />
     <Compile Include="Formatting\Servants\SanitizerServant_Test.cs" />
@@ -245,6 +253,10 @@
     <ProjectReference Include="..\..\SDL.ECommerce.Formatting\SDL.ECommerce.Formatting.csproj">
       <Project>{e2beacd6-4a49-43b4-8e84-2dc4df9a4690}</Project>
       <Name>SDL.ECommerce.Formatting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDL.ECommerce.Rest\SDL.ECommerce.Rest.csproj">
+      <Project>{055151C2-713C-49DE-85A3-1E073E88CB94}</Project>
+      <Name>SDL.ECommerce.Rest</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
