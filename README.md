@@ -1,4 +1,4 @@
-SDL Web E-Commerce Framework v1.2 RC6
+SDL Web E-Commerce Framework v1.2 RC7
 =========================================
 
 This is a framework to enable E-Commerce functionality for SDL Web.
