@@ -124,6 +124,20 @@ namespace SDL.ECommerce.IntegrationTests.Rest
         }
 
         [TestMethod]
+        public void RestSearchInvalidCategory()
+        {
+            var query = new Query { CategoryId = "catalog01_18661_ERROR" };
+            try
+            {
+                var result = ECommerceClient.QueryService.Query(query);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+        }
+
+        [TestMethod]
         public void RestSearchCategories()
         {
             var query = new Query
@@ -136,6 +150,28 @@ namespace SDL.ECommerce.IntegrationTests.Rest
             };
             var result = ECommerceClient.QueryService.Query(query);
             PrintQueryResult(result);
+        }
+
+        [TestMethod]
+        public void RestSearchInvalidCategories()
+        {
+            var query = new Query
+            {
+                CategoryIds = new List<string>
+                {
+                    "/women_ERROR",
+                    "/men"
+                }
+            };
+            try
+            {
+                var result = ECommerceClient.QueryService.Query(query);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+
         }
 
         [TestMethod]

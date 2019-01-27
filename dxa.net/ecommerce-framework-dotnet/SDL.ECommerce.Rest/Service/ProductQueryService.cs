@@ -115,7 +115,8 @@ namespace SDL.ECommerce.Rest.Service
                 }
                 else
                 {
-                    throw new Exception("Failure when doing product query. Error Code: " + response.StatusCode + ", Error Message: " + response.ErrorMessage);
+                    var errorMessage = JsonConvert.DeserializeObject<ErrorMessage>(response.Content);
+                    throw new Exception("Failure when doing product query. Error Code: " + response.StatusCode + ", Error Message: " + errorMessage?.Message);
                 }
             }
             return queryResult;

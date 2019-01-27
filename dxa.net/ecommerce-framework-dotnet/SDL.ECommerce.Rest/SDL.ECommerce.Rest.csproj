@@ -77,6 +77,7 @@
     <Compile Include="RestClientFactory.cs" />
     <Compile Include="Service\CartService.cs" />
     <Compile Include="Service\EditService.cs" />
+    <Compile Include="Service\ErrorMessage.cs" />
     <Compile Include="Service\ProductCategoryService.cs" />
     <Compile Include="Service\ProductDetailService.cs" />
     <Compile Include="Service\ProductQueryService.cs" />
