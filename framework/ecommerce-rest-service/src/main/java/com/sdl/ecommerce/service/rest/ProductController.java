@@ -8,13 +8,12 @@ import com.sdl.ecommerce.service.model.ErrorMessage;
 import com.sdl.ecommerce.service.model.RestProduct;
 import com.sdl.ecommerce.service.model.RestQueryResult;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,8 @@ import java.util.StringTokenizer;
 @Slf4j
 public class ProductController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
+
     @Autowired
     private ProductCategoryService categoryService;
 
@@ -43,9 +44,8 @@ public class ProductController {
     @Autowired
     private LocalizationService localizationService;
 
-    // TODO: Accept a list of categories here
     @RequestMapping("/query")
-    public QueryResult query(@RequestParam(required = false) String categoryId,
+    public ResponseEntity query(@RequestParam(required = false) String categoryId,
                              @RequestParam(required = false) String categoryIds,
                              @RequestParam(required = false) String searchPhrase,
                              @RequestParam(required = false) String facets,
@@ -58,12 +58,26 @@ public class ProductController {
         Query query = this.productQueryService.newQuery();
         if ( categoryId != null ) {
             Category category = this.categoryService.getCategoryById(categoryId);
+            if (category == null) {
+                LOG.error("Could not find category with ID: " + categoryId);
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorMessage("Could not find category with ID: " + categoryId));
+            }
             query.category(category);
         } else if (categoryIds != null) {
             List<Category> categories = new ArrayList<>();
             StringTokenizer tokenizer = new StringTokenizer(categoryIds, "|");
             while (tokenizer.hasMoreTokens()) {
-                categories.add(this.categoryService.getCategoryById(tokenizer.nextToken()));
+                String categoryIdInList = tokenizer.nextToken();
+                Category category = this.categoryService.getCategoryById(categoryIdInList);
+                if (category == null) {
+                    LOG.error("Could not find category with ID: " + categoryIdInList);
+                    return ResponseEntity
+                            .status(HttpStatus.NOT_FOUND)
+                            .body(new ErrorMessage("Could not find category with ID: " + categoryIdInList));
+                }
+                categories.add(category);
             }
             query.categories(categories);
         }
@@ -103,7 +117,7 @@ public class ProductController {
         }
 
         QueryResult queryResult = this.productQueryService.query(query);
-        return new RestQueryResult(queryResult);
+        return new ResponseEntity<>(new RestQueryResult(queryResult), HttpStatus.OK);
     }
 
     @RequestMapping("/{productId}")
@@ -121,6 +135,14 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Product with ID '" + productId + "' was not found"));
         }
         return new ResponseEntity<Product>(new RestProduct(result), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({ ECommerceException.class })
+    public final ResponseEntity<ErrorMessage> handleAllExceptions(Exception ex) {
+        LOG.error("Exception when querying product(s)", ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorMessage(ex.getMessage()));
     }
 
 }

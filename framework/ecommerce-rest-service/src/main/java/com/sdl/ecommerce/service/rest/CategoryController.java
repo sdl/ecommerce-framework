@@ -6,6 +6,8 @@ import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.service.model.ErrorMessage;
 import com.sdl.ecommerce.service.model.RestCategory;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import java.util.List;
 @RequestMapping("/ecommerce.svc/rest/v1/category")
 @Slf4j
 public class CategoryController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private ProductCategoryService categoryService;
@@ -79,5 +83,11 @@ public class CategoryController {
         List<Category> responseList = new ArrayList<>();
         categories.forEach(category ->  responseList.add(new RestCategory(category)));
         return new ResponseEntity(responseList, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({ ECommerceException.class })
+    public final ResponseEntity<String> handleAllExceptions(Exception ex) {
+        LOG.error("Exception when querying categories", ex);
+        return new ResponseEntity(new ErrorMessage(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
