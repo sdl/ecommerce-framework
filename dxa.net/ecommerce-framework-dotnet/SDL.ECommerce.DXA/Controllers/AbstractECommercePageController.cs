@@ -134,7 +134,6 @@ namespace SDL.ECommerce.DXA.Controllers
                 PageModel pageModel = PageModelServant.GetNotFoundPageModel(ContentProvider);
                 WebRequestContext.PageModel = pageModel;
                 SetupViewData(pageModel);
-                ViewModel model = EnrichModel(pageModel) ?? pageModel;
                 Response.StatusCode = 404;
                 return View(pageModel);
             }

@@ -291,23 +291,35 @@ namespace SDL.ECommerce.Ecl
             MemoryCache.Default.Add(GetCacheKey(product.Id), new CachedProduct { Product = product }, DateTime.Now.AddSeconds(60));
         }
 
+        protected void AddFullDataProductToCache(Product product)
+        {
+            MemoryCache.Default.Add(GetCacheKey(product.Id), new CachedProduct { Product = product, HasFullData = true }, DateTime.Now.AddSeconds(3600));
+        }
+
         protected Product GetProductFromCacheOrCatalog(string productId, int publicationId)
         {
             Product product = null; 
             var cachedProduct = (CachedProduct) MemoryCache.Default.Get(GetCacheKey(productId));
             if (cachedProduct != null)
             {
-                cachedProduct.Requested++;
-                if (cachedProduct.Requested > 2)
+                if (cachedProduct.HasFullData)
                 {
-                    // Cached product can be requested twice: once for the list build + get the thumbnail
-                    // This to force a full read of the product when requesting the properties view of the product (which needs the full product information).
-                    //
-                    MemoryCache.Default.Remove(GetCacheKey(productId));
+                    product = cachedProduct.Product;
                 }
                 else
                 {
-                    product = cachedProduct.Product;
+                    cachedProduct.Requested++;
+                    if (cachedProduct.Requested > 2)
+                    {
+                        // Cached product can be requested twice: once for the list build + get the thumbnail
+                        // This to force a full read of the product when requesting the properties view of the product (which needs the full product information).
+                        //
+                        MemoryCache.Default.Remove(GetCacheKey(productId));
+                    }
+                    else
+                    {
+                        product = cachedProduct.Product;
+                    }
                 }
             }
             if (product == null)
@@ -319,6 +331,10 @@ namespace SDL.ECommerce.Ecl
                     // exists in Tridion. In that case we need to be able to return a dummy product item.
                     //
                     return new DummyProduct(productId);
+                }
+                else
+                {
+                    AddFullDataProductToCache(product);
                 }
             }
             return product;
