@@ -197,7 +197,6 @@ namespace SDL.Fredhopper.Ecl
         {
             string fhAttribute;
             this.modelMappings.TryGetValue(name, out fhAttribute);
-            string fhStringValue = null;
             if ( fhAttribute != null )
             {
                 object fhValue;
@@ -220,7 +219,7 @@ namespace SDL.Fredhopper.Ecl
                     }
                     if ( value != null )
                     {
-                        return usePresentationValue == true ? value.PresentationValue : value.Value;
+                        return usePresentationValue ? value.PresentationValue : value.Value;
                     }
                 }           
             }

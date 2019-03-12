@@ -14,5 +14,6 @@ namespace SDL.ECommerce.Ecl
     {
         public int Requested { get; set; }
         public Product Product { get; set; }
+        public bool HasFullData { get; set; }
     }
 }
