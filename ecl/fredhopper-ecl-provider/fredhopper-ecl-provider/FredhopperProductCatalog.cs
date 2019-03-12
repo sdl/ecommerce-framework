@@ -6,6 +6,7 @@ using SDL.ECommerce.Ecl;
 using SDL.Fredhopper.Ecl.FredhopperWS;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Caching;
 using System.ServiceModel;
 using System.Xml.Linq;
 
@@ -19,7 +20,6 @@ namespace SDL.Fredhopper.Ecl
         private FASWebServiceClient fhClient;
         private IDictionary<int, PublicationConfiguration> publicationConfigurations = new Dictionary<int, PublicationConfiguration>();
 
-        private IDictionary<string, Category>  rootCategories = new Dictionary<string, Category>();
         private int maxItems;
         private int categoryMaxDepth;
 
@@ -34,10 +34,10 @@ namespace SDL.Fredhopper.Ecl
         public FredhopperProductCatalog(XElement configuration)
         {
             var binding = new BasicHttpBinding();
-            binding.MaxReceivedMessageSize = GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
+            binding.MaxReceivedMessageSize = EclProvider.GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
              
-            this.maxItems = GetIntConfigurationValue(configuration, "MaxItems", DEFAULT_MAX_ITEMS);
-            this.categoryMaxDepth = GetIntConfigurationValue(configuration, "CategoryMaxDepth", DEFAULT_CATEGORY_MAX_DEPTH);
+            this.maxItems = EclProvider.GetIntConfigurationValue(configuration, "MaxItems", DEFAULT_MAX_ITEMS);
+            this.categoryMaxDepth =EclProvider. GetIntConfigurationValue(configuration, "CategoryMaxDepth", DEFAULT_CATEGORY_MAX_DEPTH);
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
             if ( usernameElement != null )
@@ -219,16 +219,9 @@ namespace SDL.Fredhopper.Ecl
 
         private Category GetRootCategory(int publicationId)
         {
-            var publicationConfiguration = this.GetPublicationConfiguration(publicationId);
-            String cacheKey = publicationConfiguration.Universe + ":" + publicationConfiguration.Locale;
-            Category rootCategory;
-            this.rootCategories.TryGetValue(cacheKey, out rootCategory);
-            if (rootCategory == null)
-            {
-                rootCategory = new FredhopperCategory(null, null, null);
-                this.rootCategories.Add(cacheKey, rootCategory);
-                this.GetCategoryTree(rootCategory, 0, this.categoryMaxDepth - 1, publicationId);
-            }
+            var publicationConfiguration = this.GetPublicationConfiguration(publicationId);        
+            Category rootCategory = new FredhopperCategory(null, null, null);
+            this.GetCategoryTree(rootCategory, 0, this.categoryMaxDepth - 1, publicationId);           
             return rootCategory;
         }
 
@@ -341,18 +334,6 @@ namespace SDL.Fredhopper.Ecl
             return null; // TODO: Throw an exception here?
         }
 
-        private int GetIntConfigurationValue(XElement configuration, string configName, int defaultValue)
-        {
-            var value = configuration.Element(EclProvider.EcommerceEclNs + configName);
-            if (value != null)
-            {
-                return Int32.Parse(value.Value);
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
     }
 
     class PublicationConfiguration

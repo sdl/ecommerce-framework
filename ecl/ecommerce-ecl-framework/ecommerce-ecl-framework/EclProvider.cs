@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Caching;
 using System.Xml.Linq;
 using Tridion.ExternalContentLibrary.V2;
 
@@ -17,28 +18,40 @@ namespace SDL.ECommerce.Ecl
         public static readonly XNamespace EcommerceEclNs = "http://sdl.com/ecl/ecommerce"; 
         private static readonly string IconBasePath = Path.Combine(AddInFolder, "Themes");
 
+        static int DEFAULT_CATEGORY_CACHE_TIME = 60*60*60; // Default 1 hour cache
+        private static int categoryCacheTime;
+
         internal static string MountPointId { get; private set; }
         public static IHostServices HostServices { get; private set; }
         public static ProductCatalog ProductCatalog { get; private set; }
-        private static IDictionary<int, Category> rootCategoryMap = new Dictionary<int, Category>();
 
         /// <summary>
         /// Get root category
         /// </summary>
         internal static Category GetRootCategory(int publicationId) {
-
-            Category rootCategory;
-            rootCategoryMap.TryGetValue(publicationId, out rootCategory);
+            var cacheKey = "RootCategories:" + publicationId;          
+            Category rootCategory = MemoryCache.Default.Get(cacheKey) as Category;
             if (rootCategory == null )
-            {
-                //lock ( EclProvider.EcommerceEclNs ) LOCK IS NOT NEEDED HERE, RIGHT?
-                //{
-                    rootCategory = ProductCatalog.GetAllCategories(publicationId);
-                    rootCategoryMap.Add(publicationId, rootCategory);
-                //}
+            {               
+                rootCategory = ProductCatalog.GetAllCategories(publicationId);
+                MemoryCache.Default.Add(cacheKey, rootCategory, DateTime.Now.AddSeconds(categoryCacheTime));
+       
             }
             return rootCategory;
 
+        }
+
+        public static int GetIntConfigurationValue(XElement configuration, string configName, int defaultValue)
+        {
+            var value = configuration.Element(EclProvider.EcommerceEclNs + configName);
+            if (value != null)
+            {
+                return Int32.Parse(value.Value);
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
 
         internal static string AddInFolder
@@ -143,6 +156,10 @@ namespace SDL.ECommerce.Ecl
             // Initialize the product catalog with config
             //
             ProductCatalog = this.CreateProductCatalog(config);
+
+            // Read category cache time (which generically managed by the E-Commerce framework)
+            //
+            categoryCacheTime = GetIntConfigurationValue(config, "CategoryCacheTime", DEFAULT_CATEGORY_CACHE_TIME);
         }
 
         /// <summary>
