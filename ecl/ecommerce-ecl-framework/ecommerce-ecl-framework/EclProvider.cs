@@ -18,7 +18,7 @@ namespace SDL.ECommerce.Ecl
         public static readonly XNamespace EcommerceEclNs = "http://sdl.com/ecl/ecommerce"; 
         private static readonly string IconBasePath = Path.Combine(AddInFolder, "Themes");
 
-        static int DEFAULT_CATEGORY_CACHE_TIME = 60*60*60; // Default 1 hour cache
+        static int DEFAULT_CATEGORY_CACHE_TIME = 60*60; // Default 1 hour cache
         private static int categoryCacheTime;
 
         internal static string MountPointId { get; private set; }
