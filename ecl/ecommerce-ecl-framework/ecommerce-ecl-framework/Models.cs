@@ -10,6 +10,8 @@ namespace SDL.ECommerce.Ecl
         string Title { get; }
         Category Parent { get; }
         IList<Category> Categories { get; }
+
+        Category GetCachedCategory(string categoryId);
     }
 
     public class DummyCategory : Category
@@ -46,6 +48,11 @@ namespace SDL.ECommerce.Ecl
             {
                 return "Category Not Found";
             }
+        }
+
+        public Category GetCachedCategory(string categoryId)
+        {
+            return null;
         }
     }
 

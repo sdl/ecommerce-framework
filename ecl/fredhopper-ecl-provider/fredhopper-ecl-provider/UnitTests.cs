@@ -60,6 +60,8 @@ namespace SDL.Fredhopper.Ecl
         {
             var productCatalog = CreateProductCatalog();
             var rootCategory = productCatalog.GetCategory(null);
+            var cachedProduct = rootCategory.GetCachedCategory("catalog01_18661_17638");
+            Console.WriteLine("Cached product: " + cachedProduct?.CategoryId);
             var paginatedList = new CategoryFlattenPaginatedList(rootCategory, 20, 4);
             var categories = paginatedList.Next(0);
             Console.WriteLine("Category IDs in flatten list:");
@@ -67,6 +69,8 @@ namespace SDL.Fredhopper.Ecl
             {
                 Console.WriteLine(category.CategoryId);
             }
+            cachedProduct = rootCategory.GetCachedCategory("catalog01_18661_17638");
+            Console.WriteLine("Cached product after traversing the tree: " + cachedProduct?.CategoryId);
         }
 
         private void PrintCategoryList(Category category, int level, int maxLevel)

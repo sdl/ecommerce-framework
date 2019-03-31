@@ -113,8 +113,7 @@ namespace SDL.Fredhopper.Ecl
             }
 
             Category parentCategory;
-
-            if (!categoryId.Contains("_"))
+            if (!categoryId.Contains("_") || (categoryId.Count(c => c == '_') == 1))
             {
                 // Top level category
                 //

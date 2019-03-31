@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SDL.Fredhopper.Ecl.FredhopperWS;
 using System.Security;
 using System;
+using System.Linq;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -71,6 +72,52 @@ namespace SDL.Fredhopper.Ecl
         bool NeedRefresh()
         {
             return this.categories == null || this.expiryTime < (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond);
+        }
+
+        public Category GetCachedCategory(string categoryId)
+        {
+            // TODO: Add support for calculating start level here. For now this function is supposed to be called from the root category
+
+            if (categoryId.Contains("_"))
+            {
+                var catalogPart = categoryId.Substring(0, categoryId.IndexOf("_"));
+                var categoryPath = categoryId.Substring(catalogPart.Length).Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < categoryPath.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        categoryPath[i] = catalogPart + "_" + categoryPath[i];
+                    }
+                    else
+                    {
+                        categoryPath[i] = categoryPath[i-1] + "_" + categoryPath[i];
+                    }
+                }
+               
+                return GetCachedCategory(categoryPath, 0);
+            }
+            return null;
+        }
+
+        private Category GetCachedCategory(string[] categoryPath, int level)
+        {
+            if (level < categoryPath.Length && this.categories != null)
+            {
+                var categoryId = categoryPath[level];
+                var category = this.categories.FirstOrDefault(c => categoryId.Equals(c.CategoryId));
+                if (category != null)
+                {
+                    if (level+1 == categoryPath.Length)
+                    {
+                        return category;
+                    }
+                    else
+                    {
+                        return ((FredhopperCategory)category).GetCachedCategory(categoryPath, level + 1);
+                    }
+                }
+            }
+            return null;
         }
     }
   

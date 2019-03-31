@@ -165,7 +165,21 @@ namespace SDL.ECommerce.Ecl
                 else // selectable category
                 {
                     string categoryId = eclUri.ItemId;
-                    var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
+
+                    // First try to see if it has been cached since before
+                    //
+                    var rootCategory = EclProvider.GetRootCategory(eclUri.PublicationId);
+                    Category category = null;
+                    if (rootCategory != null)
+                    {
+                        category = rootCategory.GetCachedCategory(categoryId);
+                    }
+                    if (category == null)
+                    {
+                        // Get the category from the product catalog
+                        //
+                        category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
+                    }
                     if (category == null)
                     {
                         // Category could not be found. It has probably been removed from the external system, but references might still
