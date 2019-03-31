@@ -5,8 +5,8 @@ using com.fredhopper.lang.query.location.criteria;
 using SDL.ECommerce.Ecl;
 using SDL.Fredhopper.Ecl.FredhopperWS;
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Caching;
 using System.ServiceModel;
 using System.Xml.Linq;
 
@@ -20,11 +20,6 @@ namespace SDL.Fredhopper.Ecl
         private FASWebServiceClient fhClient;
         private IDictionary<int, PublicationConfiguration> publicationConfigurations = new Dictionary<int, PublicationConfiguration>();
 
-        private int maxItems;
-        private int categoryMaxDepth;
-
-        static int DEFAULT_MAX_ITEMS = 100;
-        static int DEFAULT_CATEGORY_MAX_DEPTH = 4;
         static int DEFAULT_MAX_RECEIVED_MESSAGE_SIZE = 10485760;
 
         /// <summary>
@@ -36,8 +31,7 @@ namespace SDL.Fredhopper.Ecl
             var binding = new BasicHttpBinding();
             binding.MaxReceivedMessageSize = EclProvider.GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
              
-            this.maxItems = EclProvider.GetIntConfigurationValue(configuration, "MaxItems", DEFAULT_MAX_ITEMS);
-            this.categoryMaxDepth =EclProvider. GetIntConfigurationValue(configuration, "CategoryMaxDepth", DEFAULT_CATEGORY_MAX_DEPTH);
+            
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
             if ( usernameElement != null )
@@ -104,7 +98,6 @@ namespace SDL.Fredhopper.Ecl
                     this.publicationConfigurations.Add(Int32.Parse(id), publicationConfig);
                 }
             }
-
         }
 
         public Category GetAllCategories(int publicationId)
@@ -114,7 +107,33 @@ namespace SDL.Fredhopper.Ecl
 
         public Category GetCategory(string categoryId, int publicationId)
         {
-            return this.GetCategory(categoryId, this.GetRootCategory(publicationId));
+            if (categoryId == null)
+            {
+                return this.GetRootCategory(publicationId);
+            }
+
+            Category parentCategory;
+
+            if (!categoryId.Contains("_"))
+            {
+                // Top level category
+                //
+                parentCategory = this.GetRootCategory(publicationId);
+            }
+            else
+            {
+                var parentId = categoryId.Substring(0, categoryId.LastIndexOf("_"));
+                parentCategory = this.GetCategory(categoryId, this.GetRootCategory(publicationId));
+            }
+
+            foreach (var category in parentCategory.Categories)
+            {
+                if (category.CategoryId != null && category.CategoryId.Equals(categoryId))
+                {
+                    return category;
+                }
+            }
+            return null;
         }
 
         private Category GetCategory(string categoryId, Category category)
@@ -141,14 +160,14 @@ namespace SDL.Fredhopper.Ecl
             return null;
         }
 
-        public QueryResult GetProducts(string categoryId, int publicationId, int pageIndex)
+        public QueryResult GetCategoryAndProducts(string categoryId, int publicationId, int pageIndex)
         {
             // TODO: What products to show? Should we only show leaf products?
             // TODO: Have different configurable strategies here??
 
             Query query = new Query(GetLocation(publicationId, categoryId));
-            query.setListStartIndex(pageIndex*this.maxItems);
-            return QueryProducts(query, publicationId);
+            query.setListStartIndex(pageIndex * EclProvider.ProductPageSize);
+            return QueryProducts(query, categoryId, publicationId);
         }
 
         public QueryResult Search(string searchTerm, string categoryId, int publicationId, int pageIndex)
@@ -157,7 +176,7 @@ namespace SDL.Fredhopper.Ecl
             location.addCriterion(new SearchCriterion(searchTerm));
             Query query = new Query(location);
             query.setListStartIndex(pageIndex); // TODO: This is probably a bug: this is not page index we are using towards Fredhopper!!!
-            return QueryProducts(query, publicationId);
+            return QueryProducts(query, categoryId, publicationId);
         }
 
         public Product GetProduct(string id, int publicationId)
@@ -180,10 +199,11 @@ namespace SDL.Fredhopper.Ecl
             return null;
         }
 
-        private void GetCategories(Category parentCategory, int publicationId)
+        internal void LoadCategories(FredhopperCategory parentCategory, IList<Category> currentCategories)
         {
             Location location;
-            if (parentCategory != null && parentCategory.CategoryId != null )
+            int publicationId = parentCategory.PublicationId;
+            if (parentCategory != null && parentCategory.CategoryId != null)
             {
                 location = GetLocation(publicationId, parentCategory.CategoryId);
             }
@@ -198,55 +218,87 @@ namespace SDL.Fredhopper.Ecl
 
             var facetmap = universe.facetmap[0];
             var filters = facetmap.filter;
+
+            IList<Category> newCategoryList = new List<Category>();
+
+            var level = parentCategory != null && parentCategory.CategoryId != null ? GetCategoryLevel(parentCategory.CategoryId) : 0;
+
+            foreach (var filter in filters)
+            {
+                if (filter.basetype == attributeTypeFormat.cat)
+                {
+                    foreach (var section in filter.filtersection)
+                    {         
+                                      
+                        if (GetCategoryLevel(section.value.Value) <= level)
+                        {
+                            // Parent category -> pick next
+                            //
+                            continue;
+                        }
+                        var category = new FredhopperCategory(section.value.Value, section.link.name, parentCategory, publicationId, this);
+                        var existingCategory = currentCategories?.FirstOrDefault(c => c.CategoryId.Equals(category.CategoryId));
+                        if (existingCategory != null)
+                        {
+                            // Keep the old category with its sub-categories
+                            //
+                            newCategoryList.Add(existingCategory);
+                        }
+                        else
+                        {
+                            // Add new category
+                            //
+                            newCategoryList.Add(category);
+                        }                        
+                    }
+                }
+            }
+            parentCategory.Categories = newCategoryList;
+        }
+
+        private int GetCategoryLevel(string categoryId)
+        {
+            return categoryId.Count(c => c == '_');
+        }
+
+        private IList<Category> GetCategories(universe universe, string parentCategoryId, int publicationId)
+        {
+            var facetmap = universe.facetmap[0];
+            var filters = facetmap.filter;
+            if (filters == null) // No sub-categories avaiable
+            {
+                return Enumerable.Empty<Category>().ToList();
+            }
+            var level = parentCategoryId != null ? GetCategoryLevel(parentCategoryId) : 0;
+
+            IList<Category> categories = new List<Category>();
+
             foreach (var filter in filters)
             {
                 if (filter.basetype == attributeTypeFormat.cat)
                 {
                     foreach (var section in filter.filtersection)
                     {
-                        if (parentCategory == null || !CategoryAlreadyExistInStructure(parentCategory, section.value.Value) )
+                        if (GetCategoryLevel(section.value.Value) <= level)
                         {
-                            var category = new FredhopperCategory(section.value.Value, section.link.name, parentCategory);
-                            if (parentCategory != null)
-                            {
-                                parentCategory.Categories.Add(category);
-                            }
+                            // Parent category -> pick next
+                            //
+                            continue;
                         }
+                       
+                        var category = new FredhopperCategory(section.value.Value, section.link.name, null, publicationId, this);
+                        categories.Add(category);
                     }
                 }
             }
+            return categories;
         }
 
         private Category GetRootCategory(int publicationId)
         {
             var publicationConfiguration = this.GetPublicationConfiguration(publicationId);        
-            Category rootCategory = new FredhopperCategory(null, null, null);
-            this.GetCategoryTree(rootCategory, 0, this.categoryMaxDepth - 1, publicationId);           
+            var rootCategory = new FredhopperCategory(null, null, null, publicationId, this);     
             return rootCategory;
-        }
-
-        private void GetCategoryTree(Category category, int level, int maxLevels, int publicationId)
-        {
-            this.GetCategories(category, publicationId);
-
-            foreach (var subCategory in category.Categories)
-            {
-                if (level < maxLevels)
-                {
-                    this.GetCategoryTree(subCategory, level + 1, maxLevels, publicationId);
-                }
-            }
-
-        }
-
-        // TODO: Do we need this function or is it just on badly configured Fredhopper instances we get an issue with this?
-        private bool CategoryAlreadyExistInStructure(Category parentCategory, string categoryId)
-        {
-            if (parentCategory.CategoryId != null && parentCategory.CategoryId.Equals(categoryId))
-            {
-                return true;
-            }
-            return GetCategory(categoryId, ((FredhopperCategory) parentCategory).RootCategory) != null;
         }
 
         private Location GetLocation(int publicationId)
@@ -280,12 +332,13 @@ namespace SDL.Fredhopper.Ecl
             return null;
         }
 
-        private QueryResult QueryProducts(Query query, int publicationId)
+        private QueryResult QueryProducts(Query query, string categoryId, int publicationId)
         {
             var config = this.GetPublicationConfiguration(publicationId);
 
             query.setThemesDisabled(true);
-            query.setListViewSize(this.maxItems);
+            query.setListViewSize(EclProvider.ProductPageSize);
+            var isSearch = query.getLocation().getSearchCriterion() != null;
             foreach ( var filter in config.Filters )
             {
                 query.getLocation().addCriterion(new SingleValuedCriterion(filter.Key, filter.Value));
@@ -296,6 +349,12 @@ namespace SDL.Fredhopper.Ecl
 
             var result = new QueryResult();
             result.Products = new List<Product>();
+            if (!isSearch)
+            {
+                // Extract categories from the FH result set
+                //
+                result.Categories = GetCategories(universe, categoryId, publicationId);
+            }
             var itemsSection = universe.itemssection;
             if (universe.itemssection != null)
             {
@@ -312,6 +371,8 @@ namespace SDL.Fredhopper.Ecl
             }
             return result;
         }
+
+
 
         private PublicationConfiguration GetPublicationConfiguration(int publicationId)
         {

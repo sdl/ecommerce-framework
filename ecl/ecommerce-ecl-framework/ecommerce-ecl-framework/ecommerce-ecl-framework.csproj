@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachedProduct.cs" />
+    <Compile Include="CategoryFlattenPaginatedList.cs" />
     <Compile Include="CategoryItem.cs" />
     <Compile Include="EclProvider.cs" />
     <Compile Include="Models.cs" />

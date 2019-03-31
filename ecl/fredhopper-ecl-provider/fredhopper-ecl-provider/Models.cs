@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SDL.Fredhopper.Ecl.FredhopperWS;
 using System.Security;
+using System;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -11,19 +12,48 @@ namespace SDL.Fredhopper.Ecl
     /// </summary>
     public class FredhopperCategory : Category
     {
+        private long expiryTime;
+        private IList<Category> categories;
+        private FredhopperProductCatalog productCatalog;
 
-        public FredhopperCategory(string categoryId, string title, Category parent)
+        public FredhopperCategory(string categoryId, string title, Category parent, int publicationId, FredhopperProductCatalog productCatalog)
         {
             CategoryId = categoryId;
             Title = title;
             Parent = parent;
-            Categories = new List<Category>();
+            PublicationId = publicationId;
+            this.productCatalog = productCatalog;
+            categories = null;
+            expiryTime = 0;
         }
 
         public string CategoryId { get; internal set; }
         public string Title { get; internal set; }
         public Category Parent { get; internal set; }
-        public IList<Category> Categories { get; internal set; }
+
+        public int PublicationId { get; internal set; }
+
+        public IList<Category> Categories
+        {
+            get
+            {
+                if (NeedRefresh())
+                {
+                    productCatalog.LoadCategories(this, this.categories);
+                }
+                return this.categories;
+            }
+
+            internal set
+            {
+                this.categories = value;
+                var cacheVariance = EclProvider.CategoryCacheTime / 50; // 5 % variance on the expiry time to avoid bursts
+                this.expiryTime = 
+                    (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond) 
+                    + EclProvider.CategoryCacheTime*1000 
+                    + new Random().Next(-cacheVariance, cacheVariance);
+            }
+        }
 
         public Category RootCategory
         {
@@ -37,7 +67,11 @@ namespace SDL.Fredhopper.Ecl
                 return category;
             }
         }
-          
+
+        bool NeedRefresh()
+        {
+            return this.categories == null || this.expiryTime < (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond);
+        }
     }
   
     /// <summary>
@@ -74,7 +108,7 @@ namespace SDL.Fredhopper.Ecl
                         {
                             // Create category from the attribute
                             //
-                            categories.Add(new FredhopperCategory(attrValue.nonml, attrValue.Value, null));
+                            categories.Add(new FredhopperCategory(attrValue.nonml, attrValue.Value, null, 0, null));
                     }
                     }
                     value = valueList;

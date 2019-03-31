@@ -88,55 +88,47 @@ namespace SDL.ECommerce.Ecl
                     }
                     else // Type_Categories
                     {
-                        /*
-                        List<string> allCategories = EclProvider.GetAllCategoryIds();
-                        foreach ( var categoryId in allCategories )
-                        {
-                            items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, categoryId));
-                        }
-                        */
-
                         // TODO: Can we somehow build up a structure here instead???
                         // TODO: Have a hook for providers to hook in their variant on the listing here???
 
                         if (itemTypes.HasFlag(EclItemTypes.File))
                         {
-                            var allCategories = EclProvider.GetAllCategories(parentFolderUri.PublicationId);
-                            foreach (var category in allCategories)
+                            var rootCategory = EclProvider.GetRootCategory(parentFolderUri.PublicationId);
+                            var flattenList = new CategoryFlattenPaginatedList(rootCategory, EclProvider.CategoryPageSize, EclProvider.CategoryMaxDepth);
+                            var categories = flattenList.Next(pageIndex);
+                            foreach (var category in categories)
                             {
                                 items.Add(new SelectableCategoryItem(parentFolderUri.PublicationId, category));
+                            }
+
+                            if (categories.Count() == EclProvider.CategoryPageSize)
+                            {
+                                // As we do not know exactly how many categories there are so can't we give an exact figure on number of pages.
+                                //
+                                numberOfPages = pageIndex + 2;
+                            }
+                            else
+                            {
+                                numberOfPages = pageIndex + 1; // Reached the last page
                             }
                         }
                     }
                 }
                 else
                 {
-                    // TODO: Always use the product catalog for retrieving the category???
-
-                    var parentCategory = EclProvider.GetCategory(parentFolderUri.ItemId, parentFolderUri.PublicationId);
-                    if (parentCategory != null)
+                    var parentCategory = new DummyCategory(parentFolderUri.ItemId);
+                    var result = EclProvider.ProductCatalog.GetCategoryAndProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId, pageIndex);
+                    if (result != null)
                     {
-                        foreach (var category in parentCategory.Categories)
+                        numberOfPages = result.NumberOfPages;
+                        foreach (var category in result.Categories)
                         {
-                            if (!String.IsNullOrEmpty(category.CategoryId))
-                            {
-                                // TODO: Have possibility to have concrete category items for each provider
-                                items.Add(new CategoryItem(parentFolderUri.PublicationId, category));
-                            }
+                            items.Add(new CategoryItem(parentFolderUri.PublicationId, category));
                         }
-
-                        if (itemTypes.HasFlag(EclItemTypes.File))
+                        foreach (var product in result.Products)
                         {
-                            var result = EclProvider.ProductCatalog.GetProducts(parentFolderUri.ItemId, parentFolderUri.PublicationId, pageIndex);
-                            if (result != null)
-                            {
-                                numberOfPages = result.NumberOfPages;
-                                foreach (var product in result.Products)
-                                {
-                                    items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
-                                    AddProductToCache(product);
-                                }
-                            }
+                            items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
+                            AddProductToCache(product);
                         }
                     }
                 }
@@ -196,6 +188,7 @@ namespace SDL.ECommerce.Ecl
                     {
                         return new TypeItem(eclUri.PublicationId, "Products");
                     }
+
                     var category = EclProvider.GetCategory(categoryId, eclUri.PublicationId);
                     if ( category == null )
                     {

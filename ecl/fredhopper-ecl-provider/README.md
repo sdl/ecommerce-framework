@@ -18,10 +18,13 @@
       [Fredhopper endpoint address, e.g. http://localhost:8180/fredhopper-ws/services/FASWebService]
       </EndpointAddress>
       <MaxReceivedMessageSize>[optional paramter to define max receive message size on the endpoint, e.g. 1000000]</MaxReceivedMessageSize>
-      <MaxItems xmlns="http://sdl.com/ecl/ecommerce">
-        [Max items to be presented when navigating products & doing searches, e.g. 100]
-      </MaxItems>
-	    <CategoryMaxDepth xmlns="http://sdl.com/ecl/ecommerce">
+      <ProductPageSize xmlns="http://sdl.com/ecl/ecommerce">
+        [Max items per page to be presented when navigating products & doing searches, e.g. 100]
+      </ProductPageSize>
+      <CategoryPageSize xmlns="http://sdl.com/ecl/ecommerce">
+        [Max items per page to be presented when navigating selectable categories, e.g. 100]
+      </CategoryPageSize>
+	  <CategoryMaxDepth xmlns="http://sdl.com/ecl/ecommerce">
         [Max depth to go to build up the category tree e.g. 4]
       </CategoryMaxDepth>
 	    <PublicationConfigurations xmlns="http://sdl.com/ecl/ecommerce">

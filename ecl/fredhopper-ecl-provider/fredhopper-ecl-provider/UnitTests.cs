@@ -52,10 +52,24 @@ namespace SDL.Fredhopper.Ecl
             var productCatalog = CreateProductCatalog();
             var categories = productCatalog.GetAllCategories();
             Console.WriteLine("Categories:");
-            PrintCategoryList(categories, 1);          
+            PrintCategoryList(categories, 1, 2);          
         }
 
-        private void PrintCategoryList(Category category, int level)
+        [TestMethod]
+        public void TestIterateCategoryTree()
+        {
+            var productCatalog = CreateProductCatalog();
+            var rootCategory = productCatalog.GetCategory(null);
+            var paginatedList = new CategoryFlattenPaginatedList(rootCategory, 20, 4);
+            var categories = paginatedList.Next(0);
+            Console.WriteLine("Category IDs in flatten list:");
+            foreach (var category in categories)
+            {
+                Console.WriteLine(category.CategoryId);
+            }
+        }
+
+        private void PrintCategoryList(Category category, int level, int maxLevel)
         {
             if ( category.Categories == null ) { return; }
             foreach ( var subcategory in category.Categories)
@@ -65,7 +79,10 @@ namespace SDL.Fredhopper.Ecl
                     Console.Write("-");
                 }
                 Console.WriteLine(subcategory.Title + "(" + subcategory.CategoryId + ")");
-                PrintCategoryList(subcategory, level+1);
+                if (level < maxLevel)
+                {
+                    PrintCategoryList(subcategory, level + 1, maxLevel);
+                }
             }
         }
 
@@ -73,8 +90,9 @@ namespace SDL.Fredhopper.Ecl
         public void TestGetProductsUnderCategory()
         {           
             var productCatalog = CreateProductCatalog();
-            var result = productCatalog.GetProducts("catalog01_18661_17638", 0);
+            var result = productCatalog.GetCategoryAndProducts("catalog01_18661_17638", 0);
             Console.WriteLine("Number of result pages: " + result.NumberOfPages);
+            Console.WriteLine("Number of subcategories: " + result.Categories.Count);
             Console.WriteLine("Category products:");
             foreach (var product in result.Products)
             {
@@ -91,7 +109,7 @@ namespace SDL.Fredhopper.Ecl
         public void TestGetRootCategory()
         {
             var productCatalog = CreateProductCatalog();
-            var result = productCatalog.GetProducts("catalog01_18661", 0);
+            var result = productCatalog.GetCategoryAndProducts("catalog01_18661", 0);
             Console.WriteLine("Total number of products: " + result.Total);
             Console.WriteLine("Number of result pages: " + result.NumberOfPages);
         }

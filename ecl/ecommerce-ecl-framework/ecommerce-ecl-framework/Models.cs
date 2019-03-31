@@ -124,6 +124,7 @@ namespace SDL.ECommerce.Ecl
     {
         public int Total { get; set; }
         public int NumberOfPages { get; set; }
+        public IList<Category> Categories { get; set; }
         public IList<Product> Products { get; set; }
     }
 
