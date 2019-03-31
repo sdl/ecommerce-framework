@@ -121,14 +121,20 @@ namespace SDL.ECommerce.Ecl
                     if (result != null)
                     {
                         numberOfPages = result.NumberOfPages;
-                        foreach (var category in result.Categories)
+                        if (itemTypes.HasFlag(EclItemTypes.Folder))
                         {
-                            items.Add(new CategoryItem(parentFolderUri.PublicationId, category));
+                            foreach (var category in result.Categories)
+                            {
+                                items.Add(new CategoryItem(parentFolderUri.PublicationId, category));
+                            }
                         }
-                        foreach (var product in result.Products)
+                        if (itemTypes.HasFlag(EclItemTypes.File))
                         {
-                            items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
-                            AddProductToCache(product);
+                            foreach (var product in result.Products)
+                            {
+                                items.Add(this.CreateProductItem(parentFolderUri.PublicationId, parentCategory, product));
+                                AddProductToCache(product);
+                            }
                         }
                     }
                 }
