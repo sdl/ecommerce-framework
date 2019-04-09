@@ -137,7 +137,7 @@ public class ProductController {
         return new ResponseEntity<Product>(new RestProduct(result), HttpStatus.OK);
     }
 
-    @ExceptionHandler({ ECommerceException.class })
+    @ExceptionHandler({ ECommerceException.class, Exception.class })
     public final ResponseEntity<ErrorMessage> handleAllExceptions(Exception ex) {
         LOG.error("Exception when querying product(s)", ex);
         return ResponseEntity
