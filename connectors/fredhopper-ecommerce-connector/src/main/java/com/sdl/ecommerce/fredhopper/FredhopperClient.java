@@ -376,6 +376,10 @@ public class FredhopperClient implements FredhopperLinkManager {
         }
     }
 
+    private int getCategoryLevel(String categoryId) {
+        return (int) categoryId.chars().filter(ch -> ch == '_').count();
+    }
+
     /**
      * Query using a specific category.
      *
@@ -402,10 +406,20 @@ public class FredhopperClient implements FredhopperLinkManager {
         List<Category> categories = new ArrayList<>();
         List facetmapArray = universe.getFacetmap();
         Facetmap facetmap = (Facetmap) facetmapArray.get(0);
+
+        int level = parent != null && parent.getId() != null ? getCategoryLevel(parent.getId()) : 0;
+
         List<Filter> filters = facetmap.getFilter();
         for (Filter filter : filters) {
             if ( filter.getBasetype().value().equals("cat") && filter.isSelected() == null  ) {
                 for (Filtersection section : filter.getFiltersection()) {
+                    if (getCategoryLevel(section.getValue().getValue()) <= level)
+                    {
+                        // Parent category -> pick next
+                        //
+                        continue;
+                    }
+
                     categories.add(new FredhopperCategory(parent, section));
                 }
                 break;
