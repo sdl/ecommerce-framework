@@ -2,6 +2,7 @@ package com.sdl.ecommerce.service.model;
 
 import com.sdl.ecommerce.api.model.Facet;
 import com.sdl.ecommerce.api.model.FacetGroup;
+import com.sdl.ecommerce.api.model.NameValue;
 import graphql.annotations.GraphQLDescription;
 import graphql.annotations.GraphQLField;
 import graphql.annotations.GraphQLName;
@@ -59,4 +60,8 @@ public class RestFacetGroup implements FacetGroup {
         return this.facetGroup.getEditUrl();
     }
 
+    @Override
+    public List<NameValue> getAttributes() {
+        return this.facetGroup.getAttributes();
+    }
 }
