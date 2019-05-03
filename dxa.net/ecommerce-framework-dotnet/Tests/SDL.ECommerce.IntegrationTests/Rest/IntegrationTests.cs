@@ -365,6 +365,13 @@ namespace SDL.ECommerce.IntegrationTests.Rest
             {
                 Console.WriteLine("  FacetGroup: " + facetGroup.Title);
                 Console.WriteLine("  Edit URL: " + facetGroup.EditUrl);
+                if (facetGroup.Attributes != null)
+                {
+                    Console.WriteLine("  Attributes:");
+                    foreach  (var attribute in facetGroup.Attributes) {
+                        Console.WriteLine("    " + attribute.Name + ": " + attribute.Value);
+                    }
+                }
                 foreach (var facet in facetGroup.Facets)
                 {
                     Console.WriteLine("   " + facet.Title + " (" + facet.Count + ")");

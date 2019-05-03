@@ -16,11 +16,21 @@ namespace SDL.ECommerce.Rest.Model
         public bool IsCategory { get { return Category; } }
         public List<Facet> Facets { get; set; }
 
+        public List<NameValue> Attributes { get; set; }
+
         ICollection<IFacet> IFacetGroup.Facets
         {
             get
             {
                 return Facets.Cast<IFacet>().ToList();
+            }
+        }
+
+        ICollection<NameValue> IFacetGroup.Attributes
+        {
+            get
+            {
+                return Attributes;
             }
         }
    

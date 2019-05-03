@@ -70,6 +70,7 @@
     <Compile Include="Model\IProductRef.cs" />
     <Compile Include="Model\IQueryContributor.cs" />
     <Compile Include="Model\IQuerySuggestion.cs" />
+    <Compile Include="Model\NameValue.cs" />
     <Compile Include="Model\Query.cs" />
     <Compile Include="Model\VariantLinkType.cs" />
     <Compile Include="Model\ViewType.cs" />
