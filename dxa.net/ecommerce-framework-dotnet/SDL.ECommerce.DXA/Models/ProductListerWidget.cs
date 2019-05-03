@@ -21,7 +21,6 @@ namespace SDL.ECommerce.DXA.Models
         public List<ECommerceFilterAttribute> FilterAttributes { get; set; }
 
         [SemanticProperty("e:fallbackContent")]
-        // TODO: Use rich text or a specific entity model???
         public EntityModel FallbackContent { get; set; }
 
         [SemanticProperty(IgnoreMapping = true)]
