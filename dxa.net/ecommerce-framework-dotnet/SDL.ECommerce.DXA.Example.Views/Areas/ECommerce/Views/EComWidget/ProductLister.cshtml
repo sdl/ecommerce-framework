@@ -5,7 +5,7 @@
 }
 <div @Html.DxaEntityMarkup()>
     @for (int i = 0; i < Math.Ceiling(Model.Items.Count / Convert.ToDouble(cols)); i++)
-    { 
+    {
        <div class="row row-eq-height">
            @for (int j = 0; j < cols && (cols * i + j < Model.Items.Count); j++)
            {
@@ -28,6 +28,14 @@
             </div>
            }
        </div>
+    }
+    @if (Model.Items.Count == 0 && Model.FallbackContent != null)
+    {
+        if (Model.FallbackContent.GetType() == typeof(FallbackArticle))
+        {
+            @Html.Partial("../Entity/FallbackArticle", Model.FallbackContent)
+        }
+
     }
     @if (Model.NavigationData.ShowNavigation == true)
     {

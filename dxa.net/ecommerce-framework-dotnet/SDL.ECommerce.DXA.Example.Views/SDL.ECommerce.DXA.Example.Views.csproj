@@ -188,6 +188,7 @@
     <Content Include="Areas\ECommerce\Views\Entity\SearchBox.cshtml" />
     <Content Include="Areas\ECommerce\Views\web.config" />
     <Content Include="Areas\ECommerce\Views\Entity\LanguageSelector.cshtml" />
+    <Content Include="Areas\ECommerce\Views\Entity\FallbackArticle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -204,6 +205,7 @@
     <Compile Include="Controllers\EComWidgetController.cs" />
     <Compile Include="ECommerceAreaRegistration.cs" />
     <Compile Include="LinkResolver.cs" />
+    <Compile Include="Models\FallbackArticle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
