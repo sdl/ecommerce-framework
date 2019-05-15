@@ -17,7 +17,9 @@ namespace SDL.ECommerce.Rest.Model
 
         public bool IsCategory { get { return Category; } }
 
-        public bool IsSelected { get; set; }
+        public bool Selected { get; set; }
+
+        public bool IsSelected { get { return Selected; } }
 
         public string Title { get; set; }
 
