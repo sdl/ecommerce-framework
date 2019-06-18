@@ -122,6 +122,10 @@ namespace SDL.ECommerce.DXA.Controllers
                         query.CategoryIds.Add(ResolveCategoryId(eCommerceCategoryReference));
                     }
                 }
+                if (widget.ContextData != null)
+                {
+                    query.ContextData = widget.ContextData.ToDictionary(c => c.Name, c => c.Value);
+                }
 
                 queryResult = _eCommerceClient.QueryService.Query(query);
             }
@@ -136,8 +140,19 @@ namespace SDL.ECommerce.DXA.Controllers
                 queryResult = GetResultFromPageTemplate();
             }
 
-            widget.Items = queryResult.Products?.ToList();
-            this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>) ECommerceContext.Get(ECommerceContext.FACETS));
+            if (queryResult != null)
+            {
+                widget.Items = queryResult.Products?.ToList();
+                this.ProcessListerNavigationLinks(widget, queryResult, (IList<FacetParameter>)ECommerceContext.Get(ECommerceContext.FACETS));
+            }
+            else
+            {
+                widget.Items = new List<IProduct>();
+                widget.NavigationData = new ListerNavigationData
+                {
+                    ShowNavigation = false
+                };
+            }
 
             return View(entity.MvcData.ViewName, entity);
         }

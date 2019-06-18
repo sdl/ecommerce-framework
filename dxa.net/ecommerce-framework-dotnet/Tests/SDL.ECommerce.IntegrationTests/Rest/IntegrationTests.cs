@@ -115,10 +115,23 @@ namespace SDL.ECommerce.IntegrationTests.Rest
             PrintQueryResult(nextResult);
         }
 
+
         [TestMethod]
         public void RestSearchCategory()
         {
             var query = new Query { CategoryId = "catalog01_18661" };
+            var result = ECommerceClient.QueryService.Query(query);
+            PrintQueryResult(result);
+        }
+
+        [TestMethod]
+        public void RestSearchCategoryWithContextData()
+        {
+            var query = new Query
+            {
+                CategoryId = "catalog01_18662",
+                ContextData = new Dictionary<string, string> { { "fh_usertype", "multichannel" } }
+            };
             var result = ECommerceClient.QueryService.Query(query);
             PrintQueryResult(result);
         }
@@ -391,6 +404,11 @@ namespace SDL.ECommerce.IntegrationTests.Rest
                     {
                         Console.WriteLine("  Product ID: " + product.Id + ", Name: " + product.Name);
                     }
+                }
+                else if (promotion is IContentPromotion)
+                {
+                    var contentPromo = promotion as IContentPromotion;
+                    Console.WriteLine("Image URL: " + contentPromo.ImageUrl);
                 }
             }
             

@@ -2,6 +2,7 @@
 using SDL.ECommerce.Api.Model;
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SDL.ECommerce.DXA.Models
 {
@@ -23,6 +24,9 @@ namespace SDL.ECommerce.DXA.Models
         [SemanticProperty("e:fallbackContent")]
         public EntityModel FallbackContent { get; set; }
 
+        [SemanticProperty("e:contextData")]
+        public List<NameValuePair> ContextData { get; set; }
+
         [SemanticProperty(IgnoreMapping = true)]
         public IList<IProduct> Items { get; set; }
     
@@ -31,17 +35,21 @@ namespace SDL.ECommerce.DXA.Models
 
         public void ContributeToQuery(Api.Model.Query query)
         {
-            if ( ViewSize != null )
+            if (ViewSize != null)
             {
                 query.ViewSize = ViewSize;
             }
-            if ( FilterAttributes != null )
+            if (FilterAttributes != null)
             {
-                foreach ( var filterAttribute in FilterAttributes )
+                foreach (var filterAttribute in FilterAttributes)
                 {
                     query.Facets.Add(new Api.FacetParameter(filterAttribute.Name + "_hidden", filterAttribute.Value));
                 }
             } 
+            if (ContextData != null)
+            {
+                query.ContextData = ContextData.ToDictionary(c => c.Name, c => c.Value);
+            }
         }
     }
 }

@@ -75,7 +75,7 @@ namespace SDL.ECommerce.Rest.Service
                 {
                     var facet = query.Facets[i];
                     facetsString.Append(facet.ToUrl());
-                    if (i + 1 < query.Facets.Count)
+                    if (i+1 < query.Facets.Count)
                     {
                         facetsString.Append("&");
                     }
@@ -98,10 +98,27 @@ namespace SDL.ECommerce.Rest.Service
                 if ( query.ViewType == ViewType.FLYOUT )
                 {
                     cacheRegion = CacheRegion.ECommerceFlyout;
-                }
-               
+                }          
             }
-
+            // Context Data
+            //
+            if (query.ContextData != null && query.ContextData.Count > 0)
+            {
+                var contextDataString = new StringBuilder();
+                int i = 0;
+                foreach (var contextData in query.ContextData)
+                {
+                    contextDataString.Append(contextData.Key);
+                    contextDataString.Append("=");
+                    contextDataString.Append(contextData.Value);
+                    if (i+1 < query.ContextData.Count)
+                    {
+                        contextDataString.Append("&");
+                    }
+                    i++;
+                }
+                request.AddParameter("contextData", contextDataString.ToString()); 
+            }
             
             IProductQueryResult queryResult;
             if (!cacheProvider.TryGet(cacheRegion, cacheKey, out queryResult))

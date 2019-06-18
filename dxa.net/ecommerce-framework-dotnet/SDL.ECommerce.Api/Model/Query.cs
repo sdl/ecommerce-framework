@@ -13,10 +13,14 @@ namespace SDL.ECommerce.Api.Model
         public Query(Query query)
         {
             Category = query.Category;
+            CategoryId = query.CategoryId;
+            Categories = query.Categories;
+            CategoryIds = query.CategoryIds;
             SearchPhrase = query.SearchPhrase;
             Facets = query.Facets;
             ViewSize = query.ViewSize;
             StartIndex = query.StartIndex;
+            ContextData = query.ContextData;
         }
              
         public ICategory Category { get; set; }
@@ -28,6 +32,7 @@ namespace SDL.ECommerce.Api.Model
         public int? ViewSize { get; set; }   
         public int? StartIndex { get; set; }
         public ViewType? ViewType { get; set; }
+        public IDictionary<string,string> ContextData { get; set; }
 
         // TODO: Add view type + filter attributes here
 
