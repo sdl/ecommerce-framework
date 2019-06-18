@@ -4,7 +4,9 @@ import com.sdl.ecommerce.api.model.Category;
 import com.sdl.ecommerce.api.model.FacetParameter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Query
@@ -23,6 +25,7 @@ public abstract class Query implements Cloneable {
     private int viewSize;
     private List<QueryFilterAttribute> filterAttributes;
     private ViewType viewType;
+    private Map<String,String> contextData;
 
     // TODO: Add support for sorting
     // TODO: Should this also be an interface???
@@ -108,7 +111,7 @@ public abstract class Query implements Cloneable {
     /**
      * Add a filter attribute to control what information that should be included or excluded.
      * @param filterAttribute
-     * @return  this
+     * @return this
      */
     public Query filterAttribute(QueryFilterAttribute filterAttribute) {
         if ( this.filterAttributes == null ) {
@@ -125,6 +128,33 @@ public abstract class Query implements Cloneable {
      */
     public Query viewType(ViewType viewType) {
         this.viewType = viewType;
+        return this;
+    }
+
+    /**
+     * Set context data
+     * @param name
+     * @param value
+     * @return this
+     */
+    public Query contextData(String name, String value) {
+        if (this.contextData == null) {
+            this.contextData = new HashMap<>();
+        }
+        this.contextData.put(name, value);
+        return this;
+    }
+
+    /**
+     * Set context data
+     * @param contextData
+     * @return this
+     */
+    public Query contextData(Map<String,String> contextData) {
+        if (this.contextData == null) {
+            this.contextData = new HashMap<>();
+        }
+        this.contextData.putAll(contextData);
         return this;
     }
 
@@ -182,6 +212,13 @@ public abstract class Query implements Cloneable {
      */
     public ViewType getViewType() {
         return viewType;
+    }
+
+    /**
+     * @return context data
+     */
+    public Map<String, String> getContextData() {
+        return contextData;
     }
 
     /**

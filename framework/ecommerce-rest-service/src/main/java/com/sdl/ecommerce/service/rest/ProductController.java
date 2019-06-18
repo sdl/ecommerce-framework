@@ -51,7 +51,8 @@ public class ProductController {
                              @RequestParam(required = false) String facets,
                              @RequestParam(required = false) Integer startIndex,
                              @RequestParam(required = false) Integer viewSize,
-                             @RequestParam(required = false) String viewType) throws ECommerceException {
+                             @RequestParam(required = false) String viewType,
+                             @RequestParam(required = false) String contextData) throws ECommerceException {
 
         // Build E-Commerce query based on input query parameters
         //
@@ -101,6 +102,14 @@ public class ProductController {
         }
         if ( viewType != null ) {
             query.viewType(ViewType.valueOf(viewType));
+        }
+        if (contextData != null) {
+            StringTokenizer tokenizer = new StringTokenizer(contextData, "=&");
+            while ( tokenizer.hasMoreTokens() ) {
+                String name = tokenizer.nextToken();
+                String value = tokenizer.nextToken();
+                query.contextData(name, value);
+            }
         }
 
         // Consume system facets which will be handled as hidden facets in the query and will not be shown for the end-user
