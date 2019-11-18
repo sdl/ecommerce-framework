@@ -5,6 +5,7 @@ using SDL.ECommerce.Api.Model;
 using SDL.ECommerce.Rest;
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Web;
@@ -12,10 +13,11 @@ using System.Web.Configuration;
 using System.Web.Mvc;
 using Sdl.Web.Common;
 using Sdl.Web.Common.Configuration;
+using Sdl.Web.Common.Logging;
 
 namespace SDL.ECommerce.DXA
 {
-    
+
     /// <summary>
     /// E-Commerce Context
     /// </summary>
@@ -31,44 +33,21 @@ namespace SDL.ECommerce.DXA
         public const string ROOT_TITLE = "RootTitle";
         public const string SEARCH_PHRASE = "SearchPhrase";
 
-        private static readonly IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string,IECommerceClient>();
+        public const string ENVIRONMENT_REQUEST_PARAM = "ecom_env"; // TODO: Have this configurable?
+        public const string ENVIRONMENT_SESSION_PARAM = "ECOM-ENVIRONMENT";
+
+        private static readonly IDictionary<string, IECommerceClient> clients = new ConcurrentDictionary<string, IECommerceClient>();
+        private static IDictionary<string, string> environments = null;
 
         private const int DEFAULT_CATEGORY_EXPIRY_TIMEOUT = 3600000;
         private const bool DEFAULT_CATEGORY_USE_SANITIZED_PATHNAMES = false;
 
         private static object _lock = new object();
 
-
         /// <summary>
         /// Client to E-Commerce services
         /// </summary>
-        public static IECommerceClient Client
-        {
-            get
-            {
-                var locale = GetLocale(WebRequestContext.Localization);
-                IECommerceClient client = null;
-                if (!clients.TryGetValue(locale, out client))
-                {
-                    lock (_lock)
-                    {
-                        // Double-check so one other thread has already created the client
-                        //
-                        if (!clients.ContainsKey(locale))
-                        {
-                            client = Create(locale);
-                            clients.Add(locale, client);
-                        }
-                        else
-                        {
-                            client = clients[locale];
-                        }
-                    }
-                }
-                return client;
-            }
-            
-        }
+        public static IECommerceClient Client => GetClient(WebRequestContext.Localization);
 
         /// <summary>
         /// GEt client to E-Commerce services via locale
@@ -76,11 +55,30 @@ namespace SDL.ECommerce.DXA
         public static IECommerceClient GetClient(Localization localization)
         {
             var locale = GetLocale(localization);
-            IECommerceClient client = null;
-            if (!clients.TryGetValue(locale, out client))
+
+            string cacheKey = locale;
+            var currentEnvironment = GetEnvironment();
+            if (currentEnvironment != null)
             {
-                client = Create(locale);
-                clients.Add(locale, client);
+                cacheKey += ":" + currentEnvironment;
+            }
+            IECommerceClient client = null;
+            if (!clients.TryGetValue(cacheKey, out client))
+            {
+                lock (_lock)
+                {
+                    // Double-check so one other thread has already created the client
+                    //
+                    if (!clients.ContainsKey(cacheKey))
+                    {
+                        client = Create(locale, currentEnvironment);
+                        clients.Add(cacheKey, client);
+                    }
+                    else
+                    {
+                        client = clients[cacheKey];
+                    }
+                }
             }
             return client;
         }
@@ -103,15 +101,26 @@ namespace SDL.ECommerce.DXA
             }
             return locale;
         }
-        
+
         /// <summary>
         /// Create E-Commerce client for specified locale
         /// </summary>
         /// <param name="locale"></param>
         /// <returns></returns>
-        private static IECommerceClient Create(string locale)
+        private static IECommerceClient Create(string locale, string environment)
         {
-            var endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
+            Log.Debug("Creating Commerce Client for environment: " + environment);
+            string endpointAddress = null;
+            if (environment != null)
+            {
+                environments.TryGetValue(environment, out endpointAddress);
+            }
+
+            if (endpointAddress == null)
+            {
+                endpointAddress = WebConfigurationManager.AppSettings["ecommerce-service-uri"];
+            }
+
             var clientType = WebConfigurationManager.AppSettings["ecommerce-service-client-type"] ?? "odata";
             var categoryExpiryTimeoutStr = WebConfigurationManager.AppSettings["ecommerce-category-expiry-timeout"];
             int categoryExpiryTimeout = categoryExpiryTimeoutStr != null ? int.Parse(categoryExpiryTimeoutStr) : DEFAULT_CATEGORY_EXPIRY_TIMEOUT;
@@ -126,7 +135,7 @@ namespace SDL.ECommerce.DXA
 
             if (clientType.Equals("rest"))
             {
-                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout, useSanitizedPathNames, DependencyResolver.Current.GetService);
+                return new ECommerceClient(endpointAddress, locale, new DXACacheProvider(locale), categoryExpiryTimeout, useSanitizedPathNames, DependencyResolver.Current.GetService, environment);
             }
 
             throw new DxaException("Invalid client type configured for the E-Commerce service: " + clientType);
@@ -155,6 +164,64 @@ namespace SDL.ECommerce.DXA
                 HttpContext.Current.Items["ECOM-" + key] = value;
             }
             return value;
+        }
+
+        public static void SetEnvironment(string environment)
+        {
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Session.Add(ENVIRONMENT_SESSION_PARAM, environment);
+            }
+        }
+
+        public static string GetEnvironment()
+        {
+            var environments = Environments;
+            if (HttpContext.Current != null)
+            {
+                var environment = HttpContext.Current.Request.QueryString[ENVIRONMENT_REQUEST_PARAM];
+                if (environment != null)
+                {
+                    if (environments.Contains(environment))
+                    {
+                        SetEnvironment(environment);
+                        return environment;
+                    } 
+                }
+                return (string) HttpContext.Current.Session[ENVIRONMENT_SESSION_PARAM];
+            }
+            return null;
+        }
+
+        public static IList<string> Environments
+        {
+            get
+            {
+                if (environments == null)
+                {
+                    environments = new Dictionary<string, string>();
+                    var envConfig = WebConfigurationManager.AppSettings["ecommerce-service-environments"];
+                    if (envConfig != null)
+                    {
+                        var parts = envConfig.Split(new char[] { ' ', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < parts.Length; i = i + 2)
+                        {
+                            var envName = parts[i];
+                            if (i + 1 >= parts.Length)
+                            {
+                                break;
+                            }
+                            var envUrl = parts[i + 1];
+                            environments.Add(envName, envUrl);
+                        }
+                    }
+                    if (environments.Count > 0)
+                    {
+                        SetEnvironment(environments.Keys.First());
+                    }
+                }
+                return environments.Keys.ToList();
+            }
         }
 
         /// <summary>

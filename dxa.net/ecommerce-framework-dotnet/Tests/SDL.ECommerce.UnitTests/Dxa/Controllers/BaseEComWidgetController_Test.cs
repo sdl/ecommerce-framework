@@ -275,7 +275,7 @@ public class BaseEComWidgetController_Test : Test<FakeBaseEcomWidgetController>
 
         var eCommerceClient = new FakeECommerceClient
         {
-            QueryService = new ProductQueryService(restClient, new FakeECommerceCacheProvider()),
+            QueryService = new ProductQueryService(restClient, new FakeECommerceCacheProvider(), null),
             CategoryService = productCategoryService
         };
 

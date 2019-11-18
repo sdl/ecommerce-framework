@@ -18,43 +18,54 @@ namespace SDL.ECommerce.Rest.Service
 
         private IRestClient restClient;
         private IECommerceCacheProvider cacheProvider;
+        private string environment;
 
-        public ProductQueryService(IRestClient restClient, IECommerceCacheProvider cacheProvider)
+        public ProductQueryService(IRestClient restClient, IECommerceCacheProvider cacheProvider, string environment)
         {
             this.restClient = restClient;
             this.cacheProvider = cacheProvider;
+            this.environment = environment;
         }
 
         public IProductQueryResult Query(Query query)
         {
 
+            // TODO: Add environment to the cache key
+
             var request = new RestRequest("/product/query", Method.GET);
             string cacheKey = "";
             CacheRegion cacheRegion = CacheRegion.ECommerceProductLister;
+
+            // Environment
+            //
+            if (environment != null)
+            {
+                cacheKey += environment + ":";
+            }
 
             // Category
             //
             if (query.Category != null)
             {
                 request.AddParameter("categoryId", query.Category.Id);
-                cacheKey = query.Category.Id;
+                cacheKey += query.Category.Id;
             }
             else if (query.CategoryId != null)
             {
                 request.AddParameter("categoryId", query.CategoryId);
-                cacheKey = query.CategoryId;
+                cacheKey += query.CategoryId;
             }
             else if (query.Categories != null)
             {
                 var categoryOrString = string.Join("|", query.Categories.Select(c => c.Id));
                 request.AddParameter("categoryIds", categoryOrString);
-                cacheKey = categoryOrString;
+                cacheKey += categoryOrString;
             }
             else if (query.CategoryIds != null)
             {
                 var categoryOrString = string.Join("|", query.CategoryIds);
                 request.AddParameter("categoryIds", categoryOrString);
-                cacheKey = categoryOrString;
+                cacheKey += categoryOrString;
             }
 
             // Search phrase

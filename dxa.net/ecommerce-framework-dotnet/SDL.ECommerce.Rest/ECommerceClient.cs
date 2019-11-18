@@ -13,6 +13,7 @@ namespace SDL.ECommerce.Rest
         private readonly IECommerceCacheProvider cacheProvider;
         private readonly int categoryExpiryTimeout;
         private readonly bool useSanitizedPathNames;
+        private string environment;
 
         private IProductCategoryService categoryService;
         private IProductDetailService productDetailService;
@@ -25,9 +26,11 @@ namespace SDL.ECommerce.Rest
                                IECommerceCacheProvider cacheProvider,
                                int categoryExpiryTimeout,
                                bool useSanitizedPathNames,
-                               Func<Type, object> dependencies = null)
+                               Func<Type, object> dependencies = null,
+                               string environment = null)
         {
             this.dependencies = dependencies;
+            this.environment = environment;
             
             this.cacheProvider = cacheProvider;
             this.categoryExpiryTimeout = categoryExpiryTimeout;
@@ -67,7 +70,7 @@ namespace SDL.ECommerce.Rest
             {
                if ( productDetailService == null)
                 {
-                    productDetailService = Resolve<IProductDetailService>() ?? new ProductDetailService(this.restClient, CategoryService, this.cacheProvider);
+                    productDetailService = Resolve<IProductDetailService>() ?? new ProductDetailService(this.restClient, CategoryService, this.cacheProvider, environment);
                 }
                 return productDetailService;
             }
@@ -79,7 +82,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( editService == null)
                 {
-                    editService = Resolve<IEditService>() ?? new EditService(this.restClient, this.cacheProvider);
+                    editService = Resolve<IEditService>() ?? new EditService(this.restClient, this.cacheProvider, environment);
                 }
                 return editService;
             }
@@ -91,7 +94,7 @@ namespace SDL.ECommerce.Rest
             {
                 if ( productQueryService == null )
                 {
-                    productQueryService = Resolve<IProductQueryService>() ?? new ProductQueryService(this.restClient, this.cacheProvider);
+                    productQueryService = Resolve<IProductQueryService>() ?? new ProductQueryService(this.restClient, this.cacheProvider, environment);
                 }
                 return productQueryService;
             }

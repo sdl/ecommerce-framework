@@ -17,12 +17,14 @@ namespace SDL.ECommerce.Rest.Service
         private IRestClient restClient;
         private IProductCategoryService productCategoryService;
         private IECommerceCacheProvider cacheProvider;
+        private string environment;
 
-        public ProductDetailService(IRestClient restClient, IProductCategoryService productCategoryService, IECommerceCacheProvider cacheProvider)
+        public ProductDetailService(IRestClient restClient, IProductCategoryService productCategoryService, IECommerceCacheProvider cacheProvider, string environment)
         {
             this.restClient = restClient;
             this.productCategoryService = productCategoryService;
             this.cacheProvider = cacheProvider;
+            this.environment = environment;
         }
 
         public IProduct GetDetail(string productId)
@@ -66,14 +68,20 @@ namespace SDL.ECommerce.Rest.Service
 
         private string GetCacheKey(string productId, IDictionary<string, string> variantAttributes)
         {
+            string cacheKey = "";
+            if (environment != null)
+            {
+                cacheKey = environment + ":";
+            }
             if (variantAttributes != null)
             {
-                return productId + "#" + string.Join("#", variantAttributes.Select(attr => attr.Key + "=" + attr.Value));
+                cacheKey += productId + "#" + string.Join("#", variantAttributes.Select(attr => attr.Key + "=" + attr.Value));
             }
             else
             {
-                return productId;
+                cacheKey += productId;
             }
+            return cacheKey;
         }
     }    
 }

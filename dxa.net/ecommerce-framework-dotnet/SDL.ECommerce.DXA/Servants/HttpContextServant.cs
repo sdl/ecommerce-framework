@@ -12,7 +12,7 @@ namespace SDL.ECommerce.DXA.Servants
 
         private const string QUERY_KEY = "q";
 
-        private readonly string[] _excludedParameters = { QUERY_KEY, STARTINDEX_KEY };
+        private readonly string[] _excludedParameters = { QUERY_KEY, STARTINDEX_KEY, ECommerceContext.ENVIRONMENT_REQUEST_PARAM };
 
         public IList<FacetParameter> GetFacetParametersFromRequest(HttpContextBase httpContext)
         {
