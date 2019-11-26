@@ -168,9 +168,28 @@ namespace SDL.ECommerce.DXA
 
         public static void SetEnvironment(string environment)
         {
-            if (HttpContext.Current != null)
+            if (HttpContext.Current?.Session != null)
             {
                 HttpContext.Current.Session.Add(ENVIRONMENT_SESSION_PARAM, environment);
+            }
+            else
+            {
+                // If session is not enabled -> store it a cookie instead
+                //
+                if (HttpContext.Current != null)
+                {
+                    var envCookie = HttpContext.Current.Request.Cookies[ENVIRONMENT_SESSION_PARAM];
+                    if (envCookie != null)
+                    {
+                        envCookie.Value = environment;
+                        HttpContext.Current.Response.SetCookie(envCookie);
+                    }
+                    else
+                    {
+                        envCookie = new HttpCookie(ENVIRONMENT_SESSION_PARAM, environment);
+                        HttpContext.Current.Response.Cookies.Add(envCookie);
+                    }
+                }
             }
         }
 
@@ -188,7 +207,19 @@ namespace SDL.ECommerce.DXA
                         return environment;
                     } 
                 }
-                return (string) HttpContext.Current.Session[ENVIRONMENT_SESSION_PARAM];
+                if (HttpContext.Current?.Session != null)
+                {
+                    return (string) HttpContext.Current.Session[ENVIRONMENT_SESSION_PARAM];
+                }
+                else
+                {
+                    var envCookie = HttpContext.Current.Request.Cookies[ENVIRONMENT_SESSION_PARAM];
+                    if (envCookie != null)
+                    {
+                        return envCookie.Value;
+                    }
+                }
+                
             }
             return null;
         }
