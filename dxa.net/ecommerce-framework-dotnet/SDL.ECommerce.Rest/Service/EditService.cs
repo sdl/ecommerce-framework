@@ -11,17 +11,26 @@ namespace SDL.ECommerce.Rest.Service
     {
         private IRestClient restClient;
         private IECommerceCacheProvider cacheProvider;
+        private string environment;
 
-        public EditService(IRestClient restClient, IECommerceCacheProvider cacheProvider)
+        public EditService(IRestClient restClient, IECommerceCacheProvider cacheProvider, string environment)
         {
             this.restClient = restClient;
             this.cacheProvider = cacheProvider;
+            this.environment = environment;
         }
 
         public IEditMenu GetInContextMenuItems(Query query)
         {
             var request = new RestRequest("/editmenu/inContextMenuItems", Method.GET);
             var cacheKey = "";
+
+            // Environment
+            //
+            if (environment != null)
+            {
+                cacheKey += environment + ":";
+            }
 
             // Category
             //
