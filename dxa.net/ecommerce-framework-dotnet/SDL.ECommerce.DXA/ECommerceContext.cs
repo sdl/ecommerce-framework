@@ -209,7 +209,11 @@ namespace SDL.ECommerce.DXA
                 }
                 if (HttpContext.Current?.Session != null)
                 {
-                    return (string) HttpContext.Current.Session[ENVIRONMENT_SESSION_PARAM];
+                    var environmentInSession = (string) HttpContext.Current.Session[ENVIRONMENT_SESSION_PARAM];
+                    if (environmentInSession != null)
+                    {
+                        return environmentInSession;
+                    }
                 }
                 else
                 {
@@ -220,6 +224,11 @@ namespace SDL.ECommerce.DXA
                     }
                 }
                 
+            }
+            if (environments != null && environments.Count > 0)  {
+                // Pick the first one as default
+                //
+                return environments[0];
             }
             return null;
         }
@@ -245,10 +254,6 @@ namespace SDL.ECommerce.DXA
                             var envUrl = parts[i + 1];
                             environments.Add(envName, envUrl);
                         }
-                    }
-                    if (environments.Count > 0)
-                    {
-                        SetEnvironment(environments.Keys.First());
                     }
                 }
                 return environments.Keys.ToList();
