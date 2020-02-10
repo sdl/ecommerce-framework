@@ -139,7 +139,7 @@ public class FredhopperClient implements FredhopperLinkManager {
     }
 
     public static String getAttributeName(Universe universe, String attributeId) {
-        if ( universe.getAttributeTypes() != null ) {
+        if ( universe != null && universe.getAttributeTypes() != null ) {
             for (AttributeType attributeType : universe.getAttributeTypes().getAttributeType()) {
                 if (attributeType.getName().equals(attributeId)) {
                     return attributeType.getValue();

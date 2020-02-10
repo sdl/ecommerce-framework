@@ -196,7 +196,7 @@ public abstract class FredhopperResultBase {
 
         // For now just take the first theme list
         //
-        if ( !universe.getThemes().isEmpty() ) {
+        if ( universe != null && !universe.getThemes().isEmpty() ) {
             List<Theme> themes = universe.getThemes().get(0).getTheme();
             List<Promotion> promotions = new ArrayList<>();
             for ( Theme theme : themes ) {
@@ -217,6 +217,10 @@ public abstract class FredhopperResultBase {
     }
 
     protected List<Breadcrumb> getBreadcrumbs(Universe universe, List<FacetParameter> currentFacets) {
+
+        if (universe == null) {
+            return Collections.EMPTY_LIST;
+        }
 
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
         List<Crumb> fhCrumbs = universe.getBreadcrumbs().getCrumb();
@@ -308,11 +312,13 @@ public abstract class FredhopperResultBase {
     }
 
     protected Filtersection getSelectedFilterSectionWithValue(Universe universe, String value) {
-        List<Filter> filters = this.getFacetFilters(universe);
-        for ( Filter filter : filters ) {
-            for ( Filtersection section : filter.getFiltersection() ) {
-                if ( section.isSelected() != null && section.isSelected() && value.equals(section.getValue().getValue()) ) {
-                    return section;
+        if (universe != null) {
+            List<Filter> filters = this.getFacetFilters(universe);
+            for (Filter filter : filters) {
+                for (Filtersection section : filter.getFiltersection()) {
+                    if (section.isSelected() != null && section.isSelected() && value.equals(section.getValue().getValue())) {
+                        return section;
+                    }
                 }
             }
         }
@@ -325,30 +331,31 @@ public abstract class FredhopperResultBase {
 
     protected List<FacetGroup> getFacetGroups(Universe universe, List<QueryFilterAttribute> queryFilterAttributes) {
 
-        List<Filter> filters = this.getFacetFilters(universe);
         List<FacetGroup> facetGroups = new ArrayList<>();
-
-        for ( Filter filter : filters ) {
-            if ( !include(filter.getCustomFields(), queryFilterAttributes) ) {
-                continue;
-            }
-            // TODO: Move edit URL generation to somewhere else!!
-            String editUrl = "/fh-edit/facets.fh?" +  URLDecoder.decode(universe.getLink().getUrlParams() + "&id=" + filter.getFacetid());
-            FacetGroup facetGroup = new FredhopperFacetGroup(filter, editUrl);
-            facetGroups.add(facetGroup);
-
-            for (Filtersection section : filter.getFiltersection()) {
-
-                if ( !facetGroup.isCategory() ) { // facet
-
-                    // If a hidden facet value -> ignore to add it to the facet group
-                    //
-                    if ( this.hiddenFacetValues != null && this.hiddenFacetValues.contains(section.getLink().getName()) ) {
-                        continue;
-                    }
+        if (universe != null) {
+            List<Filter> filters = this.getFacetFilters(universe);
+            for (Filter filter : filters) {
+                if (!include(filter.getCustomFields(), queryFilterAttributes)) {
+                    continue;
                 }
-                Facet facet = new FredhopperFacet(filter, section);
-                facetGroup.getFacets().add(facet);
+                // TODO: Move edit URL generation to somewhere else!!
+                String editUrl = "/fh-edit/facets.fh?" + URLDecoder.decode(universe.getLink().getUrlParams() + "&id=" + filter.getFacetid());
+                FacetGroup facetGroup = new FredhopperFacetGroup(filter, editUrl);
+                facetGroups.add(facetGroup);
+
+                for (Filtersection section : filter.getFiltersection()) {
+
+                    if (!facetGroup.isCategory()) { // facet
+
+                        // If a hidden facet value -> ignore to add it to the facet group
+                        //
+                        if (this.hiddenFacetValues != null && this.hiddenFacetValues.contains(section.getLink().getName())) {
+                            continue;
+                        }
+                    }
+                    Facet facet = new FredhopperFacet(filter, section);
+                    facetGroup.getFacets().add(facet);
+                }
             }
         }
         return facetGroups;

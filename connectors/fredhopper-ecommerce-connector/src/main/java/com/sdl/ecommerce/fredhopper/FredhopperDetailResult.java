@@ -48,7 +48,7 @@ public class FredhopperDetailResult extends FredhopperResultBase implements Prod
     }
 
     private Product getProductDetail(Universe universe) {
-        if ( universe.getItemsSection() != null && universe.getItemsSection().getItems() != null ) {
+        if ( universe != null && universe.getItemsSection() != null && universe.getItemsSection().getItems() != null ) {
             List<Product> products = this.getProducts(universe.getItemsSection().getItems().getItem());
             if (products.size() > 0) {
                 FredhopperProduct product = (FredhopperProduct) products.get(0);
