@@ -18,6 +18,8 @@ import java.util.Map;
 public class LocalizationService implements com.sdl.ecommerce.api.LocalizationService {
 
     private String defaultLocale;
+
+    // TODO: Make it possible to have other types than strings
     private Map<String,Map<String,String>> locales;
 
     private static InheritableThreadLocal<String> currentLocale = new InheritableThreadLocal<>();
