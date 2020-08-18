@@ -9,6 +9,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Xml.Linq;
+using System.ServiceModel.Channels;
+using System.Net;
+using System.Xml;
 
 namespace SDL.Fredhopper.Ecl
 {
@@ -28,24 +31,61 @@ namespace SDL.Fredhopper.Ecl
         /// <param name="configuration"></param>
         public FredhopperProductCatalog(XElement configuration)
         {
-            var binding = new BasicHttpBinding();
-            binding.MaxReceivedMessageSize = EclProvider.GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
-             
-            
+
+            var endpointAddressStr = configuration.Element(EclProvider.EcommerceEclNs + "EndpointAddress").Value;
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
-            if ( usernameElement != null )
-            {
-                binding.Security = new BasicHttpSecurity
+            var maxReceivedMessageSize = EclProvider.GetIntConfigurationValue(configuration, "MaxReceivedMessageSize", DEFAULT_MAX_RECEIVED_MESSAGE_SIZE);
+
+            Binding binding;
+            if (endpointAddressStr.StartsWith("https")) // Secure SSL connection
+            {              
+                ServicePointManager.SecurityProtocol =
+                        SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                
+                binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport)
                 {
-                    Mode = BasicHttpSecurityMode.TransportCredentialOnly,
-                    Transport  = new HttpTransportSecurity
+                    // TODO: Do we need to have the max buffer sizes configurable?
+                    MaxBufferSize = 10485760,
+                    MaxBufferPoolSize = 10485760,
+                    MaxReceivedMessageSize = maxReceivedMessageSize,
+                    ReaderQuotas = new XmlDictionaryReaderQuotas
+                    {
+                        MaxStringContentLength = 10485760,
+                        MaxArrayLength = 10485760
+                    }
+                };
+                if (usernameElement != null)
+                {
+                    ((BasicHttpsBinding)binding).Security.Transport = new HttpTransportSecurity
                     {
                         ClientCredentialType = HttpClientCredentialType.Basic
-                     }
-                };
+                    };
+                }
             }
-            var endpointAddress = new EndpointAddress(configuration.Element(EclProvider.EcommerceEclNs + "EndpointAddress").Value);
+            else // Unsecure HTTP connection
+            {
+                binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly)
+                {
+                    MaxBufferSize = 10485760,
+                    MaxBufferPoolSize = 10485760,
+                    MaxReceivedMessageSize = maxReceivedMessageSize,
+                    ReaderQuotas = new XmlDictionaryReaderQuotas
+                    {
+                        MaxStringContentLength = 10485760,
+                        MaxArrayLength = 10485760
+                    }
+                };
+                if (usernameElement != null)
+                {
+                    ((BasicHttpBinding)binding).Security.Transport = new HttpTransportSecurity
+                    {
+                        ClientCredentialType = HttpClientCredentialType.Basic
+                    };
+                }
+            }
+
+            var endpointAddress = new EndpointAddress(endpointAddressStr);
             this.fhClient = new FASWebServiceClient(binding, endpointAddress);
             if ( usernameElement != null )
             {
