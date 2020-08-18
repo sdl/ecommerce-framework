@@ -5,7 +5,7 @@ using Tridion.ExternalContentLibrary.V2;
 
 namespace SDL.Fredhopper.Ecl
 {
-    [AddIn("Fredhopper-ECL-Provider", Version = "1.2.0.8")]
+    [AddIn("Fredhopper-ECL-Provider", Version = "1.2.0.9")]
     public class FredhopperEclProvider : EclProvider
     {
 
