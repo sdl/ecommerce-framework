@@ -31,7 +31,6 @@ namespace SDL.Fredhopper.Ecl
         /// <param name="configuration"></param>
         public FredhopperProductCatalog(XElement configuration)
         {
-
             var endpointAddressStr = configuration.Element(EclProvider.EcommerceEclNs + "EndpointAddress").Value;
             var usernameElement = configuration.Element(EclProvider.EcommerceEclNs + "UserName");
             var passwordElement = configuration.Element(EclProvider.EcommerceEclNs + "Password");
@@ -45,15 +44,7 @@ namespace SDL.Fredhopper.Ecl
                 
                 binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport)
                 {
-                    // TODO: Do we need to have the max buffer sizes configurable?
-                    MaxBufferSize = 10485760,
-                    MaxBufferPoolSize = 10485760,
-                    MaxReceivedMessageSize = maxReceivedMessageSize,
-                    ReaderQuotas = new XmlDictionaryReaderQuotas
-                    {
-                        MaxStringContentLength = 10485760,
-                        MaxArrayLength = 10485760
-                    }
+                    MaxReceivedMessageSize = maxReceivedMessageSize
                 };
                 if (usernameElement != null)
                 {
@@ -67,14 +58,7 @@ namespace SDL.Fredhopper.Ecl
             {
                 binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly)
                 {
-                    MaxBufferSize = 10485760,
-                    MaxBufferPoolSize = 10485760,
-                    MaxReceivedMessageSize = maxReceivedMessageSize,
-                    ReaderQuotas = new XmlDictionaryReaderQuotas
-                    {
-                        MaxStringContentLength = 10485760,
-                        MaxArrayLength = 10485760
-                    }
+                    MaxReceivedMessageSize = maxReceivedMessageSize
                 };
                 if (usernameElement != null)
                 {
