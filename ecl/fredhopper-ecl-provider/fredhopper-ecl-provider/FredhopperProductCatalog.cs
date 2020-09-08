@@ -240,7 +240,7 @@ namespace SDL.Fredhopper.Ecl
             universe universe = this.GetUniverse(fhPage);
 
             var facetmap = universe.facetmap[0];
-            var filters = facetmap.filter;
+            var filters = facetmap.filter ?? new filter[]{};
 
             IList<Category> newCategoryList = new List<Category>();
 
