@@ -102,6 +102,7 @@ namespace SDL.ECommerce.Rest.Service
             if (query.ViewSize != null)
             {
                 request.AddParameter("viewSize", query.ViewSize);
+                cacheKey += "@" + query.ViewSize;
             }
             if (query.ViewType != null)
             {
@@ -128,7 +129,8 @@ namespace SDL.ECommerce.Rest.Service
                     }
                     i++;
                 }
-                request.AddParameter("contextData", contextDataString.ToString()); 
+                request.AddParameter("contextData", contextDataString.ToString());
+                cacheKey += "%" + contextDataString.ToString();
             }
             
             IProductQueryResult queryResult;
